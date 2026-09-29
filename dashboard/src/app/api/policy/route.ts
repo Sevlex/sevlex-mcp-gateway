@@ -1,0 +1,55 @@
+import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+
+// Locate the exact sevlex.json file used by the Gateway
+const CONFIG_PATH = path.resolve(process.cwd(), '../gateway/sevlex.json');
+const DISCOVERED_TOOLS_PATH = path.resolve(process.cwd(), '../gateway/discovered_tools.json');
+
+export async function GET(request: Request) {
+  if (request.headers.get('Authorization') !== process.env.ADMIN_API_KEY) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const rawData = fs.readFileSync(CONFIG_PATH, 'utf-8');
+    const config = JSON.parse(rawData);
+
+    let discoveredTools: { server: string; tools: string[] }[] = [];
+    try {
+      if (fs.existsSync(DISCOVERED_TOOLS_PATH)) {
+        discoveredTools = JSON.parse(fs.readFileSync(DISCOVERED_TOOLS_PATH, 'utf-8'));
+      }
+    } catch {
+      // Ignore errors when reading discovered tools
+    }
+
+    return NextResponse.json({ ...config, discoveredTools });
+  } catch {
+    return NextResponse.json({ error: 'Failed to read policy' }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  if (request.headers.get('Authorization') !== process.env.ADMIN_API_KEY) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const { blockedTools } = await request.json();
+    
+    // Read the current file
+    const rawData = fs.readFileSync(CONFIG_PATH, 'utf-8');
+    const config = JSON.parse(rawData);
+    
+    // Update the blocked list
+    config.policy.blockedTools = blockedTools;
+    
+    // Write it back to the disk beautifully formatted
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf-8');
+    
+    return NextResponse.json({ success: true, config });
+  } catch {
+    return NextResponse.json({ error: 'Failed to update policy' }, { status: 500 });
+  }
+}
