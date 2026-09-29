@@ -27,8 +27,9 @@ graph TD
 1. **Install Dependencies**
    ```bash
    # Install dependencies
-   npm install
-   cd dashboard && npm install
+   cd gateway && npm install
+   cd ../dashboard && npm install
+   cd ..
    ```
 
 2. **Run Sevlex**
