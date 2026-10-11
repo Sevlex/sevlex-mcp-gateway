@@ -1027,75 +1027,137 @@ export default function Dashboard() {
               </div>
 
               {/* CARD 3: MICROSOFT INTUNE (WINDOWS) */}
-              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                      <Server size={20} className="text-blue-400" />
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                        <Server size={20} className="text-blue-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-white">Microsoft Intune API</h3>
+                        <p className="text-xs text-zinc-400">Direct Microsoft Graph Silent Push</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-base font-bold text-white">Microsoft Intune (Windows)</h3>
-                      <p className="text-xs text-zinc-400">Zero-Touch Fleet Rollout Script</p>
-                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                      GRAPH API
+                    </span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
-                    POWERSHELL
-                  </span>
+
+                  <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
+                    Directly instructs Microsoft Intune to push Sevlex across all 50 Windows laptops over the air without logging into the Azure portal.
+                  </p>
+
+                  <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between mb-4">
+                    <span>Target: All Engineering Devices (50 Hosts)</span>
+                    <span className="text-emerald-400 font-semibold">Ready to Push</span>
+                  </div>
                 </div>
 
-                <p className="text-xs text-zinc-400 mb-3">
-                  Paste into Microsoft Intune or Group Policy to silently deploy Sevlex across all engineering Windows laptops during login.
-                </p>
+                <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between gap-3">
+                  <button 
+                    onClick={async () => {
+                      setPingStatus("Contacting Microsoft Graph API & queuing rollout...");
+                      try {
+                        const res = await fetch("/api/integrations", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json", "Authorization": apiKey },
+                          body: JSON.stringify({ action: "deploy_intune", targetGroup: "All Engineering Laptops (50 Devices)" })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                          setPingStatus("⚡ Pushed to Microsoft Intune! Silent rollout queued for 50 Windows laptops.");
+                        } else {
+                          setPingStatus("❌ Intune push failed: " + (data.error || "Unknown"));
+                        }
+                      } catch {
+                        setPingStatus("❌ Network error connecting to API");
+                      }
+                      setTimeout(() => setPingStatus(null), 4000);
+                    }}
+                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-blue-950"
+                  >
+                    <Send size={14} /> ⚡ 1-Click Push to 50 Devices
+                  </button>
 
-                <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between">
-                  <code>deploy/deploy-mdm.ps1</code>
                   <button 
                     onClick={() => {
                       navigator.clipboard.writeText("powershell -ExecutionPolicy Bypass -File deploy/deploy-mdm.ps1");
                       setCopiedType("intune");
                       setTimeout(() => setCopiedType(null), 2000);
                     }}
-                    className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 font-medium ml-2"
+                    className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 font-medium"
                   >
                     {copiedType === "intune" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                    {copiedType === "intune" ? "Copied Command" : "Copy Command"}
+                    {copiedType === "intune" ? "Copied Script" : "Copy Script"}
                   </button>
                 </div>
               </div>
 
               {/* CARD 4: JAMF PRO (MACOS & LINUX) */}
-              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                      <Server size={20} className="text-cyan-400" />
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                        <Server size={20} className="text-cyan-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-white">Jamf Pro Cloud API</h3>
+                        <p className="text-xs text-zinc-400">Direct JSS Fleet Deployment</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-base font-bold text-white">Jamf Pro / Kandji (macOS)</h3>
-                      <p className="text-xs text-zinc-400">Zero-Touch MacBook Rollout Script</p>
-                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                      JAMF REST
+                    </span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                    BASH
-                  </span>
+
+                  <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
+                    Directly instructs Jamf Pro JSS to deploy the Sevlex agent package to all employee MacBooks in your engineering organization.
+                  </p>
+
+                  <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between mb-4">
+                    <span>Target: macOS Engineering Fleet (50 Devices)</span>
+                    <span className="text-emerald-400 font-semibold">Ready to Push</span>
+                  </div>
                 </div>
 
-                <p className="text-xs text-zinc-400 mb-3">
-                  Upload to Jamf Pro, Kandji, or Munki to silently protect all employee MacBooks and route Claude Desktop to Sevlex.
-                </p>
+                <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between gap-3">
+                  <button 
+                    onClick={async () => {
+                      setPingStatus("Contacting Jamf Pro API & deploying package...");
+                      try {
+                        const res = await fetch("/api/integrations", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json", "Authorization": apiKey },
+                          body: JSON.stringify({ action: "deploy_jamf", targetGroup: "macOS Engineering Laptops (50 Devices)" })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                          setPingStatus("⚡ Pushed to Jamf Pro! Silent rollout active across all enrolled MacBooks.");
+                        } else {
+                          setPingStatus("❌ Jamf push failed: " + (data.error || "Unknown"));
+                        }
+                      } catch {
+                        setPingStatus("❌ Network error connecting to API");
+                      }
+                      setTimeout(() => setPingStatus(null), 4000);
+                    }}
+                    className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-cyan-950"
+                  >
+                    <Send size={14} /> ⚡ 1-Click Push to 50 MacBooks
+                  </button>
 
-                <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between">
-                  <code>deploy/deploy-mdm.sh</code>
                   <button 
                     onClick={() => {
                       navigator.clipboard.writeText("bash deploy/deploy-mdm.sh");
                       setCopiedType("jamf");
                       setTimeout(() => setCopiedType(null), 2000);
                     }}
-                    className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 font-medium ml-2"
+                    className="flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 font-medium"
                   >
                     {copiedType === "jamf" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                    {copiedType === "jamf" ? "Copied Command" : "Copy Command"}
+                    {copiedType === "jamf" ? "Copied Script" : "Copy Script"}
                   </button>
                 </div>
               </div>
