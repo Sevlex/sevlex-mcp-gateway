@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { spawn } from "node:child_process";
 import readline from "node:readline";
 import fs from "node:fs";

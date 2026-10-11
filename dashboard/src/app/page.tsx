@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ShieldAlert, ShieldCheck, Download, Search, Activity, BookOpen, ToggleLeft, ToggleRight, LayoutDashboard, TrendingUp, Zap, Clock, AlertTriangle, ChevronRight, ChevronDown, BarChart3, Lock, Server } from "lucide-react";
+import { ShieldAlert, ShieldCheck, Download, Search, Activity, BookOpen, ToggleLeft, ToggleRight, LayoutDashboard, TrendingUp, Zap, Clock, AlertTriangle, ChevronRight, ChevronDown, BarChart3, Lock, Server, Sliders, Check, Copy, ExternalLink, Send } from "lucide-react";
 
 type Log = { id: number; timestamp: string; user_id: string; tool_name: string; status: "ALLOWED" | "BLOCKED"; raw_request: string; };
 
@@ -35,7 +35,12 @@ const getBrandIcon = (serverName: string) => {
 };
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<"OVERVIEW" | "AUDIT" | "POLICY">("OVERVIEW");
+  const [activeTab, setActiveTab] = useState<"OVERVIEW" | "AUDIT" | "POLICY" | "INTEGRATIONS">("OVERVIEW");
+  const [ddEndpoint, setDdEndpoint] = useState("https://http-intake.logs.us5.datadoghq.com/api/v2/logs");
+  const [ddKeyInput, setDdKeyInput] = useState("");
+  const [slackUrlInput, setSlackUrlInput] = useState("");
+  const [pingStatus, setPingStatus] = useState<string | null>(null);
+  const [copiedType, setCopiedType] = useState<string | null>(null);
   const [logs, setLogs] = useState<Log[]>([]);
   const [search, setSearch] = useState("");
   const [policySearch, setPolicySearch] = useState("");
@@ -223,6 +228,12 @@ export default function Dashboard() {
             className={`px-5 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeTab === "POLICY" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
           >
             <BookOpen size={16} /> Policy Library
+          </button>
+          <button 
+            onClick={() => setActiveTab("INTEGRATIONS")}
+            className={`px-5 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeTab === "INTEGRATIONS" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"}`}
+          >
+            <Sliders size={16} /> Integrations Hub
           </button>
         </div>
       </div>
@@ -502,6 +513,261 @@ export default function Dashboard() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === "INTEGRATIONS" && (
+          // ==========================================
+          // TAB 3: ENTERPRISE INTEGRATIONS HUB
+          // ==========================================
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl">
+              <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Sliders className="text-emerald-500" size={22} /> Enterprise Integrations Hub
+                </h2>
+                <p className="text-sm text-zinc-400 mt-1">
+                  Connect Sevlex to your corporate SIEM, alert channels, and fleet MDM.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Gateway Active
+                </span>
+              </div>
+            </div>
+
+            {/* Integration Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {/* CARD 1: DATADOG SIEM */}
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="Datadog" className="w-5 h-5 invert" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-white">Datadog Cloud SIEM</h3>
+                        <p className="text-xs text-zinc-400">Universal Log Streaming & Stateless DR</p>
+                      </div>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      CONNECTED (US5)
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
+                    Asynchronously transmits all MCP tool calls (both allowed and blocked) to your Datadog Log Explorer. Satisfies SOC 2 & HIPAA audit retention automatically.
+                  </p>
+
+                  <div className="space-y-3 font-mono text-xs">
+                    <div>
+                      <label className="text-zinc-500 text-[11px] block mb-1">Target Endpoint</label>
+                      <input 
+                        type="text" 
+                        readOnly 
+                        value={ddEndpoint} 
+                        className="w-full bg-[#090909] border border-zinc-800 rounded-lg px-3 py-2 text-zinc-300 text-xs focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-zinc-800/80 flex items-center justify-between gap-3">
+                  <button 
+                    onClick={async () => {
+                      setPingStatus("Sending ping to Datadog...");
+                      try {
+                        const res = await fetch("/api/integrations", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json", "Authorization": apiKey },
+                          body: JSON.stringify({ action: "test_datadog" })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                          setPingStatus("✅ Verified! Datadog accepted ping (202)");
+                        } else {
+                          setPingStatus("❌ Ping failed: " + (data.error || "Unknown"));
+                        }
+                      } catch {
+                        setPingStatus("❌ Network error connecting to API");
+                      }
+                      setTimeout(() => setPingStatus(null), 4000);
+                    }}
+                    className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-purple-950"
+                  >
+                    <Send size={14} /> Send Live Test Ping
+                  </button>
+
+                  <a 
+                    href="https://us5.datadoghq.com/logs" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1 font-medium"
+                  >
+                    Open Logs Explorer <ExternalLink size={12} />
+                  </a>
+                </div>
+              </div>
+
+              {/* CARD 2: SLACK REAL-TIME ALERTS */}
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/slack.svg" alt="Slack" className="w-5 h-5 invert" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-bold text-white">Slack Incident Alerts</h3>
+                        <p className="text-xs text-zinc-400">Instant SecOps Channel Notifications</p>
+                      </div>
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      WEBHOOK
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
+                    Sends immediate, high-priority notifications to your #secops channel when an employee or AI agent attempts an unauthorized tool execution.
+                  </p>
+
+                  <div className="space-y-3 font-mono text-xs">
+                    <div>
+                      <label className="text-zinc-500 text-[11px] block mb-1">Slack Webhook URL</label>
+                      <input 
+                        type="password" 
+                        placeholder="https://hooks.slack.com/services/T00/B00/XXXX"
+                        value={slackUrlInput}
+                        onChange={(e) => setSlackUrlInput(e.target.value)}
+                        className="w-full bg-[#090909] border border-zinc-800 rounded-lg px-3 py-2 text-zinc-300 text-xs focus:outline-none focus:border-amber-500/50"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-zinc-800/80 flex items-center justify-between gap-3">
+                  <button 
+                    onClick={async () => {
+                      if (!slackUrlInput) {
+                        alert("Please enter a Slack Webhook URL first.");
+                        return;
+                      }
+                      setPingStatus("Sending test alert to Slack...");
+                      try {
+                        const res = await fetch("/api/integrations", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json", "Authorization": apiKey },
+                          body: JSON.stringify({ action: "test_slack", webhookUrl: slackUrlInput })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                          setPingStatus("✅ Test alert delivered to Slack channel!");
+                        } else {
+                          setPingStatus("❌ Alert failed: " + (data.error || "Check URL"));
+                        }
+                      } catch {
+                        setPingStatus("❌ Error sending alert");
+                      }
+                      setTimeout(() => setPingStatus(null), 4000);
+                    }}
+                    className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-amber-950"
+                  >
+                    <Send size={14} /> Send Test Slack Alert
+                  </button>
+
+                  <span className="text-[11px] text-zinc-500">Payload: Blocked Incident</span>
+                </div>
+              </div>
+
+              {/* CARD 3: MICROSOFT INTUNE (WINDOWS) */}
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                      <Server size={20} className="text-blue-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-white">Microsoft Intune (Windows)</h3>
+                      <p className="text-xs text-zinc-400">Zero-Touch Fleet Rollout Script</p>
+                    </div>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                    POWERSHELL
+                  </span>
+                </div>
+
+                <p className="text-xs text-zinc-400 mb-3">
+                  Paste into Microsoft Intune or Group Policy to silently deploy Sevlex across all engineering Windows laptops during login.
+                </p>
+
+                <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between">
+                  <code>deploy/deploy-mdm.ps1</code>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText("powershell -ExecutionPolicy Bypass -File deploy/deploy-mdm.ps1");
+                      setCopiedType("intune");
+                      setTimeout(() => setCopiedType(null), 2000);
+                    }}
+                    className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 font-medium ml-2"
+                  >
+                    {copiedType === "intune" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                    {copiedType === "intune" ? "Copied Command" : "Copy Command"}
+                  </button>
+                </div>
+              </div>
+
+              {/* CARD 4: JAMF PRO (MACOS & LINUX) */}
+              <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                      <Server size={20} className="text-cyan-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-white">Jamf Pro / Kandji (macOS)</h3>
+                      <p className="text-xs text-zinc-400">Zero-Touch MacBook Rollout Script</p>
+                    </div>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                    BASH
+                  </span>
+                </div>
+
+                <p className="text-xs text-zinc-400 mb-3">
+                  Upload to Jamf Pro, Kandji, or Munki to silently protect all employee MacBooks and route Claude Desktop to Sevlex.
+                </p>
+
+                <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between">
+                  <code>deploy/deploy-mdm.sh</code>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText("bash deploy/deploy-mdm.sh");
+                      setCopiedType("jamf");
+                      setTimeout(() => setCopiedType(null), 2000);
+                    }}
+                    className="flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 font-medium ml-2"
+                  >
+                    {copiedType === "jamf" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                    {copiedType === "jamf" ? "Copied Command" : "Copy Command"}
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Notification Banner */}
+            {pingStatus && (
+              <div className="p-3 bg-zinc-900 border border-zinc-700 rounded-xl text-center text-xs font-mono text-zinc-200">
+                {pingStatus}
+              </div>
+            )}
+
           </div>
         )}
       </div>

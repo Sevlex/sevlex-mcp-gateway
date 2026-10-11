@@ -97,5 +97,12 @@
       "sentry_get_event",
       "sentry_ignore_issue"
     ]
+  },
+  {
+    "server": "node",
+    "tools": [
+      "fake_tool_1",
+      "fake_tool_2"
+    ]
   }
 ]

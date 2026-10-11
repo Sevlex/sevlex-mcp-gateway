@@ -11,7 +11,7 @@
     "siem": {
       "enabled": true,
       "provider": "datadog",
-      "endpoint": "https://http-intake.logs.datadoghq.com/api/v2/logs",
+      "endpoint": "https://http-intake.logs.us5.datadoghq.com/api/v2/logs",
       "apiKey": "YOUR_DATADOG_API_KEY_HERE"
     }
   }

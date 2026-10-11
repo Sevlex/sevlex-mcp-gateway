@@ -22,6 +22,15 @@ rl.on('line', (line) => {
         }
       };
       console.log(JSON.stringify(response));
+    } else if (msg.method === 'tools/call') {
+      const response = {
+        jsonrpc: '2.0',
+        id: msg.id,
+        result: {
+          content: [{ type: 'text', text: `Tool ${msg.params?.name} executed successfully` }]
+        }
+      };
+      console.log(JSON.stringify(response));
     }
   } catch (e) {
     // ignore
