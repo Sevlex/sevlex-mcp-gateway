@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "policy": {
+    "defaultAction": "ALLOW",
+    "blockedTools": [
+      "execute_arbitrary_shell",
+      "delete_database",
+      "drop_tables",
+      "export_customer_data"
+    ],
+    "siem": {
+      "enabled": true,
+      "provider": "datadog",
+      "endpoint": "https://http-intake.logs.datadoghq.com/api/v2/logs",
+      "apiKey": "YOUR_DATADOG_API_KEY_HERE"
+    }
+  }
+}

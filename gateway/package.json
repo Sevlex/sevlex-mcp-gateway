@@ -1,0 +1,34 @@
+{
+  "name": "sevlex-mvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.1",
+    "@modelcontextprotocol/server-github": "^2025.4.8",
+    "@supabase/supabase-js": "^2.104.1",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^16.0.0",
+    "zod": "^4.3.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meetpanchal-sevlex/sevlex-mcp-gateway.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meetpanchal-sevlex/sevlex-mcp-gateway/issues"
+  },
+  "homepage": "https://github.com/meetpanchal-sevlex/sevlex-mcp-gateway#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

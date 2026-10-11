@@ -1,0 +1,110 @@
+import * as fs from 'fs';
+import * as path from 'path';
+
+const catalog = [
+  {
+    server: "GitHub",
+    tools: [
+      "github_create_issue",
+      "github_list_pull_requests",
+      "github_merge_pr",
+      "github_search_code",
+      "github_create_branch",
+      "github_review_pr"
+    ]
+  },
+  {
+    server: "Slack",
+    tools: [
+      "slack_send_message",
+      "slack_read_channel",
+      "slack_list_users",
+      "slack_create_channel",
+      "slack_archive_channel"
+    ]
+  },
+  {
+    server: "Jira",
+    tools: [
+      "jira_create_ticket",
+      "jira_update_ticket",
+      "jira_assign_ticket",
+      "jira_add_comment",
+      "jira_transition_issue"
+    ]
+  },
+  {
+    server: "Postgres",
+    tools: [
+      "pg_execute_query",
+      "pg_list_tables",
+      "pg_describe_table",
+      "pg_create_index"
+    ]
+  },
+  {
+    server: "AWS",
+    tools: [
+      "aws_s3_list_buckets",
+      "aws_ec2_describe_instances",
+      "aws_lambda_invoke",
+      "aws_iam_list_users",
+      "aws_rds_describe_db_instances"
+    ]
+  },
+  {
+    server: "Kubernetes",
+    tools: [
+      "k8s_get_pods",
+      "k8s_describe_pod",
+      "k8s_get_deployments",
+      "k8s_get_services",
+      "k8s_apply_yaml",
+      "k8s_delete_resource"
+    ]
+  },
+  {
+    server: "Google Drive",
+    tools: [
+      "gdrive_list_files",
+      "gdrive_upload_file",
+      "gdrive_download_file",
+      "gdrive_create_folder",
+      "gdrive_share_file"
+    ]
+  },
+  {
+    server: "Datadog",
+    tools: [
+      "dd_get_metrics",
+      "dd_list_monitors",
+      "dd_create_event",
+      "dd_search_logs"
+    ]
+  },
+  {
+    server: "Linear",
+    tools: [
+      "linear_create_issue",
+      "linear_update_issue",
+      "linear_list_projects",
+      "linear_search_issues",
+      "linear_assign_issue"
+    ]
+  },
+  {
+    server: "Sentry",
+    tools: [
+      "sentry_list_issues",
+      "sentry_resolve_issue",
+      "sentry_get_event",
+      "sentry_ignore_issue"
+    ]
+  }
+];
+
+const outputPath = path.resolve(__dirname, '../discovered_tools.json');
+
+fs.writeFileSync(outputPath, JSON.stringify(catalog, null, 2), 'utf-8');
+
+console.log(`Successfully generated massive enterprise catalog at ${outputPath}`);
