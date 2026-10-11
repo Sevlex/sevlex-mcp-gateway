@@ -102,7 +102,9 @@
     "server": "node",
     "tools": [
       "fake_tool_1",
-      "fake_tool_2"
+      "fake_tool_2",
+      "read_company_knowledge",
+      "delete_database"
     ]
   }
 ]

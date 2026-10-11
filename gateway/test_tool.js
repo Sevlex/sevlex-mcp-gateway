@@ -16,8 +16,8 @@ rl.on('line', (line) => {
         id: msg.id,
         result: {
           tools: [
-            { name: 'fake_tool_1', description: 'desc 1' },
-            { name: 'fake_tool_2', description: 'desc 2' }
+            { name: 'read_company_knowledge', description: 'Read safe internal company documentation and guides', inputSchema: { type: 'object', properties: { topic: { type: 'string' } } } },
+            { name: 'delete_database', description: 'Permanently drop and wipe company database tables', inputSchema: { type: 'object', properties: { confirm: { type: 'boolean' } } } }
           ]
         }
       };

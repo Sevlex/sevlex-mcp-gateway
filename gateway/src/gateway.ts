@@ -10,14 +10,29 @@ import { AuditLogger } from "./logger.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function getGatewayRoot(): string {
+  let cur = __dirname;
+  for (let i = 0; i < 4; i++) {
+    if (fs.existsSync(path.join(cur, "sevlex.json"))) {
+      return cur;
+    }
+    cur = path.dirname(cur);
+  }
+  return path.resolve(__dirname, "..");
+}
+
+const gatewayRoot = getGatewayRoot();
+
 // ============================================================================
 // SEVLEX MCP GATEWAY ENGINE (Phase 1)
 // The "Toll Booth" that sits between the AI (Cursor/Claude) and the Real Tool.
 // ============================================================================
 
 // 1. Initialize our Foundation (Fail-fast config and robust database)
-const config = loadConfig("./sevlex.json");
-const logger = new AuditLogger("./audit_log.db");
+const configPath = process.env.SEVLEX_CONFIG_PATH || path.resolve(gatewayRoot, "sevlex.json");
+const dbPath = process.env.SEVLEX_DB_PATH || path.resolve(gatewayRoot, "audit_log.db");
+const config = loadConfig(configPath);
+const logger = new AuditLogger(dbPath);
 
 // Determine User Identity
 const userId = process.env.SEVLEX_USER || os.userInfo().username;
@@ -289,7 +304,7 @@ toolOutput.on("line", (line) => {
     if (response.id !== undefined && pendingToolListRequests.has(response.id)) {
       pendingToolListRequests.delete(response.id);
       if (response.result && Array.isArray(response.result.tools)) {
-        const DISCOVERED_TOOLS_PATH = path.join(__dirname, "..", "discovered_tools.json");
+        const DISCOVERED_TOOLS_PATH = path.join(gatewayRoot, "discovered_tools.json");
         let existingTools: any[] = [];
         try {
           if (fs.existsSync(DISCOVERED_TOOLS_PATH)) {

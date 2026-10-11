@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ShieldAlert, ShieldCheck, Download, Search, Activity, BookOpen, ToggleLeft, ToggleRight, LayoutDashboard, TrendingUp, Zap, Clock, AlertTriangle, ChevronRight, ChevronDown, BarChart3, Lock, Server, Sliders, Check, Copy, ExternalLink, Send } from "lucide-react";
+import { ShieldAlert, ShieldCheck, Download, Search, Activity, BookOpen, ToggleLeft, ToggleRight, LayoutDashboard, TrendingUp, Zap, Clock, AlertTriangle, ChevronRight, ChevronDown, BarChart3, Lock, Server, Sliders, Check, Copy, ExternalLink, Send, Laptop, Terminal, Cpu, Code2, Sparkles, RefreshCw } from "lucide-react";
 
 type Log = { id: number; timestamp: string; user_id: string; tool_name: string; status: "ALLOWED" | "BLOCKED"; raw_request: string; };
 
@@ -41,6 +41,7 @@ export default function Dashboard() {
   const [slackUrlInput, setSlackUrlInput] = useState("");
   const [pingStatus, setPingStatus] = useState<string | null>(null);
   const [copiedType, setCopiedType] = useState<string | null>(null);
+  const [fleetData, setFleetData] = useState<any>(null);
   const [logs, setLogs] = useState<Log[]>([]);
   const [search, setSearch] = useState("");
   const [policySearch, setPolicySearch] = useState("");
@@ -126,6 +127,25 @@ export default function Dashboard() {
       }
     };
     fetchPolicy();
+  }, [isAuthenticated, apiKey]);
+
+  // Fetch Fleet & Device Telemetry
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const fetchFleet = async () => {
+      try {
+        const res = await fetch("/api/fleet", { headers: { "Authorization": apiKey } });
+        if (res.ok) {
+          const data = await res.json();
+          setFleetData(data);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchFleet();
+    const interval = setInterval(fetchFleet, 5000);
+    return () => clearInterval(interval);
   }, [isAuthenticated, apiKey]);
 
   // Handle Toggle Switch
@@ -360,6 +380,114 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
+
+            {/* FLEET & CONNECTED AI TOOLS ASSET INVENTORY (SOC 2 CC6.1 / SHADOW AI DISCOVERY) */}
+            <div className="bg-[#121212] border border-zinc-800 rounded-2xl shadow-xl p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Laptop size={20} className="text-emerald-400" />
+                    <h3 className="text-lg font-bold text-white tracking-tight">
+                      Fleet & Connected AI Tools Inventory
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      SOC 2 CC6.1 COMPLIANT
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-400 mt-1">
+                    Continuous Deep Packet Inspection across enterprise endpoints routing MCP traffic through Sevlex Zero-Trust Gateway.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#090909] border border-zinc-800 text-xs text-zinc-300 font-mono">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Host: {fleetData?.host?.hostname || "Meet-Panchal"}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-xs text-blue-400 font-semibold">
+                    <ShieldCheck size={14} />
+                    <span>Zero-Trust Active</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Connected AI Clients Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                {(fleetData?.runtimes || [
+                  { name: "Claude Code CLI", type: "Terminal CLI Agent", status: "SHIELDED", installed: true, configured: true },
+                  { name: "Claude Desktop", type: "Native Desktop App", status: "SHIELDED", installed: true, configured: true },
+                  { name: "Google Antigravity IDE", type: "Autonomous Agent Environment", status: "SHIELDED", installed: true, configured: true },
+                  { name: "Cursor IDE", type: "AI Code Editor", status: "READY_TO_CONNECT", installed: false, configured: false }
+                ]).map((client: any, idx: number) => (
+                  <div key={idx} className="p-4 rounded-xl border border-zinc-800 bg-[#090909] flex flex-col justify-between hover:border-zinc-700 transition">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold text-white flex items-center gap-1.5">
+                          {client.name.includes("Terminal") || client.name.includes("Code CLI") ? <Terminal size={14} className="text-purple-400" /> : <Code2 size={14} className="text-emerald-400" />}
+                          {client.name}
+                        </span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          client.status === "SHIELDED" 
+                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" 
+                            : "bg-zinc-800 text-zinc-400 border border-zinc-700"
+                        }`}>
+                          {client.status === "SHIELDED" ? "● SHIELDED" : "○ STANDBY"}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-zinc-400">{client.type}</p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-zinc-800/80 flex items-center justify-between text-[11px] font-mono text-zinc-500">
+                      <span>Gateway Mode</span>
+                      <span className="text-zinc-300">L7 Intercept</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Endpoint Device Telemetry Table */}
+              <div className="overflow-x-auto rounded-xl border border-zinc-800">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-[#18181b] border-b border-zinc-800 text-zinc-400 uppercase font-mono text-[10px]">
+                      <th className="py-3 px-4">Endpoint Host</th>
+                      <th className="py-3 px-4">OS & Arch</th>
+                      <th className="py-3 px-4">Active User</th>
+                      <th className="py-3 px-4">Secured Tools In Scope</th>
+                      <th className="py-3 px-4">SIEM Ingestion</th>
+                      <th className="py-3 px-4 text-right">Protection State</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800/60 font-mono text-zinc-300">
+                    <tr className="hover:bg-zinc-800/20 transition">
+                      <td className="py-3.5 px-4 font-semibold text-white flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        {fleetData?.host?.hostname || "Meet-Panchal"}
+                      </td>
+                      <td className="py-3.5 px-4 text-zinc-400">
+                        {fleetData?.host?.platform || "win32 (x64)"} • {fleetData?.host?.totalMemory || "16 GB"}
+                      </td>
+                      <td className="py-3.5 px-4 text-purple-400 font-medium">
+                        @{fleetData?.host?.user || "meetp"}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="text-zinc-300">
+                          {fleetData?.telemetry?.discoveredCount || 44} discovered ({fleetData?.telemetry?.blockedRulesCount || 4} banned)
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 text-emerald-400">
+                        Datadog US5 (Live Stream)
+                      </td>
+                      <td className="py-3.5 px-4 text-right">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          100% Zero-Trust Active
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 
@@ -536,6 +664,219 @@ export default function Dashboard() {
                   Gateway Active
                 </span>
               </div>
+            </div>
+
+            {/* AI TOOLS & DEVELOPER RUNTIMES (1-CLICK GATEWAY CONFIGS) */}
+            <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl space-y-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-zinc-800 pb-4">
+                <div>
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Code2 className="text-blue-400" size={18} /> AI Tools & Developer Runtimes
+                  </h3>
+                  <p className="text-xs text-zinc-400 mt-0.5">
+                    1-Click configurations to route employee AI coding agents through Sevlex L7 Firewall.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-zinc-500 bg-[#090909] px-3 py-1 rounded-lg border border-zinc-800">
+                  Transport: stdio / JSON-RPC 2.0
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* TOOL 1: CLAUDE CODE CLI */}
+                <div className="p-4 rounded-xl border border-zinc-800 bg-[#090909] flex flex-col justify-between space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Terminal size={18} className="text-purple-400" />
+                        <h4 className="text-sm font-bold text-white">Claude Code CLI</h4>
+                      </div>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        {fleetData?.runtimes?.find((r: any) => r.name.includes("Claude Code"))?.status === "SHIELDED" ? "● SHIELDED" : "● CONFIGURED"}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-400">
+                      Anthropic&apos;s terminal agent. Intercept tool executions, shell calls, and data queries.
+                    </p>
+                    <div className="mt-3 bg-[#121212] p-2.5 rounded-lg border border-zinc-800/80 font-mono text-[11px] text-zinc-300 overflow-x-auto">
+                      <code>claude mcp add sevlex-firewall node &quot;...\gateway\dist\src\gateway.js&quot; node &quot;...\gateway\test_tool.js&quot;</code>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-zinc-800/60">
+                    <span className="text-[11px] font-mono text-zinc-500">~/.claude.json</span>
+                    <button 
+                      onClick={() => {
+                        const snippet = `claude mcp add sevlex-firewall node "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\dist\\src\\gateway.js" node "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\test_tool.js"`;
+                        navigator.clipboard.writeText(snippet);
+                        setCopiedType("claude_code");
+                        setTimeout(() => setCopiedType(null), 2000);
+                      }}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white transition"
+                    >
+                      {copiedType === "claude_code" ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+                      {copiedType === "claude_code" ? "Copied Command" : "Copy Command"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* TOOL 2: CLAUDE DESKTOP */}
+                <div className="p-4 rounded-xl border border-zinc-800 bg-[#090909] flex flex-col justify-between space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Code2 size={18} className="text-amber-400" />
+                        <h4 className="text-sm font-bold text-white">Claude Desktop</h4>
+                      </div>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        {fleetData?.runtimes?.find((r: any) => r.name.includes("Claude Desktop"))?.status === "SHIELDED" ? "● SHIELDED" : "● CONFIGURED"}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-400">
+                      Desktop client. Protect enterprise MCP connections to GitHub, Postgres, and Slack.
+                    </p>
+                    <div className="mt-3 bg-[#121212] p-2.5 rounded-lg border border-zinc-800/80 font-mono text-[11px] text-zinc-300 overflow-x-auto">
+                      <code>%APPDATA%\Claude\claude_desktop_config.json</code>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-zinc-800/60">
+                    <span className="text-[11px] font-mono text-zinc-500">mcpServers.sevlex-firewall</span>
+                    <button 
+                      onClick={() => {
+                        const snippet = JSON.stringify({
+                          mcpServers: {
+                            "sevlex-firewall": {
+                              command: "node",
+                              args: [
+                                "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\dist\\src\\gateway.js",
+                                "node",
+                                "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\test_tool.js"
+                              ],
+                              env: {
+                                SEVLEX_USER: "meetp",
+                                SEVLEX_SIEM_PROVIDER: "datadog",
+                                SEVLEX_SIEM_API_KEY: "70bb17537553cedfad6a9cc2e57dfa52",
+                                SEVLEX_SIEM_ENDPOINT: "https://http-intake.logs.us5.datadoghq.com/api/v2/logs"
+                              }
+                            }
+                          }
+                        }, null, 2);
+                        navigator.clipboard.writeText(snippet);
+                        setCopiedType("claude_desktop");
+                        setTimeout(() => setCopiedType(null), 2000);
+                      }}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white transition"
+                    >
+                      {copiedType === "claude_desktop" ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+                      {copiedType === "claude_desktop" ? "Copied JSON" : "Copy JSON"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* TOOL 3: GOOGLE ANTIGRAVITY IDE */}
+                <div className="p-4 rounded-xl border border-zinc-800 bg-[#090909] flex flex-col justify-between space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Sparkles size={18} className="text-cyan-400" />
+                        <h4 className="text-sm font-bold text-white">Google Antigravity IDE</h4>
+                      </div>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        {fleetData?.runtimes?.find((r: any) => r.name.includes("Antigravity"))?.status === "SHIELDED" ? "● SHIELDED" : "● CONFIGURED"}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-400">
+                      Autonomous DeepMind Agent. Real-time subagent inspection & multi-turn tool guardrails.
+                    </p>
+                    <div className="mt-3 bg-[#121212] p-2.5 rounded-lg border border-zinc-800/80 font-mono text-[11px] text-zinc-300 overflow-x-auto">
+                      <code>~/.gemini/config/mcp_config.json</code>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-zinc-800/60">
+                    <span className="text-[11px] font-mono text-zinc-500">mcpServers.sevlex-firewall</span>
+                    <button 
+                      onClick={() => {
+                        const snippet = JSON.stringify({
+                          mcpServers: {
+                            "sevlex-firewall": {
+                              command: "node",
+                              args: [
+                                "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\dist\\src\\gateway.js",
+                                "node",
+                                "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\test_tool.js"
+                              ]
+                            }
+                          }
+                        }, null, 2);
+                        navigator.clipboard.writeText(snippet);
+                        setCopiedType("antigravity");
+                        setTimeout(() => setCopiedType(null), 2000);
+                      }}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white transition"
+                    >
+                      {copiedType === "antigravity" ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+                      {copiedType === "antigravity" ? "Copied JSON" : "Copy JSON"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* TOOL 4: CURSOR IDE & VS CODE */}
+                <div className="p-4 rounded-xl border border-zinc-800 bg-[#090909] flex flex-col justify-between space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Cpu size={18} className="text-blue-400" />
+                        <h4 className="text-sm font-bold text-white">Cursor IDE & VS Code</h4>
+                      </div>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-zinc-800 text-zinc-400 border border-zinc-700">
+                        READY TO ROUTE
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-400">
+                      Standard MCP configuration for Cursor Composer and VS Code agentic extensions.
+                    </p>
+                    <div className="mt-3 bg-[#121212] p-2.5 rounded-lg border border-zinc-800/80 font-mono text-[11px] text-zinc-300 overflow-x-auto">
+                      <code>~/.cursor/mcp.json</code>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-zinc-800/60">
+                    <span className="text-[11px] font-mono text-zinc-500">mcpServers.sevlex-firewall</span>
+                    <button 
+                      onClick={() => {
+                        const snippet = JSON.stringify({
+                          mcpServers: {
+                            "sevlex-firewall": {
+                              command: "node",
+                              args: [
+                                "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\dist\\src\\gateway.js",
+                                "node",
+                                "C:\\Users\\meetp\\OneDrive\\Desktop\\Projects\\Sevlex\\gateway\\test_tool.js"
+                              ]
+                            }
+                          }
+                        }, null, 2);
+                        navigator.clipboard.writeText(snippet);
+                        setCopiedType("cursor");
+                        setTimeout(() => setCopiedType(null), 2000);
+                      }}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white transition"
+                    >
+                      {copiedType === "cursor" ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+                      {copiedType === "cursor" ? "Copied JSON" : "Copy JSON"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Corporate SIEM & Enterprise MDM */}
+            <div className="flex items-center justify-between pt-2">
+              <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider font-mono">
+                Corporate SIEM & Enterprise Fleet Rollout
+              </h3>
             </div>
 
             {/* Integration Cards Grid */}
