@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Server, Send, Check, Copy, Download, ShieldCheck, Terminal, Code2, Cpu, Laptop } from "lucide-react";
+import { Server, Send, Check, Copy, Download, ShieldCheck, Terminal, Code2, Cpu, Laptop, PackageCheck, FileCode, CheckCircle2 } from "lucide-react";
 
 interface FleetMdmTabProps {
   apiKey: string;
@@ -21,9 +21,8 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
         const text = await res.text();
         await navigator.clipboard.writeText(text);
         setCopiedType(platform);
-        setPingStatus(`📋 Copied full enterprise ${platform === 'windows' ? 'PowerShell (.ps1)' : 'Bash (.sh)'} script! Paste directly into Intune/Jamf.`);
+        setPingStatus(`📋 Copied full enterprise ${platform === 'windows' ? 'PowerShell (.ps1)' : 'Bash (.sh)'} script to clipboard!`);
       } else {
-        // Fallback command if network fails
         const fallback = platform === "windows" 
           ? "irm https://raw.githubusercontent.com/meetpanchal-sevlex/sevlex-mcp-gateway/main/deploy/deploy-mdm.ps1 | iex" 
           : "curl -fsSL https://raw.githubusercontent.com/meetpanchal-sevlex/sevlex-mcp-gateway/main/deploy/deploy-mdm.sh | bash";
@@ -42,8 +41,21 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
     }
   };
 
-  const handleDownloadScript = (platform: "windows" | "macos") => {
-    window.open(`/api/mdm-script?platform=${platform}`, '_blank');
+  const handleDownloadPackage = (platform: "windows" | "macos") => {
+    const filename = platform === "windows" ? "sevlex.intunewin" : "sevlex.pkg";
+    setPingStatus(`📦 Starting download for ${filename}...`);
+    window.open(`/api/mdm-package?platform=${platform}`, '_blank');
+    setTimeout(() => setPingStatus(null), 3000);
+  };
+
+  const copyTextToClipboard = async (text: string, type: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopiedType(type);
+    setPingStatus(`📋 Copied: "${text}"`);
+    setTimeout(() => {
+      setCopiedType(null);
+      setPingStatus(null);
+    }, 2500);
   };
 
   return (
@@ -53,13 +65,13 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Server className="text-blue-400" size={22} />
-            <h2 className="text-xl font-bold text-white">Enterprise Fleet Rollout (MDM)</h2>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase tracking-wider">
-              Universal 5-in-1 Shield
+            <h2 className="text-xl font-bold text-white">Enterprise Fleet Package Rollout (Level 3)</h2>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-wider">
+              Win32 &amp; Jamf Packages Ready
             </span>
           </div>
           <p className="text-sm text-zinc-400">
-            Zero-Touch enterprise software distribution. Silently protect 50+ employee laptops via Microsoft Intune and Jamf Pro.
+            Deploy Sevlex natively as an official corporate app package across 50+ laptops with zero external dependencies and silent auto-healing.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -77,15 +89,15 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
             <ShieldCheck size={15} className="text-emerald-400" />
             Universal AI Tool Coverage (Pre-emptive Shadow AI Governance)
           </span>
-          <span className="text-[11px] text-zinc-500 font-mono">1 Script Configures All 5</span>
+          <span className="text-[11px] text-zinc-500 font-mono">1 Package Shields All 5</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
           {[
-            { name: "Claude Desktop", icon: Laptop, status: "Supported" },
-            { name: "Claude Code CLI", icon: Terminal, status: "Supported" },
-            { name: "Cursor IDE", icon: Code2, status: "Supported" },
-            { name: "Windsurf IDE", icon: Cpu, status: "Supported" },
-            { name: "Google Antigravity", icon: ShieldCheck, status: "Supported" },
+            { name: "Claude Desktop", icon: Laptop },
+            { name: "Claude Code CLI", icon: Terminal },
+            { name: "Cursor IDE", icon: Code2 },
+            { name: "Windsurf IDE", icon: Cpu },
+            { name: "Google Antigravity", icon: ShieldCheck },
           ].map((item, idx) => {
             const IconComponent = item.icon;
             return (
@@ -105,162 +117,149 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
       <div className="p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 text-xs text-blue-200 leading-relaxed flex items-start gap-3">
         <span className="text-base">💡</span>
         <div>
-          <strong className="text-white block mb-0.5">Role of MDM in Sevlex:</strong>
-          Microsoft Intune and Jamf Pro <span className="underline font-semibold text-blue-300">do not view or collect logs</span>. Their sole role is to remotely distribute and lock down the Sevlex gateway on company laptops over Wi-Fi so developers don&apos;t have to touch anything.
+          <strong className="text-white block mb-0.5">Why Level 3 Enterprise Packages are Superior:</strong>
+          Unlike raw scripts that can fail on strict PowerShell policies, these packages contain self-contained execution manifests that show up in Microsoft Intune and Jamf Pro Company Portals with formal version reporting, health monitors, and 1-click silent uninstallation.
         </div>
       </div>
 
       {/* Deployment Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* CARD 1: MICROSOFT INTUNE (WINDOWS) */}
+        
+        {/* CARD 1: MICROSOFT INTUNE WIN32 APP (.INTUNEWIN) */}
         <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                  <Server size={20} className="text-blue-400" />
+                  <PackageCheck size={20} className="text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Microsoft Intune (Windows)</h3>
-                  <p className="text-xs text-zinc-400">PowerShell Universal Script (.ps1)</p>
+                  <h3 className="text-base font-bold text-white">Microsoft Intune Win32 App</h3>
+                  <p className="text-xs text-zinc-400">sevlex.intunewin (Level 3 Package)</p>
                 </div>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
-                WINDOWS MDM
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase tracking-wider">
+                .INTUNEWIN
               </span>
             </div>
 
             <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
-              Deploys corporate policy to <code className="text-zinc-300 bg-zinc-800/80 px-1 py-0.5 rounded font-mono">C:\ProgramData\Sevlex</code> and automatically shields Claude Desktop, Claude Code, Cursor, Windsurf, and Antigravity.
+              Official Win32 content container ready to upload directly into Microsoft Intune under <strong>Apps ➔ Windows ➔ Add ➔ Windows app (Win32)</strong>.
             </p>
 
-            <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between mb-4">
-              <span>Target: All Engineering Devices (50 Hosts)</span>
-              <span className="text-emerald-400 font-semibold">Ready to Deploy</span>
+            {/* Intune Spec Sheet */}
+            <div className="bg-[#090909] p-3.5 rounded-xl border border-zinc-800/90 text-xs font-mono space-y-2 mb-5">
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Install Command:</span>
+                <span 
+                  onClick={() => copyTextToClipboard("install.cmd", "intune-inst")}
+                  className="text-white hover:text-blue-400 cursor-pointer flex items-center gap-1"
+                >
+                  install.cmd {copiedType === "intune-inst" ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Uninstall Command:</span>
+                <span 
+                  onClick={() => copyTextToClipboard("uninstall.cmd", "intune-uninst")}
+                  className="text-white hover:text-blue-400 cursor-pointer flex items-center gap-1"
+                >
+                  uninstall.cmd {copiedType === "intune-uninst" ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Install Behavior:</span>
+                <span className="text-emerald-400">System (Silent)</span>
+              </div>
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Detection Rule:</span>
+                <span className="text-zinc-300">File C:\ProgramData\Sevlex\sevlex.json exists</span>
+              </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3">
+          <div className="pt-4 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
             <button 
-              onClick={async () => {
-                setPingStatus("Contacting Microsoft Graph API & queuing rollout...");
-                try {
-                  const res = await fetch("/api/integrations", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": apiKey },
-                    body: JSON.stringify({ action: "deploy_intune", targetGroup: "All Engineering Laptops (50 Devices)" })
-                  });
-                  const data = await res.json();
-                  if (data.success) {
-                    setPingStatus("⚡ Pushed to Microsoft Intune! Silent rollout queued for 50 Windows laptops.");
-                  } else {
-                    setPingStatus("❌ Intune push failed: " + (data.error || "Unknown"));
-                  }
-                } catch {
-                  setPingStatus("❌ Network error connecting to API");
-                }
-                setTimeout(() => setPingStatus(null), 4000);
-              }}
-              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-blue-950"
+              onClick={() => handleDownloadPackage("windows")}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition flex items-center justify-center gap-2 shadow-md shadow-blue-950"
             >
-              <Send size={14} /> ⚡ 1-Click Push via API
+              <Download size={15} /> Download Package (.intunewin)
             </button>
 
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={() => handleCopyFullScript("windows")}
-                disabled={copyingPlatform === "windows"}
-                className="flex items-center gap-1 text-xs text-zinc-300 hover:text-white font-medium bg-zinc-800/80 px-3 py-1.5 rounded-lg border border-zinc-700/60 transition"
-              >
-                {copiedType === "windows" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                {copiedType === "windows" ? "Copied Script!" : "Copy Full .ps1 Script"}
-              </button>
-
-              <button
-                onClick={() => handleDownloadScript("windows")}
-                title="Download deploy-mdm.ps1"
-                className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition"
-              >
-                <Download size={15} />
-              </button>
-            </div>
+            <button 
+              onClick={() => handleCopyFullScript("windows")}
+              className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 font-medium"
+            >
+              <FileCode size={13} /> {copiedType === "windows" ? "Copied Raw Script" : "Copy Raw Script"}
+            </button>
           </div>
         </div>
 
-        {/* CARD 2: JAMF PRO (MACOS & LINUX) */}
+        {/* CARD 2: JAMF PRO MACOS PACKAGE (.PKG) */}
         <div className="bg-[#121212] border border-zinc-800 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                  <Server size={20} className="text-cyan-400" />
+                  <PackageCheck size={20} className="text-cyan-400" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Jamf Pro (macOS &amp; Linux)</h3>
-                  <p className="text-xs text-zinc-400">Bash Universal Script (.sh)</p>
+                  <h3 className="text-base font-bold text-white">Jamf Pro Enterprise Package</h3>
+                  <p className="text-xs text-zinc-400">sevlex.pkg (Level 3 Package)</p>
                 </div>
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                MACOS MDM
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 uppercase tracking-wider">
+                .PKG
               </span>
             </div>
 
             <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
-              Deploys corporate policy to <code className="text-zinc-300 bg-zinc-800/80 px-1 py-0.5 rounded font-mono">/etc/sevlex</code> and automatically shields employee MacBooks running Claude Desktop, Claude Code, Cursor, Windsurf, and Antigravity.
+              Standard macOS package distribution file ready to upload into <strong>Jamf Pro ➔ Settings ➔ Computer Management ➔ Packages</strong>.
             </p>
 
-            <div className="bg-[#090909] p-3 rounded-xl border border-zinc-800 font-mono text-[11px] text-zinc-400 flex items-center justify-between mb-4">
-              <span>Target: macOS Engineering Fleet (50 Devices)</span>
-              <span className="text-emerald-400 font-semibold">Ready to Deploy</span>
+            {/* Jamf Spec Sheet */}
+            <div className="bg-[#090909] p-3.5 rounded-xl border border-zinc-800/90 text-xs font-mono space-y-2 mb-5">
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Payload File:</span>
+                <span className="text-white">sevlex.pkg</span>
+              </div>
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Post-Install Action:</span>
+                <span className="text-emerald-400">Auto-deploy to /etc/sevlex</span>
+              </div>
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Uninstall Script:</span>
+                <span 
+                  onClick={() => copyTextToClipboard("bash uninstall.sh", "jamf-uninst")}
+                  className="text-white hover:text-cyan-400 cursor-pointer flex items-center gap-1"
+                >
+                  bash uninstall.sh {copiedType === "jamf-uninst" ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                </span>
+              </div>
+              <div className="flex justify-between items-center text-zinc-400">
+                <span className="text-zinc-500">Scope Target:</span>
+                <span className="text-zinc-300">All Engineering MacBooks (50 Devices)</span>
+              </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3">
+          <div className="pt-4 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
             <button 
-              onClick={async () => {
-                setPingStatus("Contacting Jamf Pro API & deploying package...");
-                try {
-                  const res = await fetch("/api/integrations", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": apiKey },
-                    body: JSON.stringify({ action: "deploy_jamf", targetGroup: "macOS Engineering Laptops (50 Devices)" })
-                  });
-                  const data = await res.json();
-                  if (data.success) {
-                    setPingStatus("⚡ Pushed to Jamf Pro! Silent rollout active across all enrolled MacBooks.");
-                  } else {
-                    setPingStatus("❌ Jamf push failed: " + (data.error || "Unknown"));
-                  }
-                } catch {
-                  setPingStatus("❌ Network error connecting to API");
-                }
-                setTimeout(() => setPingStatus(null), 4000);
-              }}
-              className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-cyan-950"
+              onClick={() => handleDownloadPackage("macos")}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold transition flex items-center justify-center gap-2 shadow-md shadow-cyan-950"
             >
-              <Send size={14} /> ⚡ 1-Click Push via API
+              <Download size={15} /> Download Package (.pkg)
             </button>
 
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={() => handleCopyFullScript("macos")}
-                disabled={copyingPlatform === "macos"}
-                className="flex items-center gap-1 text-xs text-zinc-300 hover:text-white font-medium bg-zinc-800/80 px-3 py-1.5 rounded-lg border border-zinc-700/60 transition"
-              >
-                {copiedType === "macos" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                {copiedType === "macos" ? "Copied Script!" : "Copy Full .sh Script"}
-              </button>
-
-              <button
-                onClick={() => handleDownloadScript("macos")}
-                title="Download deploy-mdm.sh"
-                className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition"
-              >
-                <Download size={15} />
-              </button>
-            </div>
+            <button 
+              onClick={() => handleCopyFullScript("macos")}
+              className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 font-medium"
+            >
+              <FileCode size={13} /> {copiedType === "macos" ? "Copied Raw Script" : "Copy Raw Script"}
+            </button>
           </div>
         </div>
+
       </div>
     </div>
   );
