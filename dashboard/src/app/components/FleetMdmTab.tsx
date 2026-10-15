@@ -81,7 +81,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            50 Managed Hosts Target
+            Enterprise Fleet Rollout
           </span>
         </div>
       </div>
@@ -245,7 +245,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-500">Scope Target:</span>
-                <span className="text-slate-700 text-[11px]">All Engineering MacBooks (50 Devices)</span>
+                <span className="text-slate-700 text-[11px]">All Engineering MacBooks</span>
               </div>
             </div>
           </div>

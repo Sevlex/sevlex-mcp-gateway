@@ -86,7 +86,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus }: DeviceFl
           <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Managed Laptops</span>
           <div className="flex items-baseline justify-between">
             <span className="text-2xl font-extrabold text-slate-900 font-mono">{devices.length}</span>
-            <span className="text-[10px] text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-mono">50 Target</span>
+            <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">Enrolled</span>
           </div>
         </div>
         <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
