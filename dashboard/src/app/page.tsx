@@ -26,28 +26,34 @@ type Log = {
 };
 
 const getBrandIcon = (serverName: string) => {
-  const normalized = serverName.toLowerCase();
-  let brand = "";
-  if (normalized.includes("github")) brand = "github";
-  else if (normalized.includes("slack")) brand = "slack";
-  else if (normalized.includes("postgres")) brand = "postgresql";
-  else if (normalized.includes("aws") || normalized.includes("amazon")) brand = "amazonaws";
-  else if (normalized.includes("jira")) brand = "jira";
-  else if (normalized.includes("kubernetes") || normalized.includes("k8s")) brand = "kubernetes";
-  else if (normalized.includes("linear")) brand = "linear";
-  else if (normalized.includes("notion")) brand = "notion";
-  else if (normalized.includes("figma")) brand = "figma";
-  else if (normalized.includes("discord")) brand = "discord";
-  else if (normalized.includes("docker")) brand = "docker";
-  else if (normalized.includes("gcp") || normalized.includes("googlecloud")) brand = "googlecloud";
+  const norm = serverName.toLowerCase();
+  let domain = "";
+  if (norm.includes("github")) domain = "github.com";
+  else if (norm.includes("slack")) domain = "slack.com";
+  else if (norm.includes("postgres")) domain = "postgresql.org";
+  else if (norm.includes("aws") || norm.includes("amazon")) domain = "aws.amazon.com";
+  else if (norm.includes("jira") || norm.includes("atlassian")) domain = "atlassian.com";
+  else if (norm.includes("kubernetes") || norm.includes("k8s")) domain = "kubernetes.io";
+  else if (norm.includes("linear")) domain = "linear.app";
+  else if (norm.includes("notion")) domain = "notion.so";
+  else if (norm.includes("figma")) domain = "figma.com";
+  else if (norm.includes("discord")) domain = "discord.com";
+  else if (norm.includes("docker")) domain = "docker.com";
+  else if (norm.includes("gcp") || norm.includes("google")) domain = "cloud.google.com";
+  else if (norm.includes("sentry")) domain = "sentry.io";
+  else if (norm.includes("datadog")) domain = "datadoghq.com";
+  else if (norm.includes("snowflake")) domain = "snowflake.com";
+  else if (norm.includes("cursor")) domain = "cursor.com";
+  else if (norm.includes("claude") || norm.includes("anthropic")) domain = "anthropic.com";
+  else if (norm.includes("codeium") || norm.includes("windsurf")) domain = "codeium.com";
 
-  if (brand) {
+  if (domain) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img 
-        src={`https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/${brand}.svg`} 
+        src={`https://img.logo.dev/${domain}?token=pk_fdAoKVsxTvadheeQhynG5A&size=64&format=png`} 
         alt={`${serverName} logo`}
-        className="w-4 h-4 text-slate-700 opacity-90"
+        className="w-4 h-4 object-contain rounded-xs"
       />
     );
   }

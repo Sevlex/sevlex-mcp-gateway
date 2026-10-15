@@ -9,6 +9,8 @@ interface ClientBrandIconProps {
   className?: string;
 }
 
+const LOGO_DEV_TOKEN = "pk_fdAoKVsxTvadheeQhynG5A";
+
 export default function ClientBrandIcon({ name, size = "md", className = "" }: ClientBrandIconProps) {
   const norm = (name || "").toLowerCase();
 
@@ -57,6 +59,28 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
         src="/windsurf-icon.svg" 
         alt="Windsurf IDE" 
         className={`${sizeClass} object-contain shrink-0 ${className} text-slate-800`} 
+      />
+    );
+  }
+
+  if (norm.includes("openai") || norm.includes("chatgpt")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img 
+        src={`https://img.logo.dev/openai.com?token=${LOGO_DEV_TOKEN}&size=64&format=png`} 
+        alt="OpenAI" 
+        className={`${sizeClass} object-contain shrink-0 ${className}`} 
+      />
+    );
+  }
+
+  if (norm.includes("vscode") || norm.includes("visual studio")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img 
+        src={`https://img.logo.dev/code.visualstudio.com?token=${LOGO_DEV_TOKEN}&size=64&format=png`} 
+        alt="VS Code" 
+        className={`${sizeClass} object-contain shrink-0 ${className}`} 
       />
     );
   }
