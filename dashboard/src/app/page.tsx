@@ -279,19 +279,13 @@ export default function Dashboard() {
       {/* ========================================================================= */}
       <aside className="w-60 bg-[#131220] border-r border-[#242337] flex flex-col justify-between shrink-0 h-screen sticky top-0 text-zinc-300 z-50">
         <div>
-          {/* Brand Header with Official Sevlex White Panther & Cyber Wordmark */}
-          <div className="h-16 px-5 flex items-center gap-3 border-b border-[#242337]">
+          {/* Brand Header with Unified Sevlex Horizontal Lockup */}
+          <div className="h-16 px-5 flex items-center border-b border-[#242337]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src="/sevlex-icon.png" 
-              alt="Sevlex" 
-              className="w-8 h-8 object-contain shrink-0" 
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src="/sevlex-wordmark.png" 
+              src="/sevlex-brand-horizontal.png" 
               alt="SEVLEX" 
-              className="h-4.5 w-auto object-contain object-left" 
+              className="h-6 w-auto object-contain object-left" 
             />
           </div>
 
