@@ -8,11 +8,13 @@ import {
   Sliders, Check, Copy, ExternalLink, Send, Laptop, Terminal, Cpu, 
   Code2, Sparkles, RefreshCw, Bell, Key, LogOut, Filter, Eye, CheckCircle2,
   XCircle, ArrowUpRight, HelpCircle, FileText, Database, Shield, Radio,
-  Layers, HardDrive, ArrowRight
+  Layers, HardDrive, ArrowRight, Bot
 } from "lucide-react";
 import FleetMdmTab from "./components/FleetMdmTab";
 import SiemObservabilityTab from "./components/SiemObservabilityTab";
 import AlertingTab from "./components/AlertingTab";
+import DeviceFleetTab from "./components/DeviceFleetTab";
+import AgentDiscoveryTab from "./components/AgentDiscoveryTab";
 
 type Log = { 
   id: number; 
@@ -52,7 +54,7 @@ const getBrandIcon = (serverName: string) => {
   return <Server size={16} className="text-slate-500" />;
 };
 
-type TabType = "OVERVIEW" | "POLICY" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
+type TabType = "OVERVIEW" | "DEVICES" | "AGENTS" | "POLICY" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabType>("OVERVIEW");
@@ -292,9 +294,11 @@ export default function Dashboard() {
 
             {[
               { id: "OVERVIEW", label: "Overview", icon: LayoutDashboard },
+              { id: "DEVICES", label: "Device Fleet", icon: HardDrive, badge: `${fleetData?.devices?.length || 6} Hosts` },
+              { id: "AGENTS", label: "Shadow AI & Agents", icon: Bot, badge: `${fleetData?.runtimes?.length || 5} IDEs` },
               { id: "POLICY", label: "L7 Policies", icon: Sliders, badge: `${blockedTools.length} Banned` },
               { id: "AUDIT", label: "Log Explorer", icon: Activity, badge: `${logs.length}` },
-              { id: "MDM", label: "Fleet MDM", icon: Server, badge: "Win32/Pkg" },
+              { id: "MDM", label: "Rollout Packages", icon: Server, badge: "Win32/Pkg" },
               { id: "SIEM", label: "SIEM Stream", icon: Zap, badge: "US5" },
               { id: "ALERTS", label: "Alerts & ChatOps", icon: Bell, badge: "P1-P3" },
             ].map((nav) => {
@@ -761,6 +765,27 @@ export default function Dashboard() {
               </div>
 
             </div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* TAB: DEVICE FLEET INVENTORY (Runlayer Watch Parity)                       */}
+          {/* ========================================================================= */}
+          {activeTab === "DEVICES" && (
+            <DeviceFleetTab 
+              devices={fleetData?.devices || []} 
+              setPingStatus={setPingStatus} 
+            />
+          )}
+
+          {/* ========================================================================= */}
+          {/* TAB: SHADOW AI & CLIENT AGENT DISCOVERY (AgentGuard)                      */}
+          {/* ========================================================================= */}
+          {activeTab === "AGENTS" && (
+            <AgentDiscoveryTab 
+              runtimes={fleetData?.runtimes || []} 
+              onNavigateToPolicy={() => setActiveTab("POLICY")} 
+              setPingStatus={setPingStatus} 
+            />
           )}
 
           {/* ========================================================================= */}
