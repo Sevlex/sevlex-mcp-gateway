@@ -215,7 +215,9 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
                     {selectedAgent.boundServers.map((server, idx) => (
                       <div key={idx} className="p-3 rounded-lg border border-slate-200 bg-white hover:border-blue-200 transition shadow-xs flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
-                          <Database size={15} className="text-[#2563EB]" />
+                          <div className="w-8 h-8 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
+                            <ClientBrandIcon name={server} size="sm" />
+                          </div>
                           <div>
                             <p className="text-xs font-bold text-slate-900">{server}</p>
                             <span className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1">
