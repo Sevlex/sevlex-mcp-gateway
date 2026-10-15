@@ -380,7 +380,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-3">
             <span className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              50 Hosts Protected
+              {fleetData?.devices?.length || 6} Hosts Shielded
             </span>
 
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200 text-xs font-medium font-mono">
@@ -777,6 +777,7 @@ export default function Dashboard() {
             <DeviceFleetTab 
               devices={fleetData?.devices || []} 
               setPingStatus={setPingStatus} 
+              onNavigateToMdm={() => setActiveTab("MDM")}
             />
           )}
 
