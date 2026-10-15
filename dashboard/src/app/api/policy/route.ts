@@ -36,14 +36,26 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { blockedTools } = await request.json();
+    const body = await request.json();
+    const { blockedTools, approvalRequiredTools, parameterRules, dlp } = body;
     
     // Read the current file
     const rawData = fs.readFileSync(CONFIG_PATH, 'utf-8');
     const config = JSON.parse(rawData);
     
-    // Update the blocked list
-    config.policy.blockedTools = blockedTools;
+    // Update the policies
+    if (Array.isArray(blockedTools)) {
+      config.policy.blockedTools = blockedTools;
+    }
+    if (Array.isArray(approvalRequiredTools)) {
+      config.policy.approvalRequiredTools = approvalRequiredTools;
+    }
+    if (parameterRules) {
+      config.policy.parameterRules = parameterRules;
+    }
+    if (dlp) {
+      config.policy.dlp = dlp;
+    }
     
     // Write it back to the disk beautifully formatted
     fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf-8');

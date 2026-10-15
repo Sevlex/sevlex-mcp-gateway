@@ -5,7 +5,7 @@ import path from "node:path";
 export interface AuditLogEntry {
   userId: string;
   toolName: string;
-  status: "ALLOWED" | "BLOCKED" | "ERROR";
+  status: "ALLOWED" | "BLOCKED" | "ERROR" | "DLP_REDACTED" | "HITL_PENDING";
   rawRequest: string;
   rawResponse?: string;
 }

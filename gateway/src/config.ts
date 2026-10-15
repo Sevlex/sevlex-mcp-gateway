@@ -9,6 +9,13 @@ const ConfigSchema = z.object({
   policy: z.object({
     defaultAction: z.enum(["ALLOW", "DENY"]),
     blockedTools: z.array(z.string()),
+    approvalRequiredTools: z.array(z.string()).default([]),
+    parameterRules: z.object({
+      enabled: z.boolean().default(true),
+    }).optional(),
+    dlp: z.object({
+      enabled: z.boolean().default(true),
+    }).optional(),
     siem: z.object({
       enabled: z.boolean().default(false),
       provider: z.enum(["datadog", "splunk", "webhook"]).default("webhook"),

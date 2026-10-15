@@ -4,10 +4,18 @@
     "defaultAction": "ALLOW",
     "blockedTools": [
       "execute_arbitrary_shell",
+      "drop_tables"
+    ],
+    "approvalRequiredTools": [
       "delete_database",
-      "drop_tables",
       "export_customer_data"
     ],
+    "parameterRules": {
+      "enabled": true
+    },
+    "dlp": {
+      "enabled": true
+    },
     "siem": {
       "enabled": true,
       "provider": "datadog",

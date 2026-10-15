@@ -7,6 +7,7 @@ import os from "node:os";
 import { fileURLToPath } from "node:url";
 import { loadConfig } from "./config.js";
 import { AuditLogger } from "./logger.js";
+import { inspectToolParameters, redactToolOutputDlp } from "./toolguard.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -61,7 +62,7 @@ const realTool = spawn(targetCommand, targetArgs, {
 // ============================================================================
 // 4. REMOTE SIEM FORWARDER (Stateless Disaster Recovery & Enterprise Streaming)
 // ============================================================================
-function streamToSiem(targetUserId: string, targetToolName: string, status: "ALLOWED" | "BLOCKED", rawPayload: any) {
+function streamToSiem(targetUserId: string, targetToolName: string, status: "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING", rawPayload: any) {
   const siemConfig = config.policy.siem;
   const endpoint = process.env.SEVLEX_SIEM_ENDPOINT || siemConfig?.endpoint;
   const apiKey = process.env.SEVLEX_SIEM_API_KEY || siemConfig?.apiKey;
@@ -142,12 +143,12 @@ function handleAiMessage(message: any, rawMessage: string) {
     // Is the AI trying to use a tool?
     if (msg.method === "tools/call" && msg.params && msg.params.name) {
       const toolName = msg.params.name;
+      const approvalRequired = (config.policy.approvalRequiredTools || []).includes(toolName);
 
-      // 🔴 SECURITY CHECK: Is the tool on the Banned List?
+      // 🔴 CHECK 1: Hard Blocklist Check
       if (config.policy.blockedTools.includes(toolName)) {
         isBlocked = true;
         
-        // Write the receipt: BLOCKED
         logger.log({
           userId: userId,
           toolName: toolName,
@@ -155,10 +156,8 @@ function handleAiMessage(message: any, rawMessage: string) {
           rawRequest: rawMessage,
         });
 
-        // Remote SIEM Stream (Stateless DR)
         streamToSiem(userId, toolName, "BLOCKED", rawMessage);
 
-        // Slack Alert
         const alertMsg = `[SLACK ALERT] User '${userId}' attempted blocked tool '${toolName}'`;
         if (process.env.SLACK_WEBHOOK_URL) {
           fetch(process.env.SLACK_WEBHOOK_URL, {
@@ -170,7 +169,6 @@ function handleAiMessage(message: any, rawMessage: string) {
           console.error(alertMsg);
         }
 
-        // Drop the barrier: Send an Access Denied error back to the AI
         const errorResponse = {
           jsonrpc: "2.0",
           id: msg.id,
@@ -180,17 +178,88 @@ function handleAiMessage(message: any, rawMessage: string) {
           },
         };
         process.stdout.write(JSON.stringify(errorResponse) + "\n");
-      } else {
-        // 🟢 SECURITY CHECK PASSED: Tool is allowed
+      } 
+      // 🟣 CHECK 2: Human-In-The-Loop (HITL) Authorization Check
+      else if (approvalRequired) {
+        isBlocked = true;
+
         logger.log({
           userId: userId,
           toolName: toolName,
-          status: "ALLOWED",
-          rawRequest: JSON.stringify(msg),
+          status: "HITL_PENDING",
+          rawRequest: rawMessage,
         });
 
-        // Remote SIEM Stream (Stateless DR)
-        streamToSiem(userId, toolName, "ALLOWED", JSON.stringify(msg));
+        streamToSiem(userId, toolName, "HITL_PENDING", rawMessage);
+
+        const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested high-impact tool '${toolName}'. Waiting for SecOps clearance.`;
+        if (process.env.SLACK_WEBHOOK_URL) {
+          fetch(process.env.SLACK_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: alertMsg })
+          }).catch(err => console.error("Slack webhook failed:", err));
+        } else {
+          console.error(alertMsg);
+        }
+
+        const hitlResponse = {
+          jsonrpc: "2.0",
+          id: msg.id,
+          error: {
+            code: -32001,
+            message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. An approval ticket has been dispatched to SecOps.`,
+          },
+        };
+        process.stdout.write(JSON.stringify(hitlResponse) + "\n");
+      }
+      // 🛡️ CHECK 3: ToolGuard Call Guard (Deep Parameter & Argument Inspection)
+      else {
+        const paramCheck = inspectToolParameters(toolName, msg.params.arguments);
+        if (!paramCheck.passed && paramCheck.violation) {
+          isBlocked = true;
+
+          const violationTag = `${toolName} [${paramCheck.violation.category}]`;
+          logger.log({
+            userId: userId,
+            toolName: violationTag,
+            status: "BLOCKED",
+            rawRequest: JSON.stringify({ message: msg, violation: paramCheck.violation }),
+          });
+
+          streamToSiem(userId, violationTag, "BLOCKED", JSON.stringify({ message: msg, violation: paramCheck.violation }));
+
+          const alertMsg = `[TOOLGUARD BLOCK] User '${userId}' attempted dangerous argument in '${toolName}': ${paramCheck.violation.reason} (matched: ${paramCheck.violation.sample})`;
+          if (process.env.SLACK_WEBHOOK_URL) {
+            fetch(process.env.SLACK_WEBHOOK_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: alertMsg })
+            }).catch(err => console.error("Slack webhook failed:", err));
+          } else {
+            console.error(alertMsg);
+          }
+
+          const errorResponse = {
+            jsonrpc: "2.0",
+            id: msg.id,
+            error: {
+              code: -32602,
+              message: `Sevlex ToolGuard: Blocked by Parameter Inspection Rule [${paramCheck.violation.ruleId}]: ${paramCheck.violation.reason}. Dangerous payload intercepted.`,
+            },
+          };
+          process.stdout.write(JSON.stringify(errorResponse) + "\n");
+        } else {
+          // 🟢 SECURITY CHECK PASSED: Tool & Parameters are safe
+          logger.log({
+            userId: userId,
+            toolName: toolName,
+            status: "ALLOWED",
+            rawRequest: JSON.stringify(msg),
+          });
+
+          streamToSiem(userId, toolName, "ALLOWED", JSON.stringify(msg));
+        }
       }
     }
   }
@@ -331,8 +400,43 @@ toolOutput.on("line", (line) => {
     // Ignore parse errors from tool stdout
   }
 
-  // We just pass the tool's answer straight back to the AI
-  process.stdout.write(line + "\n");
+  // 🛡️ ToolGuard Output Guard: Real-Time Secret Redaction & DLP
+  let finalLine = line;
+  try {
+    const dlpResult = redactToolOutputDlp(line);
+    if (dlpResult.redactionCount > 0) {
+      finalLine = dlpResult.sanitized;
+
+      logger.log({
+        userId: userId,
+        toolName: "ToolGuard DLP",
+        status: "DLP_REDACTED",
+        rawRequest: `Redacted ${dlpResult.redactionCount} sensitive secret(s): ${dlpResult.redactedTypes.join(", ")}`,
+        rawResponse: dlpResult.sanitized,
+      });
+
+      streamToSiem(userId, "ToolGuard DLP", "DLP_REDACTED", {
+        redactions: dlpResult.redactionCount,
+        types: dlpResult.redactedTypes,
+      });
+
+      const dlpAlert = `[DLP ALERT] Redacted ${dlpResult.redactionCount} secret(s) (${dlpResult.redactedTypes.join(", ")}) from tool output before reaching AI context.`;
+      if (process.env.SLACK_WEBHOOK_URL) {
+        fetch(process.env.SLACK_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: dlpAlert })
+        }).catch(err => console.error("Slack webhook failed:", err));
+      } else {
+        console.error(dlpAlert);
+      }
+    }
+  } catch (err) {
+    // Fail-safe
+  }
+
+  // Pass sanitized answer straight back to the AI
+  process.stdout.write(finalLine + "\n");
 });
 
 // Clean up the database when the AI disconnects
