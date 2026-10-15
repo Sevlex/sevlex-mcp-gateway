@@ -432,9 +432,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                   <div className="grid grid-cols-2 gap-3">
                     <div className="p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 transition shadow-xs flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center p-2 shrink-0 shadow-2xs">
-                          <ClientBrandIcon name="microsoft" size="md" />
-                        </div>
+                        <ClientBrandIcon name="microsoft" size="lg" className="rounded-md shrink-0" />
                         <div>
                           <p className="text-xs font-bold text-slate-900">Microsoft Intune</p>
                           <p className="text-[11px] text-slate-500 font-mono mt-0.5">sevlex.intunewin</p>
@@ -445,9 +443,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
 
                     <div className="p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 transition shadow-xs flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center p-2 shrink-0 shadow-2xs">
-                          <ClientBrandIcon name="jamf" size="md" />
-                        </div>
+                        <ClientBrandIcon name="jamf" size="lg" className="rounded-md shrink-0" />
                         <div>
                           <p className="text-xs font-bold text-slate-900">Jamf Pro</p>
                           <p className="text-[11px] text-slate-500 font-mono mt-0.5">sevlex.pkg</p>

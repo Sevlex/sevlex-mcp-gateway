@@ -112,11 +112,7 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3">
-                    <div className={`w-10 h-10 rounded-lg border flex items-center justify-center p-2 shrink-0 ${
-                      isSelected ? "bg-blue-50/70 border-blue-200" : "bg-slate-50 border-slate-200"
-                    }`}>
-                      <ClientBrandIcon name={agent.name} size="md" />
-                    </div>
+                    <ClientBrandIcon name={agent.name} size="lg" className="rounded-md shrink-0" />
                     <div>
                       <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                         {agent.name}
@@ -149,9 +145,7 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
               {/* Agent Overview Bar */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center p-2 shrink-0">
-                    <ClientBrandIcon name={selectedAgent.name} size="lg" />
-                  </div>
+                  <ClientBrandIcon name={selectedAgent.name} size="xl" className="rounded-lg shrink-0" />
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-base font-bold text-slate-900">{selectedAgent.name}</span>
@@ -214,10 +208,8 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {selectedAgent.boundServers.map((server, idx) => (
                       <div key={idx} className="p-3 rounded-lg border border-slate-200 bg-white hover:border-blue-200 transition shadow-xs flex items-center justify-between">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
-                            <ClientBrandIcon name={server} size="sm" />
-                          </div>
+                        <div className="flex items-center gap-3">
+                          <ClientBrandIcon name={server} size="md" className="rounded-md shrink-0" />
                           <div>
                             <p className="text-xs font-bold text-slate-900">{server}</p>
                             <span className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1">

@@ -103,10 +103,8 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
             { name: "Windsurf IDE" },
             { name: "Google Antigravity" },
           ].map((item, idx) => (
-            <div key={idx} className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-slate-200 shadow-xs hover:border-blue-300 transition">
-              <div className="w-7 h-7 rounded-md bg-slate-50 border border-slate-200 flex items-center justify-center p-1 shrink-0">
-                <ClientBrandIcon name={item.name} size="sm" />
-              </div>
+            <div key={idx} className="flex items-center gap-3 p-3 rounded-lg bg-white border border-slate-200 shadow-xs hover:border-blue-300 transition">
+              <ClientBrandIcon name={item.name} size="md" className="rounded-md shrink-0" />
               <div className="truncate">
                 <p className="text-xs font-bold text-slate-800 truncate">{item.name}</p>
                 <p className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1">

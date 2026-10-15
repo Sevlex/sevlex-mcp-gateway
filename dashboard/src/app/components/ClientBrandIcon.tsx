@@ -47,9 +47,9 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
 
   const sizeClass = 
     size === "xs" ? "w-3.5 h-3.5" :
-    size === "sm" ? "w-4 h-4" :
-    size === "md" ? "w-5 h-5" :
-    size === "lg" ? "w-6 h-6" : "w-8 h-8";
+    size === "sm" ? "w-5 h-5" :
+    size === "md" ? "w-7 h-7" :
+    size === "lg" ? "w-8 h-8" : "w-10 h-10";
 
   // If Logo.dev has a domain and hasn't failed, use the official full-color high-res PNG
   if (domain && !loadFailed) {
