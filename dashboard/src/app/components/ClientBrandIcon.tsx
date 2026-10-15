@@ -34,6 +34,9 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("linux") || norm.includes("ubuntu")) return "ubuntu.com";
   if (norm.includes("sentry")) return "sentry.io";
   if (norm.includes("datadog")) return "datadoghq.com";
+  if (norm.includes("splunk")) return "splunk.com";
+  if (norm.includes("pagerduty")) return "pagerduty.com";
+  if (norm.includes("opsgenie")) return "opsgenie.com";
   if (norm.includes("snowflake")) return "snowflake.com";
   if (norm.includes("openai") || norm.includes("chatgpt")) return "openai.com";
   if (norm.includes("vscode") || norm.includes("visual studio")) return "code.visualstudio.com";

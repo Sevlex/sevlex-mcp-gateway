@@ -1,6 +1,7 @@
 "use client";
 
-import { Zap, ShieldCheck, Send, ExternalLink, Sparkles } from "lucide-react";
+import { Zap, ShieldCheck, Send, ExternalLink } from "lucide-react";
+import ClientBrandIcon from "./ClientBrandIcon";
 
 interface SiemObservabilityTabProps {
   apiKey: string;
@@ -33,25 +34,13 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
         </div>
       </div>
 
-      {/* Architecture Role Callout */}
-      <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/60 text-xs text-blue-900 leading-relaxed flex items-start gap-3">
-        <Sparkles size={18} className="text-[#2563EB] shrink-0 mt-0.5" />
-        <div>
-          <strong className="text-slate-900 font-bold block mb-0.5">Role of SIEM in Sevlex:</strong>
-          Datadog is where <span className="underline font-semibold text-[#2563EB]">audit logs live</span>. Every allowed and blocked tool call is streamed asynchronously over HTTPS to Datadog&apos;s Log Explorer for compliance audits, threat hunting, and long-term retention.
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* CARD 1: DATADOG SIEM */}
         <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-xs flex flex-col justify-between hover:border-slate-300 transition">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="Datadog" className="w-5 h-5" />
-                </div>
+                <ClientBrandIcon name="Datadog" size="xl" className="rounded-md shrink-0" />
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Datadog Cloud SIEM</h3>
                   <p className="text-xs text-slate-500 font-mono">Universal Log Streaming &amp; Stateless DR</p>
@@ -112,9 +101,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
-                  <ShieldCheck size={20} className="text-[#2563EB]" />
-                </div>
+                <ClientBrandIcon name="Splunk" size="xl" className="rounded-md shrink-0" />
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Splunk / Sentinel / S3</h3>
                   <p className="text-xs text-slate-500 font-mono">Multi-Destination Compliance Sinks</p>

@@ -1058,41 +1058,35 @@ export default function Dashboard() {
           {/* TAB 3: FLEET MDM (Level 3 Packages)                                       */}
           {/* ========================================================================= */}
           {activeTab === "MDM" && (
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-              <FleetMdmTab 
-                apiKey={apiKey} 
-                setPingStatus={setPingStatus} 
-                copiedType={copiedType} 
-                setCopiedType={setCopiedType} 
-              />
-            </div>
+            <FleetMdmTab 
+              apiKey={apiKey} 
+              setPingStatus={setPingStatus} 
+              copiedType={copiedType} 
+              setCopiedType={setCopiedType} 
+            />
           )}
 
           {/* ========================================================================= */}
           {/* TAB 4: SIEM STREAM (Datadog US5)                                          */}
           {/* ========================================================================= */}
           {activeTab === "SIEM" && (
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-              <SiemObservabilityTab 
-                apiKey={apiKey} 
-                ddEndpoint={ddEndpoint} 
-                setPingStatus={setPingStatus} 
-              />
-            </div>
+            <SiemObservabilityTab 
+              apiKey={apiKey} 
+              ddEndpoint={ddEndpoint} 
+              setPingStatus={setPingStatus} 
+            />
           )}
 
           {/* ========================================================================= */}
           {/* TAB 5: INCIDENT ALERTS (Slack & PagerDuty)                                 */}
           {/* ========================================================================= */}
           {activeTab === "ALERTS" && (
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-              <AlertingTab 
-                apiKey={apiKey} 
-                slackUrlInput={slackUrlInput} 
-                setSlackUrlInput={setSlackUrlInput} 
-                setPingStatus={setPingStatus} 
-              />
-            </div>
+            <AlertingTab 
+              apiKey={apiKey} 
+              slackUrlInput={slackUrlInput} 
+              setSlackUrlInput={setSlackUrlInput} 
+              setPingStatus={setPingStatus} 
+            />
           )}
 
         </main>

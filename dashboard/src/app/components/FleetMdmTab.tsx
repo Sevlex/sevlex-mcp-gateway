@@ -116,15 +116,6 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
         </div>
       </div>
 
-      {/* Architectural Role Callout */}
-      <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/60 text-xs text-blue-900 leading-relaxed flex items-start gap-3">
-        <Sparkles size={18} className="text-[#2563EB] shrink-0 mt-0.5" />
-        <div>
-          <strong className="text-slate-900 font-bold block mb-0.5">Why Level 3 Enterprise Packages are Superior:</strong>
-          Unlike raw scripts that can fail on strict PowerShell execution policies, these packages contain self-contained execution manifests that show up in Microsoft Intune and Jamf Pro Company Portals with formal version reporting, health monitors, and 1-click silent uninstallation.
-        </div>
-      </div>
-
       {/* Deployment Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
@@ -133,9 +124,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
-                  <PackageCheck size={20} className="text-[#2563EB]" />
-                </div>
+                <ClientBrandIcon name="Microsoft Intune" size="xl" className="rounded-md shrink-0" />
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Microsoft Intune Win32 App</h3>
                   <p className="text-xs text-slate-500 font-mono">sevlex.intunewin (Level 3 Package)</p>
@@ -205,9 +194,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
-                  <PackageCheck size={20} className="text-[#2563EB]" />
-                </div>
+                <ClientBrandIcon name="Jamf" size="xl" className="rounded-md shrink-0" />
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Jamf Pro Enterprise Package</h3>
                   <p className="text-xs text-slate-500 font-mono">sevlex.pkg (Level 3 Package)</p>

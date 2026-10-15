@@ -1,6 +1,7 @@
 "use client";
 
-import { Bell, ShieldAlert, Send, Sparkles } from "lucide-react";
+import { Bell, ShieldAlert, Send } from "lucide-react";
+import ClientBrandIcon from "./ClientBrandIcon";
 
 interface AlertingTabProps {
   apiKey: string;
@@ -41,9 +42,9 @@ export default function AlertingTab({ apiKey, slackUrlInput, setSlackUrlInput, s
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Bell className="text-amber-500" size={22} />
+            <Bell className="text-[#2563EB]" size={22} />
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">Incident Alerting &amp; ChatOps</h2>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 uppercase tracking-wider font-mono">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
               Real-Time Active
             </span>
           </div>
@@ -59,31 +60,19 @@ export default function AlertingTab({ apiKey, slackUrlInput, setSlackUrlInput, s
         </div>
       </div>
 
-      {/* Architecture Role Callout */}
-      <div className="p-4 rounded-xl border border-amber-200 bg-amber-50/60 text-xs text-amber-900 leading-relaxed flex items-start gap-3">
-        <Sparkles size={18} className="text-amber-600 shrink-0 mt-0.5" />
-        <div>
-          <strong className="text-slate-900 font-bold block mb-0.5">Role of Slack in Sevlex:</strong>
-          Slack <span className="underline font-semibold text-amber-800">does not store logs or deploy software</span>. It is an instant alarm wire that pings your team&apos;s channel the millisecond an attack, unauthorized SQL drop, or policy breach is blocked.
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* CARD 1: SLACK REAL-TIME ALERTS */}
         <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-xs flex flex-col justify-between hover:border-slate-300 transition">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/slack.svg" alt="Slack" className="w-5 h-5" />
-                </div>
+                <ClientBrandIcon name="Slack" size="xl" className="rounded-md shrink-0" />
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Slack Incident Alerts</h3>
                   <p className="text-xs text-slate-500 font-mono">Instant SecOps Channel Notifications</p>
                 </div>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 font-mono">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 font-mono">
                 WEBHOOK
               </span>
             </div>
@@ -120,7 +109,7 @@ export default function AlertingTab({ apiKey, slackUrlInput, setSlackUrlInput, s
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
             <button 
               onClick={handleTestSlack}
-              className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs transition shadow-xs flex items-center gap-1.5"
+              className="px-4 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs transition shadow-xs flex items-center gap-1.5"
             >
               <Send size={13} /> Send Test Alert
             </button>
@@ -133,9 +122,7 @@ export default function AlertingTab({ apiKey, slackUrlInput, setSlackUrlInput, s
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center">
-                  <ShieldAlert size={20} className="text-red-600" />
-                </div>
+                <ClientBrandIcon name="PagerDuty" size="xl" className="rounded-md shrink-0" />
                 <div>
                   <h3 className="text-base font-bold text-slate-900">PagerDuty &amp; Opsgenie</h3>
                   <p className="text-xs text-slate-500 font-mono">P1 Critical Severity Escalation</p>

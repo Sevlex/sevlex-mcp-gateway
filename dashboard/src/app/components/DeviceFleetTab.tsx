@@ -257,10 +257,8 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
             {/* Modal Header */}
             <div className="p-6 border-b border-slate-100 flex items-start justify-between bg-slate-50/50">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#131220] border border-[#242337] flex items-center justify-center p-2 shrink-0 mt-0.5 shadow-xs">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/sevlex-icon.png" alt="Sevlex" className="w-full h-full object-contain" />
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/sevlex-icon.png" alt="Sevlex" className="w-9 h-9 object-contain shrink-0 mt-0.5 rounded-lg shadow-xs" />
                 <div>
                   <h3 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
                     Enroll Device to Sevlex Gateway
