@@ -27,6 +27,10 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("linear")) return "linear.app";
   if (norm.includes("notion")) return "notion.so";
   if (norm.includes("figma")) return "figma.com";
+  if (norm.includes("windows") || norm.includes("microsoft") || norm.includes("intune")) return "microsoft.com";
+  if (norm.includes("macos") || norm.includes("apple") || norm.includes("darwin")) return "apple.com";
+  if (norm.includes("jamf")) return "jamf.com";
+  if (norm.includes("linux") || norm.includes("ubuntu")) return "ubuntu.com";
   if (norm.includes("sentry")) return "sentry.io";
   if (norm.includes("datadog")) return "datadoghq.com";
   if (norm.includes("snowflake")) return "snowflake.com";
@@ -82,6 +86,30 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/windsurf-icon.png" alt="Windsurf" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("windows") || norm.includes("microsoft") || norm.includes("intune")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/microsoft-icon.png" alt="Microsoft" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("macos") || norm.includes("apple") || norm.includes("darwin")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/apple-icon.png" alt="Apple" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("jamf")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/jamf-icon.png" alt="Jamf" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("linux") || norm.includes("ubuntu")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/ubuntu-icon.png" alt="Ubuntu" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
   if (norm.includes("postgres")) {
