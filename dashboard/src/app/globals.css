@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #08080a;
-  --foreground: #ededed;
+  --background: #F8F9FA;
+  --foreground: #0F172A;
+  --sidebar-bg: #131220;
+  --datadog-purple: #632CA6;
 }
 
 @theme inline {
@@ -25,18 +27,17 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d0d11;
+  background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #CBD5E1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #94A3B8;
 }
 
-/* Datadog style dot grid */
-.datadog-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 16px 16px;
+/* Datadog purple gradient */
+.datadog-gradient {
+  background: linear-gradient(135deg, #632CA6 0%, #702F96 50%, #8E33B8 100%);
 }

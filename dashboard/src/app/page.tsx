@@ -7,7 +7,8 @@ import {
   AlertTriangle, ChevronRight, ChevronDown, BarChart3, Lock, Server, 
   Sliders, Check, Copy, ExternalLink, Send, Laptop, Terminal, Cpu, 
   Code2, Sparkles, RefreshCw, Bell, Key, LogOut, Filter, Eye, CheckCircle2,
-  XCircle, ArrowUpRight, HelpCircle
+  XCircle, ArrowUpRight, HelpCircle, FileText, Database, Shield, Radio,
+  Layers, HardDrive, ArrowRight
 } from "lucide-react";
 import FleetMdmTab from "./components/FleetMdmTab";
 import SiemObservabilityTab from "./components/SiemObservabilityTab";
@@ -44,11 +45,11 @@ const getBrandIcon = (serverName: string) => {
       <img 
         src={`https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/${brand}.svg`} 
         alt={`${serverName} logo`}
-        className="w-4 h-4 invert opacity-90"
+        className="w-4 h-4 text-slate-700 opacity-90"
       />
     );
   }
-  return <Server size={16} className="text-zinc-400" />;
+  return <Server size={16} className="text-slate-500" />;
 };
 
 type TabType = "OVERVIEW" | "POLICY" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
@@ -68,6 +69,10 @@ export default function Dashboard() {
   const [expandedServers, setExpandedServers] = useState<Record<string, boolean>>({});
   const [selectedLog, setSelectedLog] = useState<Log | null>(null);
 
+  // Active feature tab in Section 1 (Datadog style interactive selector)
+  const [activeFeatureTab, setActiveFeatureTab] = useState<number>(0);
+  const [activeDiagnosisTab, setActiveDiagnosisTab] = useState<number>(0);
+
   // Facet filter state for Log Explorer (Datadog style)
   const [statusFilter, setStatusFilter] = useState<"ALL" | "ALLOWED" | "BLOCKED">("ALL");
 
@@ -75,7 +80,6 @@ export default function Dashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputKey, setInputKey] = useState("");
   const [loginError, setLoginError] = useState(false);
-  const [timeRange, setTimeRange] = useState("24h");
 
   useEffect(() => {
     const stored = localStorage.getItem("sevlex_admin_key");
@@ -215,7 +219,6 @@ export default function Dashboard() {
     });
   }, [logs, search, statusFilter]);
 
-  // Export logs to CSV
   const exportLogsToCsv = () => {
     if (!logs.length) return;
     const headers = "id,timestamp,user_id,tool_name,status,raw_request\n";
@@ -232,9 +235,8 @@ export default function Dashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#08080a] text-zinc-300 font-sans flex items-center justify-center p-4 datadog-grid">
-        <form onSubmit={handleLogin} className="bg-[#101014] p-8 rounded-2xl border border-white/[0.08] shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
-          <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
+      <div className="min-h-screen bg-[#131220] text-zinc-300 font-sans flex items-center justify-center p-4">
+        <form onSubmit={handleLogin} className="bg-[#1C1B2E] p-8 rounded-2xl border border-white/[0.1] shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
           <div className="flex justify-center mb-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
@@ -250,10 +252,10 @@ export default function Dashboard() {
             placeholder="Admin API Key"
             value={inputKey}
             onChange={(e) => setInputKey(e.target.value)}
-            className="w-full bg-[#0a0a0d] border border-zinc-800 rounded-lg px-3.5 py-2.5 text-sm text-white mb-4 focus:outline-none focus:border-blue-500 font-mono transition-colors"
+            className="w-full bg-[#131220] border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white mb-4 focus:outline-none focus:border-purple-500 font-mono transition-colors"
           />
           {loginError && <p className="text-red-400 text-xs mb-4">Invalid Admin Key. Check .env.local</p>}
-          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-lg text-sm transition-all shadow-md shadow-blue-950">
+          <button type="submit" className="w-full bg-[#632CA6] hover:bg-[#7232be] text-white font-medium py-2 rounded-lg text-sm transition-all shadow-md shadow-purple-950">
             Authenticate Session
           </button>
         </form>
@@ -262,498 +264,521 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#08080a] text-zinc-300 font-sans flex flex-col">
+    <div className="min-h-screen bg-[#F8F9FA] text-slate-900 font-sans flex">
       
-      {/* 1. TOP SEC-OPS COMMAND BAR (Datadog / Linear Style) */}
-      <header className="sticky top-0 z-50 bg-[#08080a]/90 backdrop-blur-md border-b border-white/[0.08]">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
-          
-          {/* Left: Brand + Env Selector */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#141419] border border-white/[0.1] flex items-center justify-center p-1 shadow-[0_0_12px_rgba(255,255,255,0.12)] group">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src="/sevlex-icon.png" 
-                  alt="Sevlex Logo Icon" 
-                  className="w-full h-full object-contain filter drop-shadow-[0_0_6px_rgba(255,255,255,0.4)] transition-transform group-hover:scale-105" 
-                />
-              </div>
-              <span className="font-bold text-sm tracking-tight text-white font-mono">SEVLEX</span>
-              <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">
-                L7 FIREWALL
-              </span>
-            </div>
-
-            <div className="h-4 w-px bg-zinc-800 hidden sm:block" />
-
-            {/* Scope pill */}
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#121216] border border-white/[0.06] text-xs text-zinc-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.6)]"></span>
-              <span className="font-medium text-white">Production Fleet</span>
-              <span className="text-zinc-500 font-mono">(50 Hosts)</span>
-            </div>
-          </div>
-
-          {/* Center: Live Command Search Bar */}
-          <div className="flex-1 max-w-xl mx-4 hidden lg:block">
-            <div className="relative flex items-center">
-              <Search size={14} className="absolute left-3 text-zinc-500" />
-              <input 
-                type="text"
-                placeholder="Search tools, CVEs, users (@meetp), or status..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-[#101014] border border-white/[0.06] focus:border-blue-500/50 rounded-lg pl-9 pr-12 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-500 outline-none font-mono transition-colors"
-              />
-              <span className="absolute right-2.5 px-1.5 py-0.5 rounded text-[10px] font-mono text-zinc-500 bg-zinc-800/80 border border-zinc-700/50">
-                ⌘K
-              </span>
-            </div>
-          </div>
-
-          {/* Right: Telemetry Health Indicators */}
-          <div className="flex items-center gap-2.5 text-xs">
-            {/* Live Streaming indicator */}
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#121216] border border-white/[0.06] font-mono text-[11px]">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-zinc-300">STREAMING</span>
-              <span className="text-zinc-500 hidden sm:inline">(&lt; 0.8ms)</span>
-            </div>
-
-            {/* Datadog status */}
-            <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#121216] border border-white/[0.06] text-zinc-300 text-[11px] font-mono">
+      {/* ========================================================================= */}
+      {/* 1. LEFT DARK SIDEBAR (Official Datadog Style: #131220)                   */}
+      {/* ========================================================================= */}
+      <aside className="w-60 bg-[#131220] border-r border-[#242337] flex flex-col justify-between shrink-0 h-screen sticky top-0 text-zinc-300 z-50">
+        <div>
+          {/* Brand Header with Official Sevlex White Panther & Cyber Wordmark */}
+          <div className="h-16 px-4 flex items-center gap-3 border-b border-[#242337]">
+            <div className="w-9 h-9 rounded-lg bg-[#201F33] flex items-center justify-center p-1.5 border border-white/[0.08] shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="DD" className="w-3.5 h-3.5 invert opacity-80" />
-              <span>US5</span>
+              <img src="/sevlex-icon.png" alt="Sevlex" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
             </div>
-
-            {/* Admin Badge & Logout */}
-            <div className="flex items-center gap-2 pl-2 border-l border-zinc-800">
-              <span className="text-zinc-400 font-mono text-xs hidden sm:inline">@{fleetData?.host?.user || "meetp"}</span>
-              <button 
-                onClick={handleLogout}
-                title="Sign out of SecOps console"
-                className="p-1.5 text-zinc-500 hover:text-zinc-200 rounded-md hover:bg-zinc-800/60 transition"
-              >
-                <LogOut size={14} />
-              </button>
+            <div className="flex flex-col justify-center min-w-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/sevlex-wordmark.png" alt="SEVLEX" className="h-4 w-auto object-contain object-left filter drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
+              <span className="text-[9px] text-purple-400 font-semibold tracking-widest uppercase mt-0.5 font-mono">L7 Security Gateway</span>
             </div>
           </div>
 
-        </div>
+          {/* Navigation Menu */}
+          <div className="px-3 py-4 space-y-1 text-xs font-medium">
+            <div className="px-3 py-1 text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
+              AI Observability
+            </div>
 
-        {/* 2. SUB-NAV / SEGMENTED TABS (Datadog Tab Strip) */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 flex items-center justify-between border-t border-white/[0.04]">
-          <nav className="flex space-x-1 sm:space-x-2 py-1 overflow-x-auto">
             {[
-              { id: "OVERVIEW", label: "Overview", icon: LayoutDashboard, badge: "142k" },
+              { id: "OVERVIEW", label: "Overview", icon: LayoutDashboard },
               { id: "POLICY", label: "L7 Policies", icon: Sliders, badge: `${blockedTools.length} Banned` },
               { id: "AUDIT", label: "Log Explorer", icon: Activity, badge: `${logs.length}` },
-              { id: "MDM", label: "Fleet MDM", icon: Server, badge: "Level 3" },
+              { id: "MDM", label: "Fleet MDM", icon: Server, badge: "Win32/Pkg" },
               { id: "SIEM", label: "SIEM Stream", icon: Zap, badge: "US5" },
-              { id: "ALERTS", label: "Alerts", icon: Bell, badge: "Live" },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
+              { id: "ALERTS", label: "Alerts & ChatOps", icon: Bell, badge: "P1-P3" },
+            ].map((nav) => {
+              const IconComp = nav.icon;
+              const isActive = activeTab === nav.id;
               return (
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as TabType)}
-                  className={`px-3 py-2 rounded-md text-xs font-medium transition-all flex items-center gap-2 relative ${
-                    isActive
-                      ? "text-white bg-[#141418] shadow-sm border border-white/[0.08]"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.02]"
+                  key={nav.id}
+                  onClick={() => setActiveTab(nav.id as TabType)}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-left ${
+                    isActive 
+                      ? "bg-[#632CA6] text-white shadow-sm font-semibold" 
+                      : "text-zinc-400 hover:text-white hover:bg-white/[0.05]"
                   }`}
                 >
-                  <Icon size={14} className={isActive ? "text-blue-400" : "text-zinc-500"} />
-                  <span>{tab.label}</span>
-                  {tab.badge && (
+                  <div className="flex items-center gap-2.5">
+                    <IconComp size={16} className={isActive ? "text-white" : "text-zinc-400"} />
+                    <span>{nav.label}</span>
+                  </div>
+                  {nav.badge && (
                     <span className={`px-1.5 py-0.2 rounded text-[10px] font-mono ${
-                      isActive 
-                        ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" 
-                        : "bg-zinc-800/60 text-zinc-500"
+                      isActive ? "bg-white/20 text-white" : "bg-[#201F33] text-zinc-400"
                     }`}>
-                      {tab.badge}
+                      {nav.badge}
                     </span>
-                  )}
-                  {isActive && (
-                    <div className="absolute -bottom-1 inset-x-3 h-[2px] bg-blue-500 rounded-full" />
                   )}
                 </button>
               );
             })}
-          </nav>
-
-          <div className="hidden sm:flex items-center gap-2">
-            <span className="text-[11px] text-zinc-500 font-mono">SOC 2 Type II Verified</span>
           </div>
         </div>
-      </header>
 
-      {/* 3. MAIN DASHBOARD CONTENT CANVAS */}
-      <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 space-y-6">
+        {/* Bottom Profile & Host Specs */}
+        <div className="p-3 border-t border-[#242337] bg-[#0E0D18]">
+          <div className="flex items-center justify-between text-xs mb-2">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-white font-medium truncate max-w-[110px]">{fleetData?.host?.hostname || "Meet-Panchal"}</span>
+            </div>
+            <span className="text-[10px] text-zinc-500 font-mono">win32-x64</span>
+          </div>
+
+          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-2 border-t border-[#242337]">
+            <span>@{fleetData?.host?.user || "meetp"}</span>
+            <button 
+              onClick={handleLogout}
+              title="Sign out"
+              className="text-zinc-500 hover:text-white transition"
+            >
+              <LogOut size={13} />
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* ========================================================================= */}
+      {/* 2. MAIN WORKSPACE CANVAS (Crisp Datadog White: #F8F9FB)                  */}
+      {/* ========================================================================= */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
-        {/* ========================================================================= */}
-        {/* TAB 0: OVERVIEW & INTELLIGENCE (Datadog Aesthetic)                        */}
-        {/* ========================================================================= */}
-        {activeTab === "OVERVIEW" && (
-          <div className="space-y-6">
-            
-            {/* DATADOG METRIC STRIP (4-Column High-Density Ribbon) */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              
-              {/* Metric 1 */}
-              <div className="bg-[#101014] border border-white/[0.06] p-4 rounded-xl relative overflow-hidden flex flex-col justify-between">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-zinc-400 font-medium flex items-center gap-1.5">
-                    <Activity size={14} className="text-blue-400" /> Total Invocations
-                  </span>
-                  <span className="text-[11px] font-mono text-emerald-400 flex items-center">
-                    <TrendingUp size={12} className="mr-0.5" /> +14.2%
-                  </span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <p className="text-3xl font-bold tracking-tight text-white font-mono">
-                    142,394
-                  </p>
-                  {/* Mini SVG sparkline */}
-                  <svg className="w-16 h-6 text-blue-500/40" viewBox="0 0 60 20" fill="none">
-                    <path d="M0 16 L10 14 L20 17 L30 11 L40 13 L50 7 L60 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-2 font-mono">Last 24h across 50 hosts</p>
-              </div>
+        {/* Top Header Bar */}
+        <header className="h-14 bg-white border-b border-slate-200 px-6 sm:px-8 flex items-center justify-between shrink-0 sticky top-0 z-40">
+          {/* Search Box */}
+          <div className="relative w-72 sm:w-96">
+            <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
+            <input 
+              type="text" 
+              placeholder="Search Datadog telemetry, tools, CVEs..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-md pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#632CA6] focus:bg-white font-mono transition"
+            />
+          </div>
 
-              {/* Metric 2 */}
-              <div className="bg-[#101014] border border-white/[0.06] p-4 rounded-xl relative overflow-hidden flex flex-col justify-between">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-zinc-400 font-medium flex items-center gap-1.5">
-                    <Lock size={14} className="text-red-400" /> Threats Blocked
-                  </span>
-                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-red-500/10 text-red-400 border border-red-500/20">
-                    0.87% RATE
-                  </span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <p className="text-3xl font-bold tracking-tight text-red-400 font-mono">
-                    1,243
-                  </p>
-                  <svg className="w-16 h-6 text-red-500/40" viewBox="0 0 60 20" fill="none">
-                    <path d="M0 18 L15 15 L25 17 L35 8 L45 12 L55 3 L60 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-2 font-mono">Malicious tool calls intercepted</p>
-              </div>
+          {/* Right Status Badges */}
+          <div className="flex items-center gap-3">
+            <span className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              50 Hosts Protected
+            </span>
 
-              {/* Metric 3 */}
-              <div className="bg-[#101014] border border-white/[0.06] p-4 rounded-xl relative overflow-hidden flex flex-col justify-between">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-zinc-400 font-medium flex items-center gap-1.5">
-                    <Zap size={14} className="text-purple-400" /> L7 Proxy Overhead
-                  </span>
-                  <span className="text-[11px] font-mono text-emerald-400">
-                    p99: 1.42ms
-                  </span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <p className="text-3xl font-bold tracking-tight text-white font-mono">
-                    0.78 <span className="text-sm font-normal text-zinc-400">ms</span>
-                  </p>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono border border-emerald-500/20">
-                    ZERO LAG
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-2 font-mono">In-memory stdio stream intercept</p>
-              </div>
-
-              {/* Metric 4 */}
-              <div className="bg-[#101014] border border-white/[0.06] p-4 rounded-xl relative overflow-hidden flex flex-col justify-between">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-zinc-400 font-medium flex items-center gap-1.5">
-                    <ShieldCheck size={14} className="text-emerald-400" /> Active AI Fleet
-                  </span>
-                  <span className="text-[11px] font-mono text-blue-400">
-                    Level 3 Package
-                  </span>
-                </div>
-                <div className="flex items-baseline justify-between mt-1">
-                  <p className="text-3xl font-bold tracking-tight text-white font-mono">
-                    4 <span className="text-sm font-normal text-zinc-400">Agents</span>
-                  </p>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-mono border border-blue-500/20">
-                    100% SECURED
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-2 font-mono">Claude, Cursor, Windsurf, Antigravity</p>
-              </div>
-
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium font-mono">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="DD" className="w-3.5 h-3.5" />
+              <span>US5 Connected</span>
             </div>
 
-            {/* BENTO SECTION: LIVE TRAFFIC HISTOGRAM + THREAT QUARANTINE */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <button 
+              onClick={exportLogsToCsv}
+              className="px-3 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium transition shadow-xs flex items-center gap-1.5"
+            >
+              <Download size={13} /> Export PDF
+            </button>
+          </div>
+        </header>
+
+        {/* Workspace Canvas Body */}
+        <main className="p-6 sm:p-8 space-y-8 max-w-[1500px] w-full">
+          
+          {/* ========================================================================= */}
+          {/* TAB 0: OVERVIEW (Directly Modeled on User Screenshot!)                     */}
+          {/* ========================================================================= */}
+          {activeTab === "OVERVIEW" && (
+            <div className="space-y-10">
               
-              {/* Left (2 cols): Datadog-style Traffic Waveform */}
-              <div className="lg:col-span-2 bg-[#101014] border border-white/[0.06] rounded-xl p-5 flex flex-col justify-between">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-                  <div>
-                    <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                      <BarChart3 size={16} className="text-blue-400" />
-                      L7 Invocations &amp; Threat Intercept Histogram
-                    </h3>
-                    <p className="text-xs text-zinc-400 mt-0.5">Real-time throughput inspected by Sevlex Zero-Trust engine</p>
+              {/* HERO BANNER (Official Datadog Purple Gradient Banner from Screenshot) */}
+              <div className="datadog-gradient rounded-2xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+                {/* Background decorative glow */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+
+                <div className="max-w-xl z-10 space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold tracking-wider uppercase border border-white/20">
+                    <Sparkles size={12} /> Data Observability (L7 MCP)
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                    Trusted Data, Optimized Pipelines, Zero Surprises.
+                  </h1>
+                  <p className="text-sm text-purple-100 leading-relaxed">
+                    Unified zero-trust deep packet inspection across employee AI agents routing MCP traffic through Sevlex Gateway.
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-medium">
+                    <span className="flex items-center gap-1 opacity-90"><Check size={14} /> 142,394 Calls</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1 opacity-90"><Check size={14} /> 1,243 Threats Blocked</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1 opacity-90"><Check size={14} /> 0.78ms Latency</span>
+                  </div>
+
+                  <div className="pt-4 flex items-center gap-4">
+                    <button 
+                      onClick={() => setActiveTab("POLICY")}
+                      className="px-5 py-2.5 rounded-lg bg-white text-[#632CA6] font-bold text-xs hover:bg-purple-50 transition shadow-lg flex items-center gap-2"
+                    >
+                      Set up L7 Policy Control <ArrowRight size={14} />
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab("AUDIT")}
+                      className="px-4 py-2.5 rounded-lg bg-black/20 hover:bg-black/30 border border-white/30 text-white font-medium text-xs transition"
+                    >
+                      View Live Audit Stream
+                    </button>
+                  </div>
+                </div>
+
+                {/* Hero Graphic Card (Right side preview from screenshot) */}
+                <div className="w-full lg:w-96 bg-white rounded-xl p-4 text-slate-800 shadow-2xl z-10 border border-purple-200">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3 text-xs">
+                    <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                      <ShieldCheck size={14} className="text-[#632CA6]" /> L7 Gateway Node
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                      LIVE ACTIVE
+                    </span>
                   </div>
                   
-                  {/* Time Range Pills */}
-                  <div className="flex items-center bg-[#0a0a0d] border border-white/[0.06] rounded-lg p-0.5 text-[11px] font-mono">
-                    {["15m", "1h", "24h", "7d"].map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => setTimeRange(t)}
-                        className={`px-2.5 py-1 rounded-md transition ${
-                          timeRange === t ? "bg-zinc-800 text-white font-semibold shadow-xs" : "text-zinc-500 hover:text-zinc-300"
-                        }`}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* SVG Visualizer Bar Histogram */}
-                <div className="h-52 w-full flex items-end gap-1.5 pt-4 pb-2 px-2 border border-white/[0.04] rounded-lg bg-[#0c0c10] datadog-grid">
-                  {[
-                    { h: 35, b: false }, { h: 50, b: false }, { h: 65, b: false }, { h: 40, b: false },
-                    { h: 75, b: false }, { h: 90, b: true },  { h: 60, b: false }, { h: 45, b: false },
-                    { h: 70, b: false }, { h: 80, b: false }, { h: 55, b: false }, { h: 85, b: true },
-                    { h: 65, b: false }, { h: 95, b: false }, { h: 70, b: false }, { h: 50, b: false },
-                    { h: 60, b: false }, { h: 75, b: false }, { h: 85, b: false }, { h: 100, b: true },
-                    { h: 68, b: false }, { h: 82, b: false }, { h: 74, b: false }, { h: 91, b: false }
-                  ].map((bar, i) => (
-                    <div key={i} className="flex-1 flex flex-col justify-end items-center h-full group relative cursor-pointer">
-                      <div 
-                        style={{ height: `${bar.h}%` }}
-                        className={`w-full rounded-t-xs transition-all group-hover:brightness-125 ${
-                          bar.b 
-                            ? "bg-gradient-to-t from-red-600 to-red-400" 
-                            : "bg-gradient-to-t from-blue-600/80 to-blue-400"
-                        }`}
-                      />
-                      {/* Tooltip on hover */}
-                      <div className="absolute -top-7 hidden group-hover:flex items-center px-2 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-[10px] text-white font-mono whitespace-nowrap z-20 shadow-md">
-                        {bar.b ? "Threat Intercepted" : `${bar.h * 15} calls`}
-                      </div>
+                  {/* Miniature topology nodes */}
+                  <div className="space-y-2 font-mono text-[11px]">
+                    <div className="p-2 rounded bg-slate-50 border border-slate-200 flex justify-between items-center">
+                      <span className="text-slate-600">Client: Cursor &amp; Claude</span>
+                      <span className="text-emerald-600 font-bold">127.0.0.1</span>
                     </div>
-                  ))}
+                    <div className="p-2 rounded bg-purple-50 border border-purple-200 flex justify-between items-center text-[#632CA6]">
+                      <span className="font-bold">Sevlex L7 Inspection</span>
+                      <span>0.78ms (p99)</span>
+                    </div>
+                    <div className="p-2 rounded bg-slate-50 border border-slate-200 flex justify-between items-center">
+                      <span className="text-slate-600">Upstream MCP Servers</span>
+                      <span className="text-slate-900 font-semibold">10 Connected</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] text-zinc-500 mt-3 font-mono">
-                  <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-xs bg-blue-500"></span> Allowed Calls (99.1%)</span>
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-xs bg-red-500"></span> Blocked Injections (0.9%)</span>
-                  </div>
-                  <span>Sampling: 100% Packets Inspected</span>
-                </div>
               </div>
 
-              {/* Right (1 col): Live Threat Quarantine */}
-              <div className="bg-[#101014] border border-white/[0.06] rounded-xl p-5 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                      <AlertTriangle size={15} className="text-amber-400" />
-                      SecOps Threat Quarantine
-                    </h3>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-500/10 text-red-400 border border-red-500/20">
-                      3 CRITICAL
-                    </span>
-                  </div>
-                  <p className="text-xs text-zinc-400 mb-4">Autonomous agent violations blocked at L7:</p>
+              {/* SECTION 1: "Complete visibility into job health and performance" (Exact Screenshot Layout!) */}
+              <div className="space-y-6 pt-4">
+                <div className="text-center max-w-2xl mx-auto space-y-1">
+                  <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                    Complete visibility into tool health and performance
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Learn how Sevlex L7 Monitoring can help you solve security issues faster and save money
+                  </p>
+                </div>
 
-                  <div className="space-y-2.5">
+                {/* Split Bento: Left Selector Tabs + Right Live Data View */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                  
+                  {/* Left Column: 3 Feature Selectors (Directly from Screenshot!) */}
+                  <div className="lg:col-span-4 space-y-3 flex flex-col justify-between">
                     {[
-                      { 
-                        title: "CVE-2025-53107: Prompt Injection", 
-                        detail: "Malicious GitHub issue payload", 
-                        time: "2m ago", 
-                        user: "@meetp", 
-                        sev: "CRIT" 
+                      {
+                        title: "Detect prompt injections & tool violations with out-of-the-box alerts",
+                        desc: "Quickly prioritize threats by seeing raw intercepted JSON-RPC tokens and automated policy mitigations.",
+                        icon: ShieldAlert
                       },
-                      { 
-                        title: "Unauthorized SQL Drop Intercepted", 
-                        detail: "DROP TABLE users via postgres MCP", 
-                        time: "14m ago", 
-                        user: "@meetp", 
-                        sev: "CRIT" 
+                      {
+                        title: "Pinpoint and resolve failed and long-running MCP tool calls faster",
+                        desc: "Identify latency bottlenecks, rate-limit thresholds, and failed database operations before developers report them.",
+                        icon: Zap
                       },
-                      { 
-                        title: "Arbitrary Shell Execution Blocked", 
-                        detail: "/bin/sh -c exfil_keys attempt", 
-                        time: "1h ago", 
-                        user: "@meetp", 
-                        sev: "HIGH" 
-                      },
-                      { 
-                        title: "Mass Knowledge Exfiltration", 
-                        detail: "45 concurrent repo searches", 
-                        time: "3h ago", 
-                        user: "@meetp", 
-                        sev: "MED" 
+                      {
+                        title: "Reduce risk by governing shadow AI on developer laptops",
+                        desc: "Unify visibility across Claude Desktop, Cursor, and Windsurf through automated Win32 and Jamf deployments.",
+                        icon: Laptop
                       }
-                    ].map((threat, idx) => (
-                      <div key={idx} className="p-3 rounded-lg bg-[#0a0a0d] border border-white/[0.04] hover:border-zinc-700 transition">
-                        <div className="flex items-start justify-between gap-2">
-                          <span className="text-xs font-medium text-white truncate">{threat.title}</span>
-                          <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold ${
-                            threat.sev === "CRIT" 
-                              ? "bg-red-500/20 text-red-400 border border-red-500/30" 
-                              : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                          }`}>
-                            {threat.sev}
+                    ].map((feature, idx) => {
+                      const Icon = feature.icon;
+                      const isSelected = activeFeatureTab === idx;
+                      return (
+                        <div
+                          key={idx}
+                          onClick={() => setActiveFeatureTab(idx)}
+                          className={`p-5 rounded-xl border transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-white border-[#632CA6] shadow-md ring-1 ring-[#632CA6]"
+                              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <Icon size={18} className={isSelected ? "text-[#632CA6]" : "text-slate-400"} />
+                            <div>
+                              <h3 className={`text-xs font-bold leading-snug ${isSelected ? "text-slate-900" : "text-slate-700"}`}>
+                                {feature.title}
+                              </h3>
+                              {isSelected && (
+                                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                                  {feature.desc}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Right Column: Live Data View / Data Table (Directly from Screenshot!) */}
+                  <div className="lg:col-span-8 bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between">
+                    <div>
+                      {/* Top Bar inside preview card */}
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100 mb-4">
+                        <div className="flex items-center gap-2">
+                          <Activity size={16} className="text-[#632CA6]" />
+                          <span className="text-xs font-bold text-slate-900 font-mono">Live L7 Packet Telemetry</span>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-50 text-[#632CA6] border border-purple-200">
+                            STREAMING
                           </span>
                         </div>
-                        <p className="text-[11px] text-zinc-400 mt-1 font-mono">{threat.detail}</p>
-                        <div className="flex items-center justify-between text-[10px] text-zinc-500 mt-2 font-mono">
-                          <span>{threat.user}</span>
-                          <span>{threat.time}</span>
+
+                        <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
+                          <span>Total: 142,394</span>
+                          <span>•</span>
+                          <span className="text-emerald-600 font-semibold">99.1% Allowed</span>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
 
-                <button 
-                  onClick={() => setActiveTab("AUDIT")}
-                  className="w-full mt-4 py-2 rounded-lg bg-zinc-800/80 hover:bg-zinc-800 text-xs text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5"
-                >
-                  View All Forensic Receipts in Log Explorer <ArrowUpRight size={13} />
-                </button>
-              </div>
-
-            </div>
-
-            {/* ASSET INVENTORY & CONNECTED AI CLIENTS (SOC 2 CC6.1 TABLE) */}
-            <div className="bg-[#101014] border border-white/[0.06] rounded-xl p-5">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <Laptop size={16} className="text-emerald-400" />
-                    <h3 className="text-sm font-semibold text-white">
-                      Enrolled Endpoints &amp; Shadow AI Governance
-                    </h3>
-                    <span className="px-2 py-0.2 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                      SOC 2 CC6.1
-                    </span>
-                  </div>
-                  <p className="text-xs text-zinc-400 mt-0.5">Continuous deep packet inspection routing MCP clients through Sevlex Gateway</p>
-                </div>
-
-                <div className="flex items-center gap-2 font-mono text-xs text-zinc-400">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>Host: {fleetData?.host?.hostname || "Meet-Panchal"}</span>
-                  <span className="text-zinc-600">•</span>
-                  <span className="text-purple-400">@{fleetData?.host?.user || "meetp"}</span>
-                </div>
-              </div>
-
-              {/* 4 Shielded AI Clients Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                {[
-                  { name: "Claude Desktop", type: "Native Desktop App", status: "SHIELDED", icon: Laptop },
-                  { name: "Claude Code CLI", type: "Terminal Coding Agent", status: "SHIELDED", icon: Terminal },
-                  { name: "Cursor IDE", type: "AI Code Editor", status: "SHIELDED", icon: Code2 },
-                  { name: "Google Antigravity", type: "Autonomous Agent IDE", status: "SHIELDED", icon: ShieldCheck }
-                ].map((client, idx) => {
-                  const IconComp = client.icon;
-                  return (
-                    <div key={idx} className="p-3.5 rounded-lg bg-[#0a0a0d] border border-white/[0.04] flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xs font-semibold text-white flex items-center gap-1.5">
-                            <IconComp size={14} className="text-blue-400" />
-                            {client.name}
-                          </span>
-                          <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            ● SHIELDED
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-zinc-500">{client.type}</p>
-                      </div>
-
-                      <div className="mt-3 pt-2.5 border-t border-white/[0.04] flex items-center justify-between text-[10px] font-mono text-zinc-500">
-                        <span>L7 Intercept</span>
-                        <span className="text-emerald-400">Auto-Heal Active</span>
+                      {/* Live Data Grid */}
+                      <div className="overflow-x-auto rounded-lg border border-slate-100">
+                        <table className="w-full text-left border-collapse text-xs">
+                          <thead>
+                            <tr className="bg-slate-50 border-b border-slate-100 text-slate-500 uppercase font-mono text-[10px]">
+                              <th className="py-2.5 px-3 font-medium">Status</th>
+                              <th className="py-2.5 px-3 font-medium">Timestamp</th>
+                              <th className="py-2.5 px-3 font-medium">Identity</th>
+                              <th className="py-2.5 px-3 font-medium">Tool Call</th>
+                              <th className="py-2.5 px-3 font-medium text-right">Latency</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-100 font-mono text-slate-700">
+                            {[
+                              { s: "BLOCKED", t: "05:54:12.392", u: "meetp", tool: "delete_database", lat: "0.4ms" },
+                              { s: "ALLOWED", t: "05:54:11.840", u: "meetp", tool: "read_company_knowledge", lat: "0.8ms" },
+                              { s: "ALLOWED", t: "05:53:58.102", u: "meetp", tool: "github_search_issues", lat: "1.1ms" },
+                              { s: "BLOCKED", t: "05:52:45.918", u: "meetp", tool: "drop_table", lat: "0.3ms" },
+                              { s: "ALLOWED", t: "05:51:20.443", u: "meetp", tool: "slack_post_message", lat: "0.9ms" }
+                            ].map((row, idx) => (
+                              <tr key={idx} className="hover:bg-slate-50/80 transition">
+                                <td className="py-2.5 px-3">
+                                  {row.s === "BLOCKED" ? (
+                                    <span className="inline-flex items-center gap-1 text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                                      <ShieldAlert size={10} /> BLOCKED
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                                      <ShieldCheck size={10} /> ALLOWED
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="py-2.5 px-3 text-slate-500 text-[11px]">{row.t}</td>
+                                <td className="py-2.5 px-3 text-purple-700 font-medium">@{row.u}</td>
+                                <td className="py-2.5 px-3 font-bold text-slate-900">{row.tool}</td>
+                                <td className="py-2.5 px-3 text-right text-slate-500">{row.lat}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
-                  );
-                })}
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+                      <span>Audit Receipts: Synchronous SQLite WAL</span>
+                      <button 
+                        onClick={() => setActiveTab("AUDIT")}
+                        className="text-[#632CA6] hover:underline font-semibold flex items-center gap-1"
+                      >
+                        Inspect all 10,000+ entries in Log Explorer →
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
               </div>
 
-              {/* Endpoint Device Specification Table */}
-              <div className="overflow-x-auto rounded-lg border border-white/[0.04]">
-                <table className="w-full text-left border-collapse text-xs">
-                  <thead>
-                    <tr className="bg-[#0c0c10] border-b border-white/[0.04] text-zinc-500 uppercase font-mono text-[10px]">
-                      <th className="py-2.5 px-4 font-medium">Endpoint Host</th>
-                      <th className="py-2.5 px-4 font-medium">OS Architecture</th>
-                      <th className="py-2.5 px-4 font-medium">Authenticated Identity</th>
-                      <th className="py-2.5 px-4 font-medium">Tools In Scope</th>
-                      <th className="py-2.5 px-4 font-medium">SIEM Stream</th>
-                      <th className="py-2.5 px-4 font-medium text-right">Protection State</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/[0.04] font-mono text-zinc-300">
-                    <tr className="hover:bg-white/[0.02] transition">
-                      <td className="py-3 px-4 font-semibold text-white flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                        {fleetData?.host?.hostname || "Meet-Panchal"}
-                      </td>
-                      <td className="py-3 px-4 text-zinc-400">
-                        {fleetData?.host?.platform || "win32 (x64)"} • {fleetData?.host?.totalMemory || "16 GB"}
-                      </td>
-                      <td className="py-3 px-4 text-purple-400">
-                        @{fleetData?.host?.user || "meetp"}
-                      </td>
-                      <td className="py-3 px-4 text-zinc-300">
-                        {fleetData?.telemetry?.discoveredCount || 44} discovered ({blockedTools.length} banned)
-                      </td>
-                      <td className="py-3 px-4 text-emerald-400">
-                        Datadog US5 (Synced)
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                          100% Zero-Trust Active
+              {/* SECTION 2: "Be the first to know when policies break" (Matching Screenshot Section 3!) */}
+              <div className="space-y-6 pt-4">
+                <div className="text-center max-w-2xl mx-auto space-y-1">
+                  <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                    Be the first to know when data breaks
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Ensure trust in your data by detecting, resolving, and preventing data issues with Quality Monitoring
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                  
+                  {/* Left Column: Time Series Monitor Chart */}
+                  <div className="lg:col-span-8 bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                        <div className="flex items-center gap-2">
+                          <BarChart3 size={16} className="text-[#632CA6]" />
+                          <span className="text-xs font-bold text-slate-900 font-mono">pricing freshness &amp; tool invocations</span>
+                        </div>
+                        <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                          STATUS: OK
                         </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                      </div>
+
+                      {/* SVG Metric Chart with Upper/Lower bounds */}
+                      <div className="h-44 w-full border border-slate-100 rounded-lg p-2 flex flex-col justify-between bg-slate-50/50 relative overflow-hidden">
+                        <svg className="w-full h-full" viewBox="0 0 500 120" fill="none">
+                          {/* Upper bound dashed line */}
+                          <line x1="0" y1="20" x2="500" y2="20" stroke="#CBD5E1" strokeWidth="1" strokeDasharray="4 4" />
+                          <text x="10" y="15" fill="#94A3B8" fontSize="9" fontFamily="monospace">UPPER BOUND (120 req/s)</text>
+
+                          {/* Lower bound dashed line */}
+                          <line x1="0" y1="100" x2="500" y2="100" stroke="#CBD5E1" strokeWidth="1" strokeDasharray="4 4" />
+                          <text x="10" y="112" fill="#94A3B8" fontSize="9" fontFamily="monospace">LOWER BOUND (10 req/s)</text>
+
+                          {/* Data line */}
+                          <path 
+                            d="M 0 70 Q 50 60, 100 80 T 200 40 T 300 65 T 400 30 T 500 50" 
+                            stroke="#632CA6" 
+                            strokeWidth="2.5" 
+                            fill="none" 
+                          />
+                          {/* Anomaly Spike in red */}
+                          <circle cx="400" cy="30" r="4" fill="#EF4444" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                      <span>Anomaly Detection: Statistical Outlier Intercept</span>
+                      <span className="text-red-600 font-semibold">1 Interception at 05:52</span>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Accordion Diagnostic Items (Matching Screenshot!) */}
+                  <div className="lg:col-span-4 space-y-3 flex flex-col justify-between">
+                    {[
+                      {
+                        title: "Detect silent data issues",
+                        desc: "Continuously monitor the health of tools within your AI pipelines, so you're the first to know when data breaks."
+                      },
+                      {
+                        title: "Assess blast radius",
+                        desc: "Trace which AI models, agents, and employee accounts were exposed to the compromised tool call."
+                      },
+                      {
+                        title: "Diagnose root cause",
+                        desc: "Pinpoint whether the failure was an indirect prompt injection, credential exfiltration, or invalid schema."
+                      }
+                    ].map((diag, idx) => {
+                      const isSelected = activeDiagnosisTab === idx;
+                      return (
+                        <div
+                          key={idx}
+                          onClick={() => setActiveDiagnosisTab(idx)}
+                          className={`p-5 rounded-xl border transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-white border-[#632CA6] shadow-md ring-1 ring-[#632CA6]"
+                              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+                          }`}
+                        >
+                          <h3 className={`text-xs font-bold ${isSelected ? "text-slate-900" : "text-slate-700"}`}>
+                            {diag.title}
+                          </h3>
+                          {isSelected && (
+                            <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                              {diag.desc}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                </div>
               </div>
+
+              {/* SECTION 3: "Dive deeper" (Matching Bottom of User Screenshot!) */}
+              <div className="space-y-4 pt-4">
+                <div className="text-center max-w-xl mx-auto space-y-1">
+                  <h2 className="text-xl font-bold tracking-tight text-slate-900">Dive deeper</h2>
+                  <p className="text-xs text-slate-500">Resources and guides to help you get the most out of Sevlex Observability</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[
+                    {
+                      title: "Public Documentation",
+                      desc: "Complete architectural references for Layer 7 DPI, JSON-RPC parsing, and stream fail-closing.",
+                      icon: FileText
+                    },
+                    {
+                      title: "Detect issues and optimize speed with out-of-the-box policies",
+                      desc: "Explore pre-configured zero-trust rules for GitHub, PostgreSQL, AWS, and Slack MCP servers.",
+                      icon: Shield
+                    },
+                    {
+                      title: "Ensure trust across the entire data life cycle",
+                      desc: "How to export SOC 2 Type II audit evidence and stream real-time telemetry to Datadog US5.",
+                      icon: Database
+                    }
+                  ].map((res, idx) => {
+                    const Icon = res.icon;
+                    return (
+                      <div key={idx} className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between hover:border-slate-300 transition group">
+                        <div className="space-y-3">
+                          <div className="w-10 h-10 rounded-lg bg-purple-50 text-[#632CA6] flex items-center justify-center border border-purple-100">
+                            <Icon size={20} />
+                          </div>
+                          <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#632CA6] transition">
+                            {res.title}
+                          </h3>
+                          <p className="text-xs text-slate-500 leading-relaxed">
+                            {res.desc}
+                          </p>
+                        </div>
+
+                        <div className="mt-5 pt-3 border-t border-slate-100">
+                          <span className="text-xs font-semibold text-[#632CA6] flex items-center gap-1 group-hover:underline">
+                            See more →
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
             </div>
+          )}
 
-          </div>
-        )}
+          {/* ========================================================================= */}
+          {/* TAB 1: VISUAL POLICY LIBRARY (Clean White Datadog Styling)                */}
+          {/* ========================================================================= */}
+          {activeTab === "POLICY" && (
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+              <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
+                <div>
+                  <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                    <Sliders size={18} className="text-[#632CA6]" />
+                    Enterprise L7 Policy Engine
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">Toggle allowed and blocked MCP tools across all connected corporate servers in real time.</p>
+                </div>
 
-        {/* ========================================================================= */}
-        {/* TAB 1: VISUAL POLICY LIBRARY (L7 Rules)                                  */}
-        {/* ========================================================================= */}
-        {activeTab === "POLICY" && (
-          <div className="bg-[#101014] border border-white/[0.06] rounded-xl p-5 shadow-xl">
-            <div className="mb-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/[0.06] pb-4">
-              <div>
-                <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
-                  <Sliders size={18} className="text-blue-400" />
-                  Enterprise L7 Policy Engine
-                </h2>
-                <p className="text-xs text-zinc-400 mt-0.5">Toggle allowed and blocked MCP tools across all connected corporate servers in real time.</p>
-              </div>
-
-              <div className="flex items-center gap-3 w-full sm:w-auto">
-                <div className="relative flex-1 sm:w-64">
-                  <Search size={14} className="absolute left-3 top-2.5 text-zinc-500" />
+                <div className="relative w-full sm:w-72">
+                  <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
                   <input 
                     type="text" 
                     placeholder="Search tools (e.g. drop_table)..."
@@ -762,284 +787,289 @@ export default function Dashboard() {
                       setPolicySearch(e.target.value);
                       setExpandedServers({});
                     }}
-                    className="w-full bg-[#0a0a0d] border border-white/[0.06] rounded-lg pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-500 outline-none font-mono focus:border-blue-500/50"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#632CA6] focus:bg-white"
                   />
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-3">
-              {mcpLibrary.map((server) => {
-                const filteredTools = server.tools.filter(tool => 
-                  tool.toLowerCase().includes(policySearch.toLowerCase())
-                );
-                
-                if (filteredTools.length === 0 && policySearch) return null;
-                const isExpanded = expandedServers[server.server] ?? (policySearch.trim() !== "");
+              <div className="space-y-3">
+                {mcpLibrary.map((server) => {
+                  const filteredTools = server.tools.filter(tool => 
+                    tool.toLowerCase().includes(policySearch.toLowerCase())
+                  );
+                  
+                  if (filteredTools.length === 0 && policySearch) return null;
+                  const isExpanded = expandedServers[server.server] ?? (policySearch.trim() !== "");
 
-                return (
-                  <div key={server.server} className="border border-white/[0.06] rounded-lg overflow-hidden bg-[#0c0c10]">
-                    <button 
-                      onClick={() => setExpandedServers(prev => ({ ...prev, [server.server]: !isExpanded }))}
-                      className="w-full bg-[#121216] px-4 py-3 flex items-center justify-between hover:bg-zinc-800/40 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="p-1.5 bg-zinc-900 rounded-md border border-white/[0.06] flex items-center justify-center">
-                          {getBrandIcon(server.server)}
+                  return (
+                    <div key={server.server} className="border border-slate-200 rounded-lg overflow-hidden bg-white">
+                      <button 
+                        onClick={() => setExpandedServers(prev => ({ ...prev, [server.server]: !isExpanded }))}
+                        className="w-full bg-slate-50 px-4 py-3 flex items-center justify-between hover:bg-slate-100/70 transition"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="p-1.5 bg-white rounded-md border border-slate-200 flex items-center justify-center">
+                            {getBrandIcon(server.server)}
+                          </div>
+                          <h3 className="font-bold text-xs text-slate-800">
+                            {server.server} 
+                            <span className="text-slate-500 text-[11px] font-mono ml-2 font-normal">({filteredTools.length} tools)</span>
+                          </h3>
                         </div>
-                        <h3 className="font-medium text-xs text-zinc-200">
-                          {server.server} 
-                          <span className="text-zinc-500 text-[11px] font-mono ml-2">({filteredTools.length} tools)</span>
-                        </h3>
-                      </div>
-                      {isExpanded ? <ChevronDown size={14} className="text-zinc-500" /> : <ChevronRight size={14} className="text-zinc-500" />}
-                    </button>
-                    
-                    {isExpanded && (
-                      <div className="divide-y divide-white/[0.04]">
-                        {filteredTools.map((tool) => {
-                          const isBlocked = blockedTools.includes(tool);
-                          return (
-                            <div key={tool} className="flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] transition-colors group">
-                              <div className="flex-1 flex items-center gap-3">
-                                <p className="font-mono text-xs font-medium text-zinc-300 group-hover:text-blue-400 transition-colors">{tool}</p>
-                                {isBlocked ? (
-                                  <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-red-500/10 text-red-400 border border-red-500/20 uppercase">
-                                    BLOCKED
-                                  </span>
-                                ) : (
-                                  <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
-                                    ALLOWED
-                                  </span>
-                                )}
+                        {isExpanded ? <ChevronDown size={14} className="text-slate-500" /> : <ChevronRight size={14} className="text-slate-500" />}
+                      </button>
+                      
+                      {isExpanded && (
+                        <div className="divide-y divide-slate-100">
+                          {filteredTools.map((tool) => {
+                            const isBlocked = blockedTools.includes(tool);
+                            return (
+                              <div key={tool} className="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50/50 transition group">
+                                <div className="flex-1 flex items-center gap-3">
+                                  <p className="font-mono text-xs font-medium text-slate-800 group-hover:text-[#632CA6] transition">{tool}</p>
+                                  {isBlocked ? (
+                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-red-50 text-red-700 border border-red-200 uppercase">
+                                      BLOCKED
+                                    </span>
+                                  ) : (
+                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase">
+                                      ALLOWED
+                                    </span>
+                                  )}
+                                </div>
+                                <button 
+                                  onClick={() => toggleTool(tool)}
+                                  className="focus:outline-none ml-3 transition-transform active:scale-95"
+                                  title={isBlocked ? "Click to Allow" : "Click to Block"}
+                                >
+                                  {isBlocked ? (
+                                    <ToggleLeft size={28} className="text-red-500 hover:text-red-600 transition" />
+                                  ) : (
+                                    <ToggleRight size={28} className="text-emerald-500 hover:text-emerald-600 transition" />
+                                  )}
+                                </button>
                               </div>
-                              <button 
-                                onClick={() => toggleTool(tool)}
-                                className="focus:outline-none ml-3 transition-transform active:scale-95"
-                                title={isBlocked ? "Click to Allow" : "Click to Block"}
-                              >
-                                {isBlocked ? (
-                                  <ToggleLeft size={26} className="text-red-500 hover:text-red-400 transition-colors" />
-                                ) : (
-                                  <ToggleRight size={26} className="text-emerald-500 hover:text-emerald-400 transition-colors" />
-                                )}
-                              </button>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* TAB 2: DATADOG LOG EXPLORER (Audit Viewer + Facets)                       */}
-        {/* ========================================================================= */}
-        {activeTab === "AUDIT" && (
-          <div className="bg-[#101014] border border-white/[0.06] rounded-xl overflow-hidden shadow-xl flex flex-col">
-            
-            {/* Top Toolbar */}
-            <div className="p-4 border-b border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between bg-[#121216] gap-3">
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <div className="relative flex-1 sm:w-80">
-                  <Search size={14} className="absolute left-3 top-2.5 text-zinc-500" />
-                  <input 
-                    type="text" 
-                    placeholder="Search logs by tool name, payload, or user..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="w-full bg-[#0a0a0d] border border-white/[0.06] rounded-lg pl-9 pr-3 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-500 outline-none font-mono focus:border-blue-500/50"
-                  />
-                </div>
-
-                {/* Status Facet Filter */}
-                <div className="flex items-center bg-[#0a0a0d] border border-white/[0.06] rounded-lg p-0.5 text-xs font-mono">
-                  <button 
-                    onClick={() => setStatusFilter("ALL")}
-                    className={`px-2.5 py-1 rounded transition ${statusFilter === "ALL" ? "bg-zinc-800 text-white font-semibold" : "text-zinc-500"}`}
-                  >
-                    All ({logs.length})
-                  </button>
-                  <button 
-                    onClick={() => setStatusFilter("ALLOWED")}
-                    className={`px-2.5 py-1 rounded transition ${statusFilter === "ALLOWED" ? "bg-emerald-500/20 text-emerald-400 font-semibold" : "text-zinc-500"}`}
-                  >
-                    Allowed
-                  </button>
-                  <button 
-                    onClick={() => setStatusFilter("BLOCKED")}
-                    className={`px-2.5 py-1 rounded transition ${statusFilter === "BLOCKED" ? "bg-red-500/20 text-red-400 font-semibold" : "text-zinc-500"}`}
-                  >
-                    Blocked
-                  </button>
-                </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
+            </div>
+          )}
 
-              <div className="flex items-center gap-2">
+          {/* ========================================================================= */}
+          {/* TAB 2: AUDIT LOGS (Datadog Log Explorer Style with Facets)                */}
+          {/* ========================================================================= */}
+          {activeTab === "AUDIT" && (
+            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs flex flex-col">
+              
+              {/* Top Toolbar */}
+              <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-50 gap-3">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                  <div className="relative flex-1 sm:w-80">
+                    <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
+                    <input 
+                      type="text" 
+                      placeholder="Search logs by tool name, payload, or user..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#632CA6]"
+                    />
+                  </div>
+
+                  {/* Status Facet Filter */}
+                  <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 text-xs font-mono">
+                    <button 
+                      onClick={() => setStatusFilter("ALL")}
+                      className={`px-2.5 py-1 rounded transition ${statusFilter === "ALL" ? "bg-slate-900 text-white font-semibold" : "text-slate-500"}`}
+                    >
+                      All ({logs.length})
+                    </button>
+                    <button 
+                      onClick={() => setStatusFilter("ALLOWED")}
+                      className={`px-2.5 py-1 rounded transition ${statusFilter === "ALLOWED" ? "bg-emerald-100 text-emerald-800 font-semibold" : "text-slate-500"}`}
+                    >
+                      Allowed
+                    </button>
+                    <button 
+                      onClick={() => setStatusFilter("BLOCKED")}
+                      className={`px-2.5 py-1 rounded transition ${statusFilter === "BLOCKED" ? "bg-red-100 text-red-800 font-semibold" : "text-slate-500"}`}
+                    >
+                      Blocked
+                    </button>
+                  </div>
+                </div>
+
                 <button 
                   onClick={exportLogsToCsv}
-                  className="flex items-center gap-1.5 bg-white text-black px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-zinc-200 transition shadow-sm"
+                  className="flex items-center gap-1.5 bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-800 transition"
                 >
                   <Download size={13} /> Export SOC-2 CSV
                 </button>
               </div>
-            </div>
 
-            {/* Logs Table with JSON Drawer */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.06]">
-              
-              {/* Left (2 cols): Stream Table */}
-              <div className="lg:col-span-2 overflow-x-auto max-h-[600px] overflow-y-auto">
-                <table className="w-full text-left border-collapse text-xs">
-                  <thead className="sticky top-0 bg-[#0d0d11] border-b border-white/[0.06] text-zinc-500 uppercase font-mono text-[10px] z-10">
-                    <tr>
-                      <th className="py-2.5 px-4 font-medium">Status</th>
-                      <th className="py-2.5 px-4 font-medium">Timestamp</th>
-                      <th className="py-2.5 px-4 font-medium">Identity</th>
-                      <th className="py-2.5 px-4 font-medium">Tool Call</th>
-                      <th className="py-2.5 px-4 font-medium">Preview</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/[0.04] font-mono text-zinc-300">
-                    {filteredLogs.length > 0 ? filteredLogs.map((log) => (
-                      <tr 
-                        key={log.id} 
-                        onClick={() => setSelectedLog(log)}
-                        className={`hover:bg-white/[0.03] transition-colors cursor-pointer ${
-                          selectedLog?.id === log.id ? "bg-blue-500/10 border-l-2 border-blue-500" : ""
-                        }`}
-                      >
-                        <td className="py-2.5 px-4">
-                          {log.status === "BLOCKED" ? (
-                            <span className="inline-flex items-center gap-1 text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
-                              <ShieldAlert size={11} /> BLOCKED
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
-                              <ShieldCheck size={11} /> ALLOWED
-                            </span>
-                          )}
-                        </td>
-                        <td className="py-2.5 px-4 text-zinc-500 text-[11px] whitespace-nowrap">{log.timestamp}</td>
-                        <td className="py-2.5 px-4 text-purple-400">@{log.user_id || "meetp"}</td>
-                        <td className="py-2.5 px-4 font-semibold text-white">{log.tool_name}</td>
-                        <td className="py-2.5 px-4 text-zinc-500 truncate max-w-xs">{log.raw_request}</td>
-                      </tr>
-                    )) : (
+              {/* Logs Table with JSON Drawer */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+                
+                {/* Left (2 cols): Stream Table */}
+                <div className="lg:col-span-2 overflow-x-auto max-h-[600px] overflow-y-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead className="sticky top-0 bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px] z-10">
                       <tr>
-                        <td colSpan={5} className="py-12 text-center text-zinc-500 text-xs font-mono">
-                          No audit receipts found matching criteria.
-                        </td>
+                        <th className="py-2.5 px-4 font-medium">Status</th>
+                        <th className="py-2.5 px-4 font-medium">Timestamp</th>
+                        <th className="py-2.5 px-4 font-medium">Identity</th>
+                        <th className="py-2.5 px-4 font-medium">Tool Call</th>
+                        <th className="py-2.5 px-4 font-medium">Payload Preview</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 font-mono text-slate-700">
+                      {filteredLogs.length > 0 ? filteredLogs.map((log) => (
+                        <tr 
+                          key={log.id} 
+                          onClick={() => setSelectedLog(log)}
+                          className={`hover:bg-slate-50 transition cursor-pointer ${
+                            selectedLog?.id === log.id ? "bg-purple-50/70 border-l-2 border-[#632CA6]" : ""
+                          }`}
+                        >
+                          <td className="py-2.5 px-4">
+                            {log.status === "BLOCKED" ? (
+                              <span className="inline-flex items-center gap-1 text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                                <ShieldAlert size={11} /> BLOCKED
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                                <ShieldCheck size={11} /> ALLOWED
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-2.5 px-4 text-slate-500 text-[11px] whitespace-nowrap">{log.timestamp}</td>
+                          <td className="py-2.5 px-4 text-purple-700 font-medium">@{log.user_id || "meetp"}</td>
+                          <td className="py-2.5 px-4 font-bold text-slate-900">{log.tool_name}</td>
+                          <td className="py-2.5 px-4 text-slate-500 truncate max-w-xs">{log.raw_request}</td>
+                        </tr>
+                      )) : (
+                        <tr>
+                          <td colSpan={5} className="py-12 text-center text-slate-500 text-xs font-mono">
+                            No audit receipts found matching criteria.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
 
-              {/* Right (1 col): Datadog-style JSON Inspector Drawer */}
-              <div className="bg-[#0c0c10] p-4 flex flex-col justify-between max-h-[600px] overflow-y-auto">
-                {selectedLog ? (
-                  <div>
-                    <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
-                      <span className="text-xs font-bold text-white flex items-center gap-1.5 font-mono">
-                        <Eye size={13} className="text-blue-400" /> Event #{selectedLog.id} Detail
-                      </span>
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                        selectedLog.status === "BLOCKED" 
-                          ? "bg-red-500/20 text-red-400 border border-red-500/30" 
-                          : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                      }`}>
-                        {selectedLog.status}
-                      </span>
+                {/* Right (1 col): JSON Inspector Drawer */}
+                <div className="bg-slate-50/50 p-4 flex flex-col justify-between max-h-[600px] overflow-y-auto">
+                  {selectedLog ? (
+                    <div>
+                      <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+                        <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5 font-mono">
+                          <Eye size={13} className="text-[#632CA6]" /> Event #{selectedLog.id} Detail
+                        </span>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                          selectedLog.status === "BLOCKED" 
+                            ? "bg-red-100 text-red-800" 
+                            : "bg-emerald-100 text-emerald-800"
+                        }`}>
+                          {selectedLog.status}
+                        </span>
+                      </div>
+
+                      <div className="space-y-3 text-xs font-mono">
+                        <div>
+                          <span className="text-slate-400 text-[10px] uppercase font-bold">Tool Name:</span>
+                          <p className="text-slate-900 font-bold">{selectedLog.tool_name}</p>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 text-[10px] uppercase font-bold">Authenticated Identity:</span>
+                          <p className="text-purple-700">@{selectedLog.user_id || "meetp"}</p>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 text-[10px] uppercase font-bold">Timestamp:</span>
+                          <p className="text-slate-700">{selectedLog.timestamp}</p>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 text-[10px] uppercase font-bold">Layer 7 Deep Packet Payload:</span>
+                          <pre className="mt-1.5 p-3 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-800 font-mono whitespace-pre-wrap break-all overflow-x-auto max-h-60 shadow-xs">
+                            {(() => {
+                              try {
+                                return JSON.stringify(JSON.parse(selectedLog.raw_request), null, 2);
+                              } catch {
+                                return selectedLog.raw_request;
+                              }
+                            })()}
+                          </pre>
+                        </div>
+                      </div>
                     </div>
-
-                    <div className="space-y-3 text-xs font-mono">
-                      <div>
-                        <span className="text-zinc-500 text-[10px] uppercase">Tool Name:</span>
-                        <p className="text-white font-semibold">{selectedLog.tool_name}</p>
-                      </div>
-                      <div>
-                        <span className="text-zinc-500 text-[10px] uppercase">Authenticated Identity:</span>
-                        <p className="text-purple-400">@{selectedLog.user_id || "meetp"}</p>
-                      </div>
-                      <div>
-                        <span className="text-zinc-500 text-[10px] uppercase">Timestamp:</span>
-                        <p className="text-zinc-300">{selectedLog.timestamp}</p>
-                      </div>
-                      <div>
-                        <span className="text-zinc-500 text-[10px] uppercase">Layer 7 Deep Packet Payload:</span>
-                        <pre className="mt-1.5 p-3 rounded-lg bg-[#08080a] border border-white/[0.06] text-[11px] text-zinc-300 font-mono whitespace-pre-wrap break-all overflow-x-auto max-h-60">
-                          {(() => {
-                            try {
-                              return JSON.stringify(JSON.parse(selectedLog.raw_request), null, 2);
-                            } catch {
-                              return selectedLog.raw_request;
-                            }
-                          })()}
-                        </pre>
-                      </div>
+                  ) : (
+                    <div className="py-20 text-center text-slate-400 text-xs font-mono flex flex-col items-center justify-center">
+                      <Eye size={24} className="mb-2 opacity-40 text-slate-400" />
+                      <p>Select any audit receipt on the left to inspect full Layer 7 JSON-RPC forensic packet.</p>
                     </div>
-                  </div>
-                ) : (
-                  <div className="py-20 text-center text-zinc-500 text-xs font-mono flex flex-col items-center justify-center">
-                    <Eye size={24} className="mb-2 opacity-40" />
-                    <p>Select any audit receipt on the left to inspect full Layer 7 JSON-RPC forensic packet.</p>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
 
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ========================================================================= */}
-        {/* TAB 3: FLEET MDM (Level 3 Packages)                                       */}
-        {/* ========================================================================= */}
-        {activeTab === "MDM" && (
-          <FleetMdmTab 
-            apiKey={apiKey} 
-            setPingStatus={setPingStatus} 
-            copiedType={copiedType} 
-            setCopiedType={setCopiedType} 
-          />
-        )}
+          {/* ========================================================================= */}
+          {/* TAB 3: FLEET MDM (Level 3 Packages)                                       */}
+          {/* ========================================================================= */}
+          {activeTab === "MDM" && (
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+              <FleetMdmTab 
+                apiKey={apiKey} 
+                setPingStatus={setPingStatus} 
+                copiedType={copiedType} 
+                setCopiedType={setCopiedType} 
+              />
+            </div>
+          )}
 
-        {/* ========================================================================= */}
-        {/* TAB 4: SIEM STREAM (Datadog US5)                                          */}
-        {/* ========================================================================= */}
-        {activeTab === "SIEM" && (
-          <SiemObservabilityTab 
-            apiKey={apiKey} 
-            ddEndpoint={ddEndpoint} 
-            setPingStatus={setPingStatus} 
-          />
-        )}
+          {/* ========================================================================= */}
+          {/* TAB 4: SIEM STREAM (Datadog US5)                                          */}
+          {/* ========================================================================= */}
+          {activeTab === "SIEM" && (
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+              <SiemObservabilityTab 
+                apiKey={apiKey} 
+                ddEndpoint={ddEndpoint} 
+                setPingStatus={setPingStatus} 
+              />
+            </div>
+          )}
 
-        {/* ========================================================================= */}
-        {/* TAB 5: INCIDENT ALERTS (Slack & PagerDuty)                                 */}
-        {/* ========================================================================= */}
-        {activeTab === "ALERTS" && (
-          <AlertingTab 
-            apiKey={apiKey} 
-            slackUrlInput={slackUrlInput} 
-            setSlackUrlInput={setSlackUrlInput} 
-            setPingStatus={setPingStatus} 
-          />
-        )}
+          {/* ========================================================================= */}
+          {/* TAB 5: INCIDENT ALERTS (Slack & PagerDuty)                                 */}
+          {/* ========================================================================= */}
+          {activeTab === "ALERTS" && (
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+              <AlertingTab 
+                apiKey={apiKey} 
+                slackUrlInput={slackUrlInput} 
+                setSlackUrlInput={setSlackUrlInput} 
+                setPingStatus={setPingStatus} 
+              />
+            </div>
+          )}
 
-        {/* Global Toast Notification */}
-        {pingStatus && (
-          <div className="fixed bottom-6 right-6 z-50 p-3.5 bg-[#121216] border border-white/[0.1] rounded-xl text-xs font-mono text-zinc-200 shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">
-            <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
-            <span>{pingStatus}</span>
-          </div>
-        )}
+        </main>
+      </div>
 
-      </main>
+      {/* Global Toast Notification */}
+      {pingStatus && (
+        <div className="fixed bottom-6 right-6 z-50 p-3.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-white shadow-2xl flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+          <span>{pingStatus}</span>
+        </div>
+      )}
+
     </div>
   );
 }
