@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Sevlex Enterprise | Layer 7 Zero-Trust MCP Security Gateway",
   description: "Enterprise Layer 7 Zero-Trust MCP Firewall, Shadow AI discovery, and continuous endpoint governance for Claude, Cursor, and Windsurf.",
+  icons: {
+    icon: "/sevlex-icon.png",
+  },
 };
 
 export default function RootLayout({

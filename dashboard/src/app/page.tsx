@@ -235,10 +235,15 @@ export default function Dashboard() {
       <div className="min-h-screen bg-[#08080a] text-zinc-300 font-sans flex items-center justify-center p-4 datadog-grid">
         <form onSubmit={handleLogin} className="bg-[#101014] p-8 rounded-2xl border border-white/[0.08] shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
           <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
-          <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-4">
-            <ShieldAlert className="text-blue-400" size={26} />
+          <div className="flex justify-center mb-5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src="/sevlex-logo.png" 
+              alt="Sevlex Logo" 
+              className="h-12 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.25)]" 
+            />
           </div>
-          <h2 className="text-xl font-bold text-white mb-1 tracking-tight">Sevlex SecOps Console</h2>
+          <h2 className="text-base font-bold text-white mb-1 tracking-tight">Enterprise SecOps Console</h2>
           <p className="text-xs text-zinc-400 mb-6">Enter Admin API Key to access Layer 7 telemetry.</p>
           <input
             type="password"
@@ -265,11 +270,16 @@ export default function Dashboard() {
           
           {/* Left: Brand + Env Selector */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-[0_0_12px_rgba(59,130,246,0.4)]">
-                <ShieldCheck size={16} className="text-white" />
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-[#141419] border border-white/[0.1] flex items-center justify-center p-1 shadow-[0_0_12px_rgba(255,255,255,0.12)] group">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src="/sevlex-icon.png" 
+                  alt="Sevlex Logo Icon" 
+                  className="w-full h-full object-contain filter drop-shadow-[0_0_6px_rgba(255,255,255,0.4)] transition-transform group-hover:scale-105" 
+                />
               </div>
-              <span className="font-bold text-sm tracking-tight text-white">SEVLEX</span>
+              <span className="font-bold text-sm tracking-tight text-white font-mono">SEVLEX</span>
               <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">
                 L7 FIREWALL
               </span>
