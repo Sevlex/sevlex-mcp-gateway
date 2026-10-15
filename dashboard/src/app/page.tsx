@@ -285,7 +285,7 @@ export default function Dashboard() {
             <img 
               src="/sevlex-brand-horizontal.png" 
               alt="SEVLEX" 
-              className="h-6 w-auto object-contain object-left" 
+              className="h-7 w-auto object-contain object-left" 
             />
           </div>
 
