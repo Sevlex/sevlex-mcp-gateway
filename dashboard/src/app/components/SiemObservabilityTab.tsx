@@ -15,9 +15,9 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Zap className="text-[#632CA6]" size={22} />
+            <Zap className="text-[#2563EB]" size={22} />
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">SIEM &amp; Security Observability</h2>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-[#632CA6] border border-purple-200 uppercase tracking-wider font-mono">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
               Datadog US5 Connected
             </span>
           </div>
@@ -34,11 +34,11 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
       </div>
 
       {/* Architecture Role Callout */}
-      <div className="p-4 rounded-xl border border-purple-200 bg-purple-50/60 text-xs text-purple-900 leading-relaxed flex items-start gap-3">
-        <Sparkles size={18} className="text-[#632CA6] shrink-0 mt-0.5" />
+      <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/60 text-xs text-blue-900 leading-relaxed flex items-start gap-3">
+        <Sparkles size={18} className="text-[#2563EB] shrink-0 mt-0.5" />
         <div>
           <strong className="text-slate-900 font-bold block mb-0.5">Role of SIEM in Sevlex:</strong>
-          Datadog is where <span className="underline font-semibold text-[#632CA6]">audit logs live</span>. Every allowed and blocked tool call is streamed asynchronously over HTTPS to Datadog&apos;s Log Explorer for compliance audits, threat hunting, and long-term retention.
+          Datadog is where <span className="underline font-semibold text-[#2563EB]">audit logs live</span>. Every allowed and blocked tool call is streamed asynchronously over HTTPS to Datadog&apos;s Log Explorer for compliance audits, threat hunting, and long-term retention.
         </div>
       </div>
 
@@ -48,7 +48,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="Datadog" className="w-5 h-5" />
                 </div>
@@ -80,7 +80,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 text-[11px]">
                 <div className="flex justify-between items-center">
                   <span className="text-slate-500">Service Tag:</span>
-                  <span className="text-purple-700 font-bold">sevlex-mcp-gateway</span>
+                  <span className="text-blue-700 font-bold">sevlex-mcp-gateway</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-500">Pipeline Mode:</span>
@@ -99,7 +99,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
               href="https://app.datadoghq.com/logs" 
               target="_blank" 
               rel="noreferrer"
-              className="text-xs text-[#632CA6] hover:underline font-bold flex items-center gap-1"
+              className="text-xs text-[#2563EB] hover:underline font-bold flex items-center gap-1"
             >
               Open Datadog Log Explorer <ExternalLink size={12} />
             </a>
@@ -112,8 +112,8 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center">
-                  <ShieldCheck size={20} className="text-[#632CA6]" />
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                  <ShieldCheck size={20} className="text-[#2563EB]" />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Splunk / Sentinel / S3</h3>
@@ -152,7 +152,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
                 setPingStatus("📋 SIEM configuration docs copied to clipboard");
                 setTimeout(() => setPingStatus(null), 3000);
               }}
-              className="text-xs text-[#632CA6] hover:underline font-bold"
+              className="text-xs text-[#2563EB] hover:underline font-bold"
             >
               Export Terraform Spec
             </button>

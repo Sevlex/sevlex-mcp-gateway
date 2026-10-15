@@ -67,9 +67,9 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Server className="text-[#632CA6]" size={22} />
+            <Server className="text-[#2563EB]" size={22} />
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">Enterprise Fleet Package Rollout (Level 3)</h2>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-[#632CA6] border border-purple-200 uppercase tracking-wider font-mono">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
               Win32 &amp; Jamf Packages Ready
             </span>
           </div>
@@ -104,8 +104,8 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
           ].map((item, idx) => {
             const IconComponent = item.icon;
             return (
-              <div key={idx} className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-slate-200 shadow-xs hover:border-purple-300 transition">
-                <IconComponent size={16} className="text-[#632CA6] flex-shrink-0" />
+              <div key={idx} className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-slate-200 shadow-xs hover:border-blue-300 transition">
+                <IconComponent size={16} className="text-[#2563EB] flex-shrink-0" />
                 <div className="truncate">
                   <p className="text-xs font-bold text-slate-800 truncate">{item.name}</p>
                   <p className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1">
@@ -119,8 +119,8 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
       </div>
 
       {/* Architectural Role Callout */}
-      <div className="p-4 rounded-xl border border-purple-200 bg-purple-50/60 text-xs text-purple-900 leading-relaxed flex items-start gap-3">
-        <Sparkles size={18} className="text-[#632CA6] shrink-0 mt-0.5" />
+      <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/60 text-xs text-blue-900 leading-relaxed flex items-start gap-3">
+        <Sparkles size={18} className="text-[#2563EB] shrink-0 mt-0.5" />
         <div>
           <strong className="text-slate-900 font-bold block mb-0.5">Why Level 3 Enterprise Packages are Superior:</strong>
           Unlike raw scripts that can fail on strict PowerShell execution policies, these packages contain self-contained execution manifests that show up in Microsoft Intune and Jamf Pro Company Portals with formal version reporting, health monitors, and 1-click silent uninstallation.
@@ -135,15 +135,15 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center">
-                  <PackageCheck size={20} className="text-[#632CA6]" />
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                  <PackageCheck size={20} className="text-[#2563EB]" />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Microsoft Intune Win32 App</h3>
                   <p className="text-xs text-slate-500 font-mono">sevlex.intunewin (Level 3 Package)</p>
                 </div>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-[#632CA6] border border-purple-200 uppercase tracking-wider font-mono">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
                 .INTUNEWIN
               </span>
             </div>
@@ -158,7 +158,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
                 <span className="text-slate-500">Install Command:</span>
                 <span 
                   onClick={() => copyTextToClipboard("install.cmd", "intune-inst")}
-                  className="text-slate-900 hover:text-[#632CA6] cursor-pointer flex items-center gap-1 font-bold"
+                  className="text-slate-900 hover:text-[#2563EB] cursor-pointer flex items-center gap-1 font-bold"
                 >
                   install.cmd {copiedType === "intune-inst" ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} className="text-slate-400" />}
                 </span>
@@ -167,7 +167,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
                 <span className="text-slate-500">Uninstall Command:</span>
                 <span 
                   onClick={() => copyTextToClipboard("uninstall.cmd", "intune-uninst")}
-                  className="text-slate-900 hover:text-[#632CA6] cursor-pointer flex items-center gap-1 font-bold"
+                  className="text-slate-900 hover:text-[#2563EB] cursor-pointer flex items-center gap-1 font-bold"
                 >
                   uninstall.cmd {copiedType === "intune-uninst" ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} className="text-slate-400" />}
                 </span>
@@ -188,7 +188,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
           <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
             <button 
               onClick={() => handleDownloadPackage("windows")}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-[#632CA6] hover:bg-[#52248a] text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
             >
               <Download size={15} /> Download Package (.intunewin)
             </button>
@@ -207,15 +207,15 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center">
-                  <PackageCheck size={20} className="text-[#632CA6]" />
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                  <PackageCheck size={20} className="text-[#2563EB]" />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Jamf Pro Enterprise Package</h3>
                   <p className="text-xs text-slate-500 font-mono">sevlex.pkg (Level 3 Package)</p>
                 </div>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-[#632CA6] border border-purple-200 uppercase tracking-wider font-mono">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
                 .PKG
               </span>
             </div>
@@ -238,7 +238,7 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
                 <span className="text-slate-500">Uninstall Script:</span>
                 <span 
                   onClick={() => copyTextToClipboard("bash uninstall.sh", "jamf-uninst")}
-                  className="text-slate-900 hover:text-[#632CA6] cursor-pointer flex items-center gap-1 font-bold"
+                  className="text-slate-900 hover:text-[#2563EB] cursor-pointer flex items-center gap-1 font-bold"
                 >
                   bash uninstall.sh {copiedType === "jamf-uninst" ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} className="text-slate-400" />}
                 </span>

@@ -3,8 +3,9 @@
 :root {
   --background: #F8F9FA;
   --foreground: #0F172A;
-  --sidebar-bg: #131220;
-  --datadog-purple: #632CA6;
+  --sidebar-bg: #0F121C;
+  --sevlex-primary: #2563EB;
+  --sevlex-cobalt: #1D4ED8;
 }
 
 @theme inline {
@@ -37,7 +38,7 @@ body {
   background: #94A3B8;
 }
 
-/* Datadog purple gradient */
-.datadog-gradient {
-  background: linear-gradient(135deg, #632CA6 0%, #702F96 50%, #8E33B8 100%);
+/* Sevlex Electric Cobalt Enterprise Gradient */
+.sevlex-gradient, .datadog-gradient {
+  background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 45%, #2563EB 80%, #3B82F6 100%);
 }

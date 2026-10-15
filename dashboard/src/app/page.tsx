@@ -252,10 +252,10 @@ export default function Dashboard() {
             placeholder="Admin API Key"
             value={inputKey}
             onChange={(e) => setInputKey(e.target.value)}
-            className="w-full bg-[#131220] border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white mb-4 focus:outline-none focus:border-purple-500 font-mono transition-colors"
+            className="w-full bg-[#131220] border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white mb-4 focus:outline-none focus:border-blue-500 font-mono transition-colors"
           />
           {loginError && <p className="text-red-400 text-xs mb-4">Invalid Admin Key. Check .env.local</p>}
-          <button type="submit" className="w-full bg-[#632CA6] hover:bg-[#7232be] text-white font-medium py-2 rounded-lg text-sm transition-all shadow-md shadow-purple-950">
+          <button type="submit" className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-medium py-2 rounded-lg text-sm transition-all shadow-md shadow-blue-950/20">
             Authenticate Session
           </button>
         </form>
@@ -280,7 +280,7 @@ export default function Dashboard() {
             <div className="flex flex-col justify-center min-w-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/sevlex-wordmark.png" alt="SEVLEX" className="h-4 w-auto object-contain object-left filter drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
-              <span className="text-[9px] text-purple-400 font-semibold tracking-widest uppercase mt-0.5 font-mono">L7 Security Gateway</span>
+              <span className="text-[9px] text-blue-400 font-semibold tracking-widest uppercase mt-0.5 font-mono">L7 Security Gateway</span>
             </div>
           </div>
 
@@ -306,7 +306,7 @@ export default function Dashboard() {
                   onClick={() => setActiveTab(nav.id as TabType)}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-left ${
                     isActive 
-                      ? "bg-[#632CA6] text-white shadow-sm font-semibold" 
+                      ? "bg-[#2563EB] text-white shadow-sm font-semibold" 
                       : "text-zinc-400 hover:text-white hover:bg-white/[0.05]"
                   }`}
                 >
@@ -365,7 +365,7 @@ export default function Dashboard() {
               placeholder="Search Datadog telemetry, tools, CVEs..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-md pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#632CA6] focus:bg-white font-mono transition"
+              className="w-full bg-slate-50 border border-slate-200 rounded-md pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#2563EB] focus:bg-white font-mono transition"
             />
           </div>
 
@@ -376,7 +376,7 @@ export default function Dashboard() {
               50 Hosts Protected
             </span>
 
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium font-mono">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200 text-xs font-medium font-mono">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="DD" className="w-3.5 h-3.5" />
               <span>US5 Connected</span>
@@ -401,7 +401,7 @@ export default function Dashboard() {
             <div className="space-y-10">
               
               {/* HERO BANNER (Official Datadog Purple Gradient Banner from Screenshot) */}
-              <div className="datadog-gradient rounded-2xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+              <div className="sevlex-gradient rounded-2xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
                 {/* Background decorative glow */}
                 <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
 
@@ -412,7 +412,7 @@ export default function Dashboard() {
                   <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
                     Trusted Data, Optimized Pipelines, Zero Surprises.
                   </h1>
-                  <p className="text-sm text-purple-100 leading-relaxed">
+                  <p className="text-sm text-blue-100 leading-relaxed">
                     Unified zero-trust deep packet inspection across employee AI agents routing MCP traffic through Sevlex Gateway.
                   </p>
 
@@ -427,7 +427,7 @@ export default function Dashboard() {
                   <div className="pt-4 flex items-center gap-4">
                     <button 
                       onClick={() => setActiveTab("POLICY")}
-                      className="px-5 py-2.5 rounded-lg bg-white text-[#632CA6] font-bold text-xs hover:bg-purple-50 transition shadow-lg flex items-center gap-2"
+                      className="px-5 py-2.5 rounded-lg bg-white text-[#2563EB] font-bold text-xs hover:bg-blue-50 transition shadow-lg flex items-center gap-2"
                     >
                       Set up L7 Policy Control <ArrowRight size={14} />
                     </button>
@@ -441,10 +441,10 @@ export default function Dashboard() {
                 </div>
 
                 {/* Hero Graphic Card (Right side preview from screenshot) */}
-                <div className="w-full lg:w-96 bg-white rounded-xl p-4 text-slate-800 shadow-2xl z-10 border border-purple-200">
+                <div className="w-full lg:w-96 bg-white rounded-xl p-4 text-slate-800 shadow-2xl z-10 border border-blue-200">
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3 text-xs">
                     <span className="font-bold text-slate-900 flex items-center gap-1.5">
-                      <ShieldCheck size={14} className="text-[#632CA6]" /> L7 Gateway Node
+                      <ShieldCheck size={14} className="text-[#2563EB]" /> L7 Gateway Node
                     </span>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
                       LIVE ACTIVE
@@ -457,7 +457,7 @@ export default function Dashboard() {
                       <span className="text-slate-600">Client: Cursor &amp; Claude</span>
                       <span className="text-emerald-600 font-bold">127.0.0.1</span>
                     </div>
-                    <div className="p-2 rounded bg-purple-50 border border-purple-200 flex justify-between items-center text-[#632CA6]">
+                    <div className="p-2 rounded bg-blue-50 border border-blue-200 flex justify-between items-center text-[#2563EB]">
                       <span className="font-bold">Sevlex L7 Inspection</span>
                       <span>0.78ms (p99)</span>
                     </div>
@@ -511,12 +511,12 @@ export default function Dashboard() {
                           onClick={() => setActiveFeatureTab(idx)}
                           className={`p-5 rounded-xl border transition-all cursor-pointer ${
                             isSelected
-                              ? "bg-white border-[#632CA6] shadow-md ring-1 ring-[#632CA6]"
+                              ? "bg-white border-[#2563EB] shadow-md ring-1 ring-[#2563EB]"
                               : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
                           }`}
                         >
                           <div className="flex items-start gap-3">
-                            <Icon size={18} className={isSelected ? "text-[#632CA6]" : "text-slate-400"} />
+                            <Icon size={18} className={isSelected ? "text-[#2563EB]" : "text-slate-400"} />
                             <div>
                               <h3 className={`text-xs font-bold leading-snug ${isSelected ? "text-slate-900" : "text-slate-700"}`}>
                                 {feature.title}
@@ -539,9 +539,9 @@ export default function Dashboard() {
                       {/* Top Bar inside preview card */}
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100 mb-4">
                         <div className="flex items-center gap-2">
-                          <Activity size={16} className="text-[#632CA6]" />
+                          <Activity size={16} className="text-[#2563EB]" />
                           <span className="text-xs font-bold text-slate-900 font-mono">Live L7 Packet Telemetry</span>
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-50 text-[#632CA6] border border-purple-200">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-50 text-[#2563EB] border border-blue-200">
                             STREAMING
                           </span>
                         </div>
@@ -586,7 +586,7 @@ export default function Dashboard() {
                                   )}
                                 </td>
                                 <td className="py-2.5 px-3 text-slate-500 text-[11px]">{row.t}</td>
-                                <td className="py-2.5 px-3 text-purple-700 font-medium">@{row.u}</td>
+                                <td className="py-2.5 px-3 text-blue-700 font-medium">@{row.u}</td>
                                 <td className="py-2.5 px-3 font-bold text-slate-900">{row.tool}</td>
                                 <td className="py-2.5 px-3 text-right text-slate-500">{row.lat}</td>
                               </tr>
@@ -600,7 +600,7 @@ export default function Dashboard() {
                       <span>Audit Receipts: Synchronous SQLite WAL</span>
                       <button 
                         onClick={() => setActiveTab("AUDIT")}
-                        className="text-[#632CA6] hover:underline font-semibold flex items-center gap-1"
+                        className="text-[#2563EB] hover:underline font-semibold flex items-center gap-1"
                       >
                         Inspect all 10,000+ entries in Log Explorer →
                       </button>
@@ -628,7 +628,7 @@ export default function Dashboard() {
                     <div>
                       <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                         <div className="flex items-center gap-2">
-                          <BarChart3 size={16} className="text-[#632CA6]" />
+                          <BarChart3 size={16} className="text-[#2563EB]" />
                           <span className="text-xs font-bold text-slate-900 font-mono">pricing freshness &amp; tool invocations</span>
                         </div>
                         <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
@@ -650,7 +650,7 @@ export default function Dashboard() {
                           {/* Data line */}
                           <path 
                             d="M 0 70 Q 50 60, 100 80 T 200 40 T 300 65 T 400 30 T 500 50" 
-                            stroke="#632CA6" 
+                            stroke="#2563EB" 
                             strokeWidth="2.5" 
                             fill="none" 
                           />
@@ -689,7 +689,7 @@ export default function Dashboard() {
                           onClick={() => setActiveDiagnosisTab(idx)}
                           className={`p-5 rounded-xl border transition-all cursor-pointer ${
                             isSelected
-                              ? "bg-white border-[#632CA6] shadow-md ring-1 ring-[#632CA6]"
+                              ? "bg-white border-[#2563EB] shadow-md ring-1 ring-[#2563EB]"
                               : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
                           }`}
                         >
@@ -738,10 +738,10 @@ export default function Dashboard() {
                     return (
                       <div key={idx} className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between hover:border-slate-300 transition group">
                         <div className="space-y-3">
-                          <div className="w-10 h-10 rounded-lg bg-purple-50 text-[#632CA6] flex items-center justify-center border border-purple-100">
+                          <div className="w-10 h-10 rounded-lg bg-blue-50 text-[#2563EB] flex items-center justify-center border border-blue-100">
                             <Icon size={20} />
                           </div>
-                          <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#632CA6] transition">
+                          <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#2563EB] transition">
                             {res.title}
                           </h3>
                           <p className="text-xs text-slate-500 leading-relaxed">
@@ -750,7 +750,7 @@ export default function Dashboard() {
                         </div>
 
                         <div className="mt-5 pt-3 border-t border-slate-100">
-                          <span className="text-xs font-semibold text-[#632CA6] flex items-center gap-1 group-hover:underline">
+                          <span className="text-xs font-semibold text-[#2563EB] flex items-center gap-1 group-hover:underline">
                             See more →
                           </span>
                         </div>
@@ -771,7 +771,7 @@ export default function Dashboard() {
               <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
                 <div>
                   <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                    <Sliders size={18} className="text-[#632CA6]" />
+                    <Sliders size={18} className="text-[#2563EB]" />
                     Enterprise L7 Policy Engine
                   </h2>
                   <p className="text-xs text-slate-500 mt-0.5">Toggle allowed and blocked MCP tools across all connected corporate servers in real time.</p>
@@ -787,7 +787,7 @@ export default function Dashboard() {
                       setPolicySearch(e.target.value);
                       setExpandedServers({});
                     }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#632CA6] focus:bg-white"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#2563EB] focus:bg-white"
                   />
                 </div>
               </div>
@@ -826,7 +826,7 @@ export default function Dashboard() {
                             return (
                               <div key={tool} className="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50/50 transition group">
                                 <div className="flex-1 flex items-center gap-3">
-                                  <p className="font-mono text-xs font-medium text-slate-800 group-hover:text-[#632CA6] transition">{tool}</p>
+                                  <p className="font-mono text-xs font-medium text-slate-800 group-hover:text-[#2563EB] transition">{tool}</p>
                                   {isBlocked ? (
                                     <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-red-50 text-red-700 border border-red-200 uppercase">
                                       BLOCKED
@@ -876,7 +876,7 @@ export default function Dashboard() {
                       placeholder="Search logs by tool name, payload, or user..."
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#632CA6]"
+                      className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#2563EB]"
                     />
                   </div>
 
@@ -932,7 +932,7 @@ export default function Dashboard() {
                           key={log.id} 
                           onClick={() => setSelectedLog(log)}
                           className={`hover:bg-slate-50 transition cursor-pointer ${
-                            selectedLog?.id === log.id ? "bg-purple-50/70 border-l-2 border-[#632CA6]" : ""
+                            selectedLog?.id === log.id ? "bg-blue-50/70 border-l-2 border-[#2563EB]" : ""
                           }`}
                         >
                           <td className="py-2.5 px-4">
@@ -947,7 +947,7 @@ export default function Dashboard() {
                             )}
                           </td>
                           <td className="py-2.5 px-4 text-slate-500 text-[11px] whitespace-nowrap">{log.timestamp}</td>
-                          <td className="py-2.5 px-4 text-purple-700 font-medium">@{log.user_id || "meetp"}</td>
+                          <td className="py-2.5 px-4 text-blue-700 font-medium">@{log.user_id || "meetp"}</td>
                           <td className="py-2.5 px-4 font-bold text-slate-900">{log.tool_name}</td>
                           <td className="py-2.5 px-4 text-slate-500 truncate max-w-xs">{log.raw_request}</td>
                         </tr>
@@ -968,7 +968,7 @@ export default function Dashboard() {
                     <div>
                       <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
                         <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5 font-mono">
-                          <Eye size={13} className="text-[#632CA6]" /> Event #{selectedLog.id} Detail
+                          <Eye size={13} className="text-[#2563EB]" /> Event #{selectedLog.id} Detail
                         </span>
                         <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                           selectedLog.status === "BLOCKED" 
@@ -986,7 +986,7 @@ export default function Dashboard() {
                         </div>
                         <div>
                           <span className="text-slate-400 text-[10px] uppercase font-bold">Authenticated Identity:</span>
-                          <p className="text-purple-700">@{selectedLog.user_id || "meetp"}</p>
+                          <p className="text-blue-700">@{selectedLog.user_id || "meetp"}</p>
                         </div>
                         <div>
                           <span className="text-slate-400 text-[10px] uppercase font-bold">Timestamp:</span>
@@ -1065,7 +1065,7 @@ export default function Dashboard() {
       {/* Global Toast Notification */}
       {pingStatus && (
         <div className="fixed bottom-6 right-6 z-50 p-3.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-white shadow-2xl flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
           <span>{pingStatus}</span>
         </div>
       )}
