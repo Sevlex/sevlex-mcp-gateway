@@ -17,7 +17,8 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("claude") || norm.includes("anthropic")) return "anthropic.com";
   if (norm.includes("windsurf") || norm.includes("codeium")) return "codeium.com";
   if (norm.includes("antigravity")) return null; // Use official extracted Antigravity app icon
-  if (norm.includes("drive")) return "drive.google.com";
+  if (norm.includes("drive")) return null; // Use official Google Drive vector icon
+  if (norm.includes("node")) return null; // Use official Node.js vector icon
   if (norm.includes("gemini") || norm.includes("google")) return "google.com";
   if (norm.includes("postgres")) return "postgresql.org";
   if (norm.includes("aws") || norm.includes("amazon") || norm.includes("s3")) return "aws.amazon.com";
@@ -38,7 +39,6 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("splunk")) return "splunk.com";
   if (norm.includes("pagerduty")) return "pagerduty.com";
   if (norm.includes("opsgenie")) return "opsgenie.com";
-  if (norm.includes("node")) return "nodejs.org";
   if (norm.includes("snowflake")) return "snowflake.com";
   if (norm.includes("openai") || norm.includes("chatgpt")) return "openai.com";
   if (norm.includes("vscode") || norm.includes("visual studio")) return "code.visualstudio.com";
@@ -86,6 +86,18 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/antigravity-icon.png" alt="Antigravity" className={`${sizeClass} object-contain shrink-0 rounded-xs ${className}`} />
+    );
+  }
+  if (norm.includes("drive")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/google-drive-icon.svg" alt="Google Drive" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("node")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/nodejs-icon.svg" alt="Node.js" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
   if (norm.includes("gemini") || norm.includes("google")) {
