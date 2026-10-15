@@ -5,6 +5,7 @@ import {
   Server, Check, Copy, Download, ShieldCheck, Terminal, 
   Code2, Cpu, Laptop, PackageCheck, FileCode, CheckCircle2, Sparkles 
 } from "lucide-react";
+import ClientBrandIcon from "./ClientBrandIcon";
 
 interface FleetMdmTabProps {
   apiKey: string;
@@ -96,25 +97,24 @@ export default function FleetMdmTab({ apiKey, setPingStatus, copiedType, setCopi
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
           {[
-            { name: "Claude Desktop", icon: Laptop },
-            { name: "Claude Code CLI", icon: Terminal },
-            { name: "Cursor IDE", icon: Code2 },
-            { name: "Windsurf IDE", icon: Cpu },
-            { name: "Google Antigravity", icon: ShieldCheck },
-          ].map((item, idx) => {
-            const IconComponent = item.icon;
-            return (
-              <div key={idx} className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-slate-200 shadow-xs hover:border-blue-300 transition">
-                <IconComponent size={16} className="text-[#2563EB] flex-shrink-0" />
-                <div className="truncate">
-                  <p className="text-xs font-bold text-slate-800 truncate">{item.name}</p>
-                  <p className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Auto-Shielded
-                  </p>
-                </div>
+            { name: "Claude Desktop" },
+            { name: "Claude Code CLI" },
+            { name: "Cursor IDE" },
+            { name: "Windsurf IDE" },
+            { name: "Google Antigravity" },
+          ].map((item, idx) => (
+            <div key={idx} className="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-slate-200 shadow-xs hover:border-blue-300 transition">
+              <div className="w-7 h-7 rounded-md bg-slate-50 border border-slate-200 flex items-center justify-center p-1 shrink-0">
+                <ClientBrandIcon name={item.name} size="sm" />
               </div>
-            );
-          })}
+              <div className="truncate">
+                <p className="text-xs font-bold text-slate-800 truncate">{item.name}</p>
+                <p className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Auto-Shielded
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

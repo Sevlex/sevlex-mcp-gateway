@@ -6,6 +6,7 @@ import {
   Terminal, RefreshCw, CheckCircle2, AlertTriangle, Filter,
   ExternalLink, ArrowUpRight, Sparkles, HardDrive
 } from "lucide-react";
+import ClientBrandIcon from "./ClientBrandIcon";
 
 interface Device {
   id: string;
@@ -200,10 +201,11 @@ export default function DeviceFleetTab({ devices = [], setPingStatus }: DeviceFl
                     )}
                   </td>
                   <td className="py-3 px-4">
-                    <div className="flex flex-wrap gap-1 max-w-xs">
+                    <div className="flex flex-wrap gap-1.5 max-w-xs">
                       {dev.shieldedClients.map((client, idx) => (
-                        <span key={idx} className="px-1.5 py-0.5 rounded text-[9px] bg-slate-100 text-slate-700 border border-slate-200 font-sans">
-                          {client}
+                        <span key={idx} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] bg-slate-50 text-slate-800 border border-slate-200 font-sans font-medium">
+                          <ClientBrandIcon name={client} size="xs" />
+                          <span>{client}</span>
                         </span>
                       ))}
                     </div>

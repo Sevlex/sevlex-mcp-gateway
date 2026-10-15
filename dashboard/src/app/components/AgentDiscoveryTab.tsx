@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { 
-  Cpu, Bot, ShieldCheck, ShieldAlert, Sparkles, Terminal, 
+  Bot, ShieldCheck, ShieldAlert, Sparkles, Terminal, 
   Code2, Laptop, Database, ArrowRight, ExternalLink, Sliders, Check
 } from "lucide-react";
+import ClientBrandIcon from "./ClientBrandIcon";
 
 interface Runtime {
   name: string;
@@ -41,7 +42,7 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
             <Bot className="text-[#2563EB]" size={22} />
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">Shadow AI &amp; Agent Discovery (AgentGuard)</h2>
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
-              Client &amp; Model Governance
+              Official Client Manifests
             </span>
           </div>
           <p className="text-xs text-slate-500">
@@ -91,7 +92,7 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
       {/* Main Grid: Left Agent Selector + Right Agent Topology Detail */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Left Column (5 cols): AI Agents List */}
+        {/* Left Column (5 cols): AI Agents List with Official Logos */}
         <div className="lg:col-span-5 space-y-3">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">
             Detected AI Agent Runtimes
@@ -111,12 +112,10 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-lg border ${
-                      isSelected ? "bg-blue-50 border-blue-200 text-[#2563EB]" : "bg-slate-50 border-slate-200 text-slate-500"
+                    <div className={`w-10 h-10 rounded-lg border flex items-center justify-center p-2 shrink-0 ${
+                      isSelected ? "bg-blue-50/70 border-blue-200" : "bg-slate-50 border-slate-200"
                     }`}>
-                      {agent.name.includes("CLI") ? <Terminal size={18} /> : 
-                       agent.name.includes("Cursor") ? <Code2 size={18} /> : 
-                       agent.name.includes("Desktop") ? <Laptop size={18} /> : <Cpu size={18} />}
+                      <ClientBrandIcon name={agent.name} size="md" />
                     </div>
                     <div>
                       <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
@@ -149,14 +148,19 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
             <>
               {/* Agent Overview Bar */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base font-bold text-slate-900">{selectedAgent.name}</span>
-                    <span className="text-xs text-slate-500 font-mono">[{selectedAgent.type}]</span>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center p-2 shrink-0">
+                    <ClientBrandIcon name={selectedAgent.name} size="lg" />
                   </div>
-                  <p className="text-xs text-slate-500 font-mono mt-0.5 truncate max-w-md">
-                    Manifest: {selectedAgent.configPath}
-                  </p>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base font-bold text-slate-900">{selectedAgent.name}</span>
+                      <span className="text-xs text-slate-500 font-mono">[{selectedAgent.type}]</span>
+                    </div>
+                    <p className="text-xs text-slate-500 font-mono mt-0.5 truncate max-w-md">
+                      Manifest: {selectedAgent.configPath}
+                    </p>
+                  </div>
                 </div>
                 <span className={`px-2.5 py-1 rounded text-xs font-bold font-mono ${
                   selectedAgent.riskTier.includes("CRITICAL") 
@@ -173,17 +177,19 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
                   Layer 7 Architecture Topology
                 </span>
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 font-mono text-xs">
-                  <div className="flex items-center justify-between p-2 rounded bg-white border border-slate-200">
-                    <span className="text-slate-600 font-semibold">1. AI Client Agent</span>
+                  <div className="flex items-center justify-between p-2.5 rounded bg-white border border-slate-200">
+                    <span className="text-slate-600 font-semibold flex items-center gap-2">
+                      <ClientBrandIcon name={selectedAgent.name} size="xs" /> 1. AI Client Agent
+                    </span>
                     <span className="text-slate-900 font-bold">{selectedAgent.name} ({selectedAgent.version})</span>
                   </div>
-                  <div className="flex items-center justify-between p-2 rounded bg-blue-50 border border-blue-200 text-[#2563EB]">
+                  <div className="flex items-center justify-between p-2.5 rounded bg-blue-50 border border-blue-200 text-[#2563EB]">
                     <span className="font-bold flex items-center gap-1.5">
                       <ShieldCheck size={14} /> 2. Sevlex L7 Inspection
                     </span>
                     <span className="font-semibold">30ms Auto-Heal &bull; Fail-Closed</span>
                   </div>
-                  <div className="flex items-center justify-between p-2 rounded bg-white border border-slate-200">
+                  <div className="flex items-center justify-between p-2.5 rounded bg-white border border-slate-200">
                     <span className="text-slate-600 font-semibold">3. Bound MCP Servers</span>
                     <span className="text-emerald-700 font-bold">{selectedAgent.boundServers.length} Configured</span>
                   </div>
