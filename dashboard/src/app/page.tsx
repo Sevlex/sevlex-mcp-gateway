@@ -47,6 +47,13 @@ const getBrandIcon = (serverName: string) => {
   else if (norm.includes("claude") || norm.includes("anthropic")) domain = "anthropic.com";
   else if (norm.includes("codeium") || norm.includes("windsurf")) domain = "codeium.com";
 
+  if (norm.includes("antigravity")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/antigravity-icon.png" alt="Antigravity logo" className="w-4 h-4 object-contain rounded-xs" />
+    );
+  }
+
   if (domain) {
     return (
       // eslint-disable-next-line @next/next/no-img-element

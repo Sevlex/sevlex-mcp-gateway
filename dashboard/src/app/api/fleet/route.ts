@@ -153,7 +153,7 @@ export async function GET(request: Request) {
         callsTotal: 1842,
       },
       {
-        name: 'Google Antigravity IDE',
+        name: 'Antigravity IDE',
         type: 'Autonomous Agent Environment',
         installed: fs.existsSync(antigravityPath),
         configured: antigravityConfigured,

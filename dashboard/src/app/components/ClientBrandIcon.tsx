@@ -16,7 +16,8 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("cursor")) return "cursor.com";
   if (norm.includes("claude") || norm.includes("anthropic")) return "anthropic.com";
   if (norm.includes("windsurf") || norm.includes("codeium")) return "codeium.com";
-  if (norm.includes("antigravity") || norm.includes("gemini") || norm.includes("google")) return "google.com";
+  if (norm.includes("antigravity")) return null; // Use official extracted Antigravity app icon
+  if (norm.includes("gemini") || norm.includes("google")) return "google.com";
   if (norm.includes("postgres")) return "postgresql.org";
   if (norm.includes("aws") || norm.includes("amazon") || norm.includes("s3")) return "aws.amazon.com";
   if (norm.includes("github")) return "github.com";
@@ -76,7 +77,13 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
       <img src="/claude-icon.png" alt="Claude" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-  if (norm.includes("antigravity") || norm.includes("gemini") || norm.includes("google")) {
+  if (norm.includes("antigravity")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/antigravity-icon.png" alt="Antigravity" className={`${sizeClass} object-contain shrink-0 rounded-xs ${className}`} />
+    );
+  }
+  if (norm.includes("gemini") || norm.includes("google")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/gemini-logo.svg" alt="Gemini" className={`${sizeClass} object-contain shrink-0 ${className}`} />
