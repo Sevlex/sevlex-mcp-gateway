@@ -15,6 +15,7 @@ import SiemObservabilityTab from "./components/SiemObservabilityTab";
 import AlertingTab from "./components/AlertingTab";
 import DeviceFleetTab from "./components/DeviceFleetTab";
 import AgentDiscoveryTab from "./components/AgentDiscoveryTab";
+import ClientBrandIcon from "./components/ClientBrandIcon";
 
 type Log = { 
   id: number; 
@@ -23,48 +24,6 @@ type Log = {
   tool_name: string; 
   status: "ALLOWED" | "BLOCKED"; 
   raw_request: string; 
-};
-
-const getBrandIcon = (serverName: string) => {
-  const norm = serverName.toLowerCase();
-  let domain = "";
-  if (norm.includes("github")) domain = "github.com";
-  else if (norm.includes("slack")) domain = "slack.com";
-  else if (norm.includes("postgres")) domain = "postgresql.org";
-  else if (norm.includes("aws") || norm.includes("amazon")) domain = "aws.amazon.com";
-  else if (norm.includes("jira") || norm.includes("atlassian")) domain = "atlassian.com";
-  else if (norm.includes("kubernetes") || norm.includes("k8s")) domain = "kubernetes.io";
-  else if (norm.includes("linear")) domain = "linear.app";
-  else if (norm.includes("notion")) domain = "notion.so";
-  else if (norm.includes("figma")) domain = "figma.com";
-  else if (norm.includes("discord")) domain = "discord.com";
-  else if (norm.includes("docker")) domain = "docker.com";
-  else if (norm.includes("gcp") || norm.includes("google")) domain = "cloud.google.com";
-  else if (norm.includes("sentry")) domain = "sentry.io";
-  else if (norm.includes("datadog")) domain = "datadoghq.com";
-  else if (norm.includes("snowflake")) domain = "snowflake.com";
-  else if (norm.includes("cursor")) domain = "cursor.com";
-  else if (norm.includes("claude") || norm.includes("anthropic")) domain = "anthropic.com";
-  else if (norm.includes("codeium") || norm.includes("windsurf")) domain = "codeium.com";
-
-  if (norm.includes("antigravity")) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/antigravity-icon.png" alt="Antigravity logo" className="w-4 h-4 object-contain rounded-xs" />
-    );
-  }
-
-  if (domain) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img 
-        src={`https://img.logo.dev/${domain}?token=pk_fdAoKVsxTvadheeQhynG5A&size=64&format=png`} 
-        alt={`${serverName} logo`}
-        className="w-4 h-4 object-contain rounded-xs"
-      />
-    );
-  }
-  return <Server size={16} className="text-slate-500" />;
 };
 
 type TabType = "OVERVIEW" | "DEVICES" | "AGENTS" | "POLICY" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
@@ -803,14 +762,20 @@ export default function Dashboard() {
           {/* TAB 1: VISUAL POLICY LIBRARY (Clean White Datadog Styling)                */}
           {/* ========================================================================= */}
           {activeTab === "POLICY" && (
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-              <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
+            <div className="space-y-6">
+              {/* Header Card */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
                 <div>
-                  <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                    <Sliders size={18} className="text-[#2563EB]" />
-                    Enterprise L7 Policy Engine
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Toggle allowed and blocked MCP tools across all connected corporate servers in real time.</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Sliders size={20} className="text-[#2563EB]" />
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Enterprise L7 Policy Engine</h2>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
+                      {blockedTools.length} Banned
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Toggle allowed and blocked MCP tools across all connected corporate servers in real time.
+                  </p>
                 </div>
 
                 <div className="relative w-full sm:w-72">
@@ -823,7 +788,7 @@ export default function Dashboard() {
                       setPolicySearch(e.target.value);
                       setExpandedServers({});
                     }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#2563EB] focus:bg-white"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#2563EB] focus:bg-white transition"
                   />
                 </div>
               </div>
@@ -838,15 +803,13 @@ export default function Dashboard() {
                   const isExpanded = expandedServers[server.server] ?? (policySearch.trim() !== "");
 
                   return (
-                    <div key={server.server} className="border border-slate-200 rounded-lg overflow-hidden bg-white">
+                    <div key={server.server} className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-2xs">
                       <button 
                         onClick={() => setExpandedServers(prev => ({ ...prev, [server.server]: !isExpanded }))}
-                        className="w-full bg-slate-50 px-4 py-3 flex items-center justify-between hover:bg-slate-100/70 transition"
+                        className="w-full bg-slate-50/70 px-4 py-3 flex items-center justify-between hover:bg-slate-100/70 transition"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="p-1.5 bg-white rounded-md border border-slate-200 flex items-center justify-center">
-                            {getBrandIcon(server.server)}
-                          </div>
+                          <ClientBrandIcon name={server.server} size="sm" className="rounded-md shrink-0" />
                           <h3 className="font-bold text-xs text-slate-800">
                             {server.server} 
                             <span className="text-slate-500 text-[11px] font-mono ml-2 font-normal">({filteredTools.length} tools)</span>
