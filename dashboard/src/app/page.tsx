@@ -280,16 +280,19 @@ export default function Dashboard() {
       <aside className="w-60 bg-[#131220] border-r border-[#242337] flex flex-col justify-between shrink-0 h-screen sticky top-0 text-zinc-300 z-50">
         <div>
           {/* Brand Header with Official Sevlex White Panther & Cyber Wordmark */}
-          <div className="h-16 px-4 flex items-center gap-3 border-b border-[#242337]">
-            <div className="w-9 h-9 rounded-lg bg-[#201F33] flex items-center justify-center p-1.5 border border-white/[0.08] shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/sevlex-icon.png" alt="Sevlex" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
-            </div>
-            <div className="flex flex-col justify-center min-w-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/sevlex-wordmark.png" alt="SEVLEX" className="h-4 w-auto object-contain object-left filter drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
-              <span className="text-[9px] text-blue-400 font-semibold tracking-widest uppercase mt-0.5 font-mono">L7 Security Gateway</span>
-            </div>
+          <div className="h-16 px-5 flex items-center gap-3 border-b border-[#242337]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src="/sevlex-icon.png" 
+              alt="Sevlex" 
+              className="w-8 h-8 object-contain shrink-0" 
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src="/sevlex-wordmark.png" 
+              alt="SEVLEX" 
+              className="h-4.5 w-auto object-contain object-left" 
+            />
           </div>
 
           {/* Navigation Menu */}
