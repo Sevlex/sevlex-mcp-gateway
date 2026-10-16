@@ -22,7 +22,9 @@ jobs:
           cache: 'npm'
 
       - name: Install Monorepo Dependencies
-        run: npm install
+        run: |
+          npm install
+          npm rebuild better-sqlite3
 
       - name: Strict TypeScript Compilation (Gateway)
         working-directory: ./gateway
@@ -56,7 +58,9 @@ jobs:
           cache: 'npm'
 
       - name: Install Monorepo Dependencies
-        run: npm install
+        run: |
+          npm install
+          npm rebuild better-sqlite3
 
       - name: Strict TypeScript Compilation (Dashboard)
         working-directory: ./dashboard
