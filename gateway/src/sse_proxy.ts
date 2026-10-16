@@ -167,6 +167,7 @@ export function startSseProxy(options: SseProxyOptions): http.Server {
                   rawRequest: JSON.stringify({ message: rpc, clearance }),
                 });
                 // Authorized: continue processing
+              } else {
                 circuitBreaker.recordResult(false, true);
                 const ticketId = logger.createHitlTicket(userId, toolName, body);
 

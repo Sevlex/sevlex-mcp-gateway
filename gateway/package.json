@@ -31,6 +31,7 @@
     "@supabase/supabase-js": "^2.104.1",
     "better-sqlite3": "^13.0.3",
     "dotenv": "^16.0.0",
+    "tsx": "^4.23.15",
     "zod": "^4.3.6"
   },
   "repository": {
@@ -43,7 +44,6 @@
   "homepage": "https://github.com/meetpanchal-sevlex/sevlex-mcp-gateway#readme",
   "devDependencies": {
     "@types/node": "^26.6.3",
-    "tsx": "^4.23.15",
     "typescript": "^5.9.3"
   }
 }
