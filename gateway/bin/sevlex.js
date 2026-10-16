@@ -6,9 +6,9 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const cliTsPath = path.resolve(__dirname, "../src/cli.ts");
 
-const child = spawn("npx", ["tsx", cliTsPath, ...process.argv.slice(2)], {
-  stdio: "inherit",
-  shell: process.platform === "win32"
+const tsxCli = path.resolve(__dirname, "../node_modules/tsx/dist/cli.mjs");
+const child = spawn(process.execPath, [tsxCli, cliTsPath, ...process.argv.slice(2)], {
+  stdio: "inherit"
 });
 
 child.on("exit", (code) => {

@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: sevlex-gateway
+    restart: unless-stopped
+    ports:
+      - "${GATEWAY_PORT:-8080}:8080"
+    environment:
+      - PORT=8080
+      - SEVLEX_DB_PATH=/data/audit_log.db
+      - SEVLEX_POLICY_PATH=/data/sevlex.json
+      - ADMIN_API_KEY=${ADMIN_API_KEY:-sevlex_secret_123}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL:-}
+      - SEVLEX_SIEM_PROVIDER=${SEVLEX_SIEM_PROVIDER:-datadog}
+      - SEVLEX_SIEM_ENDPOINT=${SEVLEX_SIEM_ENDPOINT:-https://http-intake.logs.us5.datadoghq.com/api/v2/logs}
+    volumes:
+      - sevlex-storage:/data
+    networks:
+      - sevlex-net
+
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: sevlex-dashboard
+    restart: unless-stopped
+    ports:
+      - "${DASHBOARD_PORT:-3000}:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - ADMIN_API_KEY=${ADMIN_API_KEY:-sevlex_secret_123}
+      - SEVLEX_DB_PATH=/data/audit_log.db
+      - SEVLEX_POLICY_PATH=/data/sevlex.json
+      - SEVLEX_DISCOVERED_TOOLS_PATH=/data/discovered_tools.json
+    volumes:
+      - sevlex-storage:/data
+    depends_on:
+      - gateway
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - sevlex-net
+
+volumes:
+  sevlex-storage:
+    name: sevlex-storage
+
+networks:
+  sevlex-net:
+    driver: bridge

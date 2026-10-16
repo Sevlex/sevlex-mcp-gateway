@@ -178,18 +178,43 @@ async function runScenario() {
 
   await sleep(500);
 
-  // SCENARIO 6: AgentGuard Dual-Custody HITL Intercept
+  // SCENARIO 6: AgentGuard Dual-Custody HITL Intercept & 2-Way Clearance Loop
   console.log(`${c.bold}${c.blue}----------------------------------------------------------------------${c.reset}`);
-  console.log(`${c.bold}SCENARIO 6: AgentGuard™ Dual-Custody HITL Authorization${c.reset}`);
-  console.log(`${c.yellow}Target: github_list_pull_requests (Configured in approvalRequiredTools)${c.reset}`);
+  console.log(`${c.bold}SCENARIO 6: AgentGuard™ Dual-Custody HITL Authorization & Clearance Loop${c.reset}`);
+  console.log(`${c.yellow}Step A: Agent calls github_list_pull_requests (Protected Tool)...${c.reset}`);
   const hitlResp = await sendRpc("tools/call", {
     name: "github_list_pull_requests",
     arguments: { repo: "enterprise/core-billing" },
   });
+
+  const ticketId = hitlResp?.error?.data?.ticketId;
   if (hitlResp.error) {
     console.log(`${c.cyan}🔒 HITL APPROVAL INTERCEPTED!${c.reset}`);
-    console.log(`${c.cyan}Error Code: ${hitlResp.error.code} | Message: ${hitlResp.error.message}${c.reset}`);
-    console.log(`${c.gray}Execution suspended. SecOps approval token dispatched.${c.reset}\n`);
+    console.log(`${c.cyan}Error Code: ${hitlResp.error.code} | Ticket: ${ticketId}${c.reset}`);
+    console.log(`${c.gray}Execution suspended. Awaiting SecOps clearance.${c.reset}`);
+  }
+
+  // Step B: SecOps authorizes ticket in Dashboard / API
+  await sleep(400);
+  console.log(`${c.yellow}Step B: SecOps Lead reviews and authorizes Ticket ${ticketId}...${c.reset}`);
+  const auditLoggerForHitl = new AuditLogger(dbPath);
+  if (ticketId) {
+    auditLoggerForHitl.approveHitlTicket(ticketId, "secops.lead@enterprise.internal");
+    console.log(`${c.green}✓ Ticket ${ticketId} cryptographically signed & approved!${c.reset}`);
+  }
+
+  // Step C: Agent retries tool call and now gets ALLOWED
+  await sleep(400);
+  console.log(`${c.yellow}Step C: Agent retries github_list_pull_requests with approved clearance...${c.reset}`);
+  const retryResp = await sendRpc("tools/call", {
+    name: "github_list_pull_requests",
+    arguments: { repo: "enterprise/core-billing" },
+  });
+  if (retryResp?.result) {
+    console.log(`${c.green}${c.bold}✓ DUAL-CUSTODY CLEARANCE GRANTED! Execution permitted.${c.reset}`);
+    console.log(`${c.gray}Response: ${retryResp.result?.content?.[0]?.text?.slice(0, 80)}...${c.reset}\n`);
+  } else {
+    console.log(`${c.red}Failed: retry was not allowed!${c.reset}\n`);
   }
 
   await sleep(500);

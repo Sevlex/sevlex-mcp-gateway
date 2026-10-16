@@ -137,29 +137,42 @@ export function startSseProxy(options: SseProxyOptions): http.Server {
 
             // 🔒 CHECK 2: HITL Dual-Custody Check
             if (approvalRequired) {
-              circuitBreaker.recordResult(false, true);
-              const ticketId = logger.createHitlTicket(userId, toolName, body);
+              const clearance = logger.consumeApprovedHitlClearance(userId, toolName);
 
-              logger.log({
-                userId,
-                toolName,
-                status: "HITL_PENDING",
-                rawRequest: JSON.stringify({ message: rpc, ticketId }),
-              });
+              if (clearance.approved) {
+                circuitBreaker.recordResult(true, false);
+                logger.log({
+                  userId,
+                  toolName: `${toolName} [HITL_CLEARED]`,
+                  status: "ALLOWED",
+                  rawRequest: JSON.stringify({ message: rpc, clearance }),
+                });
+                // Authorized: continue processing
+              } else {
+                circuitBreaker.recordResult(false, true);
+                const ticketId = logger.createHitlTicket(userId, toolName, body);
 
-              res.writeHead(200, { "Content-Type": "application/json" });
-              res.end(
-                JSON.stringify({
-                  jsonrpc: "2.0",
-                  id: rpc.id,
-                  error: {
-                    code: -32001,
-                    message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. Ticket '${ticketId}' dispatched to SecOps.`,
-                    data: { ticketId, status: "PENDING" },
-                  },
-                })
-              );
-              return;
+                logger.log({
+                  userId,
+                  toolName,
+                  status: "HITL_PENDING",
+                  rawRequest: JSON.stringify({ message: rpc, ticketId }),
+                });
+
+                res.writeHead(200, { "Content-Type": "application/json" });
+                res.end(
+                  JSON.stringify({
+                    jsonrpc: "2.0",
+                    id: rpc.id,
+                    error: {
+                      code: -32001,
+                      message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. Ticket '${ticketId}' dispatched to SecOps. Once authorized, retry tool call to execute.`,
+                      data: { ticketId, status: "PENDING" },
+                    },
+                  })
+                );
+                return;
+              }
             }
 
             // 🛡️ CHECK 3: ToolGuard Deep Parameter Inspection

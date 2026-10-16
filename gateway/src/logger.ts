@@ -176,6 +176,48 @@ export class AuditLogger {
   }
 
   /**
+   * Checks if an approved clearance ticket exists for a tool call.
+   * If found and within the validity window (15 mins), marks it as CONSUMED and returns the clearance details.
+   */
+  public consumeApprovedHitlClearance(userId: string, toolName: string): { approved: boolean; ticketId?: string; approvedBy?: string } {
+    try {
+      const ticket = this.db.prepare(`
+        SELECT ticket_id, approved_by, approved_at 
+        FROM hitl_tickets 
+        WHERE user_id = ? AND tool_name = ? AND status = 'APPROVED'
+        ORDER BY approved_at DESC LIMIT 1
+      `).get(userId, toolName) as any;
+
+      if (!ticket) {
+        return { approved: false };
+      }
+
+      // Check clearance expiration window (15 minutes), ensuring UTC parsing
+      const dateStr = ticket.approved_at.endsWith("Z") ? ticket.approved_at : ticket.approved_at.replace(" ", "T") + "Z";
+      const approvedTime = new Date(dateStr).getTime();
+      const now = Date.now();
+      const fifteenMinutesMs = 15 * 60 * 1000;
+
+      if (now - approvedTime > fifteenMinutesMs) {
+        this.db.prepare("UPDATE hitl_tickets SET status = 'EXPIRED' WHERE ticket_id = ?").run(ticket.ticket_id);
+        return { approved: false };
+      }
+
+      // Consume the ticket so it cannot be re-used for replay attacks
+      this.db.prepare("UPDATE hitl_tickets SET status = 'CONSUMED' WHERE ticket_id = ?").run(ticket.ticket_id);
+
+      return {
+        approved: true,
+        ticketId: ticket.ticket_id,
+        approvedBy: ticket.approved_by,
+      };
+    } catch (err) {
+      console.error("Failed to check HITL clearance:", err);
+      return { approved: false };
+    }
+  }
+
+  /**
    * Mathematically verifies the cryptographic integrity of the entire audit chain.
    */
   public verifyAuditChain(): { valid: boolean; totalReceipts: number; brokenAtId?: number } {

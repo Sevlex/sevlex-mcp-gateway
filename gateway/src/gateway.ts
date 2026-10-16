@@ -249,42 +249,61 @@ function handleAiMessage(message: any, rawMessage: string) {
       } 
       // 🔒 CHECK 2: Human-In-The-Loop (HITL) Stateful Clearance Check
       else if (approvalRequired) {
-        isBlocked = true;
-        circuitBreaker.recordResult(false, true);
+        // Check if SecOps has ALREADY authorized this tool call
+        const clearance = logger.consumeApprovedHitlClearance(userId, toolName);
 
-        // Register persistent clearance ticket in SQLite
-        const ticketId = logger.createHitlTicket(userId, toolName, rawMessage);
+        if (clearance.approved) {
+          // Dual-Custody Clearance Granted!
+          circuitBreaker.recordResult(true, false);
 
-        logger.log({
-          userId: userId,
-          toolName: toolName,
-          status: "HITL_PENDING",
-          rawRequest: JSON.stringify({ message: msg, ticketId }),
-        });
+          const approvalTag = `${toolName} [HITL_CLEARED]`;
+          logger.log({
+            userId: userId,
+            toolName: approvalTag,
+            status: "ALLOWED",
+            rawRequest: JSON.stringify({ message: msg, clearance }),
+          });
 
-        streamToSiem(userId, toolName, "HITL_PENDING", { message: msg, ticketId });
-
-        const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested high-impact tool '${toolName}'. Ticket: ${ticketId}. Waiting for SecOps clearance.`;
-        if (process.env.SLACK_WEBHOOK_URL) {
-          fetch(process.env.SLACK_WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: alertMsg, ticketId })
-          }).catch(err => console.error("Slack webhook failed:", err));
+          streamToSiem(userId, approvalTag, "ALLOWED", { message: msg, clearance });
+          // Fall through to forward to real tool
         } else {
-          console.error(alertMsg);
-        }
+          isBlocked = true;
+          circuitBreaker.recordResult(false, true);
 
-        const hitlResponse = {
-          jsonrpc: "2.0",
-          id: msg.id,
-          error: {
-            code: -32001,
-            message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. Ticket '${ticketId}' dispatched to SecOps.`,
-            data: { ticketId, status: "PENDING" },
-          },
-        };
-        safeWriteStdout(JSON.stringify(hitlResponse) + "\n");
+          // Register persistent clearance ticket in SQLite
+          const ticketId = logger.createHitlTicket(userId, toolName, rawMessage);
+
+          logger.log({
+            userId: userId,
+            toolName: toolName,
+            status: "HITL_PENDING",
+            rawRequest: JSON.stringify({ message: msg, ticketId }),
+          });
+
+          streamToSiem(userId, toolName, "HITL_PENDING", { message: msg, ticketId });
+
+          const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested high-impact tool '${toolName}'. Ticket: ${ticketId}. Waiting for SecOps clearance.`;
+          if (process.env.SLACK_WEBHOOK_URL) {
+            fetch(process.env.SLACK_WEBHOOK_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: alertMsg, ticketId })
+            }).catch(err => console.error("Slack webhook failed:", err));
+          } else {
+            console.error(alertMsg);
+          }
+
+          const hitlResponse = {
+            jsonrpc: "2.0",
+            id: msg.id,
+            error: {
+              code: -32001,
+              message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. Ticket '${ticketId}' dispatched to SecOps. Once authorized, retry tool call to execute.`,
+              data: { ticketId, status: "PENDING" },
+            },
+          };
+          safeWriteStdout(JSON.stringify(hitlResponse) + "\n");
+        }
       }
       // 🛡️ CHECK 3: ToolGuard Call Guard (Deep Parameter & Argument Inspection)
       else {

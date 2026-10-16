@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ==============================================================================
 // SEVLEX 24/7 TAMPER-RESISTANT WATCHER DAEMON (Level 4 Engine)
@@ -52,6 +55,12 @@ export function getMonitoredClientsForUser(userHome: string): MonitoredClient[] 
     {
       name: "Windsurf IDE",
       configPath: path.join(userHome, ".codeium", "windsurf", "mcp_config.json")
+    },
+    {
+      name: "Cline (VS Code Extension)",
+      configPath: isWindows
+        ? path.join(appData, "Code", "User", "globalStorage", "saoudrizwan.claude-dev", "settings", "cline_mcp_settings.json")
+        : path.join(userHome, ".config", "Code", "User", "globalStorage", "saoudrizwan.claude-dev", "settings", "cline_mcp_settings.json")
     },
     {
       name: "Google Antigravity IDE",
@@ -135,6 +144,213 @@ export function inspectAndHealClient(client: MonitoredClient): boolean {
     console.error(`[Sevlex Daemon] Error inspecting ${client.name}:`, err.message);
   }
   return false;
+}
+
+export interface InjectionResult {
+  client: string;
+  configPath: string;
+  status: "INJECTED" | "ALREADY_SHIELDED" | "NOT_FOUND" | "ERROR";
+  wrappedServers: string[];
+  totalServers: number;
+  backupPath?: string | undefined;
+  error?: string | undefined;
+}
+
+export function injectClient(client: MonitoredClient): InjectionResult {
+  try {
+    if (!fs.existsSync(client.configPath)) {
+      return {
+        client: client.name,
+        configPath: client.configPath,
+        status: "NOT_FOUND",
+        wrappedServers: [],
+        totalServers: 0,
+      };
+    }
+
+    const raw = fs.readFileSync(client.configPath, "utf-8");
+    let data: any = {};
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      return {
+        client: client.name,
+        configPath: client.configPath,
+        status: "ERROR",
+        wrappedServers: [],
+        totalServers: 0,
+        error: "Malformed JSON configuration file"
+      };
+    }
+
+    data.mcpServers = data.mcpServers || {};
+    const serverKeys = Object.keys(data.mcpServers);
+
+    // Create safe backup if it does not exist
+    const backupPath = `${client.configPath}.sevlex.bak`;
+    if (!fs.existsSync(backupPath)) {
+      try {
+        fs.writeFileSync(backupPath, raw, "utf-8");
+      } catch {}
+    }
+
+    const isWindows = process.platform === "win32";
+    const sysDir = isWindows ? "C:\\ProgramData\\Sevlex" : "/etc/sevlex";
+    const corporateGateway = path.join(sysDir, "gateway.js");
+    const localGateway = path.resolve(__dirname, "gateway.js");
+    const gatewayPath = fs.existsSync(corporateGateway) ? corporateGateway : localGateway;
+    const policyPath = path.join(sysDir, "sevlex.json");
+
+    const wrappedServers: string[] = [];
+
+    for (const key of serverKeys) {
+      if (key === "sevlex-firewall") continue;
+      const srv = data.mcpServers[key];
+      if (!srv || typeof srv !== "object") continue;
+
+      // Check if already injected
+      if (srv._sevlex_injected) continue;
+      if (srv.args && Array.isArray(srv.args) && srv.args.some((a: string) => typeof a === "string" && a.includes("gateway.js"))) {
+        continue;
+      }
+
+      // Preserve original invocation
+      const originalCommand = srv.command;
+      const originalArgs = Array.isArray(srv.args) ? srv.args : [];
+
+      srv._sevlex_injected = true;
+      srv._sevlex_original = {
+        command: originalCommand,
+        args: originalArgs,
+        env: srv.env ? { ...srv.env } : undefined,
+      };
+
+      // Wrap command with Sevlex gateway
+      srv.command = "node";
+      srv.args = [gatewayPath, originalCommand, ...originalArgs];
+      srv.env = {
+        ...(srv.env || {}),
+        SEVLEX_POLICY_PATH: policyPath,
+        SEVLEX_SIEM_PROVIDER: "datadog",
+        SEVLEX_SIEM_ENDPOINT: "https://http-intake.logs.us5.datadoghq.com/api/v2/logs",
+      };
+
+      wrappedServers.push(key);
+    }
+
+    // Ensure sevlex-firewall entry is also present
+    if (!data.mcpServers["sevlex-firewall"]) {
+      data.mcpServers["sevlex-firewall"] = getMcpProxyEntry();
+    }
+
+    fs.writeFileSync(client.configPath, JSON.stringify(data, null, 2), "utf-8");
+
+    return {
+      client: client.name,
+      configPath: client.configPath,
+      status: wrappedServers.length > 0 || !serverKeys.includes("sevlex-firewall") ? "INJECTED" : "ALREADY_SHIELDED",
+      wrappedServers,
+      totalServers: Object.keys(data.mcpServers).filter(k => k !== "sevlex-firewall").length,
+      backupPath: fs.existsSync(backupPath) ? backupPath : undefined,
+    };
+  } catch (err: any) {
+    return {
+      client: client.name,
+      configPath: client.configPath,
+      status: "ERROR",
+      wrappedServers: [],
+      totalServers: 0,
+      error: err.message,
+    };
+  }
+}
+
+export interface RestoreResult {
+  client: string;
+  configPath: string;
+  status: "RESTORED_FROM_BACKUP" | "UNWRAPPED_CLEAN" | "NOT_FOUND" | "NO_CHANGE";
+  unwrappedServers: string[];
+  error?: string | undefined;
+}
+
+export function restoreClient(client: MonitoredClient): RestoreResult {
+  try {
+    const backupPath = `${client.configPath}.sevlex.bak`;
+
+    // Priority 1: Restore bit-for-bit from backup if available
+    if (fs.existsSync(backupPath)) {
+      try {
+        const backupRaw = fs.readFileSync(backupPath, "utf-8");
+        JSON.parse(backupRaw); // validate JSON before restoring
+        fs.writeFileSync(client.configPath, backupRaw, "utf-8");
+        try { fs.unlinkSync(backupPath); } catch {}
+        return {
+          client: client.name,
+          configPath: client.configPath,
+          status: "RESTORED_FROM_BACKUP",
+          unwrappedServers: [],
+        };
+      } catch {}
+    }
+
+    // Priority 2: In-place unwrapping if backup is absent
+    if (!fs.existsSync(client.configPath)) {
+      return {
+        client: client.name,
+        configPath: client.configPath,
+        status: "NOT_FOUND",
+        unwrappedServers: [],
+      };
+    }
+
+    const raw = fs.readFileSync(client.configPath, "utf-8");
+    const data = JSON.parse(raw);
+    const unwrappedServers: string[] = [];
+
+    if (data.mcpServers) {
+      if (data.mcpServers["sevlex-firewall"]) {
+        delete data.mcpServers["sevlex-firewall"];
+        unwrappedServers.push("sevlex-firewall");
+      }
+
+      for (const [key, srv] of Object.entries<any>(data.mcpServers)) {
+        if (srv._sevlex_original) {
+          srv.command = srv._sevlex_original.command;
+          srv.args = srv._sevlex_original.args;
+          if (srv._sevlex_original.env) {
+            srv.env = srv._sevlex_original.env;
+          } else {
+            delete srv.env;
+          }
+          delete srv._sevlex_original;
+          delete srv._sevlex_injected;
+          unwrappedServers.push(key);
+        } else if (srv.args && Array.isArray(srv.args) && srv.args[0]?.includes("gateway.js")) {
+          srv.command = srv.args[1];
+          srv.args = srv.args.slice(2);
+          delete srv._sevlex_injected;
+          unwrappedServers.push(key);
+        }
+      }
+
+      fs.writeFileSync(client.configPath, JSON.stringify(data, null, 2), "utf-8");
+    }
+
+    return {
+      client: client.name,
+      configPath: client.configPath,
+      status: unwrappedServers.length > 0 ? "UNWRAPPED_CLEAN" : "NO_CHANGE",
+      unwrappedServers,
+    };
+  } catch (err: any) {
+    return {
+      client: client.name,
+      configPath: client.configPath,
+      status: "NO_CHANGE",
+      unwrappedServers: [],
+      error: err.message,
+    };
+  }
 }
 
 export function startDaemonWatcher() {

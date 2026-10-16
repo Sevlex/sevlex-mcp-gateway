@@ -3,8 +3,8 @@ import fs from 'fs';
 import path from 'path';
 
 // Locate the exact sevlex.json file used by the Gateway
-const CONFIG_PATH = path.resolve(process.cwd(), '../gateway/sevlex.json');
-const DISCOVERED_TOOLS_PATH = path.resolve(process.cwd(), '../gateway/discovered_tools.json');
+const CONFIG_PATH = process.env.SEVLEX_POLICY_PATH || path.resolve(process.cwd(), '../gateway/sevlex.json');
+const DISCOVERED_TOOLS_PATH = process.env.SEVLEX_DISCOVERED_TOOLS_PATH || path.resolve(process.cwd(), '../gateway/discovered_tools.json');
 
 export async function GET(request: Request) {
   if (request.headers.get('Authorization') !== process.env.ADMIN_API_KEY) {
@@ -12,13 +12,13 @@ export async function GET(request: Request) {
   }
 
   try {
-    const rawData = fs.readFileSync(CONFIG_PATH, 'utf-8');
+    const rawData = fs.readFileSync(/*turbopackIgnore: true*/ CONFIG_PATH, 'utf-8');
     const config = JSON.parse(rawData);
 
     let discoveredTools: { server: string; tools: string[] }[] = [];
     try {
-      if (fs.existsSync(DISCOVERED_TOOLS_PATH)) {
-        discoveredTools = JSON.parse(fs.readFileSync(DISCOVERED_TOOLS_PATH, 'utf-8'));
+      if (fs.existsSync(/*turbopackIgnore: true*/ DISCOVERED_TOOLS_PATH)) {
+        discoveredTools = JSON.parse(fs.readFileSync(/*turbopackIgnore: true*/ DISCOVERED_TOOLS_PATH, 'utf-8'));
       }
     } catch {
       // Ignore errors when reading discovered tools
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     const { blockedTools, approvalRequiredTools, parameterRules, dlp } = body;
     
     // Read the current file
-    const rawData = fs.readFileSync(CONFIG_PATH, 'utf-8');
+    const rawData = fs.readFileSync(/*turbopackIgnore: true*/ CONFIG_PATH, 'utf-8');
     const config = JSON.parse(rawData);
     
     // Update the policies

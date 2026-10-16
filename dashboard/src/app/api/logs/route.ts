@@ -12,8 +12,8 @@ export async function GET(request: Request) {
 
   try {
     // 1. Locate the SQLite database created by our Gateway (Phase 1)
-    // The dashboard is just a viewer; it reads from the gateway's folder.
-    const dbPath = path.resolve(process.cwd(), '../gateway/audit_log.db');
+    // The dashboard is just a viewer; it reads from the gateway's folder or environment variable.
+    const dbPath = process.env.SEVLEX_DB_PATH || path.resolve(process.cwd(), '../gateway/audit_log.db');
     
     // 2. Open it in read-only mode for safety
     const db = new Database(dbPath, { readonly: true });
