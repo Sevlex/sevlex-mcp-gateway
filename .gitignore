@@ -16,3 +16,5 @@ docs/
 *.mp4
 *.zip
 *.pdf
+*RESUME*
+RESUME_*.md
