@@ -22,7 +22,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Monorepo Dependencies
-        run: npm ci
+        run: npm install
 
       - name: Strict TypeScript Compilation (Gateway)
         working-directory: ./gateway
@@ -56,7 +56,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Monorepo Dependencies
-        run: npm ci
+        run: npm install
 
       - name: Strict TypeScript Compilation (Dashboard)
         working-directory: ./dashboard
