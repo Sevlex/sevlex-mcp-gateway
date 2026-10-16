@@ -20,7 +20,7 @@ export interface HitlTicket {
 }
 
 export class AuditLogger {
-  private db: Database.Database;
+  public db: Database.Database;
   private insertStatement: Database.Statement;
   private lastHash: string = "0000000000000000000000000000000000000000000000000000000000000000";
 
