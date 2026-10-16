@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 import { loadConfig } from "./config.js";
 import { AuditLogger } from "./logger.js";
 import { inspectToolParameters, redactToolOutputDlp } from "./toolguard.js";
+import { AgentCircuitBreaker } from "./agentguard.js";
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -41,6 +43,26 @@ const userId = process.env.SEVLEX_USER || os.userInfo().username;
 // Track pending tools/list requests
 const pendingToolListRequests = new Set<number | string>();
 
+// Initialize AgentGuard Autonomous Circuit Breaker
+const circuitBreaker = new AgentCircuitBreaker({
+  maxCallsPerWindow: 25,
+  windowMs: 30_000,
+  maxConsecutiveFailures: 5,
+  maxIdenticalCalls: 3,
+});
+
+// Stream backpressure helpers to prevent memory bloat on large payloads
+function safeWriteStdout(data: string): boolean {
+  return process.stdout.write(data);
+}
+
+function safeWriteToolStdin(data: string): boolean {
+  if (realTool.stdin && !realTool.stdin.destroyed) {
+    return realTool.stdin.write(data);
+  }
+  return false;
+}
+
 // 2. Identify the Destination
 // When the AI starts Sevlex, it tells us where it actually wants to go.
 // Example command: node gateway.ts python weather_tool.py
@@ -68,7 +90,7 @@ realTool.on("error", (err) => {
 // ============================================================================
 // 4. REMOTE SIEM FORWARDER (Stateless Disaster Recovery & Enterprise Streaming)
 // ============================================================================
-function streamToSiem(targetUserId: string, targetToolName: string, status: "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING", rawPayload: any) {
+function streamToSiem(targetUserId: string, targetToolName: string, status: "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING" | "CIRCUIT_BROKEN", rawPayload: any) {
   const siemConfig = config.policy.siem;
   const endpoint = process.env.SEVLEX_SIEM_ENDPOINT || siemConfig?.endpoint;
   const apiKey = process.env.SEVLEX_SIEM_API_KEY || siemConfig?.apiKey;
@@ -151,9 +173,49 @@ function handleAiMessage(message: any, rawMessage: string) {
       const toolName = msg.params.name;
       const approvalRequired = (config.policy.approvalRequiredTools || []).includes(toolName);
 
-      // 🔴 CHECK 1: Hard Blocklist Check
+      // 🛡️ CHECK 0: AgentGuard™ Autonomous Circuit Breaker (Trajectory & Loop Interception)
+      const circuitCheck = circuitBreaker.checkBeforeExecution(toolName, msg.params.arguments);
+      if (!circuitCheck.allowed) {
+        isBlocked = true;
+        circuitBreaker.recordResult(false, true);
+
+        const breakerTag = `${toolName} [CIRCUIT_TRIPPED]`;
+        logger.log({
+          userId: userId,
+          toolName: breakerTag,
+          status: "CIRCUIT_BROKEN",
+          rawRequest: JSON.stringify({ message: msg, reason: circuitCheck.reason }),
+        });
+
+        streamToSiem(userId, breakerTag, "CIRCUIT_BROKEN", circuitCheck.reason);
+
+        const alertMsg = `[CIRCUIT BREAKER TRIPPED] User '${userId}' triggered loop breaker on '${toolName}': ${circuitCheck.reason}`;
+        if (process.env.SLACK_WEBHOOK_URL) {
+          fetch(process.env.SLACK_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: alertMsg }),
+          }).catch((err) => console.error("Slack webhook failed:", err));
+        } else {
+          console.error(alertMsg);
+        }
+
+        const breakerResponse = {
+          jsonrpc: "2.0",
+          id: msg.id,
+          error: {
+            code: circuitCheck.code || -32002,
+            message: circuitCheck.reason,
+          },
+        };
+        safeWriteStdout(JSON.stringify(breakerResponse) + "\n");
+        continue;
+      }
+
+      // 🚫 CHECK 1: Hard Blocklist Check
       if (config.policy.blockedTools.includes(toolName)) {
         isBlocked = true;
+        circuitBreaker.recordResult(false, true);
         
         logger.log({
           userId: userId,
@@ -183,27 +245,31 @@ function handleAiMessage(message: any, rawMessage: string) {
             message: `Sevlex Security: Access to tool '${toolName}' is blocked by company policy.`,
           },
         };
-        process.stdout.write(JSON.stringify(errorResponse) + "\n");
+        safeWriteStdout(JSON.stringify(errorResponse) + "\n");
       } 
-      // 🟣 CHECK 2: Human-In-The-Loop (HITL) Authorization Check
+      // 🔒 CHECK 2: Human-In-The-Loop (HITL) Stateful Clearance Check
       else if (approvalRequired) {
         isBlocked = true;
+        circuitBreaker.recordResult(false, true);
+
+        // Register persistent clearance ticket in SQLite
+        const ticketId = logger.createHitlTicket(userId, toolName, rawMessage);
 
         logger.log({
           userId: userId,
           toolName: toolName,
           status: "HITL_PENDING",
-          rawRequest: rawMessage,
+          rawRequest: JSON.stringify({ message: msg, ticketId }),
         });
 
-        streamToSiem(userId, toolName, "HITL_PENDING", rawMessage);
+        streamToSiem(userId, toolName, "HITL_PENDING", { message: msg, ticketId });
 
-        const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested high-impact tool '${toolName}'. Waiting for SecOps clearance.`;
+        const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested high-impact tool '${toolName}'. Ticket: ${ticketId}. Waiting for SecOps clearance.`;
         if (process.env.SLACK_WEBHOOK_URL) {
           fetch(process.env.SLACK_WEBHOOK_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: alertMsg })
+            body: JSON.stringify({ text: alertMsg, ticketId })
           }).catch(err => console.error("Slack webhook failed:", err));
         } else {
           console.error(alertMsg);
@@ -214,16 +280,18 @@ function handleAiMessage(message: any, rawMessage: string) {
           id: msg.id,
           error: {
             code: -32001,
-            message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. An approval ticket has been dispatched to SecOps.`,
+            message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. Ticket '${ticketId}' dispatched to SecOps.`,
+            data: { ticketId, status: "PENDING" },
           },
         };
-        process.stdout.write(JSON.stringify(hitlResponse) + "\n");
+        safeWriteStdout(JSON.stringify(hitlResponse) + "\n");
       }
       // 🛡️ CHECK 3: ToolGuard Call Guard (Deep Parameter & Argument Inspection)
       else {
         const paramCheck = inspectToolParameters(toolName, msg.params.arguments);
         if (!paramCheck.passed && paramCheck.violation) {
           isBlocked = true;
+          circuitBreaker.recordResult(false, true);
 
           const violationTag = `${toolName} [${paramCheck.violation.category}]`;
           logger.log({
@@ -254,9 +322,11 @@ function handleAiMessage(message: any, rawMessage: string) {
               message: `Sevlex ToolGuard: Blocked by Parameter Inspection Rule [${paramCheck.violation.ruleId}]: ${paramCheck.violation.reason}. Dangerous payload intercepted.`,
             },
           };
-          process.stdout.write(JSON.stringify(errorResponse) + "\n");
+          safeWriteStdout(JSON.stringify(errorResponse) + "\n");
         } else {
           // 🟢 SECURITY CHECK PASSED: Tool & Parameters are safe
+          circuitBreaker.recordResult(true, false);
+
           logger.log({
             userId: userId,
             toolName: toolName,
@@ -275,8 +345,8 @@ function handleAiMessage(message: any, rawMessage: string) {
     return; 
   }
 
-  // Forward the safe message to the actual tool
-  realTool.stdin.write(rawMessage + "\n");
+  // Forward the safe message to the actual tool with backpressure
+  safeWriteToolStdin(rawMessage + "\n");
 }
 
 let inputBuffer = "";
@@ -442,11 +512,29 @@ toolOutput.on("line", (line) => {
   }
 
   // Pass sanitized answer straight back to the AI
-  process.stdout.write(finalLine + "\n");
+  safeWriteStdout(finalLine + "\n");
 });
 
-// Clean up the database when the AI disconnects
-process.on("SIGINT", () => {
-  logger.close();
-  process.exit(0);
+// Clean up child process and database when the AI disconnects
+function cleanupAndExit(code: number = 0) {
+  try {
+    if (realTool && !realTool.killed) {
+      realTool.kill("SIGTERM");
+      setTimeout(() => {
+        if (!realTool.killed) realTool.kill("SIGKILL");
+      }, 1000).unref();
+    }
+    logger.close();
+  } catch (e) {}
+  process.exit(code);
+}
+
+process.on("SIGINT", () => cleanupAndExit(0));
+process.on("SIGTERM", () => cleanupAndExit(0));
+if (process.platform !== "win32") {
+  process.on("SIGHUP", () => cleanupAndExit(0));
+}
+
+realTool.on("exit", (code) => {
+  cleanupAndExit(code ?? 0);
 });

@@ -22,8 +22,10 @@ type Log = {
   timestamp: string; 
   user_id: string; 
   tool_name: string; 
-  status: "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING"; 
-  raw_request: string; 
+  status: "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING" | "CIRCUIT_BROKEN"; 
+  raw_request: string;
+  prev_hash?: string;
+  entry_hash?: string;
 };
 
 type TabType = "OVERVIEW" | "DEVICES" | "AGENTS" | "POLICY" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
@@ -49,7 +51,7 @@ export default function Dashboard() {
   const [activeDiagnosisTab, setActiveDiagnosisTab] = useState<number>(0);
 
   // Facet filter state for Log Explorer (Datadog style)
-  const [statusFilter, setStatusFilter] = useState<"ALL" | "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING">("ALL");
+  const [statusFilter, setStatusFilter] = useState<"ALL" | "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING" | "CIRCUIT_BROKEN">("ALL");
 
   const [apiKey, setApiKey] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -986,6 +988,12 @@ export default function Dashboard() {
                     >
                       HITL
                     </button>
+                    <button 
+                      onClick={() => setStatusFilter("CIRCUIT_BROKEN")}
+                      className={`px-2 py-1 rounded transition ${statusFilter === "CIRCUIT_BROKEN" ? "bg-amber-100 text-amber-800 font-semibold" : "text-slate-500"}`}
+                    >
+                      Breaker
+                    </button>
                   </div>
                 </div>
 
@@ -1025,6 +1033,10 @@ export default function Dashboard() {
                             {log.status === "BLOCKED" ? (
                               <span className="inline-flex items-center gap-1 text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded text-[10px] font-bold">
                                 <ShieldAlert size={11} /> BLOCKED
+                              </span>
+                            ) : log.status === "CIRCUIT_BROKEN" ? (
+                              <span className="inline-flex items-center gap-1 text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                                <Zap size={11} /> CIRCUIT BROKEN
                               </span>
                             ) : log.status === "DLP_REDACTED" ? (
                               <span className="inline-flex items-center gap-1 text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded text-[10px] font-bold">
@@ -1098,6 +1110,21 @@ export default function Dashboard() {
                             })()}
                           </pre>
                         </div>
+
+                        {selectedLog.entry_hash && (
+                          <div className="p-2.5 rounded-lg bg-blue-50/60 border border-blue-200/80 text-[10px] space-y-1.5">
+                            <div className="flex items-center justify-between text-blue-900 font-bold">
+                              <span className="flex items-center gap-1"><Lock size={10} /> SOC 2 Cryptographic Hash Link</span>
+                              <span className="text-[9px] text-blue-600 font-mono">SHA-256</span>
+                            </div>
+                            <div className="font-mono text-slate-600 break-all text-[9px]">
+                              <span className="text-slate-400">Prev: </span>{selectedLog.prev_hash || "0000000000000000000000000000000000000000000000000000000000000000"}
+                            </div>
+                            <div className="font-mono text-slate-800 font-bold break-all text-[9px]">
+                              <span className="text-slate-400 font-normal">Hash: </span>{selectedLog.entry_hash}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (
