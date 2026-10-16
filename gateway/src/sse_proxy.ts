@@ -7,6 +7,7 @@ import { loadConfig } from "./config.js";
 import { AuditLogger } from "./logger.js";
 import { inspectToolParameters, redactToolOutputDlp } from "./toolguard.js";
 import { AgentCircuitBreaker } from "./agentguard.js";
+import { sendSlackHitlCard } from "./slack_notifier.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -148,7 +149,6 @@ export function startSseProxy(options: SseProxyOptions): http.Server {
                   rawRequest: JSON.stringify({ message: rpc, clearance }),
                 });
                 // Authorized: continue processing
-              } else {
                 circuitBreaker.recordResult(false, true);
                 const ticketId = logger.createHitlTicket(userId, toolName, body);
 
@@ -158,6 +158,17 @@ export function startSseProxy(options: SseProxyOptions): http.Server {
                   status: "HITL_PENDING",
                   rawRequest: JSON.stringify({ message: rpc, ticketId }),
                 });
+
+                if (process.env.SLACK_WEBHOOK_URL) {
+                  sendSlackHitlCard({
+                    webhookUrl: process.env.SLACK_WEBHOOK_URL,
+                    userId,
+                    toolName,
+                    ticketId,
+                    argsSnippet: JSON.stringify(rpc.params?.arguments || {}, null, 2),
+                    dashboardUrl: process.env.SEVLEX_DASHBOARD_URL || "http://localhost:3000",
+                  }).catch(err => console.error("Slack interactive webhook failed:", err));
+                }
 
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(

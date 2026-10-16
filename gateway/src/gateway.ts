@@ -9,6 +9,7 @@ import { loadConfig } from "./config.js";
 import { AuditLogger } from "./logger.js";
 import { inspectToolParameters, redactToolOutputDlp } from "./toolguard.js";
 import { AgentCircuitBreaker } from "./agentguard.js";
+import { sendSlackHitlCard } from "./slack_notifier.js";
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -283,14 +284,17 @@ function handleAiMessage(message: any, rawMessage: string) {
           streamToSiem(userId, toolName, "HITL_PENDING", { message: msg, ticketId });
 
           const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested high-impact tool '${toolName}'. Ticket: ${ticketId}. Waiting for SecOps clearance.`;
+          console.error(alertMsg);
+
           if (process.env.SLACK_WEBHOOK_URL) {
-            fetch(process.env.SLACK_WEBHOOK_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text: alertMsg, ticketId })
-            }).catch(err => console.error("Slack webhook failed:", err));
-          } else {
-            console.error(alertMsg);
+            sendSlackHitlCard({
+              webhookUrl: process.env.SLACK_WEBHOOK_URL,
+              userId,
+              toolName,
+              ticketId,
+              argsSnippet: JSON.stringify(msg.params?.arguments || {}, null, 2),
+              dashboardUrl: process.env.SEVLEX_DASHBOARD_URL || "http://localhost:3000",
+            }).catch(err => console.error("Slack interactive webhook failed:", err));
           }
 
           const hitlResponse = {
