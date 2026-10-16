@@ -154,6 +154,28 @@ export class AuditLogger {
   }
 
   /**
+   * Rejects a pending HITL ticket.
+   */
+  public rejectHitlTicket(ticketId: string, rejectedBy: string): boolean {
+    const result = this.db.prepare(`
+      UPDATE hitl_tickets 
+      SET status = 'REJECTED', approved_by = ?, approved_at = CURRENT_TIMESTAMP
+      WHERE ticket_id = ? AND status = 'PENDING'
+    `).run(rejectedBy, ticketId);
+    return result.changes > 0;
+  }
+
+  /**
+   * Fetches HITL tickets.
+   */
+  public getHitlTickets(status?: "PENDING" | "APPROVED" | "REJECTED"): any[] {
+    if (status) {
+      return this.db.prepare("SELECT * FROM hitl_tickets WHERE status = ? ORDER BY created_at DESC").all(status) as any[];
+    }
+    return this.db.prepare("SELECT * FROM hitl_tickets ORDER BY created_at DESC LIMIT 50").all() as any[];
+  }
+
+  /**
    * Mathematically verifies the cryptographic integrity of the entire audit chain.
    */
   public verifyAuditChain(): { valid: boolean; totalReceipts: number; brokenAtId?: number } {

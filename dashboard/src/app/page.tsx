@@ -16,6 +16,7 @@ import AlertingTab from "./components/AlertingTab";
 import DeviceFleetTab from "./components/DeviceFleetTab";
 import AgentDiscoveryTab from "./components/AgentDiscoveryTab";
 import ClientBrandIcon from "./components/ClientBrandIcon";
+import HitlClearanceTab from "./components/HitlClearanceTab";
 
 type Log = { 
   id: number; 
@@ -28,7 +29,7 @@ type Log = {
   entry_hash?: string;
 };
 
-type TabType = "OVERVIEW" | "DEVICES" | "AGENTS" | "POLICY" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
+type TabType = "OVERVIEW" | "DEVICES" | "AGENTS" | "POLICY" | "HITL" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabType>("OVERVIEW");
@@ -283,6 +284,7 @@ export default function Dashboard() {
               { id: "DEVICES", label: "Device Fleet", icon: HardDrive, badge: `${fleetData?.devices?.length || 6} Hosts` },
               { id: "AGENTS", label: "Shadow AI & Agents", icon: Bot, badge: `${fleetData?.runtimes?.length || 5} IDEs` },
               { id: "POLICY", label: "L7 Policies", icon: Sliders, badge: `${blockedTools.length} Banned` },
+              { id: "HITL", label: "HITL Clearances", icon: Shield, badge: "SecOps" },
               { id: "AUDIT", label: "Log Explorer", icon: Activity, badge: `${logs.length}` },
               { id: "MDM", label: "Rollout Packages", icon: Server, badge: "Win32/Pkg" },
               { id: "SIEM", label: "SIEM Stream", icon: Zap, badge: "US5" },
@@ -934,6 +936,13 @@ export default function Dashboard() {
                 })}
               </div>
             </div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* TAB: DUAL-CUSTODY HITL CLEARANCE QUEUE                                   */}
+          {/* ========================================================================= */}
+          {activeTab === "HITL" && (
+            <HitlClearanceTab apiKey={apiKey} />
           )}
 
           {/* ========================================================================= */}
