@@ -176,26 +176,27 @@ sevlex npx -y @modelcontextprotocol/server-github
 ### 2. Local Setup
 ```bash
 # Clone the repository
-git clone https://github.com/meetpanchal-sevlex/sevlex-mcp-gateway.git
+git clone https://github.com/Sevlex/sevlex-mcp-gateway.git
 cd sevlex-mcp-gateway
 
-# Install dependencies
-cd gateway && npm ci
-cd ../dashboard && npm ci
-cd ..
+# Install dependencies across all workspaces
+npm run install:all
+
+# Boot Gateway Engine & Next.js SecOps Dashboard simultaneously
+npm run dev
 ```
 
 ### 3. Running the Verification Suite
 ```bash
-# Run strict TypeScript compilation
+# Run 8-stage live security simulation suite
+npm run simulate
+
+# Verify cryptographic audit integrity (SOC 2 Non-Repudiation Merkle Hash Chain)
+npm run verify
+
+# Strict TypeScript compilation across workspaces
 cd gateway && npx tsc --noEmit
 cd ../dashboard && npx tsc --noEmit
-
-# Run 8-stage live security simulation suite
-cd ../gateway && npm run simulate
-
-# Verify cryptographic audit integrity
-node bin/sevlex.js verify
 ```
 
 ### 4. Self-Hosted VPC Deployment (Docker Compose)
@@ -259,7 +260,9 @@ Sevlex dynamically hot-reloads its configuration in `<5ms` without process resta
 
 ---
 
-## 📄 License & Maintainer
+## 📄 Governance, Security & License
 
-Distributed under the **MIT License**.  
-Engineered and maintained by **Meet Panchal**.
+- **License:** Distributed under the [Apache 2.0 License](LICENSE).
+- **Vulnerability Reporting:** See our [Security Policy](SECURITY.md) for coordinated disclosure.
+- **Contributing:** See our [Contribution Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md).
+- **Architect & Maintainer:** **Meet Panchal** & Sevlex Core Contributors.

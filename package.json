@@ -1,0 +1,30 @@
+{
+  "name": "sevlex",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Layer 7 Zero-Trust Security Gateway & Control Plane for the Model Context Protocol (MCP)",
+  "homepage": "https://github.com/Sevlex/sevlex-mcp-gateway#readme",
+  "bugs": {
+    "url": "https://github.com/Sevlex/sevlex-mcp-gateway/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sevlex/sevlex-mcp-gateway.git"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "workspaces": [
+    "gateway",
+    "dashboard"
+  ],
+  "scripts": {
+    "install:all": "npm install --prefix gateway && npm install --prefix dashboard",
+    "dev": "node scripts/dev.js",
+    "dev:gateway": "npm run dev --prefix gateway",
+    "dev:dashboard": "npm run dev --prefix dashboard",
+    "build": "npm run build --prefix dashboard",
+    "test": "npm run test --prefix gateway",
+    "simulate": "npm run simulate --prefix gateway",
+    "verify": "node gateway/bin/sevlex.js verify"
+  }
+}

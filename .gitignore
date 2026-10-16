@@ -18,3 +18,5 @@ docs/
 *.pdf
 *RESUME*
 RESUME_*.md
+scratch/
+*_plan.md
