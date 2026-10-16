@@ -349,6 +349,7 @@ function runStatus() {
     console.log(`  ${client.name.padEnd(25)} ${status}`);
   }
   console.log("-----------------------------------------------------------------\n");
+  process.exit(0);
 }
 
 function runScan() {

@@ -16,9 +16,14 @@ export async function GET() {
   try {
     if (fs.existsSync(/*turbopackIgnore: true*/ dbPath)) {
       const db = new Database(dbPath, { readonly: true, timeout: 2000 });
-      const row = db.prepare("SELECT count(*) as count FROM audit_logs").get() as any;
-      totalReceipts = row?.count ?? 0;
-      db.close();
+      try {
+        const row = db.prepare("SELECT count(*) as count FROM audit_logs").get() as any;
+        totalReceipts = row?.count ?? 0;
+      } catch {
+        dbStatus = "pending_schema";
+      } finally {
+        db.close();
+      }
     } else {
       dbStatus = "pending_initialization";
     }

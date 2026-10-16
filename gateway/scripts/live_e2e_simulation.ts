@@ -32,17 +32,18 @@ console.log(`${c.bold}${c.blue}   SEVLEX ZERO-TRUST MCP GATEWAY: LIVE END-TO-END
 console.log(`${c.bold}${c.blue}======================================================================${c.reset}`);
 console.log(`${c.gray}Architecture: AI Client (Simulated) -> Sevlex Gateway (L7 DPI) -> Enterprise MCP Server${c.reset}\n`);
 
-// 1. Check database before simulation
+// 1. Check database before simulation (initialize schema for fresh CI runners)
+new AuditLogger(dbPath);
 const db = new Database(dbPath);
 const countBefore = (db.prepare("SELECT COUNT(*) as cnt FROM audit_logs").get() as any)?.cnt || 0;
 console.log(`${c.cyan}[1/8] Connected to SQLite Audit Log:${c.reset} ${countBefore} existing receipts found in ${dbPath}\n`);
 
 // 2. Launch Sevlex Gateway wrapping Mock MCP Server
 console.log(`${c.cyan}[2/8] Spawning Sevlex L7 Security Gateway...${c.reset}`);
-const gateway = spawn("npx", ["tsx", gatewayPath, "node", mockServerPath], {
+const tsxCli = path.resolve(__dirname, "../node_modules/tsx/dist/cli.mjs");
+const gateway = spawn(process.execPath, [tsxCli, gatewayPath, "node", mockServerPath], {
   cwd: path.resolve(__dirname, ".."),
   stdio: ["pipe", "pipe", "pipe"],
-  shell: process.platform === "win32",
   env: {
     ...process.env,
     SEVLEX_USER: "sarah.chen@enterprise.internal",
