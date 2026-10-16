@@ -71,7 +71,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
             <HardDrive className="text-[#2563EB]" size={22} />
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">Endpoint Fleet &amp; Device Inventory</h2>
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
-              Runlayer Watch Parity
+              Sevlex Watch™ Telemetry
             </span>
           </div>
           <p className="text-xs text-slate-500">

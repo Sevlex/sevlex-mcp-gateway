@@ -756,7 +756,7 @@ export default function Dashboard() {
           )}
 
           {/* ========================================================================= */}
-          {/* TAB: DEVICE FLEET INVENTORY (Runlayer Watch Parity)                       */}
+          {/* TAB: DEVICE FLEET INVENTORY (Sevlex Watch™ Telemetry)                     */}
           {/* ========================================================================= */}
           {activeTab === "DEVICES" && (
             <DeviceFleetTab 
