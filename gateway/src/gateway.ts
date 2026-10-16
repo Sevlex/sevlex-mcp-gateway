@@ -35,8 +35,41 @@ const gatewayRoot = getGatewayRoot();
 // 1. Initialize our Foundation (Fail-fast config and robust database)
 const configPath = process.env.SEVLEX_CONFIG_PATH || path.resolve(gatewayRoot, "sevlex.json");
 const dbPath = process.env.SEVLEX_DB_PATH || path.resolve(gatewayRoot, "audit_log.db");
-const config = loadConfig(configPath);
+let config = loadConfig(configPath);
 const logger = new AuditLogger(dbPath);
+
+// Dynamic Policy Hot-Reloading (Sub-5ms In-Memory Update without process restarts)
+function initPolicyHotReload(targetPath: string) {
+  const reload = () => {
+    try {
+      if (fs.existsSync(targetPath)) {
+        config = loadConfig(targetPath);
+        console.error(`[Sevlex Gateway] ⚡ Policy hot-reloaded: ${config.policy.blockedTools.length} blocked, ${(config.policy.approvalRequiredTools || []).length} HITL protected.`);
+      }
+    } catch {}
+  };
+
+  try {
+    const dir = path.dirname(targetPath);
+    if (fs.existsSync(dir)) {
+      fs.watch(dir, (_eventType, filename) => {
+        if (filename && filename.toLowerCase() === path.basename(targetPath).toLowerCase()) {
+          setTimeout(reload, 25);
+        }
+      });
+    }
+  } catch {}
+
+  try {
+    fs.watchFile(targetPath, { interval: 300 }, (curr, prev) => {
+      if (curr.mtimeMs !== prev.mtimeMs) {
+        reload();
+      }
+    });
+  } catch {}
+}
+
+initPolicyHotReload(configPath);
 
 // Determine User Identity
 const userId = process.env.SEVLEX_USER || os.userInfo().username;

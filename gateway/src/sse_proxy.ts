@@ -1,4 +1,5 @@
 import http from "node:http";
+import fs from "node:fs";
 import { URL } from "node:url";
 import path from "node:path";
 import os from "node:os";
@@ -30,11 +31,28 @@ export interface SseProxyOptions {
 }
 
 export function startSseProxy(options: SseProxyOptions): http.Server {
-  const config = loadConfig(configPath);
+  let config = loadConfig(configPath);
   const logger = new AuditLogger(dbPath);
   const circuitBreaker = new AgentCircuitBreaker();
   const userId = options.userId || process.env.SEVLEX_USER || os.userInfo().username;
   const upstream = new URL(options.upstreamUrl);
+
+  // Dynamic Policy Hot-Reloading
+  try {
+    const dir = path.dirname(configPath);
+    if (fs.existsSync(dir)) {
+      fs.watch(dir, (_eventType: string, filename: string | null) => {
+        if (filename && filename.toLowerCase() === path.basename(configPath).toLowerCase()) {
+          setTimeout(() => {
+            try {
+              config = loadConfig(configPath);
+              console.error(`[Sevlex SSE Proxy] ⚡ Policy hot-reloaded.`);
+            } catch {}
+          }, 25);
+        }
+      });
+    }
+  } catch {}
 
   const server = http.createServer(async (req, res) => {
     const reqUrl = new URL(req.url || "/", `http://${req.headers.host}`);
