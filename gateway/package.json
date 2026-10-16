@@ -7,11 +7,11 @@
     "sevlex": "./bin/sevlex.js"
   },
   "scripts": {
-    "start": "tsx src/gateway.ts",
-    "dev": "tsx src/gateway.ts",
-    "simulate": "tsx scripts/live_e2e_simulation.ts",
-    "stress": "tsx scripts/stress_5000.ts",
-    "test": "tsx scripts/live_e2e_simulation.ts",
+    "start": "node --import tsx src/gateway.ts",
+    "dev": "node --import tsx src/gateway.ts",
+    "simulate": "node --import tsx scripts/live_e2e_simulation.ts",
+    "stress": "node --import tsx scripts/stress_5000.ts",
+    "test": "node --import tsx scripts/live_e2e_simulation.ts",
     "verify": "node bin/sevlex.js verify"
   },
   "keywords": [
