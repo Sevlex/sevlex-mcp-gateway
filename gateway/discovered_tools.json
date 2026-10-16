@@ -104,7 +104,12 @@
       "fake_tool_1",
       "fake_tool_2",
       "read_company_knowledge",
-      "delete_database"
+      "delete_database",
+      "postgres_query",
+      "bash_execute",
+      "crm_fetch_customer",
+      "github_list_pull_requests",
+      "drop_tables"
     ]
   }
 ]

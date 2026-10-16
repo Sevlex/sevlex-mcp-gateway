@@ -9,3 +9,7 @@ node_modules/
 .claude/
 dist/
 build/
+*.map
+*.d.ts
+*.d.ts.map
+

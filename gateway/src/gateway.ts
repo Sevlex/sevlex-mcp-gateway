@@ -57,7 +57,13 @@ if (!targetCommand) {
 const realTool = spawn(targetCommand, targetArgs, {
   // We intercept stdin (input) and stdout (output). Stderr (errors) bypasses us.
   stdio: ["pipe", "pipe", "inherit"], 
+  shell: process.platform === "win32",
 });
+
+realTool.on("error", (err) => {
+  console.error("❌ Sevlex Gateway: Failed to spawn target process:", err);
+});
+
 
 // ============================================================================
 // 4. REMOTE SIEM FORWARDER (Stateless Disaster Recovery & Enterprise Streaming)
