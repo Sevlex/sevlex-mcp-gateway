@@ -20,10 +20,8 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: gateway/package-lock.json
 
-      - name: Install Gateway Dependencies
-        working-directory: ./gateway
+      - name: Install Monorepo Dependencies
         run: npm ci
 
       - name: Strict TypeScript Compilation (Gateway)
@@ -56,10 +54,8 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: dashboard/package-lock.json
 
-      - name: Install Dashboard Dependencies
-        working-directory: ./dashboard
+      - name: Install Monorepo Dependencies
         run: npm ci
 
       - name: Strict TypeScript Compilation (Dashboard)
