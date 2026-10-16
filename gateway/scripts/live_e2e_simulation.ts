@@ -40,7 +40,11 @@ console.log(`${c.cyan}[1/8] Connected to SQLite Audit Log:${c.reset} ${countBefo
 
 // 2. Launch Sevlex Gateway wrapping Mock MCP Server
 console.log(`${c.cyan}[2/8] Spawning Sevlex L7 Security Gateway...${c.reset}`);
-const tsxCli = path.resolve(__dirname, "../node_modules/tsx/dist/cli.mjs");
+import fs from "node:fs";
+let tsxCli = path.resolve(__dirname, "../node_modules/tsx/dist/cli.mjs");
+if (!fs.existsSync(tsxCli)) {
+  tsxCli = path.resolve(__dirname, "../../node_modules/tsx/dist/cli.mjs");
+}
 const gateway = spawn(process.execPath, [tsxCli, gatewayPath, "node", mockServerPath], {
   cwd: path.resolve(__dirname, ".."),
   stdio: ["pipe", "pipe", "pipe"],
