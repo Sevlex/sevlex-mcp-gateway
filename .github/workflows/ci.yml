@@ -59,8 +59,9 @@ jobs:
 
       - name: Install Monorepo Dependencies
         run: |
-          npm install
+          npm install --include=optional
           npm rebuild better-sqlite3
+          npm install --prefix dashboard lightningcss-linux-x64-gnu --save-optional
 
       - name: Strict TypeScript Compilation (Dashboard)
         working-directory: ./dashboard
