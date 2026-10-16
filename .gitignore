@@ -12,4 +12,7 @@ build/
 *.map
 *.d.ts
 *.d.ts.map
-
+docs/
+*.mp4
+*.zip
+*.pdf
