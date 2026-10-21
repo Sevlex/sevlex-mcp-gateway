@@ -17,6 +17,33 @@ rl.on("line", (line) => {
   try {
     const msg = JSON.parse(line);
 
+    // 0. MCP Protocol Initialize Handshake
+    if (msg.method === "initialize") {
+      const response = {
+        jsonrpc: "2.0",
+        id: msg.id,
+        result: {
+          protocolVersion: msg.params?.protocolVersion || "2024-11-05",
+          capabilities: {
+            tools: {
+              listChanged: true
+            }
+          },
+          serverInfo: {
+            name: "sevlex-protected-tools",
+            version: "1.0.0"
+          }
+        }
+      };
+      process.stdout.write(JSON.stringify(response) + "\n");
+      return;
+    }
+
+    // 0.1 Ignore MCP client notifications (no response needed)
+    if (msg.method && msg.method.startsWith("notifications/")) {
+      return;
+    }
+
     // 1. Tool Discovery Handshake
     if (msg.method === "tools/list") {
       const response = {
