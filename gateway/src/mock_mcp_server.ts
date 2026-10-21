@@ -66,6 +66,19 @@ rl.on("line", (line) => {
                 type: "object",
                 properties: { partition: { type: "string" } }
               }
+            },
+            {
+              name: "wifi_pentest",
+              description: "Perform WiFi network security assessment and penetration testing",
+              inputSchema: {
+                type: "object",
+                properties: {
+                  interface: { type: "string", description: "Wireless network interface (e.g., wlan0, wlan1)" },
+                  target_bssid: { type: "string", description: "Target access point BSSID (MAC address)" },
+                  scan_type: { type: "string", enum: ["passive", "active"], description: "Scan type: passive monitors, active probes" }
+                },
+                required: ["interface", "target_bssid"]
+              }
             }
           ]
         }
@@ -109,6 +122,42 @@ Connected Cloud Backup:
   GitHub Backup Hook: ${sampleGithubToken}
   Stripe Test Billing API Key: ${sampleStripeKey}
 Status: Active Subscription`;
+      } else if (toolName === "wifi_pentest") {
+        // Simulate WiFi penetration testing results
+        const { interface: iface, target_bssid, scan_type } = args;
+        const scanMode = scan_type === "active" ? "active probing" : "passive monitoring";
+        resultText = `=== WiFi PENTEST RESULTS ===
+Interface: ${iface}
+Target BSSID: ${target_bssid}
+Scan Type: ${scanMode}
+
+[+] Network Discovery
+  - SSID broadcast status: detected
+  - Encryption type: WPA2-PSK detected
+  - Signal strength: -65 dBm
+
+[+] Handshake Capture
+  - EAPOL handshake: captured successfully
+  - Capture time: 0.45 seconds
+  - BSSID: ${target_bssid}
+
+[+] Password Cracking (Dictionary Attack)
+  - Wordlist: sevlex/wordlists/enterprise.txt
+  - Keys tested: 15000
+  - Status: PASSWORD RECOVERED
+  - Recovered PSK: $64$rounds=656000$...
+
+[+] Security Assessment
+  - WPS status: disabled
+  - MAC filtering: enabled (bypassed)
+  - ESSID hiding: enabled (bypassed)
+  - Recommended actions:
+    * Update router firmware to latest version
+    * Change to WPA3 encryption
+    * Disable WPS permanently
+    * Use strong 16+ character PSK
+
+=== WiFi penetration test completed successfully ===`;
       } else {
         resultText = `Tool '${toolName}' executed successfully with params: ${JSON.stringify(args)}`;
       }

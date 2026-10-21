@@ -5,7 +5,7 @@
 
 export interface ParameterViolation {
   ruleId: string;
-  category: "DESTRUCTIVE_SQL" | "COMMAND_INJECTION" | "PATH_TRAVERSAL" | "RCE_ATTEMPT";
+  category: "DESTRUCTIVE_SQL" | "COMMAND_INJECTION" | "PATH_TRAVERSAL" | "RCE_ATTEMPT" | "CODE_HAZARD";
   severity: "CRITICAL" | "HIGH" | "MEDIUM";
   reason: string;
   sample: string;
@@ -45,6 +45,28 @@ const PARAMETER_RULES = [
     severity: "CRITICAL" as const,
     reason: "Remote code execution via unverified pipe to shell (curl/wget | bash)",
     pattern: /(?:curl|wget)\s+[^|;]+?\|\s*(?:ba|z)?sh\b|nc\s+(?:-[a-zA-Z]*e\s+)?\/bin\/(?:ba)?sh/i
+  },
+  // 🛡️ CodeGuard™: Defenses for Cloudflare Code Mode & Dynamic Code-as-a-Tool
+  {
+    ruleId: "MASS_DELETION_LOOP",
+    category: "CODE_HAZARD" as const,
+    severity: "CRITICAL" as const,
+    reason: "CodeGuard: Unbounded mass-deletion or mutation loop in dynamic code payload",
+    pattern: /(?:\.forEach|\.map|for\s*\([^)]+\)|while\s*\([^)]+\))\s*\{?[^}]*?\b(?:delete|destroy|drop|purge|truncate)\s*\(/i
+  },
+  {
+    ruleId: "CREDENTIAL_HARVESTING",
+    category: "CODE_HAZARD" as const,
+    severity: "CRITICAL" as const,
+    reason: "CodeGuard: Unauthorized credential/environment harvesting in script (process.env / Deno.env)",
+    pattern: /\b(?:process\.env|Deno\.env|Bun\.env|globalThis\.__env)\b/i
+  },
+  {
+    ruleId: "UNAUTHORIZED_CODE_EGRESS",
+    category: "CODE_HAZARD" as const,
+    severity: "HIGH" as const,
+    reason: "CodeGuard: Unauthorized external network exfiltration or SSRF in dynamic code",
+    pattern: /\b(?:fetch|axios|https?\.request|WebSocket)\s*\(\s*['"`]https?:\/\/(?!localhost|127\.0\.0\.1)/i
   }
 ];
 

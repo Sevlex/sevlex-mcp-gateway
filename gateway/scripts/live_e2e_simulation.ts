@@ -248,9 +248,36 @@ async function runScenario() {
     console.log(`${c.red}⚠️ WARNING: Some raw secrets bypassed DLP filter!${c.reset}`);
   }
 
-  // SCENARIO 8: AgentGuard Autonomous Circuit Breaker (Hallucination / Loop Defense)
+  // SCENARIO 8: CodeGuard™ vs. Cloudflare Code Mode (@cloudflare/codemode)
   console.log(`${c.bold}${c.blue}----------------------------------------------------------------------${c.reset}`);
-  console.log(`${c.bold}SCENARIO 8: AgentGuard™ Autonomous Circuit Breaker (Loop Defense)${c.reset}`);
+  console.log(`${c.bold}SCENARIO 8: CodeGuard™ vs. Cloudflare Code Mode Dynamic Scripts${c.reset}`);
+  console.log(`${c.yellow}AI Agent attempts to execute dynamic TypeScript snippet containing mass-deletion loop...${c.reset}`);
+  
+  const codeModePayload = `
+    const records = await cloudflare.dns.list({ zone_id: "prod_corp_zone" });
+    records.forEach(record => {
+      cloudflare.dns.delete(record.id);
+    });
+  `;
+
+  const codeModeResp = await sendRpc("tools/call", {
+    name: "codemode_execute",
+    arguments: { code: codeModePayload },
+  });
+
+  if (codeModeResp.error && codeModeResp.error.code === -32602) {
+    console.log(`${c.red}🛡️ CODEGUARD INTERCEPTION!${c.reset}`);
+    console.log(`${c.red}Error Code: ${codeModeResp.error.code} | ${codeModeResp.error.message}${c.reset}`);
+    console.log(`${c.green}✓ Cloudflare Code Mode mass-deletion loop intercepted and halted before execution!${c.reset}\n`);
+  } else {
+    console.log(`${c.red}Unexpected response: ${JSON.stringify(codeModeResp)}${c.reset}\n`);
+  }
+
+  await sleep(600);
+
+  // SCENARIO 9: AgentGuard Autonomous Circuit Breaker (Hallucination / Loop Defense)
+  console.log(`${c.bold}${c.blue}----------------------------------------------------------------------${c.reset}`);
+  console.log(`${c.bold}SCENARIO 9: AgentGuard™ Autonomous Circuit Breaker (Loop Defense)${c.reset}`);
   console.log(`${c.yellow}Simulating rogue agent trapped in hallucination loop (5 consecutive identical blocks)...${c.reset}`);
   
   let breakerResponse: any = null;
@@ -276,7 +303,7 @@ async function runScenario() {
     console.log(`${c.red}Breaker response: ${JSON.stringify(breakerResponse)}${c.reset}\n`);
   }
 
-  await sleep(800);
+  await sleep(600);
 
   // 3. Database Verification & UI Summary
   console.log(`\n${c.bold}${c.blue}======================================================================${c.reset}`);

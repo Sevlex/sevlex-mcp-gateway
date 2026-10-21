@@ -281,7 +281,46 @@ function handleAiMessage(message: any, rawMessage: string) {
         };
         safeWriteStdout(JSON.stringify(errorResponse) + "\n");
       } 
-      // 🔒 CHECK 2: Human-In-The-Loop (HITL) Stateful Clearance Check
+      // 🛡️ CHECK 2: ToolGuard Call Guard & CodeGuard™ (Deep Parameter & Dynamic Script Inspection)
+      else if (!inspectToolParameters(toolName, msg.params.arguments).passed) {
+        const paramCheck = inspectToolParameters(toolName, msg.params.arguments);
+        if (paramCheck.violation) {
+          isBlocked = true;
+          circuitBreaker.recordResult(false, true);
+
+          const violationTag = `${toolName} [${paramCheck.violation.category}]`;
+          logger.log({
+            userId: userId,
+            toolName: violationTag,
+            status: "BLOCKED",
+            rawRequest: JSON.stringify({ message: msg, violation: paramCheck.violation }),
+          });
+
+          streamToSiem(userId, violationTag, "BLOCKED", JSON.stringify({ message: msg, violation: paramCheck.violation }));
+
+          const alertMsg = `[TOOLGUARD BLOCK] User '${userId}' attempted dangerous argument in '${toolName}': ${paramCheck.violation.reason} (matched: ${paramCheck.violation.sample})`;
+          if (process.env.SLACK_WEBHOOK_URL) {
+            fetch(process.env.SLACK_WEBHOOK_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: alertMsg })
+            }).catch(err => console.error("Slack webhook failed:", err));
+          } else {
+            console.error(alertMsg);
+          }
+
+          const errorResponse = {
+            jsonrpc: "2.0",
+            id: msg.id,
+            error: {
+              code: -32602,
+              message: `Sevlex ToolGuard: Blocked by Parameter Inspection Rule [${paramCheck.violation.ruleId}]: ${paramCheck.violation.reason}. Dangerous payload intercepted.`,
+            },
+          };
+          safeWriteStdout(JSON.stringify(errorResponse) + "\n");
+        }
+      }
+      // 🔒 CHECK 3: Human-In-The-Loop (HITL) Stateful Clearance Check
       else if (approvalRequired) {
         // Check if SecOps has ALREADY authorized this tool call
         const clearance = logger.consumeApprovedHitlClearance(userId, toolName);
@@ -342,56 +381,18 @@ function handleAiMessage(message: any, rawMessage: string) {
           safeWriteStdout(JSON.stringify(hitlResponse) + "\n");
         }
       }
-      // 🛡️ CHECK 3: ToolGuard Call Guard (Deep Parameter & Argument Inspection)
       else {
-        const paramCheck = inspectToolParameters(toolName, msg.params.arguments);
-        if (!paramCheck.passed && paramCheck.violation) {
-          isBlocked = true;
-          circuitBreaker.recordResult(false, true);
+        // 🟢 SECURITY CHECK PASSED: Tool & Parameters are safe
+        circuitBreaker.recordResult(true, false);
 
-          const violationTag = `${toolName} [${paramCheck.violation.category}]`;
-          logger.log({
-            userId: userId,
-            toolName: violationTag,
-            status: "BLOCKED",
-            rawRequest: JSON.stringify({ message: msg, violation: paramCheck.violation }),
-          });
+        logger.log({
+          userId: userId,
+          toolName: toolName,
+          status: "ALLOWED",
+          rawRequest: JSON.stringify(msg),
+        });
 
-          streamToSiem(userId, violationTag, "BLOCKED", JSON.stringify({ message: msg, violation: paramCheck.violation }));
-
-          const alertMsg = `[TOOLGUARD BLOCK] User '${userId}' attempted dangerous argument in '${toolName}': ${paramCheck.violation.reason} (matched: ${paramCheck.violation.sample})`;
-          if (process.env.SLACK_WEBHOOK_URL) {
-            fetch(process.env.SLACK_WEBHOOK_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text: alertMsg })
-            }).catch(err => console.error("Slack webhook failed:", err));
-          } else {
-            console.error(alertMsg);
-          }
-
-          const errorResponse = {
-            jsonrpc: "2.0",
-            id: msg.id,
-            error: {
-              code: -32602,
-              message: `Sevlex ToolGuard: Blocked by Parameter Inspection Rule [${paramCheck.violation.ruleId}]: ${paramCheck.violation.reason}. Dangerous payload intercepted.`,
-            },
-          };
-          safeWriteStdout(JSON.stringify(errorResponse) + "\n");
-        } else {
-          // 🟢 SECURITY CHECK PASSED: Tool & Parameters are safe
-          circuitBreaker.recordResult(true, false);
-
-          logger.log({
-            userId: userId,
-            toolName: toolName,
-            status: "ALLOWED",
-            rawRequest: JSON.stringify(msg),
-          });
-
-          streamToSiem(userId, toolName, "ALLOWED", JSON.stringify(msg));
-        }
+        streamToSiem(userId, toolName, "ALLOWED", JSON.stringify(msg));
       }
     }
   }

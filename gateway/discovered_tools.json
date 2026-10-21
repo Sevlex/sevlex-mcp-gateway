@@ -111,5 +111,14 @@
       "github_list_pull_requests",
       "drop_tables"
     ]
+  },
+  {
+    "server": "Cloudflare Code Mode",
+    "tools": [
+      "codemode_execute",
+      "codemode_search",
+      "execute",
+      "eval"
+    ]
   }
 ]
