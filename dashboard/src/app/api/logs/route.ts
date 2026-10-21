@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSqliteDb, getPgPool } from '@/lib/db';
 
-// Force Next.js to not cache this route so the logs are always live
 export const dynamic = 'force-dynamic';
-
-declare global {
-  var __SEVLEX_INGESTED_LOGS__: any[] | undefined;
-}
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('Authorization') || '';
@@ -16,7 +11,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // 1. Direct PostgreSQL / AWS RDS in Customer VPC (if DATABASE_URL configured)
+  // 1. Production: PostgreSQL (AWS RDS in VPC or Docker Compose)
   const pool = getPgPool();
   if (pool) {
     try {
@@ -40,46 +35,13 @@ export async function GET(request: Request) {
       }));
 
       return NextResponse.json({ logs, storage: 'postgres' });
-    } catch (err) {
-      console.error('Direct PostgreSQL query failed, attempting fallbacks:', err);
+    } catch (err: any) {
+      console.error('PostgreSQL query error:', err);
+      return NextResponse.json({ error: 'Database query error', message: err.message }, { status: 500 });
     }
   }
 
-  // 2. Cloud DB: Supabase / PostgreSQL REST API (if SUPABASE_URL configured)
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (supabaseUrl && supabaseKey) {
-    try {
-      const res = await fetch(`${supabaseUrl.replace(/\/+$/, '')}/rest/v1/audit_logs?select=*&order=id.desc&limit=100`, {
-        headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-        },
-        cache: 'no-store',
-      });
-
-      if (res.ok) {
-        const rawLogs = await res.json();
-        const logs = rawLogs.map((row: any) => ({
-          id: row.id,
-          timestamp: row.timestamp || row.created_at,
-          user_id: row.user_id,
-          tool_name: row.tool_name,
-          status: row.status,
-          raw_request: row.raw_request,
-          raw_response: row.raw_response,
-          prev_hash: row.prev_hash,
-          entry_hash: row.entry_hash,
-        }));
-        return NextResponse.json({ logs, storage: 'supabase' });
-      }
-    } catch (err) {
-      console.error('Failed to fetch logs from Supabase, falling back:', err);
-    }
-  }
-
-  // 3. Local SQLite fallback (using built-in node:sqlite via getSqliteDb)
+  // 2. Local Offline Dev: SQLite
   try {
     const db = getSqliteDb(true);
     if (db) {
@@ -87,14 +49,8 @@ export async function GET(request: Request) {
       db.close();
       return NextResponse.json({ logs, storage: 'sqlite' });
     }
-  } catch (err) {
-    console.warn('Local SQLite read failed, falling back to memory:', err);
-  }
-
-  // 4. In-Memory fallback buffer (useful in serverless or container bootstrap without DB)
-  if (globalThis.__SEVLEX_INGESTED_LOGS__ && globalThis.__SEVLEX_INGESTED_LOGS__.length > 0) {
-    const logs = [...globalThis.__SEVLEX_INGESTED_LOGS__].reverse().slice(0, 100);
-    return NextResponse.json({ logs, storage: 'memory' });
+  } catch (err: any) {
+    console.error('SQLite query error:', err);
   }
 
   return NextResponse.json({ logs: [], storage: 'none' });

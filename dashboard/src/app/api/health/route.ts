@@ -14,7 +14,7 @@ export async function GET() {
   let totalReceipts = 0;
   let dbError: string | undefined;
 
-  // 1. Direct PostgreSQL (AWS RDS or Docker Postgres)
+  // 1. Production: PostgreSQL (AWS RDS or Docker Compose)
   const pool = getPgPool();
   if (pool) {
     storageType = "postgres";
@@ -26,12 +26,8 @@ export async function GET() {
       dbStatus = "error";
       dbError = err.message;
     }
-  } else if (process.env.SUPABASE_URL) {
-    // 2. Supabase Cloud PostgREST
-    storageType = "supabase";
-    dbStatus = "connected";
   } else {
-    // 3. Local SQLite
+    // 2. Local Offline Dev: SQLite
     try {
       const db = getSqliteDb(true);
       if (db) {

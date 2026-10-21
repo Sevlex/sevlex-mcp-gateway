@@ -1,9 +1,10 @@
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 import fs from "node:fs";
+import { Client } from "pg";
 
 console.log("=================================================================");
-console.log("  SEVLEX LOCAL-TO-CLOUD TELEMETRY SYNC ENGINE                   ");
+console.log("  SEVLEX LOCAL-TO-POSTGRESQL TELEMETRY SYNC ENGINE               ");
 console.log("=================================================================");
 
 async function sync() {
@@ -13,26 +14,31 @@ async function sync() {
     return;
   }
 
-  // Load env from process.env or dashboard/.env.local
-  let supabaseUrl = process.env.SUPABASE_URL;
-  let supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const connectionString = process.env.DATABASE_URL || "postgres://sevlex:sevlex_secret_pwd@localhost:5432/sevlex";
 
-  if (!supabaseUrl || !supabaseKey) {
-    const envPath = path.resolve("../dashboard/.env.local");
-    if (fs.existsSync(envPath)) {
-      const content = fs.readFileSync(envPath, "utf-8");
-      for (const line of content.split("\n")) {
-        const [k, ...v] = line.trim().split("=");
-        if (k === "SUPABASE_URL") supabaseUrl = v.join("=");
-        if (k === "SUPABASE_SERVICE_ROLE_KEY") supabaseKey = v.join("=");
-      }
-    }
-  }
-
-  if (!supabaseUrl || !supabaseKey) {
-    console.error("❌ Error: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.");
+  const client = new Client({ connectionString });
+  try {
+    await client.connect();
+    console.log("Connected to PostgreSQL database.");
+  } catch (err: any) {
+    console.error("❌ Failed to connect to PostgreSQL:", err.message);
     process.exit(1);
   }
+
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS audit_logs (
+      id BIGSERIAL PRIMARY KEY,
+      timestamp TIMESTAMPTZ DEFAULT NOW(),
+      user_id TEXT NOT NULL,
+      tool_name TEXT NOT NULL,
+      status TEXT NOT NULL,
+      raw_request TEXT NOT NULL,
+      raw_response TEXT,
+      prev_hash TEXT,
+      entry_hash TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_audit_logs_timestamp ON audit_logs(timestamp DESC);
+  `);
 
   const db = new DatabaseSync(dbPath, { readOnly: true });
   const rows = db.prepare("SELECT timestamp, user_id, tool_name, status, raw_request, raw_response, prev_hash, entry_hash FROM audit_logs WHERE entry_hash IS NOT NULL ORDER BY id ASC").all() as any[];
@@ -40,33 +46,21 @@ async function sync() {
 
   console.log(`Found ${rows.length} local cryptographic receipts in SQLite.`);
 
-  // Upload in batches of 50
-  const batchSize = 50;
   let uploaded = 0;
-
-  for (let i = 0; i < rows.length; i += batchSize) {
-    const batch = rows.slice(i, i + batchSize);
-    const res = await fetch(`${supabaseUrl}/rest/v1/audit_logs`, {
-      method: "POST",
-      headers: {
-        "apikey": supabaseKey,
-        "Authorization": `Bearer ${supabaseKey}`,
-        "Content-Type": "application/json",
-        "Prefer": "return=minimal"
-      },
-      body: JSON.stringify(batch)
-    });
-
-    if (res.ok) {
-      uploaded += batch.length;
-      process.stdout.write(`\r  Syncing receipts to Supabase: ${uploaded}/${rows.length} complete...`);
-    } else {
-      console.error("\nBatch failed:", res.status, await res.text());
-      break;
+  for (const r of rows) {
+    await client.query(
+      `INSERT INTO audit_logs (timestamp, user_id, tool_name, status, raw_request, raw_response, prev_hash, entry_hash)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [r.timestamp, r.user_id, r.tool_name, r.status, r.raw_request, r.raw_response, r.prev_hash, r.entry_hash]
+    );
+    uploaded++;
+    if (uploaded % 100 === 0 || uploaded === rows.length) {
+      process.stdout.write(`\r  Syncing receipts to PostgreSQL: ${uploaded}/${rows.length} complete...`);
     }
   }
 
-  console.log(`\n\n✔ SYNC COMPLETE: ${uploaded} cryptographic receipts synced to Supabase (Sevlex-mcp-cloud)!`);
+  await client.end();
+  console.log(`\n\n✔ SYNC COMPLETE: ${uploaded} cryptographic receipts synced to PostgreSQL!`);
 }
 
 sync().catch(err => console.error("Sync error:", err));
