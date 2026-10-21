@@ -1,12 +1,12 @@
 {
   "name": "sevlex",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Layer 7 Zero-Trust Security Gateway & Control Plane for the Model Context Protocol (MCP)",
   "main": "dist/gateway.js",
   "module": "dist/gateway.js",
   "types": "dist/gateway.d.ts",
   "bin": {
-    "sevlex": "./bin/sevlex.js"
+    "sevlex": "bin/sevlex.js"
   },
   "files": [
     "dist",

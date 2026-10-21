@@ -22,3 +22,6 @@ scratch/
 *_plan.md
 start-uncensored-ai.bat
 wifi-pentest-tool/
+npm_recovery_codes.txt
+*recovery_codes*
+*.tgz

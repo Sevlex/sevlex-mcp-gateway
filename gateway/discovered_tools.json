@@ -109,7 +109,8 @@
       "bash_execute",
       "crm_fetch_customer",
       "github_list_pull_requests",
-      "drop_tables"
+      "drop_tables",
+      "wifi_pentest"
     ]
   },
   {
