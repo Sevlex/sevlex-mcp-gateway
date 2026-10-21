@@ -137,9 +137,89 @@ function extractStrings(obj: any): string[] {
 }
 
 /**
+ * Multi-Stage De-obfuscation & AST Normalization Engine:
+ * Defeats evasion tactics used to bypass naive regex:
+ * 1. Base64 payload encoding (e.g. echo cm0g... | base64 -d)
+ * 2. Hex / URL escape encoding (\x72\x6d, %72%6d)
+ * 3. Shell quote and slash interleaving (r""m, r''m, r\m, $IFS)
+ * 4. SQL comment interleaving (e.g. DROP / * * / TABLE)
+ * 5. Dynamic JavaScript property concatenation ("pro" + "cess")
+ */
+export function generateNormalizedVariations(raw: string): string[] {
+  const variations: string[] = [raw];
+
+  // 1. URL Decode
+  if (raw.includes("%")) {
+    try {
+      const urlDecoded = decodeURIComponent(raw);
+      if (urlDecoded !== raw) variations.push(urlDecoded);
+    } catch {}
+  }
+
+  // 2. Hex escape decode (\x.. and \0..)
+  if (/\\x[0-9a-fA-F]{2}/.test(raw)) {
+    try {
+      const hexDecoded = raw.replace(/\\x([0-9a-fA-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
+      variations.push(hexDecoded);
+    } catch {}
+  }
+
+  // 3. Shell quote and slash stripping: r""m -> rm, r''m -> rm, r\m -> rm, ${IFS} -> space
+  const shellUnquoted = raw
+    .replace(/["']{2}/g, "") // remove empty quotes
+    .replace(/([a-zA-Z0-9])["']([a-zA-Z0-9])/g, "$1$2") // remove quotes within tokens
+    .replace(/\\([a-zA-Z0-9_/\-])/g, "$1") // remove escape slashes
+    .replace(/\$\{IFS\}|\$IFS/g, " "); // replace bash IFS with space
+  if (shellUnquoted !== raw) {
+    variations.push(shellUnquoted);
+  }
+
+  // 4. SQL comment normalization: DROP/**/TABLE -> DROP TABLE
+  if (raw.includes("/*")) {
+    const sqlNormalized = raw.replace(/\/\*[\s\S]*?\*\//g, " ");
+    variations.push(sqlNormalized);
+  }
+
+  // 5. JavaScript / TypeScript bracket string concatenation & bracket property access:
+  // "pro" + "cess" -> "process"
+  // globalThis["process"]["env"] -> globalThis.process.env
+  let jsNormalized = raw;
+  if (raw.includes("+")) {
+    jsNormalized = jsNormalized.replace(/["']\s*\+\s*["']/g, "");
+    if (jsNormalized !== raw) {
+      variations.push(jsNormalized);
+    }
+  }
+  if (/\[\s*["'][a-zA-Z0-9_$]+["']\s*\]/.test(jsNormalized)) {
+    const jsBracketNormalized = jsNormalized.replace(/\[\s*["']([a-zA-Z0-9_$]+)["']\s*\]/g, ".$1");
+    if (jsBracketNormalized !== jsNormalized) {
+      variations.push(jsBracketNormalized);
+    }
+  }
+
+  // 6. Base64 payload detection and recursive decoding
+  const base64Regex = /\b([A-Za-z0-9+/]{8,}={0,2})\b/g;
+  let match;
+  while ((match = base64Regex.exec(raw)) !== null) {
+    if (!match[1]) continue;
+    try {
+      const decoded = Buffer.from(match[1], "base64").toString("utf-8");
+      // Check if decoded is printable text
+      if (/^[\x20-\x7E\r\n\t]+$/.test(decoded)) {
+        variations.push(decoded);
+        // Also add de-quoted variation of the decoded string
+        variations.push(decoded.replace(/["']{2}/g, "").replace(/\\([a-zA-Z])/g, "$1").replace(/\$\{IFS\}|\$IFS/g, " "));
+      }
+    } catch {}
+  }
+
+  return Array.from(new Set(variations));
+}
+
+/**
  * ToolGuard Call Guard:
- * Deeply inspects incoming tool call parameters to prevent payload bypasses
- * (e.g. calling `execute_sql` with `DROP TABLE` or `bash` with `rm -rf /`).
+ * Deeply inspects incoming tool call parameters across normalized variations
+ * to prevent payload bypasses and obfuscation evasion.
  */
 export function inspectToolParameters(toolName: string, args: any): ParameterInspectionResult {
   const strings = extractStrings(args);
@@ -147,18 +227,24 @@ export function inspectToolParameters(toolName: string, args: any): ParameterIns
   for (const str of strings) {
     if (!str || typeof str !== "string") continue;
     
-    for (const rule of PARAMETER_RULES) {
-      if (rule.pattern.test(str)) {
-        return {
-          passed: false,
-          violation: {
-            ruleId: rule.ruleId,
-            category: rule.category,
-            severity: rule.severity,
-            reason: rule.reason,
-            sample: str.length > 80 ? str.slice(0, 77) + "..." : str
-          }
-        };
+    const variations = generateNormalizedVariations(str);
+    for (const variant of variations) {
+      for (const rule of PARAMETER_RULES) {
+        if (rule.pattern.test(variant)) {
+          const isDeobfuscated = variant !== str;
+          return {
+            passed: false,
+            violation: {
+              ruleId: rule.ruleId,
+              category: rule.category,
+              severity: rule.severity,
+              reason: isDeobfuscated 
+                ? `${rule.reason} [DE-OBFUSCATION EVASION DETECTED]` 
+                : rule.reason,
+              sample: str.length > 80 ? str.slice(0, 77) + "..." : str
+            }
+          };
+        }
       }
     }
   }

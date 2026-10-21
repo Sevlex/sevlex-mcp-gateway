@@ -1,16 +1,11 @@
 import { NextResponse } from 'next/server';
-import Database from 'better-sqlite3';
-import path from 'path';
+import { getSqliteDb } from '@/lib/db';
 import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
 function getDb() {
-  const dbPath = process.env.SEVLEX_DB_PATH || path.resolve(process.cwd(), '../gateway/audit_log.db');
-  const db = new Database(dbPath);
-  db.pragma('journal_mode = WAL');
-  db.pragma('busy_timeout = 5000');
-  return db;
+  return getSqliteDb(false);
 }
 
 export async function GET(request: Request) {
@@ -20,6 +15,7 @@ export async function GET(request: Request) {
 
   try {
     const db = getDb();
+    if (!db) return NextResponse.json({ tickets: [] });
     const tickets = db.prepare('SELECT * FROM hitl_tickets ORDER BY created_at DESC LIMIT 50').all();
     db.close();
     return NextResponse.json({ tickets });
@@ -43,6 +39,9 @@ export async function POST(request: Request) {
     }
 
     const db = getDb();
+    if (!db) {
+      return NextResponse.json({ error: 'Database unavailable' }, { status: 503 });
+    }
     const approvedBy = approver || 'secops_admin@enterprise.internal';
     const signature = crypto.createHash('sha256').update(`${ticketId}:${approvedBy}:${Date.now()}`).digest('hex');
     const newStatus = action === 'APPROVE' ? 'APPROVED' : 'REJECTED';

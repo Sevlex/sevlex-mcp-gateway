@@ -7,6 +7,13 @@ declare const ConfigSchema: z.ZodObject<{
             DENY: "DENY";
         }>;
         blockedTools: z.ZodArray<z.ZodString>;
+        approvalRequiredTools: z.ZodDefault<z.ZodArray<z.ZodString>>;
+        parameterRules: z.ZodOptional<z.ZodObject<{
+            enabled: z.ZodDefault<z.ZodBoolean>;
+        }, z.core.$strip>>;
+        dlp: z.ZodOptional<z.ZodObject<{
+            enabled: z.ZodDefault<z.ZodBoolean>;
+        }, z.core.$strip>>;
         siem: z.ZodOptional<z.ZodObject<{
             enabled: z.ZodDefault<z.ZodBoolean>;
             provider: z.ZodDefault<z.ZodEnum<{

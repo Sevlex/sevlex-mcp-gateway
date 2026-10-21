@@ -19,13 +19,133 @@ export interface HitlTicket {
   status: "PENDING" | "APPROVED" | "REJECTED";
 }
 
+export interface IngestionReceipt {
+  userId: string;
+  toolName: string;
+  status: string;
+  rawRequest: string;
+  rawResponse?: string | null;
+  prevHash: string;
+  entryHash: string;
+  timestamp?: string;
+}
+
+/**
+ * Enterprise Telemetry Forwarder:
+ * Asynchronously buffers and flushes cryptographic audit receipts in micro-batches
+ * to the Sevlex Cloud Ingestion API (POST /api/ingest) with zero added stdio latency.
+ */
+export class TelemetryForwarder {
+  private queue: IngestionReceipt[] = [];
+  private flushTimer: NodeJS.Timeout | null = null;
+  private ingestUrl: string | null;
+  private apiKey: string;
+  private maxQueueSize: number = 1000;
+  private batchSize: number = 10;
+  private flushIntervalMs: number = 2000;
+  private activeFlush: Promise<void> | null = null;
+
+  constructor() {
+    this.ingestUrl = process.env.SEVLEX_INGEST_URL || null;
+    this.apiKey = process.env.SEVLEX_API_KEY || process.env.ADMIN_API_KEY || "sevlex_secret_123";
+
+    if (this.ingestUrl) {
+      this.startTimer();
+    }
+  }
+
+  public enqueue(receipt: IngestionReceipt): void {
+    if (!this.ingestUrl) return;
+
+    if (this.queue.length >= this.maxQueueSize) {
+      this.queue.shift(); // Drop oldest to prevent unbounded memory growth if offline
+    }
+    this.queue.push(receipt);
+
+    if (this.queue.length >= this.batchSize) {
+      this.flush().catch(() => {});
+    }
+  }
+
+  private startTimer(): void {
+    if (this.flushTimer) return;
+    this.flushTimer = setInterval(() => {
+      if (this.queue.length > 0) {
+        this.flush().catch(() => {});
+      }
+    }, this.flushIntervalMs);
+
+    if (this.flushTimer.unref) {
+      this.flushTimer.unref();
+    }
+  }
+
+  public async flush(): Promise<void> {
+    if (this.activeFlush) {
+      await this.activeFlush;
+      if (this.queue.length > 0 && this.ingestUrl) {
+        return this.flush();
+      }
+      return;
+    }
+
+    if (this.queue.length === 0 || !this.ingestUrl) return;
+
+    this.activeFlush = (async () => {
+      while (this.queue.length > 0 && this.ingestUrl) {
+        const batch = this.queue.splice(0, this.batchSize);
+        const targetUrl = `${this.ingestUrl.replace(/\/+$/, "")}/api/ingest`;
+
+        try {
+          const response = await fetch(targetUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": this.apiKey,
+            },
+            body: JSON.stringify({ receipts: batch }),
+          });
+
+          if (!response.ok) {
+            if (this.queue.length + batch.length <= this.maxQueueSize) {
+              this.queue.unshift(...batch);
+              break;
+            }
+          }
+        } catch {
+          // Offline / network failure: re-queue gracefully and break loop
+          if (this.queue.length + batch.length <= this.maxQueueSize) {
+            this.queue.unshift(...batch);
+            break;
+          }
+        }
+      }
+    })();
+
+    try {
+      await this.activeFlush;
+    } finally {
+      this.activeFlush = null;
+    }
+  }
+
+  public stop(): void {
+    if (this.flushTimer) {
+      clearInterval(this.flushTimer);
+      this.flushTimer = null;
+    }
+  }
+}
+
 export class AuditLogger {
   public db: Database.Database;
+  public forwarder: TelemetryForwarder;
   private insertStatement: Database.Statement;
   private lastHash: string = "0000000000000000000000000000000000000000000000000000000000000000";
 
   constructor(dbPath: string) {
     this.db = new Database(path.resolve(dbPath));
+    this.forwarder = new TelemetryForwarder();
 
     // 1. Enterprise SQLite configuration: WAL mode + busy timeout for zero-lock contention
     this.db.pragma("journal_mode = WAL");
@@ -120,6 +240,18 @@ export class AuditLogger {
     } catch (error) {
       console.error("❌ CRITICAL ERROR: Failed to write cryptographic audit log to disk!", error);
     }
+
+    // Asynchronously forward to Cloud Ingestion Pipeline (non-blocking stdio)
+    this.forwarder.enqueue({
+      userId: entry.userId,
+      toolName: entry.toolName,
+      status: entry.status,
+      rawRequest: entry.rawRequest,
+      rawResponse: entry.rawResponse || null,
+      prevHash,
+      entryHash,
+      timestamp: new Date().toISOString(),
+    });
 
     return { entryHash, prevHash };
   }
@@ -239,6 +371,7 @@ export class AuditLogger {
   }
 
   public close() {
+    this.forwarder.stop();
     this.db.close();
   }
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import Database from 'better-sqlite3';
+import { getSqliteDb } from '@/lib/db';
 import path from 'path';
 import fs from 'fs';
 
@@ -14,8 +14,8 @@ export async function GET() {
   let dbError: string | undefined;
 
   try {
-    if (fs.existsSync(/*turbopackIgnore: true*/ dbPath)) {
-      const db = new Database(dbPath, { readonly: true, timeout: 2000 });
+    const db = getSqliteDb(true);
+    if (db) {
       try {
         const row = db.prepare("SELECT count(*) as count FROM audit_logs").get() as any;
         totalReceipts = row?.count ?? 0;

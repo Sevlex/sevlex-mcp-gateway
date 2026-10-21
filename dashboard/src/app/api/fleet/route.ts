@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import Database from 'better-sqlite3';
+import { getSqliteDb } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -56,21 +56,21 @@ export async function GET(request: Request) {
     let allowedLogs = 0;
     let recentReceipts: any[] = [];
 
-    if (fs.existsSync(dbPath)) {
       try {
-        const db = new Database(dbPath, { readonly: true });
-        const countRow = db.prepare('SELECT COUNT(*) as total FROM audit_logs').get() as { total: number };
-        totalLogs = countRow?.total || 0;
+        const db = getSqliteDb(true);
+        if (db) {
+          const countRow = db.prepare('SELECT COUNT(*) as total FROM audit_logs').get() as { total: number };
+          totalLogs = countRow?.total || 0;
 
-        const blockedRow = db.prepare("SELECT COUNT(*) as blocked FROM audit_logs WHERE status = 'BLOCKED'").get() as { blocked: number };
-        blockedLogs = blockedRow?.blocked || 0;
+          const blockedRow = db.prepare("SELECT COUNT(*) as blocked FROM audit_logs WHERE status = 'BLOCKED'").get() as { blocked: number };
+          blockedLogs = blockedRow?.blocked || 0;
 
-        allowedLogs = totalLogs - blockedLogs;
+          allowedLogs = totalLogs - blockedLogs;
 
-        recentReceipts = db.prepare('SELECT id, timestamp, user_id, tool_name, status FROM audit_logs ORDER BY id DESC LIMIT 5').all();
-        db.close();
+          recentReceipts = db.prepare('SELECT id, timestamp, user_id, tool_name, status FROM audit_logs ORDER BY id DESC LIMIT 5').all();
+          db.close();
+        }
       } catch {}
-    }
 
     // Discovered Tools count
     const toolsPath = path.join(gatewayDir, 'discovered_tools.json');
