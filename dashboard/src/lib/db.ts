@@ -1,5 +1,31 @@
 import path from 'path';
 import fs from 'fs';
+import { Pool } from 'pg';
+
+let pgPool: Pool | null = null;
+
+/**
+ * Returns a pooled PostgreSQL connection when DATABASE_URL is configured
+ * (e.g. AWS RDS in Customer VPC or Docker Compose PostgreSQL container).
+ */
+export function getPgPool(): Pool | null {
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    return null;
+  }
+
+  if (!pgPool) {
+    pgPool = new Pool({
+      connectionString,
+      ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+      connectionTimeoutMillis: 5000,
+      idleTimeoutMillis: 30000,
+      max: 10,
+    });
+  }
+
+  return pgPool;
+}
 
 export function getDbPath(): string {
   return process.env.SEVLEX_DB_PATH || path.resolve(process.cwd(), '../gateway/audit_log.db');

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSqliteDb } from '@/lib/db';
+import { getSqliteDb, getPgPool } from '@/lib/db';
 import path from 'path';
 import fs from 'fs';
 
@@ -10,41 +10,61 @@ export async function GET() {
   const policyPath = process.env.SEVLEX_POLICY_PATH || path.resolve(process.cwd(), '../gateway/sevlex.json');
 
   let dbStatus = "connected";
+  let storageType = "sqlite";
   let totalReceipts = 0;
   let dbError: string | undefined;
 
-  try {
-    const db = getSqliteDb(true);
-    if (db) {
-      try {
-        const row = db.prepare("SELECT count(*) as count FROM audit_logs").get() as any;
-        totalReceipts = row?.count ?? 0;
-      } catch {
-        dbStatus = "pending_schema";
-      } finally {
-        db.close();
-      }
-    } else {
-      dbStatus = "pending_initialization";
+  // 1. Direct PostgreSQL (AWS RDS or Docker Postgres)
+  const pool = getPgPool();
+  if (pool) {
+    storageType = "postgres";
+    try {
+      const res = await pool.query('SELECT count(*) as count FROM audit_logs');
+      totalReceipts = Number(res.rows[0]?.count ?? 0);
+      dbStatus = "connected";
+    } catch (err: any) {
+      dbStatus = "error";
+      dbError = err.message;
     }
-  } catch (err: any) {
-    dbStatus = "error";
-    dbError = err.message;
+  } else if (process.env.SUPABASE_URL) {
+    // 2. Supabase Cloud PostgREST
+    storageType = "supabase";
+    dbStatus = "connected";
+  } else {
+    // 3. Local SQLite
+    try {
+      const db = getSqliteDb(true);
+      if (db) {
+        try {
+          const row = db.prepare("SELECT count(*) as count FROM audit_logs").get() as any;
+          totalReceipts = row?.count ?? 0;
+        } catch {
+          dbStatus = "pending_schema";
+        } finally {
+          db.close();
+        }
+      } else {
+        dbStatus = "pending_initialization";
+      }
+    } catch (err: any) {
+      dbStatus = "error";
+      dbError = err.message;
+    }
   }
 
-  const policyExists = fs.existsSync(/*turbopackIgnore: true*/ policyPath);
+  const policyExists = fs.existsSync(policyPath);
   const healthy = dbStatus !== "error";
 
   return NextResponse.json(
     {
       status: healthy ? "healthy" : "degraded",
       service: "sevlex-enterprise-gateway",
-      version: "1.0.0",
+      version: "1.0.2",
       timestamp: new Date().toISOString(),
       database: {
+        type: storageType,
         status: dbStatus,
         receiptsCount: totalReceipts,
-        path: dbPath,
         error: dbError,
       },
       policy: {

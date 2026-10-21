@@ -1,17 +1,8 @@
 import { NextResponse } from 'next/server';
-import Database from 'better-sqlite3';
-import path from 'path';
+import { getSqliteDb } from '@/lib/db';
 import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
-
-function getDb() {
-  const dbPath = process.env.SEVLEX_DB_PATH || path.resolve(process.cwd(), '../gateway/audit_log.db');
-  const db = new Database(dbPath);
-  db.pragma('journal_mode = WAL');
-  db.pragma('busy_timeout = 5000');
-  return db;
-}
 
 /**
  * Handles incoming Slack Interactivity payloads (1-Click Approve / Reject action buttons)
@@ -44,7 +35,28 @@ export async function POST(request: Request) {
     const { ticketId, action, toolName } = actionData;
     const approver = payload.user?.username || payload.user?.name || 'slack_secops_lead';
 
-    const db = getDb();
+    const db = getSqliteDb(false);
+    if (!db) {
+      return NextResponse.json({
+        text: `⚠️ Sevlex Error: Database connection unavailable to process ticket \`${ticketId}\`.`
+      }, { status: 500 });
+    }
+
+    // Ensure hitl_tickets table exists
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS hitl_tickets (
+        ticket_id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        tool_name TEXT NOT NULL,
+        arguments TEXT NOT NULL,
+        status TEXT NOT NULL,
+        requested_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        approved_by TEXT,
+        approved_at DATETIME,
+        signature TEXT
+      )
+    `);
+
     const ticket = db.prepare('SELECT * FROM hitl_tickets WHERE ticket_id = ?').get(ticketId) as any;
 
     if (!ticket) {

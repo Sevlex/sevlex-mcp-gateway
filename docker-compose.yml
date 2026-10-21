@@ -1,6 +1,27 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sevlex-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-sevlex}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sevlex_secret_pwd}
+      POSTGRES_DB: ${POSTGRES_DB:-sevlex}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - sevlex-pgdata:/var/lib/postgresql/data
+      - ./deploy/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sevlex} -d ${POSTGRES_DB:-sevlex}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sevlex-net
+
   gateway:
     build:
       context: ./gateway
@@ -34,13 +55,17 @@ services:
       - PORT=3000
       - NODE_ENV=production
       - ADMIN_API_KEY=${ADMIN_API_KEY:-sevlex_secret_123}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-sevlex}:${POSTGRES_PASSWORD:-sevlex_secret_pwd}@postgres:5432/${POSTGRES_DB:-sevlex}
       - SEVLEX_DB_PATH=/data/audit_log.db
       - SEVLEX_POLICY_PATH=/data/sevlex.json
       - SEVLEX_DISCOVERED_TOOLS_PATH=/data/discovered_tools.json
     volumes:
       - sevlex-storage:/data
     depends_on:
-      - gateway
+      postgres:
+        condition: service_healthy
+      gateway:
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
       interval: 15s
@@ -53,6 +78,8 @@ services:
 volumes:
   sevlex-storage:
     name: sevlex-storage
+  sevlex-pgdata:
+    name: sevlex-pgdata
 
 networks:
   sevlex-net:

@@ -1,0 +1,259 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Sevlex Enterprise MCP Gateway - Dedicated AWS ECS Fargate & Private VPC Deployment'
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC where Sevlex will be deployed (Customer Private VPC)
+
+  PrivateSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Private Subnets for ECS Fargate Tasks (at least 2 for High Availability)
+
+  AlbSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnets for Application Load Balancer (Internal or External)
+
+  AlbScheme:
+    Type: String
+    Default: 'internal'
+    AllowedValues:
+      - 'internal'
+      - 'internet-facing'
+    Description: Choose 'internal' for zero-trust VPC isolation (recommended) or 'internet-facing'
+
+  ContainerImage:
+    Type: String
+    Description: URI of the Sevlex Dashboard container image in Amazon ECR
+
+  RdsEndpoint:
+    Type: String
+    Description: Hostname of existing AWS RDS PostgreSQL or Aurora instance in VPC
+
+  RdsPort:
+    Type: Number
+    Default: 5432
+    Description: Port for PostgreSQL instance
+
+  RdsDbName:
+    Type: String
+    Default: 'sevlex'
+    Description: Database name for Sevlex audit logs
+
+  RdsUsername:
+    Type: String
+    Default: 'sevlex_admin'
+    Description: PostgreSQL username
+
+  RdsPassword:
+    Type: String
+    NoEcho: true
+    Description: PostgreSQL password
+
+  AdminApiKey:
+    Type: String
+    NoEcho: true
+    Description: Enterprise Admin API Key for securing SecOps API routes
+
+  CpuAllocation:
+    Type: String
+    Default: '512'
+    AllowedValues: ['256', '512', '1024', '2048']
+    Description: Fargate Task CPU units
+
+  MemoryAllocation:
+    Type: String
+    Default: '1024'
+    AllowedValues: ['512', '1024', '2048', '4096']
+    Description: Fargate Task RAM (MB)
+
+Resources:
+  # ------------------------------------------------------------
+  # CloudWatch Logs
+  # ------------------------------------------------------------
+  SevlexLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: '/ecs/sevlex-dashboard'
+      RetentionInDays: 30
+
+  # ------------------------------------------------------------
+  # IAM Roles
+  # ------------------------------------------------------------
+  EcsTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+  EcsTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+
+  # ------------------------------------------------------------
+  # Security Groups
+  # ------------------------------------------------------------
+  AlbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Sevlex Internal ALB
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+
+  EcsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Sevlex Fargate Tasks
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          SourceSecurityGroupId: !Ref AlbSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  # ------------------------------------------------------------
+  # Application Load Balancer
+  # ------------------------------------------------------------
+  SevlexAlb:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: sevlex-internal-alb
+      Scheme: !Ref AlbScheme
+      Subnets: !Ref AlbSubnetIds
+      SecurityGroups:
+        - !Ref AlbSecurityGroup
+      Type: application
+
+  SevlexTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: sevlex-dashboard-tg
+      VpcId: !Ref VpcId
+      Port: 3000
+      Protocol: HTTP
+      TargetType: ip
+      HealthCheckPath: /api/health
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 3
+      Matcher:
+        HttpCode: '200'
+
+  SevlexAlbListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref SevlexTargetGroup
+      LoadBalancerArn: !Ref SevlexAlb
+      Port: 80
+      Protocol: HTTP
+
+  # ------------------------------------------------------------
+  # ECS Cluster & Service
+  # ------------------------------------------------------------
+  SevlexCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: sevlex-enterprise-cluster
+
+  SevlexTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: sevlex-enterprise-dashboard
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: !Ref CpuAllocation
+      Memory: !Ref MemoryAllocation
+      ExecutionRoleArn: !GetAtt EcsTaskExecutionRole.Arn
+      TaskRoleArn: !GetAtt EcsTaskRole.Arn
+      ContainerDefinitions:
+        - Name: sevlex-dashboard
+          Image: !Ref ContainerImage
+          Essential: true
+          PortMappings:
+            - ContainerPort: 3000
+              Protocol: tcp
+          Environment:
+            - Name: NODE_ENV
+              Value: production
+            - Name: PORT
+              Value: '3000'
+            - Name: ADMIN_API_KEY
+              Value: !Ref AdminApiKey
+            - Name: DATABASE_URL
+              Value: !Sub 'postgres://${RdsUsername}:${RdsPassword}@${RdsEndpoint}:${RdsPort}/${RdsDbName}?sslmode=require'
+            - Name: DATABASE_SSL
+              Value: 'true'
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref SevlexLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+          HealthCheck:
+            Command:
+              - CMD-SHELL
+              - curl -f http://localhost:3000/api/health || exit 1
+            Interval: 30
+            Timeout: 5
+            Retries: 3
+            StartPeriod: 30
+
+  SevlexService:
+    Type: AWS::ECS::Service
+    DependsOn: SevlexAlbListener
+    Properties:
+      ServiceName: sevlex-dashboard-service
+      Cluster: !Ref SevlexCluster
+      TaskDefinition: !Ref SevlexTaskDefinition
+      LaunchType: FARGATE
+      DesiredCount: 2
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          Subnets: !Ref PrivateSubnetIds
+          SecurityGroups:
+            - !Ref EcsSecurityGroup
+      LoadBalancers:
+        - ContainerName: sevlex-dashboard
+          ContainerPort: 3000
+          TargetGroupArn: !Ref SevlexTargetGroup
+
+Outputs:
+  AlbDnsName:
+    Description: DNS Endpoint for Sevlex Enterprise Dashboard
+    Value: !GetAtt SevlexAlb.DNSName
+  ClusterArn:
+    Description: Sevlex ECS Cluster ARN
+    Value: !GetAtt SevlexCluster.Arn
