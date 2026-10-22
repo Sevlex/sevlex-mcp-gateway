@@ -17,6 +17,7 @@ import DeviceFleetTab from "./components/DeviceFleetTab";
 import AgentDiscoveryTab from "./components/AgentDiscoveryTab";
 import ClientBrandIcon from "./components/ClientBrandIcon";
 import HitlClearanceTab from "./components/HitlClearanceTab";
+import ApiKeysTab from "./components/ApiKeysTab";
 
 type Log = { 
   id: number; 
@@ -29,7 +30,7 @@ type Log = {
   entry_hash?: string;
 };
 
-type TabType = "OVERVIEW" | "DEVICES" | "AGENTS" | "POLICY" | "HITL" | "AUDIT" | "MDM" | "SIEM" | "ALERTS";
+type TabType = "OVERVIEW" | "DEVICES" | "AGENTS" | "POLICY" | "HITL" | "AUDIT" | "API_KEYS" | "MDM" | "SIEM" | "ALERTS";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabType>("OVERVIEW");
@@ -286,6 +287,7 @@ export default function Dashboard() {
               { id: "POLICY", label: "L7 Policies", icon: Sliders, badge: `${blockedTools.length} Banned` },
               { id: "HITL", label: "HITL Clearances", icon: Shield, badge: "SecOps" },
               { id: "AUDIT", label: "Log Explorer", icon: Activity, badge: `${logs.length}` },
+              { id: "API_KEYS", label: "Gateway API Keys", icon: Key, badge: "Cloud" },
               { id: "MDM", label: "Rollout Packages", icon: Server, badge: "Win32/Pkg" },
               { id: "SIEM", label: "SIEM Stream", icon: Zap, badge: "US5" },
               { id: "ALERTS", label: "Alerts & ChatOps", icon: Bell, badge: "P1-P3" },
@@ -1146,6 +1148,13 @@ export default function Dashboard() {
 
               </div>
             </div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* TAB: GATEWAY API KEYS & CLOUD WORKSPACES (app.sevlex.com)                 */}
+          {/* ========================================================================= */}
+          {activeTab === "API_KEYS" && (
+            <ApiKeysTab apiKey={apiKey} />
           )}
 
           {/* ========================================================================= */}
