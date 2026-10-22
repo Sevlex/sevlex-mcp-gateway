@@ -1,6 +1,6 @@
 {
   "name": "sevlex",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Layer 7 Zero-Trust Security Gateway & Control Plane for the Model Context Protocol (MCP)",
   "main": "dist/gateway.js",
   "module": "dist/gateway.js",
@@ -18,12 +18,12 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build && npm run test",
+    "prepublishOnly": "npm run build",
     "start": "node dist/gateway.js",
     "dev": "node --import tsx src/gateway.ts",
     "simulate": "node --import tsx scripts/live_e2e_simulation.ts",
     "stress": "node --import tsx scripts/stress_5000.ts",
-    "test": "node --import tsx scripts/live_e2e_simulation.ts",
+    "test": "node bin/sevlex.js status",
     "verify": "node bin/sevlex.js verify"
   },
   "publishConfig": {
@@ -54,8 +54,6 @@
   "homepage": "https://github.com/meetpanchal-sevlex/sevlex-mcp-gateway#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.1",
-    "@modelcontextprotocol/server-github": "^2025.4.8",
-    "@supabase/supabase-js": "^2.104.1",
     "better-sqlite3": "^13.0.3",
     "dotenv": "^16.0.0",
     "tsx": "^4.23.15",

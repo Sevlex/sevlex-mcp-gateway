@@ -3,28 +3,28 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import readline from "node:readline";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { getAllMonitoredClients, inspectAndHealClient, startDaemonWatcher, getMcpProxyEntry, injectClient, restoreClient } from "./daemon.js";
 import { AuditLogger } from "./logger.js";
 import { startSseProxy } from "./sse_proxy.js";
+import { getUserConfig, saveUserConfig, clearUserConfig, getConfigDir, getConfigFilePath, DEFAULT_ENDPOINT } from "./user_config.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ==============================================================================
-// SEVLEX UNIFIED ENTERPRISE CLI & ENTRYPOINT (Level 2 Interface)
+// SEVLEX UNIFIED DEVELOPER CLI & ZERO-TRUST GATEWAY (v1.0.3)
+// One-command developer gateway for Cursor, Claude Desktop, and enterprise teams.
 // Usage:
-//   sevlex install [--silent]    -> Enterprise Intune / Jamf silent deployment
-//   sevlex uninstall [--silent]  -> Enterprise silent uninstallation
-//   sevlex inject                -> Auto-patch and wrap MCP servers in all AI clients
-//   sevlex restore               -> Unhook and restore original AI client configs
-//   sevlex status                -> Health diagnostics & shielded clients report
-//   sevlex scan                  -> Shadow AI & MCP server discovery sweep
-//   sevlex verify                -> Cryptographic audit chain integrity verification
-//   sevlex hitl                  -> Query dual-custody authorization tickets
-//   sevlex sse <port> <upstream> -> Launch remote MCP SSE reverse proxy gateway
-//   sevlex daemon                -> Starts Level 4 24/7 background watcher
-//   sevlex [command] [args...]   -> Transparent Layer 7 MCP Proxy execution
+//   npx sevlex init               -> Auto-detect Cursor / Claude Desktop and wrap MCP tools
+//   npx sevlex login [key]        -> Link machine to app.sevlex.com via slx_live_... key
+//   npx sevlex status             -> Health diagnostics, cloud workspace & shield report
+//   npx sevlex restore            -> Unhook Sevlex and restore original client configs
+//   npx sevlex verify             -> Verify SOC 2 SHA-256 Merkle chain integrity
+//   npx sevlex hitl               -> Query dual-custody authorization tickets
+//   npx sevlex scan               -> Sweep machine for Shadow AI tools
+//   npx sevlex [cmd] [args...]    -> Transparent Layer 7 MCP Proxy execution
 // ==============================================================================
 
 const args = process.argv.slice(2);
@@ -36,57 +36,69 @@ async function main() {
     return;
   }
 
-  // 1. Command: INJECT (Auto-patcher)
-  if (firstArg === "inject" || firstArg === "--inject") {
-    runInject();
+  // 1. Command: INIT / INJECT (Auto-detect & wrap MCP tools)
+  if (firstArg === "init" || firstArg === "--init" || firstArg === "inject" || firstArg === "--inject") {
+    runInit();
     return;
   }
 
-  // 2. Command: RESTORE (Config unhooker)
+  // 2. Command: LOGIN (Link to app.sevlex.com)
+  if (firstArg === "login" || firstArg === "--login") {
+    await runLogin(args);
+    return;
+  }
+
+  // 3. Command: LOGOUT
+  if (firstArg === "logout") {
+    runLogout();
+    return;
+  }
+
+  // 4. Command: STATUS
+  if (firstArg === "status" || firstArg === "--status") {
+    runStatus();
+    return;
+  }
+
+  // 5. Command: RESTORE (Unhook & revert configs)
   if (firstArg === "restore" || firstArg === "--restore") {
     runRestore();
     return;
   }
 
-  // 3. Command: INSTALL
+  // 6. Command: VERIFY (SOC 2 Cryptographic Merkle Chain)
+  if (firstArg === "verify" || firstArg === "--verify") {
+    runVerify();
+    return;
+  }
+
+  // 7. Command: HITL (Dual-Custody Clearances)
+  if (firstArg === "hitl" || firstArg === "--hitl") {
+    runHitl();
+    return;
+  }
+
+  // 8. Command: SCAN (Shadow AI Sweep)
+  if (firstArg === "scan" || firstArg === "--scan") {
+    runScan();
+    return;
+  }
+
+  // 9. Command: INSTALL (Enterprise Silent MDM / Intune)
   if (firstArg === "install" || firstArg === "/install") {
     const isSilent = args.includes("--silent") || args.includes("/silent") || args.includes("-s");
     runInstall(isSilent);
     return;
   }
 
-  // 4. Command: UNINSTALL
+  // 10. Command: UNINSTALL
   if (firstArg === "uninstall" || firstArg === "/uninstall") {
     const isSilent = args.includes("--silent") || args.includes("/silent") || args.includes("-s");
     runUninstall(isSilent);
     return;
   }
 
-  // 3. Command: STATUS
-  if (firstArg === "status" || firstArg === "--status") {
-    runStatus();
-    return;
-  }
-
-  // 4. Command: SCAN
-  if (firstArg === "scan" || firstArg === "--scan") {
-    runScan();
-    return;
-  }
-
-  // 5. Command: VERIFY (SOC 2 Cryptographic Chain)
-  if (firstArg === "verify" || firstArg === "--verify") {
-    runVerify();
-    return;
-  }
-
-  // 6. Command: HITL (Dual-Custody Clearances)
-  if (firstArg === "hitl" || firstArg === "--hitl") {
-    runHitl();
-    return;
-  }
-
-  // 7. Command: SSE (Remote MCP Reverse Proxy)
+  // 11. Command: SSE (Remote MCP Reverse Proxy)
   if (firstArg === "sse") {
     const port = parseInt(args[1] || "8080", 10);
     const upstreamUrl = args[2] || "http://localhost:3001/sse";
@@ -94,7 +106,7 @@ async function main() {
     return;
   }
 
-  // 8. Command: DAEMON
+  // 12. Command: DAEMON
   if (firstArg === "daemon") {
     startDaemonWatcher();
     return;
@@ -104,6 +116,262 @@ async function main() {
   // If invoked with "proxy <command...>" or directly as a wrapper:
   const proxyArgs = firstArg === "proxy" ? args.slice(1) : args;
   runProxy(proxyArgs);
+}
+
+function runInit() {
+  console.log("\n=================================================================");
+  console.log("  SEVLEX ZERO-TRUST DEVELOPER ONBOARDING (npx sevlex init)       ");
+  console.log("  Auto-detecting and shielding Cursor, Claude Desktop, Windsurf  ");
+  console.log("=================================================================\n");
+
+  const userConfig = getUserConfig();
+  const clients = getAllMonitoredClients();
+  let totalServers = 0;
+  let clientsFound = 0;
+  const tableData: any[] = [];
+
+  for (const client of clients) {
+    const result = injectClient(client, userConfig);
+    if (result.status !== "NOT_FOUND") {
+      clientsFound++;
+      totalServers += result.wrappedServers.length;
+    }
+
+    tableData.push({
+      Client: client.name,
+      Status: result.status === "INJECTED" ? "✔ SHIELDED (Injected)" : result.status === "ALREADY_SHIELDED" ? "● SHIELDED" : result.status,
+      "Protected MCP Servers": result.wrappedServers.length > 0 ? result.wrappedServers.join(", ") : result.status === "ALREADY_SHIELDED" ? "Active" : "None",
+      "Config Detected": result.status !== "NOT_FOUND" ? "YES" : "NO",
+    });
+  }
+
+  console.table(tableData);
+
+  console.log(`\n[Sevlex Init] Summary:`);
+  console.log(`  ● Detected AI Runtimes:  ${clientsFound} installed`);
+  console.log(`  ● Shielded MCP Servers:  ${totalServers} servers wrapped with Layer 7 Zero-Trust`);
+  console.log(`  ● Configuration Backups: Preserved with '.sevlex.bak' suffix`);
+
+  if (userConfig.apiKey && userConfig.orgName) {
+    console.log(`  ● Cloud Control Plane:   Connected to "${userConfig.orgName}" (${userConfig.endpoint})`);
+    console.log(`  ● Real-Time Telemetry:   Auto-streaming receipts to ${userConfig.endpoint}/api/ingest\n`);
+  } else {
+    console.log(`  ● Cloud Control Plane:   Standalone Local Mode`);
+    console.log(`\n  \x1b[33m💡 TIP: Connect to your central team dashboard by running:\x1b[0m`);
+    console.log(`     npx sevlex login <slx_live_your_api_key>\n`);
+  }
+  process.exit(0);
+}
+
+async function runLogin(cliArgs: string[]) {
+  console.log("\n=================================================================");
+  console.log("  SEVLEX CLOUD AUTHENTICATION (Connect to app.sevlex.com)       ");
+  console.log("=================================================================\n");
+
+  let apiKey: string | undefined;
+  let customEndpoint: string | undefined;
+
+  for (let i = 1; i < cliArgs.length; i++) {
+    const arg = cliArgs[i];
+    if (arg === "--key" || arg === "-k") {
+      apiKey = cliArgs[i + 1];
+      i++;
+    } else if (arg === "--endpoint" || arg === "-e") {
+      customEndpoint = cliArgs[i + 1];
+      i++;
+    } else if (arg && !arg.startsWith("-") && !apiKey) {
+      apiKey = arg;
+    }
+  }
+
+  const currentConfig = getUserConfig();
+  const endpoint = (customEndpoint || currentConfig.endpoint || DEFAULT_ENDPOINT).replace(/\/$/, "");
+
+  if (!apiKey) {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    apiKey = await new Promise<string>((resolve) => {
+      rl.question("  Paste your Sevlex API Key (slx_live_...): ", (answer) => {
+        rl.close();
+        resolve(answer.trim());
+      });
+    });
+  }
+
+  if (!apiKey) {
+    console.error("\n  ❌ No API key provided. Authentication cancelled.\n");
+    process.exit(1);
+  }
+
+  if (!apiKey.startsWith("slx_live_")) {
+    console.warn("  ⚠️ Warning: Enterprise API keys typically start with 'slx_live_'. Proceeding with validation...\n");
+  }
+
+  console.log(`  Validating credentials against ${endpoint}/api/policy/sync...`);
+  try {
+    const res = await fetch(`${endpoint}/api/policy/sync`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Accept": "application/json",
+      },
+    });
+
+    if (res.status === 401) {
+      console.error(`\n  ❌ Authentication Failed: Invalid or revoked API key.`);
+      console.error(`  Please verify your key on your Sevlex Cloud dashboard at ${endpoint}.\n`);
+      process.exit(1);
+    }
+
+    if (!res.ok) {
+      console.error(`\n  ❌ Server returned HTTP ${res.status}: ${res.statusText}\n`);
+      process.exit(1);
+    }
+
+    const data: any = await res.json();
+    const orgId = data.org_id || "unknown";
+    const orgName = data.org_name || "Enterprise Workspace";
+    const policy = data.policy || {};
+
+    // Save to user configuration store (~/.sevlex/config.json)
+    saveUserConfig({
+      apiKey,
+      endpoint,
+      orgId,
+      orgName,
+      lastSyncedAt: new Date().toISOString(),
+    });
+
+    // Update local policy file in user directory (~/.sevlex/sevlex.json)
+    const configDir = getConfigDir();
+    const localPolicyPath = path.join(configDir, "sevlex.json");
+    const policyPayload = {
+      version: "1.0",
+      organization: {
+        id: orgId,
+        name: orgName,
+        endpoint,
+      },
+      policy: {
+        defaultAction: policy.defaultAction || "ALLOW",
+        blockedTools: policy.blockedTools || ["delete_database", "drop_table", "execute_arbitrary_shell"],
+        approvalRequiredTools: policy.approvalRequiredTools || ["github_list_pull_requests"],
+        parameterRules: { enabled: true },
+        dlp: { enabled: true },
+        siem: {
+          enabled: true,
+          endpoint: `${endpoint}/api/ingest`,
+          apiKey,
+        },
+      },
+    };
+    fs.writeFileSync(localPolicyPath, JSON.stringify(policyPayload, null, 2), "utf-8");
+
+    console.log(`\n  \x1b[32m✔ SUCCESS: Authenticated with Sevlex Cloud!\x1b[0m`);
+    console.log(`  ● Organization:   ${orgName} (${orgId})`);
+    console.log(`  ● Cloud Endpoint: ${endpoint}`);
+    console.log(`  ● Policy Synced:  ${policyPayload.policy.blockedTools.length} blocked tools, ${policyPayload.policy.approvalRequiredTools.length} HITL approvals`);
+    console.log(`  ● Config Stored:  ${getConfigFilePath()}`);
+    console.log(`\n  👉 Next step: Run 'npx sevlex init' to automatically shield Cursor & Claude Desktop.\n`);
+    process.exit(0);
+  } catch (err: any) {
+    console.error(`\n  ❌ Network Connection Failed: ${err.message}`);
+    console.error(`  Could not reach ${endpoint}. Please check your internet connection or endpoint URL.\n`);
+    process.exit(1);
+  }
+}
+
+function runLogout() {
+  clearUserConfig();
+  console.log("\n  ✔ Logged out from Sevlex Cloud. Local configuration cleared.\n");
+  process.exit(0);
+}
+
+function runStatus() {
+  const userConfig = getUserConfig();
+  const isWindows = process.platform === "win32";
+  const sysDir = isWindows ? "C:\\ProgramData\\Sevlex" : "/etc/sevlex";
+  const userDir = getConfigDir();
+  const userPolicyPath = path.join(userDir, "sevlex.json");
+  const sysPolicyPath = path.join(sysDir, "sevlex.json");
+  const localPolicyPath = path.resolve(__dirname, "../sevlex.json");
+
+  const effectivePolicyPath = fs.existsSync(userPolicyPath)
+    ? userPolicyPath
+    : fs.existsSync(sysPolicyPath)
+    ? sysPolicyPath
+    : fs.existsSync(localPolicyPath)
+    ? localPolicyPath
+    : "Default In-Memory Policy";
+
+  let blockedCount = 0;
+  let hitlCount = 0;
+  if (typeof effectivePolicyPath === "string" && fs.existsSync(effectivePolicyPath)) {
+    try {
+      const p = JSON.parse(fs.readFileSync(effectivePolicyPath, "utf-8"));
+      blockedCount = p.policy?.blockedTools?.length ?? 0;
+      hitlCount = p.policy?.approvalRequiredTools?.length ?? 0;
+    } catch {}
+  }
+
+  console.log("\n=================================================================");
+  console.log("  SEVLEX ZERO-TRUST MCP GATEWAY - STATUS & HEALTH REPORT        ");
+  console.log("=================================================================");
+
+  console.log(`● Hostname:         ${os.hostname()}`);
+  console.log(`● Platform:         ${process.platform} (${process.arch}) - Node ${process.version}`);
+  if (userConfig.apiKey) {
+    console.log(`● Cloud Workspace:  \x1b[32m✔ CONNECTED\x1b[0m -> "${userConfig.orgName || 'Core Workspace'}"`);
+    console.log(`● Cloud Endpoint:   ${userConfig.endpoint}`);
+    console.log(`● Last Synced:      ${userConfig.lastSyncedAt || 'Active'}`);
+  } else {
+    console.log(`● Cloud Workspace:  Standalone Local Mode (Unlinked)`);
+    console.log(`  (Run 'npx sevlex login' to connect to team workspace)`);
+  }
+  console.log(`● Effective Policy: ${effectivePolicyPath}`);
+  console.log(`● Active Rules:     ${blockedCount} blocked tools, ${hitlCount} HITL clearance approvals`);
+  console.log(`● DLP Engine:       Active (PII, Private Keys, Cloud Secrets)`);
+  console.log(`● Circuit Breaker:  Armed (Threshold: 25 calls / 30s)`);
+
+  // Local Merkle Audit Chain
+  const dbPath = path.resolve(__dirname, "../audit_log.db");
+  if (fs.existsSync(dbPath)) {
+    try {
+      const logger = new AuditLogger(dbPath);
+      const verify = logger.verifyAuditChain();
+      console.log(`● Cryptographic Log: ${verify.totalReceipts} SHA-256 receipts [${verify.valid ? '\x1b[32m100% VALID\x1b[0m' : '\x1b[31mINTEGRITY BROKEN\x1b[0m'}]`);
+    } catch {
+      console.log(`● Cryptographic Log: SQLite database initialized`);
+    }
+  }
+
+  console.log("\nAI RUNTIME SHIELD STATUS:");
+  console.log("-----------------------------------------------------------------");
+  const clients = getAllMonitoredClients();
+  for (const client of clients) {
+    let status = "STANDBY (Not Installed)";
+    if (fs.existsSync(client.configPath)) {
+      try {
+        const raw = fs.readFileSync(client.configPath, "utf-8");
+        const data = JSON.parse(raw);
+        if (data.mcpServers && data.mcpServers["sevlex-firewall"]) {
+          const totalWrapped = Object.values(data.mcpServers).filter((s: any) => s?._sevlex_injected).length;
+          status = totalWrapped > 0
+            ? `\x1b[32m● SHIELDED\x1b[0m (${totalWrapped} server(s) wrapped)`
+            : `\x1b[32m● SHIELDED\x1b[0m (Firewall Active)`;
+        } else {
+          status = "\x1b[33m⚠️ UNPROTECTED\x1b[0m (Run 'npx sevlex init')";
+        }
+      } catch {
+        status = "\x1b[31m❌ CONFIG ERROR\x1b[0m";
+      }
+    }
+    console.log(`  ${client.name.padEnd(25)} ${status}`);
+  }
+  console.log("-----------------------------------------------------------------\n");
+  process.exit(0);
 }
 
 function runVerify() {
@@ -145,35 +413,6 @@ function runHitl() {
   process.exit(0);
 }
 
-function runInject() {
-  console.log("\n=================================================================");
-  console.log("  SEVLEX ZERO-TOUCH CLIENT INJECTOR (Automated Client Patcher)   ");
-  console.log("  Intercepting and shielding Claude Desktop, Cursor, Windsurf... ");
-  console.log("=================================================================");
-
-  const clients = getAllMonitoredClients();
-  let totalServers = 0;
-  const tableData: any[] = [];
-
-  for (const client of clients) {
-    const result = injectClient(client);
-    totalServers += result.wrappedServers.length;
-
-    tableData.push({
-      Client: client.name,
-      Status: result.status === "INJECTED" ? "✔ INJECTED" : result.status === "ALREADY_SHIELDED" ? "● SHIELDED" : result.status,
-      "Wrapped Servers": result.wrappedServers.length > 0 ? result.wrappedServers.join(", ") : "None",
-      "Config Found": result.status !== "NOT_FOUND" ? "YES" : "NO",
-    });
-  }
-
-  console.table(tableData);
-  console.log(`\n[Sevlex Inject] Summary: ${totalServers} MCP server(s) shielded across detected runtimes.`);
-  console.log(`[Sevlex Inject] Clean backups created with '.sevlex.bak' suffix.`);
-  console.log(`[Sevlex Inject] Use 'sevlex restore' at any time to unhook and revert.\n`);
-  process.exit(0);
-}
-
 function runRestore() {
   console.log("\n=================================================================");
   console.log("  SEVLEX CLIENT RESTORER (Unhook & Config Reversion)             ");
@@ -203,34 +442,32 @@ function runRestore() {
 
 function printHelp() {
   console.log(`
-SEVLEX ENTERPRISE ZERO-TRUST MCP GATEWAY (CLI v1.0.0)
+SEVLEX ENTERPRISE ZERO-TRUST MCP GATEWAY (CLI v1.0.3)
 Universal Layer 7 AI Security & Shadow AI Governance
 
 USAGE:
-  sevlex <command> [options]
+  npx sevlex <command> [options]
 
 COMMANDS:
-  inject                 Auto-patch & wrap MCP servers across all AI runtimes
-  restore                Unhook Sevlex & restore original client configs
-  install [--silent]     Deploy corporate policy and shield all 5 AI runtimes
-  uninstall [--silent]   Unhook Sevlex and restore original configurations
-  status                 Inspect health, active policies, and shielded tools
-  scan                   Scan system for Shadow AI tools and unmanaged servers
+  init                   Auto-detect Cursor & Claude Desktop and shield MCP tools
+  login [key]            Authenticate with Sevlex Cloud (app.sevlex.com) via API key
+  logout                 Clear stored credentials and revert to local standalone mode
+  status                 Inspect health, cloud workspace, active policy & shields
+  restore                Unhook Sevlex & restore original client configurations
   verify                 Verify SHA-256 cryptographic audit chain for SOC 2
   hitl                   List active dual-custody authorization tickets
+  scan                   Scan system for Shadow AI tools and unmanaged servers
   sse <port> <url>       Start remote MCP Server-Sent Events (SSE) proxy
   daemon                 Run 24/7 background watcher with 30ms auto-healing
-  <target-tool...>       Run as Layer 7 Zero-Trust proxy wrapper around target tool
+  proxy <target-tool...> Run as Layer 7 Zero-Trust proxy wrapper around target tool
 
 EXAMPLES:
-  sevlex inject
-  sevlex restore
-  sevlex install --silent
-  sevlex status
-  sevlex verify
-  sevlex hitl
-  sevlex sse 8080 http://localhost:3001/sse
-  sevlex node my-mcp-server.js
+  npx sevlex init
+  npx sevlex login slx_live_ab12cd34...
+  npx sevlex status
+  npx sevlex verify
+  npx sevlex restore
+  npx sevlex node my-mcp-server.js
 `);
 }
 
@@ -313,45 +550,6 @@ function runUninstall(silent: boolean) {
   process.exit(0);
 }
 
-function runStatus() {
-  const isWindows = process.platform === "win32";
-  const sysDir = isWindows ? "C:\\ProgramData\\Sevlex" : "/etc/sevlex";
-  const policyPath = path.join(sysDir, "sevlex.json");
-
-  console.log("\n=================================================================");
-  console.log("  SEVLEX ENTERPRISE GATEWAY - STATUS & HEALTH REPORT            ");
-  console.log("=================================================================");
-
-  console.log(`● Hostname:        ${os.hostname()}`);
-  console.log(`● Platform:        ${process.platform} (${process.arch})`);
-  console.log(`● Corporate Path:  ${sysDir} [${fs.existsSync(sysDir) ? "EXISTS" : "MISSING"}]`);
-  console.log(`● Policy File:     ${policyPath} [${fs.existsSync(policyPath) ? "ACTIVE" : "NOT FOUND"}]`);
-  console.log(`● SIEM Stream:     Datadog US5 (Live Stream Active)`);
-
-  console.log("\nAI RUNTIME SHIELD STATUS:");
-  console.log("-----------------------------------------------------------------");
-  const clients = getAllMonitoredClients();
-  for (const client of clients) {
-    let status = "STANDBY (Not Installed)";
-    if (fs.existsSync(client.configPath)) {
-      try {
-        const raw = fs.readFileSync(client.configPath, "utf-8");
-        const data = JSON.parse(raw);
-        if (data.mcpServers && data.mcpServers["sevlex-firewall"]) {
-          status = "● SHIELDED (L7 Intercept Active)";
-        } else {
-          status = "⚠️ UNPROTECTED (Firewall Missing)";
-        }
-      } catch {
-        status = "❌ CONFIG ERROR";
-      }
-    }
-    console.log(`  ${client.name.padEnd(25)} ${status}`);
-  }
-  console.log("-----------------------------------------------------------------\n");
-  process.exit(0);
-}
-
 function runScan() {
   console.log("\n[Sevlex Scanner] Starting Shadow AI Discovery sweep...");
   const clients = getAllMonitoredClients();
@@ -375,6 +573,7 @@ function runScan() {
   }
 
   console.log(`\n[Sevlex Scanner] Sweep complete. Discovered ${discoveredCount} AI clients on host.\n`);
+  process.exit(0);
 }
 
 function runProxy(proxyArgs: string[]) {

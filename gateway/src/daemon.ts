@@ -16,20 +16,30 @@ export interface MonitoredClient {
   configPath: string;
 }
 
-export function getMcpProxyEntry(): Record<string, any> {
+export function getMcpProxyEntry(userConfig?: { apiKey?: string | undefined; endpoint?: string | undefined }): Record<string, any> {
   const isWindows = process.platform === "win32";
   const sysDir = isWindows ? "C:\\ProgramData\\Sevlex" : "/etc/sevlex";
-  const gatewayPath = path.join(sysDir, "gateway.js");
-  const policyPath = path.join(sysDir, "sevlex.json");
+  const corporateGateway = path.join(sysDir, "gateway.js");
+  const localGateway = path.resolve(__dirname, "gateway.js");
+  const gatewayPath = fs.existsSync(corporateGateway) ? corporateGateway : localGateway;
+  const userPolicy = path.join(os.homedir(), ".sevlex", "sevlex.json");
+  const sysPolicy = path.join(sysDir, "sevlex.json");
+  const localPolicy = path.resolve(__dirname, "../sevlex.json");
+  const policyPath = fs.existsSync(userPolicy) ? userPolicy : fs.existsSync(sysPolicy) ? sysPolicy : localPolicy;
+
+  const env: Record<string, string> = {
+    SEVLEX_POLICY_PATH: policyPath,
+  };
+
+  if (userConfig?.apiKey) {
+    env.SEVLEX_API_KEY = userConfig.apiKey;
+    env.SEVLEX_INGEST_URL = `${(userConfig.endpoint || "https://app.sevlex.com").replace(/\/$/, "")}/api/ingest`;
+  }
 
   return {
     command: "node",
     args: [gatewayPath],
-    env: {
-      SEVLEX_POLICY_PATH: policyPath,
-      SEVLEX_SIEM_PROVIDER: "datadog",
-      SEVLEX_SIEM_ENDPOINT: "https://http-intake.logs.us5.datadoghq.com/api/v2/logs"
-    }
+    env,
   };
 }
 
@@ -156,7 +166,7 @@ export interface InjectionResult {
   error?: string | undefined;
 }
 
-export function injectClient(client: MonitoredClient): InjectionResult {
+export function injectClient(client: MonitoredClient, userConfig?: { apiKey?: string | undefined; endpoint?: string | undefined }): InjectionResult {
   try {
     if (!fs.existsSync(client.configPath)) {
       return {
@@ -199,7 +209,10 @@ export function injectClient(client: MonitoredClient): InjectionResult {
     const corporateGateway = path.join(sysDir, "gateway.js");
     const localGateway = path.resolve(__dirname, "gateway.js");
     const gatewayPath = fs.existsSync(corporateGateway) ? corporateGateway : localGateway;
-    const policyPath = path.join(sysDir, "sevlex.json");
+    const userPolicy = path.join(os.homedir(), ".sevlex", "sevlex.json");
+    const sysPolicy = path.join(sysDir, "sevlex.json");
+    const localPolicy = path.resolve(__dirname, "../sevlex.json");
+    const policyPath = fs.existsSync(userPolicy) ? userPolicy : fs.existsSync(sysPolicy) ? sysPolicy : localPolicy;
 
     const wrappedServers: string[] = [];
 
@@ -231,8 +244,8 @@ export function injectClient(client: MonitoredClient): InjectionResult {
       srv.env = {
         ...(srv.env || {}),
         SEVLEX_POLICY_PATH: policyPath,
-        SEVLEX_SIEM_PROVIDER: "datadog",
-        SEVLEX_SIEM_ENDPOINT: "https://http-intake.logs.us5.datadoghq.com/api/v2/logs",
+        ...(userConfig?.apiKey ? { SEVLEX_API_KEY: userConfig.apiKey } : {}),
+        ...(userConfig?.endpoint ? { SEVLEX_INGEST_URL: `${userConfig.endpoint.replace(/\/$/, '')}/api/ingest` } : {}),
       };
 
       wrappedServers.push(key);
@@ -240,7 +253,7 @@ export function injectClient(client: MonitoredClient): InjectionResult {
 
     // Ensure sevlex-firewall entry is also present
     if (!data.mcpServers["sevlex-firewall"]) {
-      data.mcpServers["sevlex-firewall"] = getMcpProxyEntry();
+      data.mcpServers["sevlex-firewall"] = getMcpProxyEntry(userConfig);
     }
 
     fs.writeFileSync(client.configPath, JSON.stringify(data, null, 2), "utf-8");
