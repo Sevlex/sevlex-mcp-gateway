@@ -14,26 +14,33 @@ export async function GET() {
   let totalReceipts = 0;
   let dbError: string | undefined;
 
-  // 1. Production: PostgreSQL (AWS RDS or Docker Compose)
+  // 1. Try PostgreSQL (AWS RDS or Docker Compose)
   const pool = getPgPool();
+  let postgresConnected = false;
   if (pool) {
-    storageType = "postgres";
     try {
       const res = await pool.query('SELECT count(*) as count FROM audit_logs');
       totalReceipts = Number(res.rows[0]?.count ?? 0);
       dbStatus = "connected";
+      storageType = "postgres";
+      postgresConnected = true;
     } catch (err: any) {
-      dbStatus = "error";
+      // Postgres offline/unreachable; fallback to SQLite
       dbError = err.message;
     }
-  } else {
-    // 2. Local Offline Dev: SQLite
+  }
+
+  // 2. Local SQLite fallback if Postgres is not connected
+  if (!postgresConnected) {
     try {
       const db = getSqliteDb(true);
       if (db) {
         try {
           const row = db.prepare("SELECT count(*) as count FROM audit_logs").get() as any;
           totalReceipts = row?.count ?? 0;
+          dbStatus = "connected";
+          storageType = "sqlite";
+          dbError = undefined;
         } catch {
           dbStatus = "pending_schema";
         } finally {

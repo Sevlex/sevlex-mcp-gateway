@@ -36,12 +36,11 @@ export async function GET(request: Request) {
 
       return NextResponse.json({ logs, storage: 'postgres' });
     } catch (err: any) {
-      console.error('PostgreSQL query error:', err);
-      return NextResponse.json({ error: 'Database query error', message: err.message }, { status: 500 });
+      console.warn('PostgreSQL query unavailable, falling back to local SQLite:', err.message);
     }
   }
 
-  // 2. Local Offline Dev: SQLite
+  // 2. Local Offline Dev / Demo Fallback: SQLite
   try {
     const db = getSqliteDb(true);
     if (db) {

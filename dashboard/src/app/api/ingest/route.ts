@@ -60,33 +60,37 @@ export async function POST(request: Request) {
     // 2. Production: PostgreSQL (AWS RDS in VPC or Docker Compose)
     const pool = getPgPool();
     if (pool) {
-      await pool.query(`
-        CREATE TABLE IF NOT EXISTS audit_logs (
-          id BIGSERIAL PRIMARY KEY,
-          timestamp TIMESTAMPTZ DEFAULT NOW(),
-          user_id TEXT NOT NULL,
-          tool_name TEXT NOT NULL,
-          status TEXT NOT NULL,
-          raw_request TEXT NOT NULL,
-          raw_response TEXT,
-          prev_hash TEXT,
-          entry_hash TEXT
-        );
-        CREATE INDEX IF NOT EXISTS idx_audit_logs_timestamp ON audit_logs(timestamp DESC);
-      `);
+      try {
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS audit_logs (
+            id BIGSERIAL PRIMARY KEY,
+            timestamp TIMESTAMPTZ DEFAULT NOW(),
+            user_id TEXT NOT NULL,
+            tool_name TEXT NOT NULL,
+            status TEXT NOT NULL,
+            raw_request TEXT NOT NULL,
+            raw_response TEXT,
+            prev_hash TEXT,
+            entry_hash TEXT
+          );
+          CREATE INDEX IF NOT EXISTS idx_audit_logs_timestamp ON audit_logs(timestamp DESC);
+        `);
 
-      for (const rec of normalized) {
-        await pool.query(
-          `INSERT INTO audit_logs (timestamp, user_id, tool_name, status, raw_request, raw_response, prev_hash, entry_hash)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [rec.timestamp, rec.user_id, rec.tool_name, rec.status, rec.raw_request, rec.raw_response, rec.prev_hash, rec.entry_hash]
-        );
+        for (const rec of normalized) {
+          await pool.query(
+            `INSERT INTO audit_logs (timestamp, user_id, tool_name, status, raw_request, raw_response, prev_hash, entry_hash)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+            [rec.timestamp, rec.user_id, rec.tool_name, rec.status, rec.raw_request, rec.raw_response, rec.prev_hash, rec.entry_hash]
+          );
+        }
+
+        return NextResponse.json({ success: true, ingested: normalized.length, storage: 'postgres' });
+      } catch (err: any) {
+        console.warn('PostgreSQL write failed, falling back to local SQLite:', err.message);
       }
-
-      return NextResponse.json({ success: true, ingested: normalized.length, storage: 'postgres' });
     }
 
-    // 3. Local Offline Dev: SQLite
+    // 3. Local Offline Dev / Demo Fallback: SQLite
     const db = getSqliteDb(false);
     if (db) {
       db.exec(`
@@ -116,7 +120,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, ingested: normalized.length, storage: 'sqlite' });
     }
 
-    return NextResponse.json({ error: 'No database configured' }, { status: 500 });
+    return NextResponse.json({ error: 'No database available' }, { status: 500 });
   } catch (err: any) {
     console.error('Error in /api/ingest:', err);
     return NextResponse.json({ error: 'Internal Server Error', message: err?.message }, { status: 500 });
