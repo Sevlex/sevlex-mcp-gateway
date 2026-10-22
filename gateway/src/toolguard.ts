@@ -5,15 +5,25 @@
 
 export interface ParameterViolation {
   ruleId: string;
-  category: "DESTRUCTIVE_SQL" | "COMMAND_INJECTION" | "PATH_TRAVERSAL" | "RCE_ATTEMPT" | "CODE_HAZARD";
+  category: "DESTRUCTIVE_SQL" | "COMMAND_INJECTION" | "PATH_TRAVERSAL" | "RCE_ATTEMPT" | "CODE_HAZARD" | "CUSTOM_POLICY";
   severity: "CRITICAL" | "HIGH" | "MEDIUM";
   reason: string;
   sample: string;
+  action: "BLOCK" | "REQUIRE_APPROVAL";
 }
 
 export interface ParameterInspectionResult {
   passed: boolean;
+  action?: "BLOCK" | "REQUIRE_APPROVAL";
   violation?: ParameterViolation;
+}
+
+export interface CustomParameterRule {
+  id: string;
+  pattern: string;
+  action?: "BLOCK" | "REQUIRE_APPROVAL";
+  severity?: "CRITICAL" | "HIGH" | "MEDIUM";
+  reason: string;
 }
 
 // Enterprise Rule Definitions for Inbound Tool Arguments
@@ -221,7 +231,11 @@ export function generateNormalizedVariations(raw: string): string[] {
  * Deeply inspects incoming tool call parameters across normalized variations
  * to prevent payload bypasses and obfuscation evasion.
  */
-export function inspectToolParameters(toolName: string, args: any): ParameterInspectionResult {
+export function inspectToolParameters(
+  toolName: string,
+  args: any,
+  customRules?: CustomParameterRule[]
+): ParameterInspectionResult {
   const strings = extractStrings(args);
   
   for (const str of strings) {
@@ -229,21 +243,51 @@ export function inspectToolParameters(toolName: string, args: any): ParameterIns
     
     const variations = generateNormalizedVariations(str);
     for (const variant of variations) {
+      // 1. Check Hardcoded Baseline Security Rules (Always BLOCK)
       for (const rule of PARAMETER_RULES) {
         if (rule.pattern.test(variant)) {
           const isDeobfuscated = variant !== str;
           return {
             passed: false,
+            action: "BLOCK",
             violation: {
               ruleId: rule.ruleId,
               category: rule.category,
               severity: rule.severity,
+              action: "BLOCK",
               reason: isDeobfuscated 
                 ? `${rule.reason} [DE-OBFUSCATION EVASION DETECTED]` 
                 : rule.reason,
               sample: str.length > 80 ? str.slice(0, 77) + "..." : str
             }
           };
+        }
+      }
+
+      // 2. Check Custom Parameter Rules (Configurable BLOCK or REQUIRE_APPROVAL)
+      if (customRules && customRules.length > 0) {
+        for (const custom of customRules) {
+          try {
+            const regex = new RegExp(custom.pattern, "i");
+            if (regex.test(variant)) {
+              const ruleAction = custom.action || "BLOCK";
+              const isDeobfuscated = variant !== str;
+              return {
+                passed: false,
+                action: ruleAction,
+                violation: {
+                  ruleId: custom.id,
+                  category: "CUSTOM_POLICY",
+                  severity: custom.severity || "HIGH",
+                  action: ruleAction,
+                  reason: isDeobfuscated
+                    ? `${custom.reason} [DE-OBFUSCATION EVASION DETECTED]`
+                    : custom.reason,
+                  sample: str.length > 80 ? str.slice(0, 77) + "..." : str
+                }
+              };
+            }
+          } catch {}
         }
       }
     }

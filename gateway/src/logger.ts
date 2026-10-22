@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
 import path from "node:path";
 import crypto from "node:crypto";
+import { getUserConfig } from "./user_config.js";
 
 // Define the shape of an audit log entry
 export interface AuditLogEntry {
@@ -46,8 +47,16 @@ export class TelemetryForwarder {
   private activeFlush: Promise<void> | null = null;
 
   constructor() {
-    this.ingestUrl = process.env.SEVLEX_INGEST_URL || null;
-    this.apiKey = process.env.SEVLEX_API_KEY || process.env.ADMIN_API_KEY || "sevlex_secret_123";
+    let defaultEndpoint: string | null = null;
+    let defaultKey: string | null = null;
+    try {
+      const cfg = getUserConfig();
+      if (cfg && cfg.endpoint) defaultEndpoint = cfg.endpoint;
+      if (cfg && cfg.apiKey) defaultKey = cfg.apiKey;
+    } catch {}
+
+    this.ingestUrl = process.env.SEVLEX_INGEST_URL || defaultEndpoint;
+    this.apiKey = process.env.SEVLEX_API_KEY || defaultKey || process.env.ADMIN_API_KEY || "sevlex_secret_123";
 
     if (this.ingestUrl) {
       this.startTimer();

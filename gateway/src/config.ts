@@ -12,6 +12,15 @@ const ConfigSchema = z.object({
     approvalRequiredTools: z.array(z.string()).default([]),
     parameterRules: z.object({
       enabled: z.boolean().default(true),
+      customRules: z.array(
+        z.object({
+          id: z.string(),
+          pattern: z.string(),
+          action: z.enum(["BLOCK", "REQUIRE_APPROVAL"]).default("BLOCK"),
+          severity: z.enum(["CRITICAL", "HIGH", "MEDIUM"]).default("HIGH"),
+          reason: z.string(),
+        })
+      ).default([]),
     }).optional(),
     dlp: z.object({
       enabled: z.boolean().default(true),

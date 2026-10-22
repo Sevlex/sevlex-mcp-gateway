@@ -10,6 +10,7 @@ import { AuditLogger } from "./logger.js";
 import { inspectToolParameters, redactToolOutputDlp } from "./toolguard.js";
 import { AgentCircuitBreaker } from "./agentguard.js";
 import { sendSlackHitlCard } from "./slack_notifier.js";
+import { getUserConfig } from "./user_config.js";
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -189,7 +190,7 @@ function streamToSiem(targetUserId: string, targetToolName: string, status: "ALL
   });
 }
 
-function handleAiMessage(message: any, rawMessage: string) {
+async function handleAiMessage(message: any, rawMessage: string): Promise<void> {
   // Handle JSON-RPC batch requests (arrays)
   const messages = Array.isArray(message) ? message : [message];
   let isBlocked = false;
@@ -280,48 +281,55 @@ function handleAiMessage(message: any, rawMessage: string) {
           },
         };
         safeWriteStdout(JSON.stringify(errorResponse) + "\n");
+        continue;
       } 
+      
       // 🛡️ CHECK 2: ToolGuard Call Guard & CodeGuard™ (Deep Parameter & Dynamic Script Inspection)
-      else if (!inspectToolParameters(toolName, msg.params.arguments).passed) {
-        const paramCheck = inspectToolParameters(toolName, msg.params.arguments);
-        if (paramCheck.violation) {
-          isBlocked = true;
-          circuitBreaker.recordResult(false, true);
+      const paramCheck = inspectToolParameters(toolName, msg.params.arguments, config.policy.parameterRules?.customRules);
+      
+      if (!paramCheck.passed && paramCheck.action === "BLOCK") {
+        const violation = paramCheck.violation!;
+        isBlocked = true;
+        circuitBreaker.recordResult(false, true);
 
-          const violationTag = `${toolName} [${paramCheck.violation.category}]`;
-          logger.log({
-            userId: userId,
-            toolName: violationTag,
-            status: "BLOCKED",
-            rawRequest: JSON.stringify({ message: msg, violation: paramCheck.violation }),
-          });
+        const violationTag = `${toolName} [${violation.category}]`;
+        logger.log({
+          userId: userId,
+          toolName: violationTag,
+          status: "BLOCKED",
+          rawRequest: JSON.stringify({ message: msg, violation }),
+        });
 
-          streamToSiem(userId, violationTag, "BLOCKED", JSON.stringify({ message: msg, violation: paramCheck.violation }));
+        streamToSiem(userId, violationTag, "BLOCKED", JSON.stringify({ message: msg, violation }));
 
-          const alertMsg = `[TOOLGUARD BLOCK] User '${userId}' attempted dangerous argument in '${toolName}': ${paramCheck.violation.reason} (matched: ${paramCheck.violation.sample})`;
-          if (process.env.SLACK_WEBHOOK_URL) {
-            fetch(process.env.SLACK_WEBHOOK_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text: alertMsg })
-            }).catch(err => console.error("Slack webhook failed:", err));
-          } else {
-            console.error(alertMsg);
-          }
-
-          const errorResponse = {
-            jsonrpc: "2.0",
-            id: msg.id,
-            error: {
-              code: -32602,
-              message: `Sevlex ToolGuard: Blocked by Parameter Inspection Rule [${paramCheck.violation.ruleId}]: ${paramCheck.violation.reason}. Dangerous payload intercepted.`,
-            },
-          };
-          safeWriteStdout(JSON.stringify(errorResponse) + "\n");
+        const alertMsg = `[TOOLGUARD BLOCK] User '${userId}' attempted dangerous argument in '${toolName}': ${violation.reason} (matched: ${violation.sample})`;
+        if (process.env.SLACK_WEBHOOK_URL) {
+          fetch(process.env.SLACK_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: alertMsg })
+          }).catch(err => console.error("Slack webhook failed:", err));
+        } else {
+          console.error(alertMsg);
         }
+
+        const errorResponse = {
+          jsonrpc: "2.0",
+          id: msg.id,
+          error: {
+            code: -32602,
+            message: `Sevlex ToolGuard: Blocked by Parameter Inspection Rule [${violation.ruleId}]: ${violation.reason}. Dangerous payload intercepted.`,
+          },
+        };
+        safeWriteStdout(JSON.stringify(errorResponse) + "\n");
+        continue;
       }
+
       // 🔒 CHECK 3: Human-In-The-Loop (HITL) Stateful Clearance Check
-      else if (approvalRequired) {
+      // Triggered either by tool-level policy OR by parameter-level rule with action: "REQUIRE_APPROVAL"
+      const needsApproval = approvalRequired || (!paramCheck.passed && paramCheck.action === "REQUIRE_APPROVAL");
+
+      if (needsApproval) {
         // Check if SecOps has ALREADY authorized this tool call
         const clearance = logger.consumeApprovedHitlClearance(userId, toolName);
 
@@ -345,19 +353,40 @@ function handleAiMessage(message: any, rawMessage: string) {
 
           // Register persistent clearance ticket in SQLite
           const ticketId = logger.createHitlTicket(userId, toolName, rawMessage);
+          const riskReason = paramCheck.violation?.reason || "High-Impact Privileged Tool Operation";
 
           logger.log({
             userId: userId,
             toolName: toolName,
             status: "HITL_PENDING",
-            rawRequest: JSON.stringify({ message: msg, ticketId }),
+            rawRequest: JSON.stringify({ message: msg, ticketId, riskReason }),
           });
 
           streamToSiem(userId, toolName, "HITL_PENDING", { message: msg, ticketId });
 
-          const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested high-impact tool '${toolName}'. Ticket: ${ticketId}. Waiting for SecOps clearance.`;
+          const alertMsg = `[HITL APPROVAL REQUIRED] User '${userId}' requested tool '${toolName}'. Ticket: ${ticketId}. Risk: ${riskReason}`;
           console.error(alertMsg);
 
+          const userCfg = getUserConfig();
+          const cloudUrl = process.env.SEVLEX_CLOUD_URL || userCfg.endpoint || "https://app.sevlex.com";
+          const apiKey = process.env.SEVLEX_API_KEY || userCfg.apiKey || "sevlex_secret_123";
+
+          // Sync ticket to Central Cloud Database (Neon Postgres)
+          fetch(`${cloudUrl}/api/hitl/ticket`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": apiKey,
+            },
+            body: JSON.stringify({
+              ticketId,
+              userId,
+              toolName,
+              arguments: msg.params?.arguments || {},
+            }),
+          }).catch(() => {});
+
+          // Dispatch interactive Slack Block Kit Card
           if (process.env.SLACK_WEBHOOK_URL) {
             sendSlackHitlCard({
               webhookUrl: process.env.SLACK_WEBHOOK_URL,
@@ -365,20 +394,60 @@ function handleAiMessage(message: any, rawMessage: string) {
               toolName,
               ticketId,
               argsSnippet: JSON.stringify(msg.params?.arguments || {}, null, 2),
-              dashboardUrl: process.env.SEVLEX_DASHBOARD_URL || "http://localhost:3000",
+              dashboardUrl: cloudUrl,
             }).catch(err => console.error("Slack interactive webhook failed:", err));
           }
 
-          const hitlResponse = {
-            jsonrpc: "2.0",
-            id: msg.id,
-            error: {
-              code: -32001,
-              message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. Ticket '${ticketId}' dispatched to SecOps. Once authorized, retry tool call to execute.`,
-              data: { ticketId, status: "PENDING" },
-            },
-          };
-          safeWriteStdout(JSON.stringify(hitlResponse) + "\n");
+          // Active 10-second fast poll for instant Slack button clearance
+          let approvedInstantly = false;
+          if (cloudUrl) {
+            const startPoll = Date.now();
+            while (Date.now() - startPoll < 10000) {
+              await new Promise(r => setTimeout(r, 1000));
+              try {
+                const checkRes = await fetch(`${cloudUrl}/api/hitl/ticket?ticketId=${ticketId}`, {
+                  headers: { "Authorization": apiKey }
+                });
+                if (checkRes.ok) {
+                  const checkData = await checkRes.json();
+                  if (checkData.status === "APPROVED") {
+                    logger.approveHitlTicket(ticketId, checkData.approvedBy || "slack_admin");
+                    const approvedClearance = logger.consumeApprovedHitlClearance(userId, toolName);
+                    if (approvedClearance.approved) {
+                      approvedInstantly = true;
+                      isBlocked = false;
+                      circuitBreaker.recordResult(true, false);
+
+                      const approvalTag = `${toolName} [HITL_SLACK_AUTHORIZED]`;
+                      logger.log({
+                        userId: userId,
+                        toolName: approvalTag,
+                        status: "ALLOWED",
+                        rawRequest: JSON.stringify({ message: msg, clearance: approvedClearance }),
+                      });
+                      break;
+                    }
+                  } else if (checkData.status === "REJECTED") {
+                    break;
+                  }
+                }
+              } catch {}
+            }
+          }
+
+          if (!approvedInstantly) {
+            const hitlResponse = {
+              jsonrpc: "2.0",
+              id: msg.id,
+              error: {
+                code: -32001,
+                message: `Sevlex HITL Guard: Execution of tool '${toolName}' requires human authorization. Ticket '${ticketId}' dispatched to SecOps Slack. Risk: ${riskReason}. Once authorized, retry tool call to execute.`,
+                data: { ticketId, status: "PENDING" },
+              },
+            };
+            safeWriteStdout(JSON.stringify(hitlResponse) + "\n");
+            continue;
+          }
         }
       }
       else {
@@ -408,7 +477,7 @@ function handleAiMessage(message: any, rawMessage: string) {
 
 let inputBuffer = "";
 
-process.stdin.on("data", (chunk) => {
+process.stdin.on("data", async (chunk) => {
   inputBuffer += chunk.toString();
 
   // Prevent memory bloat from unbounded JSON payloads
@@ -469,7 +538,7 @@ process.stdin.on("data", (chunk) => {
             const jsonStr = inputBuffer.substring(startIdx, j + 1);
             try {
               const message = JSON.parse(jsonStr);
-              handleAiMessage(message, jsonStr);
+              await handleAiMessage(message, jsonStr);
             } catch (err) {
               // Ignore invalid JSON that matched brackets. Do NOT fail-open.
             }
