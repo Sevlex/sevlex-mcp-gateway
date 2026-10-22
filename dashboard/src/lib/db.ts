@@ -15,10 +15,15 @@ export function getPgPool(): Pool | null {
   }
 
   if (!pgPool) {
+    const isSsl =
+      process.env.DATABASE_SSL === 'true' ||
+      connectionString.includes('neon.tech') ||
+      connectionString.includes('sslmode=require');
+
     pgPool = new Pool({
       connectionString,
-      ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
-      connectionTimeoutMillis: 5000,
+      ssl: isSsl ? { rejectUnauthorized: false } : undefined,
+      connectionTimeoutMillis: 8000,
       idleTimeoutMillis: 30000,
       max: 10,
     });
