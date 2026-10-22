@@ -12,13 +12,15 @@
   "dependencies": {
     "@neon/config": "^1.9.3",
     "@neon/env": "^1.6.4",
-    "@next/swc-win32-x64-msvc": "^16.3.6",
-    "lightningcss-win32-x64-msvc": "^1.32.0",
     "lucide-react": "^1.48.0",
     "next": "16.3.6",
     "pg": "^8.23.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
+  },
+  "optionalDependencies": {
+    "@next/swc-win32-x64-msvc": "^16.3.6",
+    "lightningcss-win32-x64-msvc": "^1.32.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
