@@ -31,6 +31,11 @@ import {
   Play,
   RotateCcw,
   Bot,
+  Braces,
+  FileCode,
+  Hash,
+  Network,
+  GitBranch,
 } from "lucide-react";
 import ClientBrandIcon from "./components/ClientBrandIcon";
 
@@ -83,12 +88,32 @@ interface ScenarioData {
   badge: string;
   badgeColor: string;
   client: string;
+  clientBrand: string;
+  server: string;
   tool: string;
+  rpcId: string;
   payload: string;
+  responsePayload: string;
   decision: "BLOCKED" | "ALLOWED" | "CIRCUIT_BROKEN";
   latency: string;
   ruleViolated: string;
   explanation: string;
+  astAnalysis: {
+    statementType: string;
+    targetEntity: string;
+    riskScore: string;
+    astTreeVisual: string;
+    enforcementAction: string;
+  };
+  merkleReceipt: {
+    receiptId: string;
+    blockIndex: number;
+    prevHash: string;
+    entryHash: string;
+    merkleRoot: string;
+    actor: string;
+    status: string;
+  };
   slackAlert: {
     channel: string;
     level: "CRITICAL" | "HIGH" | "INFO";
@@ -104,10 +129,14 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
     badge: "CRITICAL ATTACK",
     badgeColor: "bg-red-500/10 text-red-400 border-red-500/20",
     client: "Cursor IDE (Agent Mode)",
+    clientBrand: "cursor",
+    server: "postgres_server",
     tool: "postgres_server:execute_query",
+    rpcId: "rpc-9142",
     payload: JSON.stringify(
       {
         jsonrpc: "2.0",
+        id: "rpc-9142",
         method: "tools/call",
         params: {
           name: "execute_query",
@@ -119,11 +148,51 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
       null,
       2
     ),
+    responsePayload: JSON.stringify(
+      {
+        jsonrpc: "2.0",
+        id: "rpc-9142",
+        error: {
+          code: -32600,
+          message: "ToolGuard™ AST Violation: Destructive statement 'DropTableStatement' prohibited by organization policy.",
+          data: {
+            rule: "RULE_AST_NO_DDL",
+            intercept_time_ms: 0.42,
+            quarantine_id: "quar_89a1f2",
+            downstream_wire_bytes: 0,
+            status: "ARRESTED_IN_FLIGHT",
+          },
+        },
+      },
+      null,
+      2
+    ),
     decision: "BLOCKED",
     latency: "0.42ms",
     ruleViolated: "ToolGuard™ AST DDL Block: DropTableStatement Detected",
     explanation:
       "Sevlex Layer 7 DPI parsed the SQL AST in-flight before transmission to Postgres. The query was dropped with zero database impact.",
+    astAnalysis: {
+      statementType: "DropTableStatement (DDL)",
+      targetEntity: "public.production_users",
+      riskScore: "10.0 / 10.0 [P0_CRITICAL]",
+      astTreeVisual: `├── AST_ROOT [Stmt]
+│   └── DropTableStmt
+│       ├── target: "production_users"
+│       ├── cascade: true
+│       └── policy_match: BLOCKED [P0_CRITICAL]
+└── ACTION: Intercept wire stdio, synthesize JSON-RPC Error -32600 (0 bytes sent to DB)`,
+      enforcementAction: "Packet arrested in 0.42ms. Zero wire bytes transmitted to downstream Postgres server.",
+    },
+    merkleReceipt: {
+      receiptId: "rcpt_merkle_98124",
+      blockIndex: 142394,
+      prevHash: "7c8e2b9f01a34d58e99a8b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e",
+      entryHash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      merkleRoot: "9a4f210d7c3b...e21a",
+      actor: "@meetp (Staff Eng)",
+      status: "SEALED (Cryptographically Verified)",
+    },
     slackAlert: {
       channel: "#mcp-security-alerts",
       level: "CRITICAL",
@@ -138,10 +207,14 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
     badge: "HIGH RISK",
     badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20",
     client: "Claude Desktop",
+    clientBrand: "claude",
+    server: "filesystem_server",
     tool: "filesystem:read_file",
+    rpcId: "rpc-4109",
     payload: JSON.stringify(
       {
         jsonrpc: "2.0",
+        id: "rpc-4109",
         method: "tools/call",
         params: {
           name: "read_file",
@@ -153,11 +226,51 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
       null,
       2
     ),
+    responsePayload: JSON.stringify(
+      {
+        jsonrpc: "2.0",
+        id: "rpc-4109",
+        error: {
+          code: -32001,
+          message: "ToolGuard™ Quarantine Exception: Access to private cloud credential path denied.",
+          data: {
+            rule: "RULE_DLP_CREDENTIAL_ISOLATION",
+            intercept_time_ms: 0.38,
+            quarantine_id: "quar_44b1c7",
+            downstream_wire_bytes: 0,
+            status: "STDIO_PIPE_REFUSED",
+          },
+        },
+      },
+      null,
+      2
+    ),
     decision: "BLOCKED",
     latency: "0.38ms",
     ruleViolated: "ToolGuard™ Private Credential Access Policy",
     explanation:
       "Access to private cloud credentials and .env paths is strictly quarantined. The gateway refused the stdio pipe request.",
+    astAnalysis: {
+      statementType: "PathTraversalSecurityCheck",
+      targetEntity: "~/.aws/credentials",
+      riskScore: "9.8 / 10.0 [EXFILTRATION]",
+      astTreeVisual: `├── PATH_INSPECTOR
+│   └── FileTarget: "/Users/developer/.aws/credentials"
+│       ├── path_normalized: "~/.aws/credentials"
+│       ├── classification: SENSITIVE_CLOUD_KEYSTORE
+│       └── policy_match: QUARANTINE_STDIO_ACCESS
+└── ACTION: Drop stdio pipe request, dispatch SecOps webhook, seal audit receipt`,
+      enforcementAction: "Exfiltration quarantined in 0.38ms. Absolute filesystem isolation preserved.",
+    },
+    merkleReceipt: {
+      receiptId: "rcpt_merkle_98125",
+      blockIndex: 142395,
+      prevHash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      entryHash: "8f4a19c3b2e7...61a2",
+      merkleRoot: "1c3e89a0f4d2...77ab",
+      actor: "@meetp (Staff Eng)",
+      status: "SEALED (Cryptographically Verified)",
+    },
     slackAlert: {
       channel: "#mcp-security-alerts",
       level: "CRITICAL",
@@ -172,10 +285,14 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
     badge: "LOOP BREAKER",
     badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
     client: "Windsurf Cascade",
+    clientBrand: "windsurf",
+    server: "github_server",
     tool: "github:list_issues",
+    rpcId: "rpc-8821",
     payload: JSON.stringify(
       {
         jsonrpc: "2.0",
+        id: "rpc-8821",
         method: "tools/call",
         params: {
           name: "list_issues",
@@ -189,11 +306,50 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
       null,
       2
     ),
+    responsePayload: JSON.stringify(
+      {
+        jsonrpc: "2.0",
+        id: "rpc-8821",
+        error: {
+          code: -32002,
+          message: "AgentGuard™ Circuit Breaker: Velocity threshold (25 calls / 30s) exceeded.",
+          data: {
+            retry_count: 26,
+            circuit_state: "TRIPPED_OPEN",
+            cooldown_remaining_sec: 59,
+            token_cost_prevented: "$4.18",
+          },
+        },
+      },
+      null,
+      2
+    ),
     decision: "CIRCUIT_BROKEN",
     latency: "0.19ms",
     ruleViolated: "AgentGuard™ Velocity Breaker: 25 calls / 30s threshold exceeded",
     explanation:
       "Agent entered a recursive hallucination retry loop. Sevlex tripped the circuit breaker to prevent token bankruptcy and API throttling.",
+    astAnalysis: {
+      statementType: "VelocityRateLimiter",
+      targetEntity: "github:list_issues (infinite loop)",
+      riskScore: "8.5 / 10.0 [RUNAWAY_PROCESS]",
+      astTreeVisual: `├── CIRCUIT_BREAKER_ENGINE
+│   └── SlidingWindowTracker [30s window]
+│       ├── call_frequency: 26 calls / 21 seconds
+│       ├── error_cascade_detected: true
+│       └── trigger: CIRCUIT_BREAKER_TRIPPED
+└── ACTION: Enforce 60s cooldown, pause agent stdio channel, halt LLM token drain`,
+      enforcementAction: "Circuit breaker tripped in 0.19ms. Halts runaway recursive retry cycle.",
+    },
+    merkleReceipt: {
+      receiptId: "rcpt_merkle_98126",
+      blockIndex: 142396,
+      prevHash: "8f4a19c3b2e7...61a2",
+      entryHash: "3d9e11a4f0b8...99cc",
+      merkleRoot: "4b2e88a1c90f...11dd",
+      actor: "@meetp (Staff Eng)",
+      status: "SEALED (Cryptographically Verified)",
+    },
     slackAlert: {
       channel: "#mcp-security-alerts",
       level: "HIGH",
@@ -208,10 +364,14 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
     badge: "BENIGN TRAFFIC",
     badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
     client: "Claude Code / Cursor",
+    clientBrand: "cursor",
+    server: "postgres_server",
     tool: "postgres_server:execute_query",
+    rpcId: "rpc-1049",
     payload: JSON.stringify(
       {
         jsonrpc: "2.0",
+        id: "rpc-1049",
         method: "tools/call",
         params: {
           name: "execute_query",
@@ -223,11 +383,55 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
       null,
       2
     ),
+    responsePayload: JSON.stringify(
+      {
+        jsonrpc: "2.0",
+        id: "rpc-1049",
+        result: {
+          content: [
+            {
+              type: "text",
+              text: '[{"id": 101, "name": "auth-service", "status": "healthy"}, {"id": 102, "name": "payment-gateway", "status": "healthy"}]',
+            },
+          ],
+          isError: false,
+          _sevlex_meta: {
+            verified_hash: "a1b2c3d4",
+            overhead_ms: 0.12,
+            dlp_scrubbed: 0,
+          },
+        },
+      },
+      null,
+      2
+    ),
     decision: "ALLOWED",
     latency: "0.12ms",
     ruleViolated: "None — Clean SELECT statement passed parameter inspection",
     explanation:
       "Safe read-only operations pass with sub-millisecond wire overhead (<0.15ms). Developer flow experiences zero disruption.",
+    astAnalysis: {
+      statementType: "SelectStatement (Read-Only)",
+      targetEntity: "public.public_catalog",
+      riskScore: "0.0 / 10.0 [BENIGN]",
+      astTreeVisual: `├── AST_ROOT [Stmt]
+│   └── SelectStmt
+│       ├── fields: ["id", "name", "status"]
+│       ├── target: "public_catalog"
+│       ├── limit: 20
+│       └── dlp_scan: PASS (No PII / Credential leak)
+└── ACTION: Forwarded directly over stdio pipe with <0.12ms overhead`,
+      enforcementAction: "Clean SELECT statement verified in 0.12ms. Wire passed with zero friction.",
+    },
+    merkleReceipt: {
+      receiptId: "rcpt_merkle_98127",
+      blockIndex: 142397,
+      prevHash: "3d9e11a4f0b8...99cc",
+      entryHash: "9b1c44e8a20f...33ee",
+      merkleRoot: "7f88a109b4c2...55aa",
+      actor: "@meetp (Staff Eng)",
+      status: "SEALED (Cryptographically Verified)",
+    },
     slackAlert: {
       channel: "#mcp-audit-stream",
       level: "INFO",
@@ -373,6 +577,11 @@ export default function LandingPage() {
 
   const [selectedAgent, setSelectedAgent] = useState<AgentStationId>("cursor");
   const [copiedAgentPrompt, setCopiedAgentPrompt] = useState(false);
+  const [simulatorTab, setSimulatorTab] = useState<"request" | "response" | "ast">("request");
+  const [dispatchTab, setDispatchTab] = useState<"slack" | "merkle">("slack");
+  const [copiedPacket, setCopiedPacket] = useState(false);
+  const [isPingingWire, setIsPingingWire] = useState(false);
+  const [wirePingSuccess, setWirePingSuccess] = useState(false);
 
   const activeAgent = AGENT_STATION_DATA[selectedAgent];
 
@@ -380,6 +589,22 @@ export default function LandingPage() {
     navigator.clipboard.writeText(activeAgent.prompt);
     setCopiedAgentPrompt(true);
     setTimeout(() => setCopiedAgentPrompt(false), 2000);
+  };
+
+  const copyPacket = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedPacket(true);
+    setTimeout(() => setCopiedPacket(false), 2000);
+  };
+
+  const triggerWirePing = () => {
+    setIsPingingWire(true);
+    setWirePingSuccess(false);
+    setTimeout(() => {
+      setIsPingingWire(false);
+      setWirePingSuccess(true);
+      setTimeout(() => setWirePingSuccess(false), 2500);
+    }, 380);
   };
 
   return (
@@ -750,12 +975,28 @@ export default function LandingPage() {
                     <Terminal className="size-3.5 text-[#34D59A]" />
                     wire-inspector ({activeAgent.id})
                   </span>
-                  <span className="text-[#34D59A] text-[10px] font-bold bg-[#34D59A]/10 border border-[#34D59A]/20 px-2 py-0.5 rounded-full">
-                    &lt;0.1ms wire
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={triggerWirePing}
+                      disabled={isPingingWire}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-white/[0.04] border border-[#242628] hover:border-[#34D59A] hover:text-[#34D59A] text-[#C9CBCF] transition cursor-pointer disabled:opacity-50"
+                    >
+                      <RotateCcw className={`size-2.5 ${isPingingWire ? "animate-spin text-[#34D59A]" : ""}`} />
+                      <span>{isPingingWire ? "Pinging..." : "Test Wire"}</span>
+                    </button>
+                    <span className="text-[#34D59A] text-[10px] font-bold bg-[#34D59A]/10 border border-[#34D59A]/20 px-2 py-0.5 rounded-full">
+                      {wirePingSuccess ? "0.08ms ACK" : "<0.1ms wire"}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="space-y-2 py-2">
+                  {wirePingSuccess && (
+                    <div className="p-2 rounded-lg bg-[#34D59A]/10 border border-[#34D59A]/30 flex items-center justify-between text-[10px] text-[#34D59A] animate-pulse">
+                      <span>✔ Live JSON-RPC Round-Trip Intercept</span>
+                      <span className="font-bold">RTT 0.08ms</span>
+                    </div>
+                  )}
                   {activeAgent.logs.slice(0, 5).map((log, idx) => (
                     <div key={idx} className="flex items-start gap-2 text-[11px] leading-relaxed">
                       <span className={`${log.color} font-bold shrink-0 select-none`}>{log.tag}</span>
@@ -812,7 +1053,7 @@ export default function LandingPage() {
                     onClick={() => handleTriggerScenario(key)}
                     className={`h-8 px-3.5 rounded-full text-xs font-medium font-mono transition flex items-center gap-2 cursor-pointer border ${
                       isActive
-                        ? "border-white bg-white text-black font-semibold"
+                        ? "border-white bg-white text-black font-semibold shadow-xs"
                         : "border-[#242628] bg-[#131415] text-[#C9CBCF] hover:border-[#303236] hover:text-white"
                     }`}
                   >
@@ -834,19 +1075,124 @@ export default function LandingPage() {
             </button>
           </div>
 
+          {/* Live Wire Transmission Pipeline (Visual Protocol Flow) */}
+          <div className="px-6 py-4 bg-[#0A0A0C] border-b border-[#242628] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              {/* Node 1: Client Runtime */}
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#131415] border border-[#242628]">
+                <ClientBrandIcon name={scenario.clientBrand} size="xs" className="size-4" />
+                <span className="text-white font-medium">{scenario.client}</span>
+              </div>
+
+              {/* Wire Hop 1 */}
+              <div className="flex items-center gap-1 text-[#61646B]">
+                <span className="text-[10px] text-[#34D59A] animate-pulse">stdio / fd0</span>
+                <span>───▶</span>
+              </div>
+
+              {/* Node 2: Sevlex L7 DPI */}
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#34D59A]/10 border border-[#34D59A]/30 text-[#34D59A]">
+                <ShieldCheck className="size-4 shrink-0" />
+                <span className="font-semibold">Sevlex L7 DPI ({scenario.latency})</span>
+              </div>
+
+              {/* Wire Hop 2 */}
+              <div className="flex items-center gap-1 text-[#61646B]">
+                <span>───▶</span>
+                <span className="text-[10px] text-[#61646B]">pipe / fd1</span>
+              </div>
+
+              {/* Node 3: Target MCP Server */}
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${
+                scenario.decision === "BLOCKED"
+                  ? "bg-red-500/10 border-red-500/30 text-red-400"
+                  : scenario.decision === "CIRCUIT_BROKEN"
+                  ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                  : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+              }`}>
+                <Database className="size-3.5 shrink-0" />
+                <span className="font-medium">{scenario.server}</span>
+              </div>
+            </div>
+
+            {/* Wire Interception State Pill */}
+            <div className="flex items-center gap-2">
+              <span className="text-[#61646B] text-[11px]">Wire State:</span>
+              <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
+                scenario.decision === "BLOCKED"
+                  ? "bg-red-950/40 border-red-500/40 text-red-300 animate-pulse"
+                  : scenario.decision === "CIRCUIT_BROKEN"
+                  ? "bg-amber-950/40 border-amber-500/40 text-amber-300"
+                  : "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
+              }`}>
+                {scenario.decision === "BLOCKED"
+                  ? "⚡ ARRESTED (0 BYTES FORWARDED)"
+                  : scenario.decision === "CIRCUIT_BROKEN"
+                  ? "⚡ CIRCUIT TRIPPED (COOLDOWN)"
+                  : "✔ WIRE PASSTHROUGH (<0.15ms)"}
+              </span>
+            </div>
+          </div>
+
           {/* Simulator Two-Column Body */}
           <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#242628]">
-            {/* Left Column: Intercepted JSON-RPC Wire Traffic (7 cols) */}
+            {/* Left Column: Bidirectional Wire Packet Inspector (7 cols) */}
             <div className="lg:col-span-7 p-6 font-mono space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#242628]">
-                <div className="flex items-center gap-2 text-xs text-[#797D86]">
-                  <Terminal className="size-3.5 text-[#34D59A]" />
-                  <span>Client Ingress:</span>
-                  <span className="text-white font-medium">{scenario.client}</span>
+              {/* Inspector Header & Sub-Tabs */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#242628]">
+                <div className="flex items-center gap-1.5 bg-[#000000] p-1 rounded-full border border-[#242628]">
+                  <button
+                    onClick={() => setSimulatorTab("request")}
+                    className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
+                      simulatorTab === "request"
+                        ? "bg-white text-black font-semibold"
+                        : "text-[#797D86] hover:text-white"
+                    }`}
+                  >
+                    <Braces className="size-3" />
+                    <span>Request (Ingress)</span>
+                  </button>
+                  <button
+                    onClick={() => setSimulatorTab("response")}
+                    className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
+                      simulatorTab === "response"
+                        ? "bg-white text-black font-semibold"
+                        : "text-[#797D86] hover:text-white"
+                    }`}
+                  >
+                    <FileCode className="size-3" />
+                    <span>Response (Egress)</span>
+                  </button>
+                  <button
+                    onClick={() => setSimulatorTab("ast")}
+                    className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
+                      simulatorTab === "ast"
+                        ? "bg-[#34D59A] text-black font-semibold"
+                        : "text-[#797D86] hover:text-white"
+                    }`}
+                  >
+                    <GitBranch className="size-3" />
+                    <span>AST Syntax Guard</span>
+                  </button>
                 </div>
+
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-[#61646B]">Overhead:</span>
-                  <span className="text-[#34D59A] font-bold text-xs">{scenario.latency}</span>
+                  <span className="text-[11px] text-[#61646B] font-mono">RPC: {scenario.rpcId}</span>
+                  <button
+                    onClick={() =>
+                      copyPacket(
+                        simulatorTab === "request"
+                          ? scenario.payload
+                          : simulatorTab === "response"
+                          ? scenario.responsePayload
+                          : scenario.astAnalysis.astTreeVisual
+                      )
+                    }
+                    className="p-1.5 rounded-full text-[#797D86] hover:text-white hover:bg-white/[0.08] transition cursor-pointer"
+                    title="Copy active payload"
+                  >
+                    {copiedPacket ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
+                  </button>
                 </div>
               </div>
 
@@ -867,16 +1213,16 @@ export default function LandingPage() {
                 ) : (
                   <ShieldCheck className="size-5 text-[#34D59A] shrink-0 mt-0.5" />
                 )}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-bold text-xs truncate">
                       {scenario.decision === "BLOCKED"
                         ? "ARRESTED AT LAYER 7 (ZERO DOWNSTREAM LEAK)"
                         : scenario.decision === "CIRCUIT_BROKEN"
                         ? "CIRCUIT BREAKER ENGAGED (RATE LIMITED)"
                         : "PASSED PARAMETER INSPECTION (EXECUTION PERMITTED)"}
                     </span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/40 font-mono">
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/40 font-mono text-[#34D59A] shrink-0">
                       {scenario.latency}
                     </span>
                   </div>
@@ -884,87 +1230,203 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Raw JSON-RPC Code Frame */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] text-[#797D86]">
-                  <span>Intercepted stdio Wire Packet (tools/call):</span>
-                  <span className="text-[#34D59A]">{scenario.tool}</span>
+              {/* Tab 1: Request Ingress View */}
+              {simulatorTab === "request" && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] text-[#797D86]">
+                    <span>stdio Ingress Wire Packet (tools/call):</span>
+                    <span className="text-[#34D59A] font-semibold">{scenario.tool}</span>
+                  </div>
+                  <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner max-h-[320px]">
+                    <code>{scenario.payload}</code>
+                  </pre>
                 </div>
-                <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner">
-                  <code>{scenario.payload}</code>
-                </pre>
-              </div>
+              )}
+
+              {/* Tab 2: Response Egress View */}
+              {simulatorTab === "response" && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] text-[#797D86]">
+                    <span>Synthesized Stdio Wire Egress (to Client):</span>
+                    <span className={scenario.decision === "BLOCKED" ? "text-red-400 font-semibold" : "text-[#34D59A] font-semibold"}>
+                      {scenario.decision === "BLOCKED" ? "JSON-RPC Error -32600" : "JSON-RPC Result 200"}
+                    </span>
+                  </div>
+                  <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner max-h-[320px]">
+                    <code>{scenario.responsePayload}</code>
+                  </pre>
+                </div>
+              )}
+
+              {/* Tab 3: AST Deep Packet Inspection View */}
+              {simulatorTab === "ast" && (
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="p-3 rounded-xl bg-[#141416] border border-[#242628]">
+                      <span className="text-[#61646B] block text-[10px] uppercase">AST Node Type:</span>
+                      <span className="text-white font-medium">{scenario.astAnalysis.statementType}</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-[#141416] border border-[#242628]">
+                      <span className="text-[#61646B] block text-[10px] uppercase">Threat Class:</span>
+                      <span className={`font-medium ${
+                        scenario.decision === "BLOCKED" ? "text-red-400" : scenario.decision === "CIRCUIT_BROKEN" ? "text-amber-400" : "text-[#34D59A]"
+                      }`}>
+                        {scenario.astAnalysis.riskScore}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-[11px] text-[#797D86]">
+                      <span>In-Flight AST Syntax Parsing Graph:</span>
+                      <span className="text-[#34D59A]">Deep Packet Inspection</span>
+                    </div>
+                    <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#34D59A] overflow-x-auto leading-relaxed shadow-inner font-mono max-h-[220px]">
+                      <code>{scenario.astAnalysis.astTreeVisual}</code>
+                    </pre>
+                  </div>
+                </div>
+              )}
 
               <p className="text-xs text-[#797D86] leading-relaxed font-sans">
                 {scenario.explanation}
               </p>
             </div>
 
-            {/* Right Column: Simulated Live Slack SecOps Dispatch (5 cols) */}
+            {/* Right Column: SecOps Alert & Merkle Audit Ledger (5 cols) */}
             <div className="lg:col-span-5 p-6 bg-[#0C0D0E] flex flex-col justify-between space-y-6">
               <div>
+                {/* Right Column Sub-Tabs */}
                 <div className="flex items-center justify-between pb-3 border-b border-[#242628] mb-4">
-                  <div className="flex items-center gap-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/slack.svg"
-                      alt="Slack"
-                      className="size-3.5 invert opacity-80"
-                    />
-                    <span className="text-xs font-medium text-white font-mono">
-                      {scenario.slackAlert.channel}
-                    </span>
+                  <div className="flex items-center gap-1.5 bg-[#000000] p-1 rounded-full border border-[#242628]">
+                    <button
+                      onClick={() => setDispatchTab("slack")}
+                      className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
+                        dispatchTab === "slack"
+                          ? "bg-white text-black font-semibold"
+                          : "text-[#797D86] hover:text-white"
+                      }`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/slack.svg"
+                        alt="Slack"
+                        className={`size-3 invert ${dispatchTab === "slack" ? "invert-0" : "opacity-80"}`}
+                      />
+                      <span>Slack SecOps</span>
+                    </button>
+                    <button
+                      onClick={() => setDispatchTab("merkle")}
+                      className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
+                        dispatchTab === "merkle"
+                          ? "bg-[#34D59A] text-black font-semibold"
+                          : "text-[#797D86] hover:text-white"
+                      }`}
+                    >
+                      <Hash className="size-3" />
+                      <span>SOC 2 Merkle WAL</span>
+                    </button>
                   </div>
-                  <span className="text-[10px] font-mono text-[#61646B]">Live Webhook Relay</span>
+
+                  <span className="text-[10px] font-mono text-[#61646B]">
+                    {dispatchTab === "slack" ? "Live Webhook" : "SQLite WAL Mode"}
+                  </span>
                 </div>
 
-                {/* Slack Message Card */}
-                <div className="rounded-2xl border border-[#242628] bg-[#131415] p-4 text-xs font-sans shadow-lg relative">
-                  <div className="flex items-start gap-3">
-                    <div className="size-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
-                      <Shield className="size-4 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-white text-xs">Sevlex Security Bot</span>
-                        <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">
-                          APP
-                        </span>
-                        <span className="text-[11px] text-[#61646B] ml-auto">Just now</span>
+                {/* Dispatch Tab 1: Slack Webhook Relay */}
+                {dispatchTab === "slack" && (
+                  <div className="rounded-2xl border border-[#242628] bg-[#131415] p-4 text-xs font-sans shadow-lg relative">
+                    <div className="flex items-start gap-3">
+                      <div className="size-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+                        <Shield className="size-4 text-white" />
                       </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-white text-xs">Sevlex Security Bot</span>
+                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">
+                            APP
+                          </span>
+                          <span className="text-[11px] text-[#61646B] ml-auto">Just now</span>
+                        </div>
 
-                      <div className="mt-2.5 p-3 rounded-xl bg-[#000000] border border-[#242628] space-y-2">
-                        <p className="font-medium text-white text-xs leading-snug">
-                          {scenario.slackAlert.title}
-                        </p>
-                        <p className="text-[#94979E] text-[11px] leading-relaxed">
-                          {scenario.slackAlert.details}
-                        </p>
+                        <div className="mt-2.5 p-3 rounded-xl bg-[#000000] border border-[#242628] space-y-2">
+                          <p className="font-medium text-white text-xs leading-snug">
+                            {scenario.slackAlert.title}
+                          </p>
+                          <p className="text-[#94979E] text-[11px] leading-relaxed">
+                            {scenario.slackAlert.details}
+                          </p>
 
-                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#242628] text-[10px] font-mono text-[#797D86]">
-                          <div>
-                            <span className="text-[#61646B] block">User:</span>
-                            <span className="text-blue-400 font-medium">@meetp (Staff Eng)</span>
-                          </div>
-                          <div>
-                            <span className="text-[#61646B] block">Host Daemon:</span>
-                            <span className="text-[#34D59A] font-medium">macbook-m3-corp</span>
+                          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#242628] text-[10px] font-mono text-[#797D86]">
+                            <div>
+                              <span className="text-[#61646B] block">User:</span>
+                              <span className="text-blue-400 font-medium">@meetp (Staff Eng)</span>
+                            </div>
+                            <div>
+                              <span className="text-[#61646B] block">Host Daemon:</span>
+                              <span className="text-[#34D59A] font-medium">macbook-m3-corp</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Slack Action Buttons */}
-                      <div className="mt-3 flex items-center gap-2">
-                        <button className="h-7 px-3 rounded-full bg-red-600 hover:bg-red-500 text-white font-medium text-[11px] transition">
-                          Quarantine Agent Session
-                        </button>
-                        <button className="h-7 px-3 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-[#C9CBCF] font-medium text-[11px] transition border border-[#242628]">
-                          Open Ticket #8914
-                        </button>
+                        {/* Slack Action Buttons */}
+                        <div className="mt-3 flex items-center gap-2">
+                          <button className="h-7 px-3 rounded-full bg-red-600 hover:bg-red-500 text-white font-medium text-[11px] transition">
+                            Quarantine Agent Session
+                          </button>
+                          <button className="h-7 px-3 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-[#C9CBCF] font-medium text-[11px] transition border border-[#242628]">
+                            Open Ticket #8914
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
+
+                {/* Dispatch Tab 2: Cryptographic Merkle WAL Ledger */}
+                {dispatchTab === "merkle" && (
+                  <div className="rounded-2xl border border-[#242628] bg-[#131415] p-4 text-xs font-mono shadow-lg space-y-3">
+                    <div className="flex items-center justify-between pb-2 border-b border-[#242628]">
+                      <span className="text-white font-medium flex items-center gap-2">
+                        <FileCheck2 className="size-4 text-[#34D59A]" />
+                        <span>Merkle Receipt #{scenario.merkleReceipt.blockIndex}</span>
+                      </span>
+                      <span className="text-[10px] text-[#34D59A] bg-[#34D59A]/10 border border-[#34D59A]/30 px-2 py-0.5 rounded-full font-bold">
+                        NON-REPUDIATION VERIFIED
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 text-[11px]">
+                      <div>
+                        <span className="text-[#61646B] block text-[10px] uppercase">Receipt ID:</span>
+                        <code className="text-[#C9CBCF]">{scenario.merkleReceipt.receiptId}</code>
+                      </div>
+                      <div>
+                        <span className="text-[#61646B] block text-[10px] uppercase">Previous Block Hash (H_prev):</span>
+                        <code className="text-[#797D86] text-[10px] truncate block">{scenario.merkleReceipt.prevHash}</code>
+                      </div>
+                      <div>
+                        <span className="text-[#61646B] block text-[10px] uppercase">SHA-256 Entry Hash:</span>
+                        <code className="text-[#34D59A] text-[10px] truncate block">{scenario.merkleReceipt.entryHash}</code>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#242628]">
+                        <div>
+                          <span className="text-[#61646B] block text-[10px] uppercase">Actor Identity:</span>
+                          <span className="text-white">{scenario.merkleReceipt.actor}</span>
+                        </div>
+                        <div>
+                          <span className="text-[#61646B] block text-[10px] uppercase">Audit Ledger:</span>
+                          <span className="text-[#34D59A]">SQLite WAL (local)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-[#000000] border border-[#242628] text-[10px] text-[#797D86]">
+                      <span>Chain Integrity: </span>
+                      <span className="text-white">SHA256(H_prev || payload) == {scenario.merkleReceipt.entryHash.slice(0, 16)}...</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Bottom Guarantee */}
