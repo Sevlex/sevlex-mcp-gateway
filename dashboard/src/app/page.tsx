@@ -708,42 +708,12 @@ export default function LandingPage() {
             Zero configuration, sub-0.5ms parameter deep packet inspection, and cryptographic audit proofs.
           </p>
 
-          {/* Interactive Quickstart Command Bar & CTAs */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            {/* Demo command snippet pill */}
-            <div className="inline-flex items-center gap-3 bg-[#131415] border border-[#34D59A]/30 rounded-full px-5 py-2.5 shadow-xl">
-              <span className="text-[#61646B] font-mono text-xs select-none">$</span>
-              <code className="text-xs font-mono text-[#34D59A] font-medium tracking-wide">
-                npx sevlex demo
-              </code>
-              <button
-                onClick={copyDemo}
-                className="p-1 rounded-full text-[#797D86] hover:text-white hover:bg-white/[0.08] transition cursor-pointer"
-                title="Copy demo command"
-              >
-                {copiedDemo ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
-              </button>
-            </div>
-
-            {/* Init command snippet pill */}
-            <div className="inline-flex items-center gap-3 bg-[#131415] border border-[#242628] rounded-full px-5 py-2.5 shadow-xl">
-              <span className="text-[#61646B] font-mono text-xs select-none">$</span>
-              <code className="text-xs font-mono text-[#C9CBCF] font-medium tracking-wide">
-                npx sevlex init
-              </code>
-              <button
-                onClick={copyInstall}
-                className="p-1 rounded-full text-[#797D86] hover:text-white hover:bg-white/[0.08] transition cursor-pointer"
-                title="Copy init command"
-              >
-                {copied ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
-              </button>
-            </div>
-
+          {/* Primary Action CTAs - Clean 2-Button Architecture */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3.5">
             {/* Primary Console Pill */}
             <a
               href="/console"
-              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-sm gap-2"
+              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-sm gap-2 shadow-lg shadow-white/5"
             >
               <span>Launch SecOps Console</span>
               <ArrowRight className="size-4" />
