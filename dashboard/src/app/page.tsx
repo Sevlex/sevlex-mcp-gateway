@@ -616,33 +616,12 @@ export default function LandingPage() {
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(52,213,154,0.08),transparent_70%)] pointer-events-none" />
 
       {/* ========================================================================= */}
-      {/* 1. TOP ANNOUNCEMENT RIBBON (Exact Neon Structure)                        */}
-      {/* ========================================================================= */}
-      <aside className="group relative z-50 flex h-9 w-full items-center justify-center border-b border-[#242628] bg-[#0C0D0E] px-4 text-xs font-medium text-[#C9CBCF] transition-colors hover:text-white">
-        <a
-          href="https://github.com/Sevlex/sevlex-mcp-gateway"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-2"
-        >
-          <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse" />
-          <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[#34D59A]">
-            Sevlex v1.0.5 Live
-          </span>
-          <span className="text-[#494B50] hidden sm:inline">•</span>
-          <span className="hidden sm:inline">Zero-Trust Layer 7 MCP Firewall for Cursor, Claude Desktop & Coding Agents</span>
-          <span className="sm:hidden">Zero-Trust Layer 7 MCP Firewall</span>
-          <ChevronRight className="ml-1 size-3.5 text-[#797D86] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-white" />
-        </a>
-      </aside>
-
-      {/* ========================================================================= */}
-      {/* 2. NAVIGATION HEADER                                                     */}
+      {/* NAVIGATION HEADER                                                         */}
       {/* ========================================================================= */}
       <nav className="sticky top-0 z-40 bg-[#000000]/85 backdrop-blur-md border-b border-[#242628]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          {/* Brand Logo & Version Pill */}
-          <div className="flex items-center gap-3">
+          {/* Brand Logo */}
+          <div className="flex items-center">
             <a href="/" className="flex items-center gap-2 group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -651,27 +630,18 @@ export default function LandingPage() {
                 className="h-7 w-auto object-contain transition-all duration-200 group-hover:brightness-110"
               />
             </a>
-            <span className="font-mono text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full bg-[#18191B] border border-[#242628] text-[#34D59A] font-semibold">
-              v1.0.5
-            </span>
           </div>
 
-          {/* Desktop Nav Items */}
-          <div className="hidden lg:flex items-center gap-7 text-xs font-medium text-[#94979E]">
-            <a href="#agents" className="hover:text-white transition-colors flex items-center gap-1.5 text-white font-medium">
-              <Sparkles className="size-3 text-[#34D59A]" /> Built for Agents
+          {/* Desktop Nav Items - Clean & Single-Product Focused */}
+          <div className="hidden md:flex items-center gap-8 text-xs font-medium text-[#94979E]">
+            <a href="#features" className="hover:text-white transition-colors">
+              Features
             </a>
             <a href="#simulator" className="hover:text-white transition-colors">
-              Exploit Simulator
-            </a>
-            <a href="#features" className="hover:text-white transition-colors">
-              Security Engines
+              Live Demo
             </a>
             <a href="#docs" className="hover:text-white transition-colors">
               Documentation
-            </a>
-            <a href="#compliance" className="hover:text-white transition-colors">
-              SOC 2 Merkle
             </a>
           </div>
 
