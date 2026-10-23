@@ -30,6 +30,7 @@ import {
   AlertTriangle,
   Play,
   RotateCcw,
+  Bot,
 } from "lucide-react";
 
 // Interactive Spotlight Card with mouse-following radial gradient
@@ -265,6 +266,15 @@ export default function LandingPage() {
     setTimeout(() => setCopiedDemo(false), 2000);
   };
 
+  const [copiedAgentPrompt, setCopiedAgentPrompt] = useState(false);
+  const copyAgentPrompt = () => {
+    navigator.clipboard.writeText(
+      "Install and verify Sevlex Layer 7 Zero-Trust MCP Firewall. Run 'npx sevlex init' to automatically discover and wrap my MCP servers in Cursor, Claude Desktop, and Windsurf, then run 'npx sevlex demo' to verify sub-3ms AST parameter interception."
+    );
+    setCopiedAgentPrompt(true);
+    setTimeout(() => setCopiedAgentPrompt(false), 2000);
+  };
+
   return (
     <main className="min-h-screen bg-[#08080C] text-zinc-100 font-sans selection:bg-blue-600/30 selection:text-blue-200 overflow-x-hidden">
       {/* Ambient background glows */}
@@ -398,6 +408,80 @@ export default function LandingPage() {
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               </span>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* AI AGENT-FRIENDLY SETUP (1-Click Prompt for Claude Code, Cursor, Windsurf) */}
+      {/* ========================================================================= */}
+      <section className="py-8 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-blue-500/25 bg-gradient-to-b from-blue-950/20 via-[#0E0D17] to-[#0A0910] p-6 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-md">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-white/[0.08]">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
+                <Bot className="w-3.5 h-3.5" /> 100% AI Agent-Native Setup
+              </div>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                Using Claude Code, Cursor, or Windsurf?
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
+                Don&apos;t run manual shell commands yourself. Paste this prompt directly into your AI coding assistant. Sevlex uses non-destructive backups (<code className="text-blue-400 font-mono">*.sevlex.bak</code>) and non-interactive machine execution.
+              </p>
+            </div>
+
+            <a
+              href="/llms.txt"
+              target="_blank"
+              className="px-3.5 py-1.5 rounded-xl border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-xs font-mono text-zinc-300 transition flex items-center gap-1.5 shrink-0"
+            >
+              <span>llms.txt Manifest</span>
+              <ExternalLink size={12} className="text-blue-400" />
+            </a>
+          </div>
+
+          {/* Prompt Card with 1-Click Copy */}
+          <div className="mt-5 space-y-3">
+            <div className="flex items-center justify-between text-xs text-zinc-400">
+              <span className="font-semibold text-white flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-blue-400" /> Copy &amp; Paste into your AI Agent:
+              </span>
+              <span className="text-[11px] font-mono text-zinc-500">Universal Prompt for Cursor / Claude / Windsurf</span>
+            </div>
+
+            <div className="relative group bg-[#060609] border border-white/[0.12] rounded-2xl p-4 text-xs font-mono text-zinc-200 leading-relaxed shadow-inner">
+              <code className="block pr-28 text-[11px] sm:text-xs text-blue-300">
+                Install and verify Sevlex Layer 7 Zero-Trust MCP Firewall. Run &apos;npx sevlex init&apos; to automatically discover and wrap my MCP servers in Cursor, Claude Desktop, and Windsurf, then run &apos;npx sevlex demo&apos; to verify sub-3ms AST parameter interception.
+              </code>
+
+              <button
+                onClick={copyAgentPrompt}
+                className="absolute right-3 top-3 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-semibold flex items-center gap-1.5 transition shadow-lg shadow-blue-600/25 cursor-pointer"
+              >
+                {copiedAgentPrompt ? <Check size={13} className="text-emerald-300" /> : <Copy size={13} />}
+                {copiedAgentPrompt ? "Copied Prompt!" : "Copy Prompt"}
+              </button>
+            </div>
+
+            {/* 4 Agent Guarantees Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-[11px] text-zinc-400 font-mono">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                <span>Non-Interactive (-y)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                <span>Safe Backup (*.bak)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                <span>1-Command Restore</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                <span>--json Output Mode</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

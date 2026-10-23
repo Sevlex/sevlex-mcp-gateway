@@ -125,11 +125,7 @@ async function main() {
 }
 
 function runInit() {
-  console.log("\n=================================================================");
-  console.log("  SEVLEX ZERO-TRUST DEVELOPER ONBOARDING (npx sevlex init)       ");
-  console.log("  Auto-detecting and shielding Cursor, Claude Desktop, Windsurf  ");
-  console.log("=================================================================\n");
-
+  const isJson = args.includes("--json");
   const userConfig = getUserConfig();
   const clients = getAllMonitoredClients();
   let totalServers = 0;
@@ -148,10 +144,30 @@ function runInit() {
       Status: result.status === "INJECTED" ? "✔ SHIELDED (Injected)" : result.status === "ALREADY_SHIELDED" ? "● SHIELDED" : result.status,
       "Protected MCP Servers": result.wrappedServers.length > 0 ? result.wrappedServers.join(", ") : result.status === "ALREADY_SHIELDED" ? "Active" : "None",
       "Config Detected": result.status !== "NOT_FOUND" ? "YES" : "NO",
+      configPath: client.configPath,
+      rawStatus: result.status,
     });
   }
 
-  console.table(tableData);
+  if (isJson) {
+    console.log(JSON.stringify({
+      success: true,
+      clientsFound,
+      totalServers,
+      clients: tableData,
+      backupPattern: "*.sevlex.bak",
+      cloudConnected: !!(userConfig.apiKey && userConfig.orgName),
+      endpoint: userConfig.endpoint || DEFAULT_ENDPOINT
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log("\n=================================================================");
+  console.log("  SEVLEX ZERO-TRUST DEVELOPER ONBOARDING (npx sevlex init)       ");
+  console.log("  Auto-detecting and shielding Cursor, Claude Desktop, Windsurf  ");
+  console.log("=================================================================\n");
+
+  console.table(tableData.map(({ Client, Status, "Protected MCP Servers": p, "Config Detected": c }) => ({ Client, Status, "Protected MCP Servers": p, "Config Detected": c })));
 
   console.log(`\n[Sevlex Init] Summary:`);
   console.log(`  ● Detected AI Runtimes:  ${clientsFound} installed`);
@@ -320,6 +336,53 @@ function runStatus() {
       blockedCount = p.policy?.blockedTools?.length ?? 0;
       hitlCount = p.policy?.approvalRequiredTools?.length ?? 0;
     } catch {}
+  }
+
+  if (args.includes("--json")) {
+    const clients = getAllMonitoredClients().map((c) => {
+      let isInstalled = fs.existsSync(c.configPath);
+      let serverCount = 0;
+      let wrappedCount = 0;
+      if (isInstalled) {
+        try {
+          const raw = fs.readFileSync(c.configPath, "utf-8");
+          const data = JSON.parse(raw);
+          const serverKeys = Object.keys(data.mcpServers || {});
+          serverCount = serverKeys.length;
+          wrappedCount = serverKeys.filter((k) => {
+            const s = data.mcpServers[k];
+            return s?._sevlex_injected || (Array.isArray(s?.args) && s.args.some((a: string) => typeof a === "string" && (a.includes("gateway.js") || a.includes("gateway.ts"))));
+          }).length;
+        } catch {}
+      }
+      return {
+        name: c.name,
+        configPath: c.configPath,
+        installed: isInstalled,
+        serverCount,
+        wrappedCount,
+        shielded: isInstalled && (serverCount === 0 || wrappedCount === serverCount)
+      };
+    });
+
+    console.log(JSON.stringify({
+      success: true,
+      hostname: os.hostname(),
+      platform: process.platform,
+      arch: process.arch,
+      nodeVersion: process.version,
+      effectivePolicyPath,
+      blockedCount,
+      hitlCount,
+      cloud: userConfig.apiKey ? {
+        connected: true,
+        orgName: userConfig.orgName,
+        endpoint: userConfig.endpoint,
+        lastSyncedAt: userConfig.lastSyncedAt
+      } : { connected: false },
+      clients
+    }, null, 2));
+    process.exit(0);
   }
 
   console.log("\n=================================================================");

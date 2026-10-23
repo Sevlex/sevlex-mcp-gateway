@@ -1,0 +1,103 @@
+# Sevlex
+
+> The Layer 7 Zero-Trust Security Firewall for AI Agents and the Model Context Protocol (MCP).
+
+Sevlex transparently wraps JSON-RPC stdio and SSE traffic between AI runtimes (Cursor, Claude Desktop, Claude Code, Windsurf, Google Antigravity) and downstream MCP servers (PostgreSQL, Filesystem, GitHub, AWS, Slack). It enforces sub-millisecond AST parameter deep packet inspection (DPI), in-flight credential redaction (DLP), runaway hallucination loop breakers, and cryptographic SOC 2 audit non-repudiation.
+
+## Instructions for AI Agents (Claude Code, Cursor, Windsurf, Devin)
+
+When a human asks you to protect, secure, or configure Sevlex for their MCP servers, execute the following steps in order:
+
+### 1. Auto-Shield All Local MCP Clients
+Run the automated discovery and injection CLI:
+```bash
+npx sevlex init
+```
+For machine-readable JSON output, pass `--json`:
+```bash
+npx sevlex init --json
+```
+This command automatically:
+- Scans the host for Claude Desktop, Cursor IDE, Windsurf, and Antigravity.
+- Safely wraps all downstream server commands (`tools/call`) with the Sevlex Layer 7 proxy.
+- Backs up existing configs with a `.sevlex.bak` suffix (zero risk of corruption).
+
+### 2. Verify Zero-Trust Interception
+Run the self-contained security test:
+```bash
+npx sevlex demo
+```
+This verifies that:
+- Clean `SELECT` queries pass with `<0.2ms` wire latency.
+- Destructive `DROP TABLE` SQL injections are arrested in `<3ms`.
+- Secret credential exfiltration (`cat .env` / `id_rsa`) is blocked with zero data leaked.
+
+### 3. Check Protection Status
+```bash
+npx sevlex status
+```
+
+### 4. Optional: Link to Central Team SecOps Console
+If the user provides a Sevlex API Key (`slx_live_...`):
+```bash
+npx sevlex login slx_live_your_key_here
+```
+
+## Standard MCP Client Configuration Locations
+
+- **Claude Desktop:**
+  - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+  - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- **Cursor IDE:**
+  - macOS / Linux: `~/.cursor/mcp.json`
+  - Windows: `%USERPROFILE%\.cursor\mcp.json`
+- **Windsurf IDE:**
+  - `~/.codeium/windsurf/mcp_config.json`
+- **Google Antigravity:**
+  - `~/.gemini/antigravity/mcp_config.json`
+
+## Configuration Wrapping Mechanics
+
+Sevlex transparently prepends itself to the stdio process:
+
+### Before Injection:
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/db"]
+    }
+  }
+}
+```
+
+### After Injection:
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "sevlex", "proxy", "npx", "-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost/db"]
+    }
+  }
+}
+```
+
+To unhook and revert all files to their pristine state:
+```bash
+npx sevlex restore
+```
+
+## Mathematical Audit Non-Repudiation (SOC 2)
+Sevlex writes all tool receipts into SQLite WAL mode, linking every entry to its predecessor via SHA-256 Merkle chain:
+```bash
+npx sevlex verify
+```
+
+## Official Reference Links
+- Documentation & LLM Guide: https://sevlex.com/llms.txt
+- Official Landing Page: https://sevlex.com
+- SecOps Console: https://app.sevlex.com
+- GitHub: https://github.com/Sevlex/sevlex-mcp-gateway
+- npm package: https://www.npmjs.com/package/sevlex
