@@ -589,228 +589,195 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. READY FOR CODING AGENTS (Neon-Grade Bento Section)                     */}
+      {/* 4. READY FOR CODING AGENTS (Neon High-Craft Architecture)                 */}
       {/* ========================================================================= */}
-      <section id="agents" className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
-        {/* Section Header */}
-        <header className="min-w-0 mb-12">
-          <h2 className="text-3xl sm:text-5xl font-normal tracking-tight text-pretty text-[#797D86] max-w-4xl">
-            <span className="text-white font-medium">Ready for coding agents.</span> Intercept and secure MCP tools the way you inspect network packets, with full access via CLI, SDK, and 1-click prompts.
-          </h2>
-        </header>
-
-        {/* 3 Bento Feature Highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="flex flex-col gap-2.5 p-6 rounded-2xl bg-[#0E0E12] border border-[#242628] transition-colors hover:border-[#303236]">
-            <div className="size-8 rounded-full bg-[#34D59A]/10 border border-[#34D59A]/20 flex items-center justify-center text-[#34D59A] mb-1">
-              <Zap className="size-4" />
+      <section id="agents" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+        {/* Editorial Section Header & Watermark */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-xs font-mono font-medium uppercase tracking-widest text-[#34D59A] mb-4">
+              <svg width="10" height="12" viewBox="0 0 10 12" fill="none" className="shrink-0 text-[#34D59A]">
+                <path d="M10 6L1 11.1962V0.803848L10 6Z" fill="currentColor" />
+              </svg>
+              <span>OPERATE IT WITH AGENTS</span>
             </div>
-            <h3 className="text-base font-medium tracking-tight text-white">Instant Intercept</h3>
-            <p className="text-sm font-normal text-[#797D86] leading-relaxed">
-              Infrastructure that responds instantly. Injects into stdio in &lt;0.1ms without proxy daemons, background docker containers, or iptables routing.
+            <h2 className="text-3xl sm:text-5xl font-normal tracking-tight text-white leading-[1.12]">
+              Ready for coding agents.{" "}
+              <span className="text-[#797D86]">
+                Intercept and quarantine MCP tools the way you inspect network packets, with zero configuration.
+              </span>
+            </h2>
+          </div>
+          <div className="hidden lg:block font-mono text-7xl font-light text-[#18191B] select-none tracking-tighter">
+            01
+          </div>
+        </div>
+
+        {/* 3 Editorial Value Propositions (Unboxed, typographic, zero slop) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-14 border-b border-[#242628]">
+          <div className="space-y-2">
+            <div className="font-mono text-xs text-[#34D59A] font-semibold uppercase tracking-wider">
+              01 / In-Flight Intercept
+            </div>
+            <h3 className="text-base font-medium text-white tracking-tight">Instant Operations</h3>
+            <p className="text-sm text-[#797D86] leading-relaxed">
+              Transparent stdio &amp; SSE transport wrapping with &lt;0.1ms overhead. Agents don&apos;t wait for proxy daemons or container spinups.
             </p>
           </div>
-
-          <div className="flex flex-col gap-2.5 p-6 rounded-2xl bg-[#0E0E12] border border-[#242628] transition-colors hover:border-[#303236]">
-            <div className="size-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-1">
-              <ShieldCheck className="size-4" />
+          <div className="space-y-2">
+            <div className="font-mono text-xs text-blue-400 font-semibold uppercase tracking-wider">
+              02 / Deep Packet Inspection
             </div>
-            <h3 className="text-base font-medium tracking-tight text-white">AST Parameter Guard</h3>
-            <p className="text-sm font-normal text-[#797D86] leading-relaxed">
-              Deep packet inspection parses SQL ASTs and shell parameters in-flight. Destructive operations (<code className="text-red-400 font-mono text-xs">DROP TABLE</code>, <code className="text-red-400 font-mono text-xs">rm -rf</code>) are arrested before reaching the downstream server.
+            <h3 className="text-base font-medium text-white tracking-tight">AST Parameter Guard</h3>
+            <p className="text-sm text-[#797D86] leading-relaxed">
+              In-flight parsing blocks destructive SQL (<code className="text-red-400 font-mono text-xs">DROP TABLE</code>), shell injections, and credential paths before transmission.
             </p>
           </div>
-
-          <div className="flex flex-col gap-2.5 p-6 rounded-2xl bg-[#0E0E12] border border-[#242628] transition-colors hover:border-[#303236]">
-            <div className="size-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-1">
-              <RotateCcw className="size-4" />
+          <div className="space-y-2">
+            <div className="font-mono text-xs text-purple-400 font-semibold uppercase tracking-wider">
+              03 / Autonomous Safety
             </div>
-            <h3 className="text-base font-medium tracking-tight text-white">Safe Automation & Rollback</h3>
-            <p className="text-sm font-normal text-[#797D86] leading-relaxed">
-              Fast development requires fast recovery. Every configuration change automatically saves a 100% reversible <code className="text-[#34D59A] font-mono text-xs">*.sevlex.bak</code> backup snapshot.
+            <h3 className="text-base font-medium text-white tracking-tight">Safe Rollback &amp; Circuit Breakers</h3>
+            <p className="text-sm text-[#797D86] leading-relaxed">
+              Every agent modification automatically preserves a 100% reversible <code className="text-[#34D59A] font-mono text-xs">*.sevlex.bak</code> backup snapshot with velocity breakers.
             </p>
           </div>
         </div>
 
-        {/* 1-Click Interactive Agent Station Container */}
-        <div className="rounded-3xl border border-[#242628] bg-[#0C0D0E] p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-          {/* Header Row */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[#242628]">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-[#34D59A] border border-[#242628] mb-2">
-                <Bot className="size-3.5" /> 1-Click Machine Setup
-              </div>
-              <h3 className="text-xl sm:text-2xl font-medium text-white tracking-tight">
-                Set Up with Your AI Agent in 1 Click
-              </h3>
-              <p className="text-xs sm:text-sm text-[#797D86] mt-1 max-w-2xl leading-relaxed">
-                Don&apos;t configure JSON files manually. Select your coding assistant, copy the prompt, and paste it into your agent chat. Sevlex executes non-interactively with safe backups.
-              </p>
+        {/* The Unified Agent Command Center (A single, sleek developer workbench) */}
+        <div className="mt-12 rounded-2xl border border-[#242628] bg-[#0A0A0C] overflow-hidden shadow-2xl">
+          {/* Top Bar: Minimal Client Switcher + llms.txt */}
+          <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b border-[#242628] bg-[#0E0E12]">
+            <div className="flex items-center gap-1.5">
+              {(Object.keys(AGENT_STATION_DATA) as AgentStationId[]).map((key) => {
+                const item = AGENT_STATION_DATA[key];
+                const isSelected = selectedAgent === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setSelectedAgent(key)}
+                    className={`h-8 px-3.5 rounded-full text-xs font-medium transition-all flex items-center gap-2 cursor-pointer ${
+                      isSelected
+                        ? "bg-white text-black font-semibold shadow-xs"
+                        : "text-[#797D86] hover:text-white hover:bg-white/[0.04]"
+                    }`}
+                  >
+                    {item.iconSrc ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.iconSrc} alt={item.name} className="size-3.5 object-contain" />
+                    ) : (
+                      <Bot className="size-3.5 text-[#34D59A]" />
+                    )}
+                    <span>{item.name}</span>
+                  </button>
+                );
+              })}
             </div>
 
             <a
               href="/llms.txt"
               target="_blank"
-              className="h-9 px-4 rounded-full border border-[#242628] bg-[#131415] hover:bg-[#18191B] text-xs font-mono text-[#AFB1B6] hover:text-white transition flex items-center gap-2 shrink-0"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-[#797D86] hover:text-white transition px-3 py-1"
             >
-              <span>llms.txt Machine Manifest</span>
-              <ExternalLink size={12} className="text-[#797D86]" />
+              <span>llms.txt Machine Spec</span>
+              <ExternalLink size={12} className="text-[#61646B]" />
             </a>
           </div>
 
-          {/* Agent Selector Tab Pills */}
-          <div className="mt-6 flex flex-wrap items-center gap-2 pb-2">
-            {(Object.keys(AGENT_STATION_DATA) as AgentStationId[]).map((key) => {
-              const item = AGENT_STATION_DATA[key];
-              const isSelected = selectedAgent === key;
-              return (
-                <button
-                  key={key}
-                  onClick={() => setSelectedAgent(key)}
-                  className={`h-9 px-4 rounded-full text-xs font-medium transition flex items-center gap-2.5 cursor-pointer border ${
-                    isSelected
-                      ? "border-white bg-white text-black"
-                      : "border-[#242628] bg-[#131415] text-[#94979E] hover:text-white hover:border-[#303236]"
-                  }`}
-                >
-                  {item.iconSrc ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.iconSrc} alt={item.name} className="size-3.5 object-contain" />
-                  ) : (
-                    <Bot className="size-3.5 text-[#34D59A]" />
-                  )}
-                  <span>{item.name}</span>
-                  <span
-                    className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                      isSelected
-                        ? "bg-black/10 text-black font-semibold"
-                        : "bg-white/[0.05] text-[#61646B]"
-                    }`}
-                  >
-                    {item.shortcut}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Two-Column Interactive Body: Prompt Station + Simulated Terminal */}
-          <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            {/* Left Column: Prompt Station (7 cols) */}
-            <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
-              <div className="space-y-3">
-                {/* Meta details bar */}
-                <div className="flex items-center justify-between text-xs text-[#797D86]">
-                  <div className="flex items-center gap-2">
+          {/* Workbench Grid: Left Setup Directive + Right Live Wire Stream */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#242628]">
+            {/* Left: Agent Setup Directive */}
+            <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between text-xs font-mono text-[#797D86]">
+                  <span className="flex items-center gap-2 text-white font-medium">
                     <Sparkles className="size-3.5 text-[#34D59A]" />
-                    <span className="font-medium text-white">Paste into {activeAgent.name}:</span>
-                  </div>
-                  <span className="text-[11px] font-mono text-[#797D86] bg-[#131415] px-2.5 py-1 rounded-full border border-[#242628]">
-                    Target Config: <span className="text-white">{activeAgent.configFile}</span>
+                    Paste into {activeAgent.name}:
+                  </span>
+                  <span className="text-[#AFB1B6] bg-[#141416] px-2.5 py-0.5 rounded-full border border-[#242628]">
+                    {activeAgent.configFile}
                   </span>
                 </div>
 
-                {/* Prompt Card */}
-                <div className="relative group bg-[#000000] border border-[#242628] rounded-2xl p-4 text-xs font-mono text-[#C9CBCF] leading-relaxed shadow-inner">
-                  <div className="pr-4 pb-12 sm:pb-10">
-                    <span className="text-[#61646B] select-none">&ldquo;</span>
-                    <span className="text-white font-medium">{activeAgent.prompt}</span>
-                    <span className="text-[#61646B] select-none">&rdquo;</span>
-                  </div>
+                {/* Prompt Code Block */}
+                <div className="relative rounded-xl border border-[#242628] bg-[#000000] p-4 text-xs font-mono text-[#C9CBCF] leading-relaxed">
+                  <pre className="whitespace-pre-wrap font-mono">{activeAgent.prompt}</pre>
+                </div>
 
-                  <div className="absolute right-3 bottom-3 flex items-center gap-2">
+                {/* Quick Execution Pills */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    onClick={copyAgentPrompt}
+                    className="inline-flex items-center gap-2 h-9 px-5 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition cursor-pointer"
+                  >
+                    {copiedAgentPrompt ? <Check size={13} className="text-[#34D59A]" /> : <Copy size={13} />}
+                    <span>{copiedAgentPrompt ? `Copied for ${activeAgent.name}!` : `Copy Agent Prompt`}</span>
+                  </button>
+
+                  <div className="flex items-center gap-2 bg-[#141416] border border-[#242628] rounded-full px-4 py-1.5 text-xs font-mono text-[#797D86]">
+                    <span className="text-[#61646B]">$</span>
+                    <code className="text-[#C9CBCF] font-medium">{activeAgent.cliCommand}</code>
                     <button
-                      onClick={copyAgentPrompt}
-                      className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-9 px-4 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-xs gap-1.5"
+                      onClick={() => {
+                        navigator.clipboard.writeText(activeAgent.cliCommand);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                      className="ml-1 p-1 hover:text-white text-[#797D86] transition cursor-pointer"
+                      title="Copy CLI command"
                     >
-                      {copiedAgentPrompt ? <Check size={13} className="text-[#34D59A]" /> : <Copy size={13} />}
-                      {copiedAgentPrompt ? `Copied for ${activeAgent.name}!` : `Copy Prompt for ${activeAgent.name}`}
+                      {copied ? <Check className="size-3 text-[#34D59A]" /> : <Copy className="size-3" />}
                     </button>
                   </div>
                 </div>
-
-                {/* Direct CLI fallback */}
-                <div className="flex items-center justify-between bg-[#131415] border border-[#242628] rounded-full px-4 py-2 text-xs font-mono text-[#797D86]">
-                  <div className="flex items-center gap-2 truncate">
-                    <Terminal className="size-3.5 text-[#34D59A] shrink-0" />
-                    <span className="text-[#61646B] select-none">Direct execution:</span>
-                    <code className="text-[#C9CBCF] font-medium truncate">{activeAgent.cliCommand}</code>
-                  </div>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(activeAgent.cliCommand);
-                      setCopied(true);
-                      setTimeout(() => setCopied(false), 2000);
-                    }}
-                    className="p-1 rounded hover:bg-white/[0.08] text-[#797D86] hover:text-white transition cursor-pointer shrink-0 ml-2"
-                    title="Copy CLI command"
-                  >
-                    {copied ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
-                  </button>
-                </div>
               </div>
 
-              {/* 4 Agent Guarantees Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[11px] text-[#797D86] font-mono">
-                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
-                  <span>Non-Interactive (-y)</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
-                  <span>Safe Backup (*.bak)</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
-                  <span>1-Command Restore</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
-                  <span>--json Machine Mode</span>
-                </div>
+              {/* Minimal Meta Tags */}
+              <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[#61646B] pt-4 border-t border-[#242628]/60">
+                <span className="flex items-center gap-1.5">
+                  <span className="size-1 rounded-full bg-[#34D59A]" /> Non-interactive (-y)
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="size-1 rounded-full bg-[#34D59A]" /> Reversible snapshot (*.bak)
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="size-1 rounded-full bg-[#34D59A]" /> Machine mode (--json)
+                </span>
               </div>
             </div>
 
-            {/* Right Column: Simulated AI Agent Execution Trace (5 cols) */}
-            <div className="lg:col-span-5 rounded-2xl border border-[#242628] bg-[#000000] overflow-hidden flex flex-col font-mono text-xs shadow-2xl">
-              {/* Window Bar */}
-              <div className="bg-[#0C0D0E] px-3.5 py-2.5 border-b border-[#242628] flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <span className="size-2 rounded-full bg-red-500/80 inline-block" />
-                    <span className="size-2 rounded-full bg-amber-500/80 inline-block" />
-                    <span className="size-2 rounded-full bg-emerald-500/80 inline-block" />
-                  </div>
-                  <span className="text-[11px] text-[#797D86] font-medium ml-2">
-                    agent-trace ({activeAgent.id})
+            {/* Right: Live Wire Stream & In-Flight Intercept */}
+            <div className="lg:col-span-5 p-6 bg-[#000000] flex flex-col justify-between font-mono text-xs">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-[#797D86] pb-3 border-b border-[#242628]">
+                  <span className="flex items-center gap-2 text-white font-medium">
+                    <Terminal className="size-3.5 text-[#34D59A]" />
+                    wire-inspector ({activeAgent.id})
+                  </span>
+                  <span className="text-[#34D59A] text-[10px] font-bold bg-[#34D59A]/10 border border-[#34D59A]/20 px-2 py-0.5 rounded-full">
+                    &lt;0.1ms wire
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] text-[#34D59A] bg-[#34D59A]/10 border border-[#34D59A]/20 px-2.5 py-0.5 rounded-full font-bold">
-                  <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse" />
-                  <span>Machine Execution</span>
+
+                <div className="space-y-2 py-2">
+                  {activeAgent.logs.slice(0, 5).map((log, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-[11px] leading-relaxed">
+                      <span className={`${log.color} font-bold shrink-0 select-none`}>{log.tag}</span>
+                      <span className="text-[#C9CBCF]">
+                        {log.text}{" "}
+                        {log.highlight && <span className={`${log.color} font-bold`}>{log.highlight}</span>}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Log Stream */}
-              <div className="p-4 space-y-2.5 flex-1 text-[11px] leading-relaxed overflow-y-auto max-h-[260px]">
-                {activeAgent.logs.map((log, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
-                    <span className={`${log.color} font-bold shrink-0 select-none`}>{log.tag}</span>
-                    <span className="text-[#C9CBCF]">
-                      {log.text}{" "}
-                      {log.highlight && <span className={`${log.color} font-bold`}>{log.highlight}</span>}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Terminal Footer */}
-              <div className="bg-[#0C0D0E] px-3.5 py-2 border-t border-[#242628] flex items-center justify-between text-[10px] text-[#61646B]">
-                <span className="flex items-center gap-1.5">
-                  <span className="size-1.5 rounded-full bg-[#34D59A]" />
-                  <span>0 user prompts needed</span>
+              <div className="p-3 rounded-xl bg-[#0E0E12] border border-[#242628] flex items-center justify-between text-[11px] text-[#797D86] mt-4">
+                <span className="flex items-center gap-1.5 text-white">
+                  <CheckCircle2 size={13} className="text-[#34D59A]" />
+                  <span>AST Zero-Trust Filter: ACTIVE</span>
                 </span>
-                <span className="text-[#797D86] font-mono">AST overhead: &lt;0.5ms</span>
+                <span className="text-[#34D59A] font-bold">&lt;0.5ms</span>
               </div>
             </div>
           </div>
