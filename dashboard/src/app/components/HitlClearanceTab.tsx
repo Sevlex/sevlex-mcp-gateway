@@ -85,13 +85,13 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
   return (
     <div className="space-y-6">
       {/* Header & Metrics Strip */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <Shield className="text-[#2563EB]" size={22} />
+          <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+            <Shield className="text-blue-400" size={22} />
             Dual-Custody HITL Clearance Portal
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-zinc-400 mt-1">
             Real-time human authorization queue for high-impact MCP tools requiring SecOps signoff.
           </p>
         </div>
@@ -99,39 +99,39 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => fetchTickets()}
-            className="p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition border border-slate-200"
+            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.06] transition border border-white/[0.08] cursor-pointer"
             title="Refresh tickets"
           >
             <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
           </button>
 
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg text-xs font-medium">
+          <div className="flex items-center bg-[#0A0910] border border-white/[0.08] p-0.5 rounded-xl text-xs font-medium">
             <button
               onClick={() => setFilter("PENDING")}
-              className={`px-3 py-1 rounded-md transition ${
+              className={`px-3 py-1 rounded-lg transition cursor-pointer ${
                 filter === "PENDING"
-                  ? "bg-white text-slate-900 font-bold shadow-2xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-blue-600 text-white font-bold shadow-xs"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               Pending ({pendingTickets.length})
             </button>
             <button
               onClick={() => setFilter("RESOLVED")}
-              className={`px-3 py-1 rounded-md transition ${
+              className={`px-3 py-1 rounded-lg transition cursor-pointer ${
                 filter === "RESOLVED"
-                  ? "bg-white text-slate-900 font-bold shadow-2xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-blue-600 text-white font-bold shadow-xs"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               Resolved ({approvedTickets.length + rejectedTickets.length})
             </button>
             <button
               onClick={() => setFilter("ALL")}
-              className={`px-3 py-1 rounded-md transition ${
+              className={`px-3 py-1 rounded-lg transition cursor-pointer ${
                 filter === "ALL"
-                  ? "bg-white text-slate-900 font-bold shadow-2xs"
-                  : "text-slate-600 hover:text-slate-900"
+                  ? "bg-blue-600 text-white font-bold shadow-xs"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               All ({tickets.length})
@@ -142,41 +142,41 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl border border-amber-200 bg-amber-50/60 shadow-2xs">
-          <div className="flex items-center justify-between text-amber-800 text-xs font-bold font-mono">
+        <div className="p-4 rounded-2xl border border-amber-500/20 bg-amber-950/20 shadow-xl">
+          <div className="flex items-center justify-between text-amber-300 text-xs font-bold font-mono">
             <span>AWAITING CLEARANCE</span>
             <Clock size={16} />
           </div>
-          <div className="text-3xl font-extrabold text-amber-950 font-mono mt-2">
+          <div className="text-3xl font-extrabold text-amber-200 font-mono mt-2">
             {pendingTickets.length}
           </div>
-          <p className="text-[11px] text-amber-700/90 mt-1">
+          <p className="text-[11px] text-amber-400/80 mt-1">
             Suspended agent executions waiting for SecOps signature.
           </p>
         </div>
 
-        <div className="p-4 rounded-xl border border-emerald-200 bg-emerald-50/60 shadow-2xs">
-          <div className="flex items-center justify-between text-emerald-800 text-xs font-bold font-mono">
+        <div className="p-4 rounded-2xl border border-emerald-500/20 bg-emerald-950/20 shadow-xl">
+          <div className="flex items-center justify-between text-emerald-300 text-xs font-bold font-mono">
             <span>APPROVED SESSIONS</span>
             <UserCheck size={16} />
           </div>
-          <div className="text-3xl font-extrabold text-emerald-950 font-mono mt-2">
+          <div className="text-3xl font-extrabold text-emerald-200 font-mono mt-2">
             {approvedTickets.length}
           </div>
-          <p className="text-[11px] text-emerald-700/90 mt-1">
+          <p className="text-[11px] text-emerald-400/80 mt-1">
             Cryptographically cleared actions executed with dual custody.
           </p>
         </div>
 
-        <div className="p-4 rounded-xl border border-rose-200 bg-rose-50/60 shadow-2xs">
-          <div className="flex items-center justify-between text-rose-800 text-xs font-bold font-mono">
-            <span>DENIED & BLOCKED</span>
+        <div className="p-4 rounded-2xl border border-rose-500/20 bg-rose-950/20 shadow-xl">
+          <div className="flex items-center justify-between text-rose-300 text-xs font-bold font-mono">
+            <span>DENIED &amp; BLOCKED</span>
             <XCircle size={16} />
           </div>
-          <div className="text-3xl font-extrabold text-rose-950 font-mono mt-2">
+          <div className="text-3xl font-extrabold text-rose-200 font-mono mt-2">
             {rejectedTickets.length}
           </div>
-          <p className="text-[11px] text-rose-700/90 mt-1">
+          <p className="text-[11px] text-rose-400/80 mt-1">
             High-risk requests rejected by security team.
           </p>
         </div>
@@ -185,10 +185,10 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
       {/* Ticket Stream / Cards */}
       <div className="space-y-4">
         {displayedTickets.length === 0 ? (
-          <div className="text-center py-12 border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
-            <Shield className="mx-auto text-slate-300 mb-2" size={32} />
-            <p className="text-sm font-semibold text-slate-700">No HITL tickets in this view</p>
-            <p className="text-xs text-slate-500 mt-1">
+          <div className="text-center py-12 border border-dashed border-white/[0.08] rounded-2xl bg-[#0E0D17]">
+            <Shield className="mx-auto text-zinc-500 mb-2" size={32} />
+            <p className="text-sm font-semibold text-zinc-300">No HITL tickets in this view</p>
+            <p className="text-xs text-zinc-500 mt-1">
               When an AI agent requests a dual-custody tool, authorization tickets appear here.
             </p>
           </div>
@@ -196,39 +196,39 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
           displayedTickets.map((t) => (
             <div
               key={t.ticket_id}
-              className={`p-5 rounded-xl border transition shadow-2xs bg-white ${
+              className={`p-5 rounded-2xl border transition shadow-xl bg-[#0E0D17] ${
                 t.status === "PENDING"
-                  ? "border-amber-300 ring-2 ring-amber-100"
+                  ? "border-amber-500/40 ring-1 ring-amber-500/30"
                   : t.status === "APPROVED"
-                  ? "border-emerald-200"
-                  : "border-slate-200 opacity-80"
+                  ? "border-emerald-500/30"
+                  : "border-white/[0.08] opacity-75"
               }`}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
                 <div className="flex items-center gap-2.5">
-                  <span className="font-mono text-xs font-bold text-slate-900 bg-slate-100 px-2.5 py-1 rounded-md">
+                  <span className="font-mono text-xs font-bold text-white bg-[#141322] border border-white/[0.08] px-2.5 py-1 rounded-lg">
                     {t.ticket_id}
                   </span>
-                  <span className="text-xs font-semibold text-[#2563EB]">
+                  <span className="text-xs font-semibold text-blue-400">
                     @{t.user_id}
                   </span>
-                  <span className="text-slate-300">•</span>
-                  <span className="text-xs text-slate-500 font-mono flex items-center gap-1">
+                  <span className="text-zinc-600">•</span>
+                  <span className="text-xs text-zinc-400 font-mono flex items-center gap-1">
                     <Clock size={11} /> {t.created_at}
                   </span>
                 </div>
 
                 <div>
                   {t.status === "PENDING" ? (
-                    <span className="inline-flex items-center gap-1 text-amber-800 bg-amber-100/80 px-2.5 py-0.5 rounded-full text-xs font-bold font-mono">
+                    <span className="inline-flex items-center gap-1 text-amber-300 bg-amber-500/20 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-xs font-bold font-mono">
                       <Clock size={12} /> PENDING AUTHORIZATION
                     </span>
                   ) : t.status === "APPROVED" ? (
-                    <span className="inline-flex items-center gap-1 text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full text-xs font-bold font-mono">
+                    <span className="inline-flex items-center gap-1 text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-xs font-bold font-mono">
                       <CheckCircle2 size={12} /> AUTHORIZED
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-rose-800 bg-rose-100/80 px-2.5 py-0.5 rounded-full text-xs font-bold font-mono">
+                    <span className="inline-flex items-center gap-1 text-rose-300 bg-rose-500/20 border border-rose-500/30 px-2.5 py-0.5 rounded-full text-xs font-bold font-mono">
                       <XCircle size={12} /> REJECTED
                     </span>
                   )}
@@ -238,19 +238,19 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
               {/* Tool & Payload Details */}
               <div className="mt-3.5 space-y-2.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider text-[10px]">
+                  <span className="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
                     Requested Tool:
                   </span>
-                  <span className="font-mono text-xs font-bold text-slate-900 bg-blue-50 text-[#2563EB] px-2 py-0.5 rounded">
+                  <span className="font-mono text-xs font-bold text-blue-300 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md">
                     {t.tool_name}
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider text-[10px]">
+                  <span className="text-zinc-400 font-bold uppercase tracking-wider text-[10px]">
                     Interception Payload:
                   </span>
-                  <pre className="mt-1 p-3 rounded-lg bg-slate-900 text-slate-100 font-mono text-xs whitespace-pre-wrap break-all max-h-36 overflow-y-auto">
+                  <pre className="mt-1 p-3 rounded-xl bg-[#060609] border border-white/[0.08] text-emerald-400 font-mono text-xs whitespace-pre-wrap break-all max-h-36 overflow-y-auto">
                     {(() => {
                       try {
                         return JSON.stringify(JSON.parse(t.raw_request), null, 2);
@@ -263,16 +263,16 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
 
                 {/* Cryptographic Signoff Details (if resolved) */}
                 {t.signature && (
-                  <div className="p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200/80 text-[11px] font-mono space-y-1">
-                    <div className="flex items-center justify-between text-emerald-900 font-bold">
+                  <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-[11px] font-mono space-y-1">
+                    <div className="flex items-center justify-between text-emerald-300 font-bold">
                       <span className="flex items-center gap-1">
                         <Lock size={12} /> Dual-Custody Signature Verified
                       </span>
-                      <span className="text-[10px] text-emerald-700">
+                      <span className="text-[10px] text-emerald-400">
                         Signed by {t.approved_by} at {t.approved_at}
                       </span>
                     </div>
-                    <div className="text-[10px] text-emerald-800/80 break-all">
+                    <div className="text-[10px] text-zinc-400 break-all">
                       SHA256: {t.signature}
                     </div>
                   </div>
@@ -281,18 +281,18 @@ export default function HitlClearanceTab({ apiKey }: HitlClearanceTabProps) {
 
               {/* Action Buttons for Pending Tickets */}
               {t.status === "PENDING" && (
-                <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                <div className="mt-4 pt-3.5 border-t border-white/[0.06] flex items-center justify-end gap-2.5">
                   <button
                     disabled={processingId === t.ticket_id}
                     onClick={() => handleAction(t.ticket_id, "REJECT")}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 transition disabled:opacity-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-300 bg-rose-500/20 border border-rose-500/30 hover:bg-rose-500/30 transition disabled:opacity-50 cursor-pointer"
                   >
                     <XCircle size={14} /> Deny Request
                   </button>
                   <button
                     disabled={processingId === t.ticket_id}
                     onClick={() => handleAction(t.ticket_id, "APPROVE")}
-                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-2xs transition disabled:opacity-50"
+                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-600/20 transition disabled:opacity-50 cursor-pointer"
                   >
                     <CheckCircle2 size={14} /> Authorize Execution
                   </button>

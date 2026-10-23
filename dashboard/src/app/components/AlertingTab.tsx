@@ -39,22 +39,22 @@ export default function AlertingTab({ apiKey, slackUrlInput, setSlackUrlInput, s
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#0E0D17] border border-white/[0.08] p-6 rounded-2xl shadow-xl">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Bell className="text-[#2563EB]" size={22} />
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Incident Alerting &amp; ChatOps</h2>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
+            <Bell className="text-blue-400" size={22} />
+            <h2 className="text-xl font-bold text-white tracking-tight">Incident Alerting &amp; ChatOps</h2>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider font-mono">
               Real-Time Active
             </span>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-zinc-400">
             Instant high-priority alarms sent to SecOps channels the second an AI tool attempts unauthorized actions.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             P1 Dispatch Ready
           </span>
         </div>
@@ -62,100 +62,100 @@ export default function AlertingTab({ apiKey, slackUrlInput, setSlackUrlInput, s
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* CARD 1: SLACK REAL-TIME ALERTS */}
-        <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-xs flex flex-col justify-between hover:border-slate-300 transition">
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-6 rounded-2xl shadow-xl flex flex-col justify-between hover:border-blue-500/30 transition">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <ClientBrandIcon name="Slack" size="xl" className="rounded-md shrink-0" />
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">Slack Incident Alerts</h3>
-                  <p className="text-xs text-slate-500 font-mono">Instant SecOps Channel Notifications</p>
+                  <h3 className="text-base font-bold text-white">Slack Incident Alerts</h3>
+                  <p className="text-xs text-zinc-400 font-mono">Instant SecOps Channel Notifications</p>
                 </div>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 font-mono">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">
                 WEBHOOK
               </span>
             </div>
 
-            <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-              When a developer or AI client triggers a banned tool (e.g. <code>drop_table</code>), Sevlex immediately posts a rich threat card directly into your incident channel.
+            <p className="text-xs text-zinc-300 mb-4 leading-relaxed">
+              When a developer or AI client triggers a banned tool (e.g. <code className="text-red-400 font-mono">drop_table</code>), Sevlex immediately posts a rich threat card directly into your incident channel.
             </p>
 
             <div className="space-y-3 font-mono text-xs mb-4">
               <div>
-                <label className="text-slate-500 text-[11px] block mb-1">Incoming Webhook URL</label>
+                <label className="text-zinc-400 text-[11px] block mb-1">Incoming Webhook URL</label>
                 <input 
                   type="text" 
                   placeholder="https://hooks.slack.com/services/T00/B00/XXXX"
                   value={slackUrlInput}
                   onChange={(e) => setSlackUrlInput(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 text-[11px] font-mono outline-none focus:border-[#2563EB] focus:bg-white transition"
+                  className="w-full bg-[#12111D] border border-white/[0.08] rounded-xl px-3 py-2 text-white text-[11px] font-mono outline-none focus:border-blue-500 transition"
                 />
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-[11px] space-y-1.5 text-slate-600">
+              <div className="bg-[#12111D] p-3 rounded-xl border border-white/[0.06] text-[11px] space-y-1.5 text-zinc-300">
                 <div className="flex justify-between">
-                  <span>Trigger Condition:</span>
-                  <span className="text-red-700 font-bold">Policy BLOCKED Event</span>
+                  <span className="text-zinc-400">Trigger Condition:</span>
+                  <span className="text-red-400 font-bold">Policy BLOCKED Event</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Dispatch Latency:</span>
-                  <span className="text-emerald-700 font-semibold">&lt; 15ms</span>
+                  <span className="text-zinc-400">Dispatch Latency:</span>
+                  <span className="text-emerald-400 font-semibold">&lt; 15ms</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
             <button 
               onClick={handleTestSlack}
-              className="px-4 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs transition shadow-xs flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition shadow-lg shadow-blue-600/25 flex items-center gap-1.5 cursor-pointer"
             >
               <Send size={13} /> Send Test Alert
             </button>
-            <span className="text-[11px] text-slate-400 font-mono">Channel: #secops-ai-alerts</span>
+            <span className="text-[11px] text-zinc-500 font-mono">Channel: #secops-ai-alerts</span>
           </div>
         </div>
 
         {/* CARD 2: PAGERDUTY & INCIDENT AUTOMATION */}
-        <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-xs flex flex-col justify-between hover:border-slate-300 transition">
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-6 rounded-2xl shadow-xl flex flex-col justify-between hover:border-blue-500/30 transition">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <ClientBrandIcon name="PagerDuty" size="xl" className="rounded-md shrink-0" />
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">PagerDuty &amp; Opsgenie</h3>
-                  <p className="text-xs text-slate-500 font-mono">P1 Critical Severity Escalation</p>
+                  <h3 className="text-base font-bold text-white">PagerDuty &amp; Opsgenie</h3>
+                  <p className="text-xs text-zinc-400 font-mono">P1 Critical Severity Escalation</p>
                 </div>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-700 border border-red-200 font-mono">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20 font-mono">
                 P1 / P2
               </span>
             </div>
 
-            <p className="text-xs text-slate-600 mb-4 leading-relaxed">
+            <p className="text-xs text-zinc-300 mb-4 leading-relaxed">
               Escalate critical tool exfiltration events directly to the on-call security engineer phone tree during off-hours.
             </p>
 
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2 text-xs font-mono mb-4">
+            <div className="bg-[#12111D] p-4 rounded-xl border border-white/[0.06] space-y-2 text-xs font-mono mb-4">
               <div className="flex justify-between items-center">
-                <span className="text-slate-500">Escalation Rule:</span>
-                <span className="text-slate-900 font-bold">&gt; 3 Blocked Tools / 60s</span>
+                <span className="text-zinc-400">Escalation Rule:</span>
+                <span className="text-white font-bold">&gt; 3 Blocked Tools / 60s</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-500">Auto-Remediation:</span>
-                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Kill Node Child Process</span>
+                <span className="text-zinc-400">Auto-Remediation:</span>
+                <span className="text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Kill Node Child Process</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-500">Audit Proof:</span>
-                <span className="text-slate-800 font-semibold">Attached to Incident Ticket</span>
+                <span className="text-zinc-400">Audit Proof:</span>
+                <span className="text-zinc-200 font-semibold">Attached to Incident Ticket</span>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-400">
             <span>Integration: REST Events API v2</span>
-            <span className="text-slate-400 font-mono">Routing Key: Configured</span>
+            <span className="text-zinc-500 font-mono">Routing Key: Configured</span>
           </div>
         </div>
 

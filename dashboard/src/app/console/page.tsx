@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState, useMemo } from "react";
 import { 
@@ -48,11 +48,11 @@ export default function Dashboard() {
   const [expandedServers, setExpandedServers] = useState<Record<string, boolean>>({});
   const [selectedLog, setSelectedLog] = useState<Log | null>(null);
 
-  // Active feature tab in Section 1 (Datadog style interactive selector)
+  // Active feature selector in Overview
   const [activeFeatureTab, setActiveFeatureTab] = useState<number>(0);
   const [activeDiagnosisTab, setActiveDiagnosisTab] = useState<number>(0);
 
-  // Facet filter state for Log Explorer (Datadog style)
+  // Facet filter state for Log Explorer
   const [statusFilter, setStatusFilter] = useState<"ALL" | "ALLOWED" | "BLOCKED" | "DLP_REDACTED" | "HITL_PENDING" | "CIRCUIT_BROKEN">("ALL");
 
   const [apiKey, setApiKey] = useState("");
@@ -191,7 +191,7 @@ export default function Dashboard() {
         localStorage.removeItem("sevlex_admin_key");
         return;
       }
-      setPingStatus(`ðŸ›¡ï¸ Policy updated: ${toolName} âž” ${state}`);
+      setPingStatus(`🛡️ Policy updated: ${toolName} ➔ ${state}`);
       setTimeout(() => setPingStatus(null), 2500);
     } catch (e) {
       console.error(e);
@@ -228,14 +228,15 @@ export default function Dashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#131220] text-zinc-300 font-sans flex items-center justify-center p-4">
-        <form onSubmit={handleLogin} className="bg-[#1C1B2E] p-8 rounded-2xl border border-white/[0.1] shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
+      <div className="min-h-screen bg-[#08080C] text-zinc-300 font-sans flex items-center justify-center p-4 selection:bg-blue-600/30">
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-blue-600/10 blur-[140px] pointer-events-none rounded-full" />
+        <form onSubmit={handleLogin} className="bg-[#0E0D17] p-8 rounded-2xl border border-white/[0.08] shadow-2xl max-w-sm w-full text-center relative overflow-hidden z-10 backdrop-blur-md">
           <div className="flex justify-center mb-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src="/sevlex-logo.png" 
-              alt="Sevlex Logo" 
-              className="h-12 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.25)]" 
+              src="/sevlex-brand-horizontal.png" 
+              alt="Sevlex" 
+              className="h-10 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
             />
           </div>
           <h2 className="text-base font-bold text-white mb-1 tracking-tight">Enterprise SecOps Console</h2>
@@ -245,10 +246,10 @@ export default function Dashboard() {
             placeholder="Admin API Key"
             value={inputKey}
             onChange={(e) => setInputKey(e.target.value)}
-            className="w-full bg-[#131220] border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white mb-4 focus:outline-none focus:border-blue-500 font-mono transition-colors"
+            className="w-full bg-[#141322] border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-sm text-white mb-4 focus:outline-none focus:border-blue-500 font-mono transition-colors"
           />
           {loginError && <p className="text-red-400 text-xs mb-4">Invalid Admin Key. Check .env.local</p>}
-          <button type="submit" className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-medium py-2 rounded-lg text-sm transition-all shadow-md shadow-blue-950/20">
+          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-blue-600/25 cursor-pointer">
             Authenticate Session
           </button>
         </form>
@@ -257,40 +258,45 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-slate-900 font-sans flex">
+    <div className="min-h-screen bg-[#08080C] text-zinc-100 font-sans flex selection:bg-blue-600/30">
       
       {/* ========================================================================= */}
-      {/* 1. LEFT DARK SIDEBAR (Official Datadog Style: #131220)                   */}
+      {/* 1. OBSIDIAN CYBER-DEFENSE SIDEBAR                                         */}
       {/* ========================================================================= */}
-      <aside className="w-60 bg-[#131220] border-r border-[#242337] flex flex-col justify-between shrink-0 h-screen sticky top-0 text-zinc-300 z-50">
+      <aside className="w-64 bg-[#0A0910] border-r border-white/[0.08] flex flex-col justify-between shrink-0 h-screen sticky top-0 z-30">
         <div>
-          {/* Brand Header with Unified Sevlex Horizontal Lockup */}
-          <div className="h-16 px-5 flex items-center border-b border-[#242337]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src="/sevlex-brand-horizontal.png" 
-              alt="SEVLEX" 
-              className="h-7 w-auto object-contain object-left" 
-            />
+          {/* Logo & App Brand Header */}
+          <div className="p-4 border-b border-white/[0.08]">
+            <a href="/" className="flex items-center gap-2 group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src="/sevlex-brand-horizontal.png" 
+                alt="Sevlex" 
+                className="h-7 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(59,130,246,0.3)] group-hover:brightness-110 transition"
+              />
+            </a>
+            <div className="flex items-center gap-1.5 mt-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-[11px] font-mono text-zinc-400">Zero-Trust Active</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 ml-auto font-semibold">
+                v1.0.5
+              </span>
+            </div>
           </div>
 
-          {/* Navigation Menu */}
-          <div className="px-3 py-4 space-y-1 text-xs font-medium">
-            <div className="px-3 py-1 text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
-              AI Observability
-            </div>
-
+          {/* Nav List */}
+          <div className="p-3 space-y-1 text-xs font-medium">
             {[
-              { id: "OVERVIEW", label: "Overview", icon: LayoutDashboard },
-              { id: "DEVICES", label: "Device Fleet", icon: HardDrive, badge: `${fleetData?.devices?.length || 6} Hosts` },
-              { id: "AGENTS", label: "Shadow AI & Agents", icon: Bot, badge: `${fleetData?.runtimes?.length || 5} IDEs` },
-              { id: "POLICY", label: "L7 Policies", icon: Sliders, badge: `${blockedTools.length} Banned` },
-              { id: "HITL", label: "HITL Clearances", icon: Shield, badge: "SecOps" },
-              { id: "AUDIT", label: "Log Explorer", icon: Activity, badge: `${logs.length}` },
-              { id: "API_KEYS", label: "Gateway API Keys", icon: Key, badge: "Cloud" },
-              { id: "MDM", label: "Rollout Packages", icon: Server, badge: "Win32/Pkg" },
-              { id: "SIEM", label: "SIEM Stream", icon: Zap, badge: "US5" },
-              { id: "ALERTS", label: "Alerts & ChatOps", icon: Bell, badge: "P1-P3" },
+              { id: "OVERVIEW", label: "Overview & Health", icon: LayoutDashboard },
+              { id: "DEVICES", label: "Endpoint Inventory", icon: HardDrive, badge: `${fleetData?.devices?.length || 6}` },
+              { id: "AGENTS", label: "Agent Discovery", icon: Bot, badge: "6 Active" },
+              { id: "POLICY", label: "Policy Engine", icon: Sliders, badge: `${blockedTools.length} Banned` },
+              { id: "HITL", label: "HITL Authorizations", icon: Shield, badge: "Dual-Custody" },
+              { id: "AUDIT", label: "Log Explorer", icon: Terminal, badge: `${logs.length}` },
+              { id: "API_KEYS", label: "Cloud API Keys", icon: Key, badge: "app.sevlex" },
+              { id: "MDM", label: "Fleet MDM Packages", icon: Laptop },
+              { id: "SIEM", label: "SIEM Observability", icon: Zap },
+              { id: "ALERTS", label: "Incident Alerting", icon: Bell },
             ].map((nav) => {
               const IconComp = nav.icon;
               const isActive = activeTab === nav.id;
@@ -298,10 +304,10 @@ export default function Dashboard() {
                 <button
                   key={nav.id}
                   onClick={() => setActiveTab(nav.id as TabType)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-left ${
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-left cursor-pointer ${
                     isActive 
-                      ? "bg-[#2563EB] text-white shadow-sm font-semibold" 
-                      : "text-zinc-400 hover:text-white hover:bg-white/[0.05]"
+                      ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25 font-semibold" 
+                      : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
@@ -309,8 +315,8 @@ export default function Dashboard() {
                     <span>{nav.label}</span>
                   </div>
                   {nav.badge && (
-                    <span className={`px-1.5 py-0.2 rounded text-[10px] font-mono ${
-                      isActive ? "bg-white/20 text-white" : "bg-[#201F33] text-zinc-400"
+                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-mono ${
+                      isActive ? "bg-white/20 text-white font-semibold" : "bg-white/[0.06] text-zinc-400 border border-white/[0.04]"
                     }`}>
                       {nav.badge}
                     </span>
@@ -322,7 +328,7 @@ export default function Dashboard() {
         </div>
 
         {/* Bottom Profile & Host Specs */}
-        <div className="p-3 border-t border-[#242337] bg-[#0E0D18]">
+        <div className="p-3 border-t border-white/[0.08] bg-[#0E0D17]">
           <div className="flex items-center justify-between text-xs mb-2">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -331,12 +337,12 @@ export default function Dashboard() {
             <span className="text-[10px] text-zinc-500 font-mono">win32-x64</span>
           </div>
 
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-2 border-t border-[#242337]">
+          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-2 border-t border-white/[0.06]">
             <span>@{fleetData?.host?.user || "meetp"}</span>
             <button 
               onClick={handleLogout}
               title="Sign out"
-              className="text-zinc-500 hover:text-white transition"
+              className="text-zinc-500 hover:text-white transition cursor-pointer"
             >
               <LogOut size={13} />
             </button>
@@ -345,42 +351,42 @@ export default function Dashboard() {
       </aside>
 
       {/* ========================================================================= */}
-      {/* 2. MAIN WORKSPACE CANVAS (Crisp Datadog White: #F8F9FB)                  */}
+      {/* 2. MAIN WORKSPACE CANVAS                                                  */}
       {/* ========================================================================= */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         
         {/* Top Header Bar */}
-        <header className="h-14 bg-white border-b border-slate-200 px-6 sm:px-8 flex items-center justify-between shrink-0 sticky top-0 z-40">
+        <header className="h-14 bg-[#0A0910]/90 backdrop-blur-md border-b border-white/[0.08] px-6 sm:px-8 flex items-center justify-between shrink-0 sticky top-0 z-40">
           {/* Search Box */}
           <div className="relative w-72 sm:w-96">
-            <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
+            <Search size={14} className="absolute left-3 top-2.5 text-zinc-400" />
             <input 
               type="text" 
-              placeholder="Search Datadog telemetry, tools, CVEs..."
+              placeholder="Search telemetry, tool calls, identities..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-md pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#2563EB] focus:bg-white font-mono transition"
+              className="w-full bg-[#12111D] border border-white/[0.08] rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-blue-500 font-mono transition"
             />
           </div>
 
           {/* Right Status Badges */}
           <div className="flex items-center gap-3">
-            <span className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               {fleetData?.devices?.length || 6} Hosts Shielded
             </span>
 
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200 text-xs font-medium font-mono">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-medium font-mono">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="DD" className="w-3.5 h-3.5" />
+              <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/datadog.svg" alt="DD" className="w-3.5 h-3.5 invert opacity-80" />
               <span>US5 Connected</span>
             </div>
 
             <button 
               onClick={exportLogsToCsv}
-              className="px-3 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium transition shadow-xs flex items-center gap-1.5"
+              className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition shadow-lg shadow-blue-600/25 flex items-center gap-1.5 cursor-pointer"
             >
-              <Download size={13} /> Export PDF
+              <Download size={13} /> Export SOC 2 CSV
             </button>
           </div>
         </header>
@@ -389,96 +395,95 @@ export default function Dashboard() {
         <main className="p-6 sm:p-8 space-y-8 max-w-[1500px] w-full">
           
           {/* ========================================================================= */}
-          {/* TAB 0: OVERVIEW (Directly Modeled on User Screenshot!)                     */}
+          {/* TAB 0: OVERVIEW                                                           */}
           {/* ========================================================================= */}
           {activeTab === "OVERVIEW" && (
-            <div className="space-y-10">
+            <div className="space-y-8">
               
-              {/* HERO BANNER (Official Datadog Purple Gradient Banner from Screenshot) */}
-              <div className="sevlex-gradient rounded-2xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-                {/* Background decorative glow */}
+              {/* HERO BANNER */}
+              <div className="sevlex-gradient rounded-2xl p-8 sm:p-10 text-white shadow-2xl relative overflow-hidden flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 border border-blue-400/30">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
 
                 <div className="max-w-xl z-10 space-y-3">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold tracking-wider uppercase border border-white/20">
-                    <Sparkles size={12} /> Data Observability (L7 MCP)
+                    <Sparkles size={12} /> Data Observability &amp; Layer 7 MCP Defense
                   </div>
                   <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-                    Trusted Data, Optimized Pipelines, Zero Surprises.
+                    Trusted Data, Autonomous AI Guardrails, Zero Surprises.
                   </h1>
                   <p className="text-sm text-blue-100 leading-relaxed">
-                    Unified zero-trust deep packet inspection across employee AI agents routing MCP traffic through Sevlex Gateway.
+                    Unified zero-trust deep packet inspection across all employee AI agents routing MCP traffic through Sevlex Gateway.
                   </p>
 
                   <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-medium">
-                    <span className="flex items-center gap-1 opacity-90"><Check size={14} /> 142,394 Calls</span>
-                    <span>â€¢</span>
+                    <span className="flex items-center gap-1 opacity-90"><Check size={14} /> 142,394 Inspected</span>
+                    <span>•</span>
                     <span className="flex items-center gap-1 opacity-90"><Check size={14} /> 1,243 Threats Blocked</span>
-                    <span>â€¢</span>
-                    <span className="flex items-center gap-1 opacity-90"><Check size={14} /> 0.78ms Latency</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1 opacity-90"><Check size={14} /> &lt;0.5ms Latency</span>
                   </div>
 
                   <div className="pt-4 flex items-center gap-4">
                     <button 
                       onClick={() => setActiveTab("POLICY")}
-                      className="px-5 py-2.5 rounded-lg bg-white text-[#2563EB] font-bold text-xs hover:bg-blue-50 transition shadow-lg flex items-center gap-2"
+                      className="px-5 py-2.5 rounded-xl bg-white text-blue-700 font-bold text-xs hover:bg-blue-50 transition shadow-lg flex items-center gap-2 cursor-pointer"
                     >
-                      Set up L7 Policy Control <ArrowRight size={14} />
+                      Set up L7 Policy Rules <ArrowRight size={14} />
                     </button>
                     <button 
                       onClick={() => setActiveTab("AUDIT")}
-                      className="px-4 py-2.5 rounded-lg bg-black/20 hover:bg-black/30 border border-white/30 text-white font-medium text-xs transition"
+                      className="px-4 py-2.5 rounded-xl bg-black/30 hover:bg-black/50 border border-white/30 text-white font-medium text-xs transition cursor-pointer"
                     >
-                      View Live Audit Stream
+                      Inspect Live Audit Receipts
                     </button>
                   </div>
                 </div>
 
-                {/* Hero Graphic Card (Right side preview from screenshot) */}
-                <div className="w-full lg:w-96 bg-white rounded-xl p-4 text-slate-800 shadow-2xl z-10 border border-blue-200">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3 text-xs">
-                    <span className="font-bold text-slate-900 flex items-center gap-1.5">
-                      <ShieldCheck size={14} className="text-[#2563EB]" /> L7 Gateway Node
+                {/* Hero Graphic Card Preview */}
+                <div className="w-full lg:w-96 bg-[#0E0D17]/95 rounded-2xl p-5 text-white shadow-2xl z-10 border border-white/[0.1] backdrop-blur-md">
+                  <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] mb-3 text-xs">
+                    <span className="font-bold text-white flex items-center gap-1.5">
+                      <ShieldCheck size={15} className="text-blue-400" /> Layer 7 Gateway Engine
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                       LIVE ACTIVE
                     </span>
                   </div>
                   
-                  {/* Miniature topology nodes */}
+                  {/* Topology nodes */}
                   <div className="space-y-2 font-mono text-[11px]">
-                    <div className="p-2 rounded bg-slate-50 border border-slate-200 flex justify-between items-center">
-                      <span className="text-slate-600">Client: Cursor &amp; Claude</span>
-                      <span className="text-emerald-600 font-bold">127.0.0.1</span>
+                    <div className="p-2.5 rounded-xl bg-[#141322] border border-white/[0.08] flex justify-between items-center">
+                      <span className="text-zinc-400">Clients: Cursor, Claude, Windsurf</span>
+                      <span className="text-emerald-400 font-bold">127.0.0.1</span>
                     </div>
-                    <div className="p-2 rounded bg-blue-50 border border-blue-200 flex justify-between items-center text-[#2563EB]">
+                    <div className="p-2.5 rounded-xl bg-blue-950/40 border border-blue-500/30 flex justify-between items-center text-blue-300">
                       <span className="font-bold">Sevlex L7 Inspection</span>
-                      <span>0.78ms (p99)</span>
+                      <span className="text-emerald-400 font-semibold">&lt;0.2ms (p99)</span>
                     </div>
-                    <div className="p-2 rounded bg-slate-50 border border-slate-200 flex justify-between items-center">
-                      <span className="text-slate-600">Upstream MCP Servers</span>
-                      <span className="text-slate-900 font-semibold">10 Connected</span>
+                    <div className="p-2.5 rounded-xl bg-[#141322] border border-white/[0.08] flex justify-between items-center">
+                      <span className="text-zinc-400">Upstream MCP Servers</span>
+                      <span className="text-white font-semibold">10 Shielded</span>
                     </div>
                   </div>
                 </div>
 
               </div>
 
-              {/* SECTION 1: "Complete visibility into job health and performance" (Exact Screenshot Layout!) */}
+              {/* SECTION 1: Tool Health and Intercept Performance */}
               <div className="space-y-6 pt-4">
                 <div className="text-center max-w-2xl mx-auto space-y-1">
-                  <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                    Complete visibility into tool health and performance
+                  <h2 className="text-2xl font-bold tracking-tight text-white">
+                    Complete Visibility into Tool Health &amp; Security Violations
                   </h2>
-                  <p className="text-xs text-slate-500">
-                    Learn how Sevlex L7 Monitoring can help you solve security issues faster and save money
+                  <p className="text-xs text-zinc-400">
+                    Real-time deep packet inspection preventing prompt injection, data exfiltration, and destructive commands.
                   </p>
                 </div>
 
                 {/* Split Bento: Left Selector Tabs + Right Live Data View */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   
-                  {/* Left Column: 3 Feature Selectors (Directly from Screenshot!) */}
+                  {/* Left Column: 3 Feature Selectors */}
                   <div className="lg:col-span-4 space-y-3 flex flex-col justify-between">
                     {[
                       {
@@ -503,20 +508,20 @@ export default function Dashboard() {
                         <div
                           key={idx}
                           onClick={() => setActiveFeatureTab(idx)}
-                          className={`p-5 rounded-xl border transition-all cursor-pointer ${
+                          className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                             isSelected
-                              ? "bg-white border-[#2563EB] shadow-md ring-1 ring-[#2563EB]"
-                              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+                              ? "bg-[#141322] border-blue-500 shadow-xl shadow-blue-500/10 ring-1 ring-blue-500 text-white"
+                              : "bg-[#0E0D17] border-white/[0.08] hover:border-white/[0.15] text-zinc-300"
                           }`}
                         >
                           <div className="flex items-start gap-3">
-                            <Icon size={18} className={isSelected ? "text-[#2563EB]" : "text-slate-400"} />
+                            <Icon size={18} className={isSelected ? "text-blue-400" : "text-zinc-400"} />
                             <div>
-                              <h3 className={`text-xs font-bold leading-snug ${isSelected ? "text-slate-900" : "text-slate-700"}`}>
+                              <h3 className={`text-xs font-bold leading-snug ${isSelected ? "text-white" : "text-zinc-200"}`}>
                                 {feature.title}
                               </h3>
                               {isSelected && (
-                                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                                <p className="text-[11px] text-zinc-400 mt-2 leading-relaxed">
                                   {feature.desc}
                                 </p>
                               )}
@@ -527,31 +532,31 @@ export default function Dashboard() {
                     })}
                   </div>
 
-                  {/* Right Column: Live Data View / Data Table (Directly from Screenshot!) */}
-                  <div className="lg:col-span-8 bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between">
+                  {/* Right Column: Live Data View / Data Table */}
+                  <div className="lg:col-span-8 bg-[#0E0D17] border border-white/[0.08] rounded-2xl p-5 shadow-xl flex flex-col justify-between">
                     <div>
                       {/* Top Bar inside preview card */}
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100 mb-4">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-white/[0.06] mb-4">
                         <div className="flex items-center gap-2">
-                          <Activity size={16} className="text-[#2563EB]" />
-                          <span className="text-xs font-bold text-slate-900 font-mono">Live L7 Packet Telemetry</span>
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-50 text-[#2563EB] border border-blue-200">
+                          <Activity size={16} className="text-blue-400" />
+                          <span className="text-xs font-bold text-white font-mono">Live L7 Packet Telemetry</span>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                             STREAMING
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
+                        <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
                           <span>Total: 142,394</span>
-                          <span>â€¢</span>
-                          <span className="text-emerald-600 font-semibold">99.1% Allowed</span>
+                          <span>•</span>
+                          <span className="text-emerald-400 font-semibold">99.1% Allowed</span>
                         </div>
                       </div>
 
                       {/* Live Data Grid */}
-                      <div className="overflow-x-auto rounded-lg border border-slate-100">
+                      <div className="overflow-x-auto rounded-xl border border-white/[0.06]">
                         <table className="w-full text-left border-collapse text-xs">
                           <thead>
-                            <tr className="bg-slate-50 border-b border-slate-100 text-slate-500 uppercase font-mono text-[10px]">
+                            <tr className="bg-[#141322] border-b border-white/[0.08] text-zinc-400 uppercase font-mono text-[10px]">
                               <th className="py-2.5 px-3 font-medium">Status</th>
                               <th className="py-2.5 px-3 font-medium">Timestamp</th>
                               <th className="py-2.5 px-3 font-medium">Identity</th>
@@ -559,7 +564,7 @@ export default function Dashboard() {
                               <th className="py-2.5 px-3 font-medium text-right">Latency</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100 font-mono text-slate-700">
+                          <tbody className="divide-y divide-white/[0.04] font-mono text-zinc-300">
                             {[
                               { s: "BLOCKED", t: "05:54:12.392", u: "meetp", tool: "delete_database", lat: "0.4ms" },
                               { s: "ALLOWED", t: "05:54:11.840", u: "meetp", tool: "read_company_knowledge", lat: "0.8ms" },
@@ -567,22 +572,22 @@ export default function Dashboard() {
                               { s: "BLOCKED", t: "05:52:45.918", u: "meetp", tool: "drop_table", lat: "0.3ms" },
                               { s: "ALLOWED", t: "05:51:20.443", u: "meetp", tool: "slack_post_message", lat: "0.9ms" }
                             ].map((row, idx) => (
-                              <tr key={idx} className="hover:bg-slate-50/80 transition">
+                              <tr key={idx} className="hover:bg-white/[0.02] transition">
                                 <td className="py-2.5 px-3">
                                   {row.s === "BLOCKED" ? (
-                                    <span className="inline-flex items-center gap-1 text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                                    <span className="inline-flex items-center gap-1 text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded text-[10px] font-bold font-mono">
                                       <ShieldAlert size={10} /> BLOCKED
                                     </span>
                                   ) : (
-                                    <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                                    <span className="inline-flex items-center gap-1 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold font-mono">
                                       <ShieldCheck size={10} /> ALLOWED
                                     </span>
                                   )}
                                 </td>
-                                <td className="py-2.5 px-3 text-slate-500 text-[11px]">{row.t}</td>
-                                <td className="py-2.5 px-3 text-blue-700 font-medium">@{row.u}</td>
-                                <td className="py-2.5 px-3 font-bold text-slate-900">{row.tool}</td>
-                                <td className="py-2.5 px-3 text-right text-slate-500">{row.lat}</td>
+                                <td className="py-2.5 px-3 text-zinc-500 text-[11px]">{row.t}</td>
+                                <td className="py-2.5 px-3 text-blue-400 font-medium">@{row.u}</td>
+                                <td className="py-2.5 px-3 font-bold text-white">{row.tool}</td>
+                                <td className="py-2.5 px-3 text-right text-zinc-400">{row.lat}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -590,13 +595,13 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+                    <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 font-mono">
                       <span>Audit Receipts: Synchronous SQLite WAL</span>
                       <button 
                         onClick={() => setActiveTab("AUDIT")}
-                        className="text-[#2563EB] hover:underline font-semibold flex items-center gap-1"
+                        className="text-blue-400 hover:text-blue-300 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
                       >
-                        Inspect all 10,000+ entries in Log Explorer â†’
+                        Inspect all entries in Log Explorer ➔
                       </button>
                     </div>
                   </div>
@@ -604,63 +609,63 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* SECTION 2: "Be the first to know when policies break" (Matching Screenshot Section 3!) */}
+              {/* SECTION 2: Anomaly Detection and Velocity Monitoring */}
               <div className="space-y-6 pt-4">
                 <div className="text-center max-w-2xl mx-auto space-y-1">
-                  <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                    Be the first to know when data breaks
+                  <h2 className="text-2xl font-bold tracking-tight text-white">
+                    Be the First to Know When Policies &amp; Runtimes Drift
                   </h2>
-                  <p className="text-xs text-slate-500">
-                    Ensure trust in your data by detecting, resolving, and preventing data issues with Quality Monitoring
+                  <p className="text-xs text-zinc-400">
+                    Ensure trust in your AI pipelines by detecting velocity spikes, prompt injections, and secret leaks.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                   
                   {/* Left Column: Time Series Monitor Chart */}
-                  <div className="lg:col-span-8 bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col justify-between">
+                  <div className="lg:col-span-8 bg-[#0E0D17] border border-white/[0.08] rounded-2xl p-5 shadow-xl flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                      <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
                         <div className="flex items-center gap-2">
-                          <BarChart3 size={16} className="text-[#2563EB]" />
-                          <span className="text-xs font-bold text-slate-900 font-mono">pricing freshness &amp; tool invocations</span>
+                          <BarChart3 size={16} className="text-blue-400" />
+                          <span className="text-xs font-bold text-white font-mono">throughput &amp; tool invocations</span>
                         </div>
-                        <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                          STATUS: OK
+                        <span className="text-[11px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                          STATUS: HEALTHY
                         </span>
                       </div>
 
-                      {/* SVG Metric Chart with Upper/Lower bounds */}
-                      <div className="h-44 w-full border border-slate-100 rounded-lg p-2 flex flex-col justify-between bg-slate-50/50 relative overflow-hidden">
+                      {/* SVG Metric Chart */}
+                      <div className="h-44 w-full border border-white/[0.06] rounded-xl p-2 flex flex-col justify-between bg-[#12111D]/60 relative overflow-hidden">
                         <svg className="w-full h-full" viewBox="0 0 500 120" fill="none">
                           {/* Upper bound dashed line */}
-                          <line x1="0" y1="20" x2="500" y2="20" stroke="#CBD5E1" strokeWidth="1" strokeDasharray="4 4" />
-                          <text x="10" y="15" fill="#94A3B8" fontSize="9" fontFamily="monospace">UPPER BOUND (120 req/s)</text>
+                          <line x1="0" y1="20" x2="500" y2="20" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4" />
+                          <text x="10" y="15" fill="#71717A" fontSize="9" fontFamily="monospace">RATE LIMIT THRESHOLD (120 req/s)</text>
 
                           {/* Lower bound dashed line */}
-                          <line x1="0" y1="100" x2="500" y2="100" stroke="#CBD5E1" strokeWidth="1" strokeDasharray="4 4" />
-                          <text x="10" y="112" fill="#94A3B8" fontSize="9" fontFamily="monospace">LOWER BOUND (10 req/s)</text>
+                          <line x1="0" y1="100" x2="500" y2="100" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4" />
+                          <text x="10" y="112" fill="#71717A" fontSize="9" fontFamily="monospace">BASELINE TRAFFIC (10 req/s)</text>
 
                           {/* Data line */}
                           <path 
                             d="M 0 70 Q 50 60, 100 80 T 200 40 T 300 65 T 400 30 T 500 50" 
-                            stroke="#2563EB" 
+                            stroke="#3B82F6" 
                             strokeWidth="2.5" 
                             fill="none" 
                           />
                           {/* Anomaly Spike in red */}
-                          <circle cx="400" cy="30" r="4" fill="#EF4444" />
+                          <circle cx="400" cy="30" r="4" fill="#EF4444" className="animate-pulse" />
                         </svg>
                       </div>
                     </div>
 
-                    <div className="mt-3 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                    <div className="mt-3 flex items-center justify-between text-[11px] text-zinc-500 font-mono">
                       <span>Anomaly Detection: Statistical Outlier Intercept</span>
-                      <span className="text-red-600 font-semibold">1 Interception at 05:52</span>
+                      <span className="text-red-400 font-semibold">1 Interception at 05:52</span>
                     </div>
                   </div>
 
-                  {/* Right Column: Accordion Diagnostic Items (Matching Screenshot!) */}
+                  {/* Right Column: Accordion Diagnostic Items */}
                   <div className="lg:col-span-4 space-y-3 flex flex-col justify-between">
                     {[
                       {
@@ -681,17 +686,17 @@ export default function Dashboard() {
                         <div
                           key={idx}
                           onClick={() => setActiveDiagnosisTab(idx)}
-                          className={`p-5 rounded-xl border transition-all cursor-pointer ${
+                          className={`p-5 rounded-2xl border transition-all cursor-pointer ${
                             isSelected
-                              ? "bg-white border-[#2563EB] shadow-md ring-1 ring-[#2563EB]"
-                              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+                              ? "bg-[#141322] border-blue-500 shadow-xl shadow-blue-500/10 ring-1 ring-blue-500 text-white"
+                              : "bg-[#0E0D17] border-white/[0.08] hover:border-white/[0.15] text-zinc-300"
                           }`}
                         >
-                          <h3 className={`text-xs font-bold ${isSelected ? "text-slate-900" : "text-slate-700"}`}>
+                          <h3 className={`text-xs font-bold ${isSelected ? "text-white" : "text-zinc-200"}`}>
                             {diag.title}
                           </h3>
                           {isSelected && (
-                            <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                            <p className="text-[11px] text-zinc-400 mt-2 leading-relaxed">
                               {diag.desc}
                             </p>
                           )}
@@ -703,11 +708,11 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* SECTION 3: "Dive deeper" (Matching Bottom of User Screenshot!) */}
+              {/* SECTION 3: Resource Cards */}
               <div className="space-y-4 pt-4">
                 <div className="text-center max-w-xl mx-auto space-y-1">
-                  <h2 className="text-xl font-bold tracking-tight text-slate-900">Dive deeper</h2>
-                  <p className="text-xs text-slate-500">Resources and guides to help you get the most out of Sevlex Observability</p>
+                  <h2 className="text-xl font-bold tracking-tight text-white">Compliance &amp; Tool Governance Architecture</h2>
+                  <p className="text-xs text-zinc-400">Resources and guides to help you get the most out of Sevlex Observability</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -718,34 +723,34 @@ export default function Dashboard() {
                       icon: FileText
                     },
                     {
-                      title: "Detect issues and optimize speed with out-of-the-box policies",
+                      title: "Detect issues with out-of-the-box policies",
                       desc: "Explore pre-configured zero-trust rules for GitHub, PostgreSQL, AWS, and Slack MCP servers.",
                       icon: Shield
                     },
                     {
-                      title: "Ensure trust across the entire data life cycle",
+                      title: "Ensure trust across the entire data lifecycle",
                       desc: "How to export SOC 2 Type II audit evidence and stream real-time telemetry to Datadog US5.",
                       icon: Database
                     }
                   ].map((res, idx) => {
                     const Icon = res.icon;
                     return (
-                      <div key={idx} className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between hover:border-slate-300 transition group">
+                      <div key={idx} className="bg-[#0E0D17] border border-white/[0.08] rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-blue-500/40 hover:bg-[#12111D] transition group">
                         <div className="space-y-3">
-                          <div className="w-10 h-10 rounded-lg bg-blue-50 text-[#2563EB] flex items-center justify-center border border-blue-100">
+                          <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
                             <Icon size={20} />
                           </div>
-                          <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#2563EB] transition">
+                          <h3 className="text-sm font-bold text-white group-hover:text-blue-400 transition">
                             {res.title}
                           </h3>
-                          <p className="text-xs text-slate-500 leading-relaxed">
+                          <p className="text-xs text-zinc-400 leading-relaxed">
                             {res.desc}
                           </p>
                         </div>
 
-                        <div className="mt-5 pt-3 border-t border-slate-100">
-                          <span className="text-xs font-semibold text-[#2563EB] flex items-center gap-1 group-hover:underline">
-                            See more â†’
+                        <div className="mt-5 pt-3 border-t border-white/[0.06]">
+                          <span className="text-xs font-semibold text-blue-400 flex items-center gap-1 group-hover:underline">
+                            Read Architecture Guide ➔
                           </span>
                         </div>
                       </div>
@@ -758,7 +763,7 @@ export default function Dashboard() {
           )}
 
           {/* ========================================================================= */}
-          {/* TAB: DEVICE FLEET INVENTORY (Sevlex Watchâ„¢ Telemetry)                     */}
+          {/* TAB: DEVICE FLEET INVENTORY                                              */}
           {/* ========================================================================= */}
           {activeTab === "DEVICES" && (
             <DeviceFleetTab 
@@ -769,7 +774,7 @@ export default function Dashboard() {
           )}
 
           {/* ========================================================================= */}
-          {/* TAB: SHADOW AI & CLIENT AGENT DISCOVERY (AgentGuard)                      */}
+          {/* TAB: SHADOW AI & CLIENT AGENT DISCOVERY                                  */}
           {/* ========================================================================= */}
           {activeTab === "AGENTS" && (
             <AgentDiscoveryTab 
@@ -780,33 +785,33 @@ export default function Dashboard() {
           )}
 
           {/* ========================================================================= */}
-          {/* TAB 1: VISUAL POLICY LIBRARY (Clean White Datadog Styling)                */}
+          {/* TAB 1: VISUAL POLICY LIBRARY                                              */}
           {/* ========================================================================= */}
           {activeTab === "POLICY" && (
             <div className="space-y-6">
               {/* Header Card */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#0E0D17] border border-white/[0.08] p-6 rounded-2xl shadow-xl">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <Sliders size={20} className="text-[#2563EB]" />
-                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Enterprise L7 Policy Engine</h2>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-700 border border-red-200 uppercase tracking-wider font-mono">
+                    <Sliders size={20} className="text-blue-400" />
+                    <h2 className="text-xl font-bold text-white tracking-tight">Enterprise L7 Policy Engine</h2>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20 uppercase tracking-wider font-mono">
                       {blockedTools.length} Banned
                     </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider font-mono">
                       {approvalRequiredTools.length} HITL
                     </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 uppercase tracking-wider font-mono">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20 uppercase tracking-wider font-mono">
                       DLP Active
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-zinc-400">
                     Granular tool access control with real-time deep argument inspection, dual-custody human approvals, and in-flight secret redaction.
                   </p>
                 </div>
 
                 <div className="relative w-full sm:w-72">
-                  <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
+                  <Search size={14} className="absolute left-3 top-2.5 text-zinc-500" />
                   <input 
                     type="text" 
                     placeholder="Search tools (e.g. drop_table)..."
@@ -815,32 +820,32 @@ export default function Dashboard() {
                       setPolicySearch(e.target.value);
                       setExpandedServers({});
                     }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#2563EB] focus:bg-white transition"
+                    className="w-full bg-[#12111D] border border-white/[0.08] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder:text-zinc-500 outline-none font-mono focus:border-blue-500 transition"
                   />
                 </div>
               </div>
 
-              {/* ToolGuardâ„¢ & Output DLP Active Protection Bar */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono shadow-2xs">
+              {/* ToolGuard™ & Output DLP Active Protection Bar */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-[#12111D] border border-white/[0.08] rounded-2xl text-xs font-mono shadow-xl">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></div>
                   <div>
-                    <span className="text-slate-500 text-[11px] block">ToolGuard Call Guard</span>
-                    <span className="font-bold text-slate-900">DPI Argument Inspection</span>
+                    <span className="text-zinc-500 text-[11px] block">ToolGuard Call Guard</span>
+                    <span className="font-bold text-white">DPI Argument Inspection</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse shrink-0"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse shrink-0"></div>
                   <div>
-                    <span className="text-slate-500 text-[11px] block">ToolGuard Output Guard</span>
-                    <span className="font-bold text-slate-900">In-Flight Secret &amp; PII DLP</span>
+                    <span className="text-zinc-500 text-[11px] block">ToolGuard Output Guard</span>
+                    <span className="font-bold text-white">In-Flight Secret &amp; PII DLP</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shrink-0"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse shrink-0"></div>
                   <div>
-                    <span className="text-slate-500 text-[11px] block">AgentGuard HITL</span>
-                    <span className="font-bold text-slate-900">Dual-Custody Approvals</span>
+                    <span className="text-zinc-500 text-[11px] block">AgentGuard HITL</span>
+                    <span className="font-bold text-white">Dual-Custody Approvals</span>
                   </div>
                 </div>
               </div>
@@ -855,40 +860,40 @@ export default function Dashboard() {
                   const isExpanded = expandedServers[server.server] ?? (policySearch.trim() !== "");
 
                   return (
-                    <div key={server.server} className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-2xs">
+                    <div key={server.server} className="border border-white/[0.08] rounded-2xl overflow-hidden bg-[#0E0D17] shadow-xl">
                       <button 
                         onClick={() => setExpandedServers(prev => ({ ...prev, [server.server]: !isExpanded }))}
-                        className="w-full bg-slate-50/70 px-4 py-3 flex items-center justify-between hover:bg-slate-100/70 transition"
+                        className="w-full bg-[#12111D] px-4 py-3 flex items-center justify-between hover:bg-[#181726] transition cursor-pointer"
                       >
                         <div className="flex items-center gap-3">
                           <ClientBrandIcon name={server.server} size="sm" className="rounded-md shrink-0" />
-                          <h3 className="font-bold text-xs text-slate-800">
+                          <h3 className="font-bold text-xs text-white">
                             {server.server} 
-                            <span className="text-slate-500 text-[11px] font-mono ml-2 font-normal">({filteredTools.length} tools)</span>
+                            <span className="text-zinc-500 text-[11px] font-mono ml-2 font-normal">({filteredTools.length} tools)</span>
                           </h3>
                         </div>
-                        {isExpanded ? <ChevronDown size={14} className="text-slate-500" /> : <ChevronRight size={14} className="text-slate-500" />}
+                        {isExpanded ? <ChevronDown size={14} className="text-zinc-400" /> : <ChevronRight size={14} className="text-zinc-400" />}
                       </button>
                       
                       {isExpanded && (
-                        <div className="divide-y divide-slate-100">
+                        <div className="divide-y divide-white/[0.04]">
                           {filteredTools.map((tool) => {
                             const isBlocked = blockedTools.includes(tool);
                             const isHitl = approvalRequiredTools.includes(tool);
                             return (
-                              <div key={tool} className="flex items-center justify-between px-4 py-2.5 hover:bg-slate-50/50 transition group">
+                              <div key={tool} className="flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] transition group">
                                 <div className="flex-1 flex items-center gap-3">
-                                  <p className="font-mono text-xs font-medium text-slate-800 group-hover:text-[#2563EB] transition">{tool}</p>
+                                  <p className="font-mono text-xs font-medium text-zinc-200 group-hover:text-blue-400 transition">{tool}</p>
                                   {isBlocked ? (
-                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-red-50 text-red-700 border border-red-200 uppercase">
+                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-red-500/10 text-red-400 border border-red-500/20 uppercase">
                                       BLOCKED
                                     </span>
                                   ) : isHitl ? (
-                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase flex items-center gap-1">
+                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase flex items-center gap-1">
                                       <Shield size={10} /> HITL REQUIRED
                                     </span>
                                   ) : (
-                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase">
+                                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
                                       ALLOWED
                                     </span>
                                   )}
@@ -896,10 +901,10 @@ export default function Dashboard() {
                                 <div className="flex items-center gap-1.5 ml-3">
                                   <button
                                     onClick={() => setToolState(tool, "ALLOW")}
-                                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition ${
+                                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition cursor-pointer ${
                                       !isBlocked && !isHitl 
-                                        ? "bg-emerald-600 text-white shadow-2xs" 
-                                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                        ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20" 
+                                        : "bg-white/[0.06] text-zinc-400 hover:text-white hover:bg-white/[0.1]"
                                     }`}
                                     title="Permit tool execution without friction"
                                   >
@@ -907,10 +912,10 @@ export default function Dashboard() {
                                   </button>
                                   <button
                                     onClick={() => setToolState(tool, "HITL")}
-                                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition flex items-center gap-1 ${
+                                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition flex items-center gap-1 cursor-pointer ${
                                       isHitl 
-                                        ? "bg-[#2563EB] text-white shadow-2xs" 
-                                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                        ? "bg-blue-600 text-white shadow-md shadow-blue-600/20" 
+                                        : "bg-white/[0.06] text-zinc-400 hover:text-white hover:bg-white/[0.1]"
                                     }`}
                                     title="Require human dual-custody authorization before running"
                                   >
@@ -918,10 +923,10 @@ export default function Dashboard() {
                                   </button>
                                   <button
                                     onClick={() => setToolState(tool, "BLOCK")}
-                                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition ${
+                                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold font-mono transition cursor-pointer ${
                                       isBlocked 
-                                        ? "bg-red-600 text-white shadow-2xs" 
-                                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                        ? "bg-red-600 text-white shadow-md shadow-red-600/20" 
+                                        : "bg-white/[0.06] text-zinc-400 hover:text-white hover:bg-white/[0.1]"
                                     }`}
                                     title="Hard block tool calls immediately"
                                   >
@@ -951,57 +956,57 @@ export default function Dashboard() {
           {/* TAB 2: AUDIT LOGS (Datadog Log Explorer Style with Facets)                */}
           {/* ========================================================================= */}
           {activeTab === "AUDIT" && (
-            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs flex flex-col">
+            <div className="bg-[#0E0D17] border border-white/[0.08] rounded-2xl overflow-hidden shadow-xl flex flex-col">
               
               {/* Top Toolbar */}
-              <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-50 gap-3">
+              <div className="p-4 border-b border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between bg-[#141322] gap-3">
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                   <div className="relative flex-1 sm:w-80">
-                    <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
+                    <Search size={14} className="absolute left-3 top-2.5 text-zinc-500" />
                     <input 
                       type="text" 
                       placeholder="Search logs by tool name, payload, or user..."
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#2563EB]"
+                      className="w-full bg-[#0A0910] border border-white/[0.08] rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-zinc-500 outline-none font-mono focus:border-blue-500"
                     />
                   </div>
 
                   {/* Status Facet Filter */}
-                  <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 text-xs font-mono">
+                  <div className="flex items-center bg-[#0A0910] border border-white/[0.08] rounded-xl p-0.5 text-xs font-mono">
                     <button 
                       onClick={() => setStatusFilter("ALL")}
-                      className={`px-2 py-1 rounded transition ${statusFilter === "ALL" ? "bg-slate-900 text-white font-semibold" : "text-slate-500"}`}
+                      className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${statusFilter === "ALL" ? "bg-blue-600 text-white font-semibold shadow-xs" : "text-zinc-400 hover:text-white"}`}
                     >
                       All ({logs.length})
                     </button>
                     <button 
                       onClick={() => setStatusFilter("ALLOWED")}
-                      className={`px-2 py-1 rounded transition ${statusFilter === "ALLOWED" ? "bg-emerald-100 text-emerald-800 font-semibold" : "text-slate-500"}`}
+                      className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${statusFilter === "ALLOWED" ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-zinc-400 hover:text-white"}`}
                     >
                       Allowed
                     </button>
                     <button 
                       onClick={() => setStatusFilter("BLOCKED")}
-                      className={`px-2 py-1 rounded transition ${statusFilter === "BLOCKED" ? "bg-red-100 text-red-800 font-semibold" : "text-slate-500"}`}
+                      className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${statusFilter === "BLOCKED" ? "bg-red-500/20 text-red-300 font-semibold" : "text-zinc-400 hover:text-white"}`}
                     >
                       Blocked
                     </button>
                     <button 
                       onClick={() => setStatusFilter("DLP_REDACTED")}
-                      className={`px-2 py-1 rounded transition ${statusFilter === "DLP_REDACTED" ? "bg-purple-100 text-purple-800 font-semibold" : "text-slate-500"}`}
+                      className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${statusFilter === "DLP_REDACTED" ? "bg-purple-500/20 text-purple-300 font-semibold" : "text-zinc-400 hover:text-white"}`}
                     >
                       DLP
                     </button>
                     <button 
                       onClick={() => setStatusFilter("HITL_PENDING")}
-                      className={`px-2 py-1 rounded transition ${statusFilter === "HITL_PENDING" ? "bg-blue-100 text-blue-800 font-semibold" : "text-slate-500"}`}
+                      className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${statusFilter === "HITL_PENDING" ? "bg-blue-500/20 text-blue-300 font-semibold" : "text-zinc-400 hover:text-white"}`}
                     >
                       HITL
                     </button>
                     <button 
                       onClick={() => setStatusFilter("CIRCUIT_BROKEN")}
-                      className={`px-2 py-1 rounded transition ${statusFilter === "CIRCUIT_BROKEN" ? "bg-amber-100 text-amber-800 font-semibold" : "text-slate-500"}`}
+                      className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${statusFilter === "CIRCUIT_BROKEN" ? "bg-amber-500/20 text-amber-300 font-semibold" : "text-zinc-400 hover:text-white"}`}
                     >
                       Breaker
                     </button>
@@ -1010,19 +1015,19 @@ export default function Dashboard() {
 
                 <button 
                   onClick={exportLogsToCsv}
-                  className="flex items-center gap-1.5 bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-800 transition"
+                  className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-lg shadow-blue-600/25 cursor-pointer"
                 >
-                  <Download size={13} /> Export SOC-2 CSV
+                  <Download size={13} /> Export SOC 2 CSV
                 </button>
               </div>
 
               {/* Logs Table with JSON Drawer */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+              <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.08]">
                 
                 {/* Left (2 cols): Stream Table */}
                 <div className="lg:col-span-2 overflow-x-auto max-h-[600px] overflow-y-auto">
                   <table className="w-full text-left border-collapse text-xs">
-                    <thead className="sticky top-0 bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px] z-10">
+                    <thead className="sticky top-0 bg-[#141322] border-b border-white/[0.08] text-zinc-400 uppercase font-mono text-[10px] z-10">
                       <tr>
                         <th className="py-2.5 px-4 font-medium">Status</th>
                         <th className="py-2.5 px-4 font-medium">Timestamp</th>
@@ -1031,46 +1036,46 @@ export default function Dashboard() {
                         <th className="py-2.5 px-4 font-medium">Payload Preview</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 font-mono text-slate-700">
+                    <tbody className="divide-y divide-white/[0.04] font-mono text-zinc-300">
                       {filteredLogs.length > 0 ? filteredLogs.map((log) => (
                         <tr 
                           key={log.id} 
                           onClick={() => setSelectedLog(log)}
-                          className={`hover:bg-slate-50 transition cursor-pointer ${
-                            selectedLog?.id === log.id ? "bg-blue-50/70 border-l-2 border-[#2563EB]" : ""
+                          className={`hover:bg-white/[0.02] transition cursor-pointer ${
+                            selectedLog?.id === log.id ? "bg-blue-950/40 border-l-2 border-blue-500" : ""
                           }`}
                         >
                           <td className="py-2.5 px-4">
                             {log.status === "BLOCKED" ? (
-                              <span className="inline-flex items-center gap-1 text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                              <span className="inline-flex items-center gap-1 text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
                                 <ShieldAlert size={11} /> BLOCKED
                               </span>
                             ) : log.status === "CIRCUIT_BROKEN" ? (
-                              <span className="inline-flex items-center gap-1 text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                              <span className="inline-flex items-center gap-1 text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
                                 <Zap size={11} /> CIRCUIT BROKEN
                               </span>
                             ) : log.status === "DLP_REDACTED" ? (
-                              <span className="inline-flex items-center gap-1 text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                              <span className="inline-flex items-center gap-1 text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
                                 <Lock size={11} /> DLP REDACTED
                               </span>
                             ) : log.status === "HITL_PENDING" ? (
-                              <span className="inline-flex items-center gap-1 text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                              <span className="inline-flex items-center gap-1 text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
                                 <Shield size={11} /> HITL PENDING
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                              <span className="inline-flex items-center gap-1 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
                                 <ShieldCheck size={11} /> ALLOWED
                               </span>
                             )}
                           </td>
-                          <td className="py-2.5 px-4 text-slate-500 text-[11px] whitespace-nowrap">{log.timestamp}</td>
-                          <td className="py-2.5 px-4 text-blue-700 font-medium">@{log.user_id || "meetp"}</td>
-                          <td className="py-2.5 px-4 font-bold text-slate-900">{log.tool_name}</td>
-                          <td className="py-2.5 px-4 text-slate-500 truncate max-w-xs">{log.raw_request}</td>
+                          <td className="py-2.5 px-4 text-zinc-500 text-[11px] whitespace-nowrap">{log.timestamp}</td>
+                          <td className="py-2.5 px-4 text-blue-400 font-medium">@{log.user_id || "meetp"}</td>
+                          <td className="py-2.5 px-4 font-bold text-white">{log.tool_name}</td>
+                          <td className="py-2.5 px-4 text-zinc-400 truncate max-w-xs">{log.raw_request}</td>
                         </tr>
                       )) : (
                         <tr>
-                          <td colSpan={5} className="py-12 text-center text-slate-500 text-xs font-mono">
+                          <td colSpan={5} className="py-12 text-center text-zinc-500 text-xs font-mono">
                             No audit receipts found matching criteria.
                           </td>
                         </tr>
@@ -1080,17 +1085,17 @@ export default function Dashboard() {
                 </div>
 
                 {/* Right (1 col): JSON Inspector Drawer */}
-                <div className="bg-slate-50/50 p-4 flex flex-col justify-between max-h-[600px] overflow-y-auto">
+                <div className="bg-[#0A0910] p-4 flex flex-col justify-between max-h-[600px] overflow-y-auto">
                   {selectedLog ? (
                     <div>
-                      <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
-                        <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5 font-mono">
-                          <Eye size={13} className="text-[#2563EB]" /> Event #{selectedLog.id} Detail
+                      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] mb-3">
+                        <span className="text-xs font-bold text-white flex items-center gap-1.5 font-mono">
+                          <Eye size={13} className="text-blue-400" /> Event #{selectedLog.id} Forensic Detail
                         </span>
                         <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                           selectedLog.status === "BLOCKED" 
-                            ? "bg-red-100 text-red-800" 
-                            : "bg-emerald-100 text-emerald-800"
+                            ? "bg-red-500/20 text-red-300" 
+                            : "bg-emerald-500/20 text-emerald-300"
                         }`}>
                           {selectedLog.status}
                         </span>
@@ -1098,20 +1103,20 @@ export default function Dashboard() {
 
                       <div className="space-y-3 text-xs font-mono">
                         <div>
-                          <span className="text-slate-400 text-[10px] uppercase font-bold">Tool Name:</span>
-                          <p className="text-slate-900 font-bold">{selectedLog.tool_name}</p>
+                          <span className="text-zinc-500 text-[10px] uppercase font-bold">Tool Name:</span>
+                          <p className="text-white font-bold">{selectedLog.tool_name}</p>
                         </div>
                         <div>
-                          <span className="text-slate-400 text-[10px] uppercase font-bold">Authenticated Identity:</span>
-                          <p className="text-blue-700">@{selectedLog.user_id || "meetp"}</p>
+                          <span className="text-zinc-500 text-[10px] uppercase font-bold">Authenticated Identity:</span>
+                          <p className="text-blue-400">@{selectedLog.user_id || "meetp"}</p>
                         </div>
                         <div>
-                          <span className="text-slate-400 text-[10px] uppercase font-bold">Timestamp:</span>
-                          <p className="text-slate-700">{selectedLog.timestamp}</p>
+                          <span className="text-zinc-500 text-[10px] uppercase font-bold">Timestamp:</span>
+                          <p className="text-zinc-300">{selectedLog.timestamp}</p>
                         </div>
                         <div>
-                          <span className="text-slate-400 text-[10px] uppercase font-bold">Layer 7 Deep Packet Payload:</span>
-                          <pre className="mt-1.5 p-3 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-800 font-mono whitespace-pre-wrap break-all overflow-x-auto max-h-60 shadow-xs">
+                          <span className="text-zinc-500 text-[10px] uppercase font-bold">Layer 7 Deep Packet Payload:</span>
+                          <pre className="mt-1.5 p-3 rounded-xl bg-[#060609] border border-white/[0.08] text-[11px] text-emerald-400 font-mono whitespace-pre-wrap break-all overflow-x-auto max-h-60 shadow-inner">
                             {(() => {
                               try {
                                 return JSON.stringify(JSON.parse(selectedLog.raw_request), null, 2);
@@ -1123,24 +1128,24 @@ export default function Dashboard() {
                         </div>
 
                         {selectedLog.entry_hash && (
-                          <div className="p-2.5 rounded-lg bg-blue-50/60 border border-blue-200/80 text-[10px] space-y-1.5">
-                            <div className="flex items-center justify-between text-blue-900 font-bold">
+                          <div className="p-3 rounded-xl bg-blue-950/30 border border-blue-500/30 text-[10px] space-y-1.5">
+                            <div className="flex items-center justify-between text-blue-200 font-bold">
                               <span className="flex items-center gap-1"><Lock size={10} /> SOC 2 Cryptographic Hash Link</span>
-                              <span className="text-[9px] text-blue-600 font-mono">SHA-256</span>
+                              <span className="text-[9px] text-blue-400 font-mono">SHA-256</span>
                             </div>
-                            <div className="font-mono text-slate-600 break-all text-[9px]">
-                              <span className="text-slate-400">Prev: </span>{selectedLog.prev_hash || "0000000000000000000000000000000000000000000000000000000000000000"}
+                            <div className="font-mono text-zinc-400 break-all text-[9px]">
+                              <span className="text-zinc-500">Prev: </span>{selectedLog.prev_hash || "0000000000000000000000000000000000000000000000000000000000000000"}
                             </div>
-                            <div className="font-mono text-slate-800 font-bold break-all text-[9px]">
-                              <span className="text-slate-400 font-normal">Hash: </span>{selectedLog.entry_hash}
+                            <div className="font-mono text-white font-bold break-all text-[9px]">
+                              <span className="text-zinc-500 font-normal">Hash: </span>{selectedLog.entry_hash}
                             </div>
                           </div>
                         )}
                       </div>
                     </div>
                   ) : (
-                    <div className="py-20 text-center text-slate-400 text-xs font-mono flex flex-col items-center justify-center">
-                      <Eye size={24} className="mb-2 opacity-40 text-slate-400" />
+                    <div className="py-20 text-center text-zinc-500 text-xs font-mono flex flex-col items-center justify-center">
+                      <Eye size={24} className="mb-2 opacity-40 text-zinc-500" />
                       <p>Select any audit receipt on the left to inspect full Layer 7 JSON-RPC forensic packet.</p>
                     </div>
                   )}
@@ -1197,7 +1202,7 @@ export default function Dashboard() {
 
       {/* Global Toast Notification */}
       {pingStatus && (
-        <div className="fixed bottom-6 right-6 z-50 p-3.5 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-white shadow-2xl flex items-center gap-2">
+        <div className="fixed bottom-6 right-6 z-50 p-3.5 bg-[#0E0D17] border border-white/[0.12] rounded-xl text-xs font-mono text-white shadow-2xl flex items-center gap-2 backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
           <span>{pingStatus}</span>
         </div>
@@ -1206,4 +1211,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

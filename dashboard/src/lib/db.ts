@@ -53,8 +53,9 @@ export function getSqliteDb(readonly = false): any {
     return new DatabaseSync(dbPath, readonly ? { readOnly: true } : {});
   } catch {
     try {
-      // 2. Fallback to better-sqlite3 if present in environment
-      const Database = require('better-sqlite3');
+      // 2. Fallback to better-sqlite3 if present in environment (dynamic require to prevent webpack bundle failure)
+      const req = eval('require');
+      const Database = req('better-sqlite3');
       return new Database(dbPath, readonly ? { readonly: true } : {});
     } catch {
       return null;

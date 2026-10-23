@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F8F9FA;
-  --foreground: #0F172A;
-  --sidebar-bg: #0F121C;
-  --sevlex-primary: #2563EB;
-  --sevlex-cobalt: #1D4ED8;
+  --background: #08080C;
+  --foreground: #F8FAFC;
+  --sidebar-bg: #0B0A12;
+  --surface: #0E0D17;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --sevlex-primary: #3B82F6;
+  --sevlex-cobalt: #2563EB;
 }
 
 @theme inline {
@@ -22,23 +24,35 @@ body {
   overflow-x: hidden;
 }
 
-/* Subtle enterprise scrollbar */
+/* Subtle sleek dark scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: #08080C;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #232232;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #383650;
 }
 
-/* Sevlex Electric Cobalt Enterprise Gradient */
-.sevlex-gradient, .datadog-gradient {
+/* Sevlex Cyber Defense Gradient */
+.sevlex-gradient {
   background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 45%, #2563EB 80%, #3B82F6 100%);
+}
+
+.glow-blue {
+  box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+}
+
+.glow-red {
+  box-shadow: 0 0 25px -5px rgba(239, 68, 68, 0.25);
 }

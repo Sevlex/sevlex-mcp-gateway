@@ -65,27 +65,27 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#0E0D17] border border-white/[0.08] p-6 rounded-2xl shadow-xl">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <HardDrive className="text-[#2563EB]" size={22} />
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Endpoint Fleet &amp; Device Inventory</h2>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
+            <HardDrive className="text-blue-400" size={22} />
+            <h2 className="text-xl font-bold text-white tracking-tight">Endpoint Fleet &amp; Device Inventory</h2>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider font-mono">
               Sevlex Watch™ Telemetry
             </span>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-zinc-400">
             Real-time telemetry and tamper-resistant auto-healing across all engineering laptops running AI tools.
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>{devices.filter(d => d.daemonStatus === "ONLINE").length}/{devices.length} Daemons Active</span>
           </div>
           <button 
             onClick={() => setShowEnrollModal(true)}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold transition shadow-xs"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition shadow-lg shadow-blue-600/25 cursor-pointer"
           >
             <Plus size={14} /> Enroll New Host
           </button>
@@ -94,68 +94,68 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
 
       {/* KPI Bento Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Managed Laptops</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Managed Laptops</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-slate-900 font-mono">{devices.length}</span>
-            <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">Enrolled</span>
+            <span className="text-2xl font-extrabold text-white font-mono">{devices.length}</span>
+            <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 font-mono">Enrolled</span>
           </div>
         </div>
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Watcher Auto-Heal</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Watcher Auto-Heal</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-emerald-600 font-mono">&lt; 30ms</span>
-            <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">Instant Reset</span>
+            <span className="text-2xl font-extrabold text-emerald-400 font-mono">&lt; 30ms</span>
+            <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 font-mono">Instant Reset</span>
           </div>
         </div>
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Policy Sync Health</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Policy Sync Health</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-slate-900 font-mono">98.2%</span>
-            <span className="text-[10px] text-slate-600 font-semibold bg-slate-100 px-2 py-0.5 rounded border border-slate-200 font-mono">v2.4.1</span>
+            <span className="text-2xl font-extrabold text-white font-mono">98.2%</span>
+            <span className="text-[10px] text-zinc-300 font-semibold bg-white/[0.06] px-2 py-0.5 rounded-md border border-white/[0.08] font-mono">v1.0.5</span>
           </div>
         </div>
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Shielded AI Clients</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Shielded AI Clients</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-[#2563EB] font-mono">15 Active</span>
-            <span className="text-[10px] text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-mono">Cursor/Claude</span>
+            <span className="text-2xl font-extrabold text-blue-400 font-mono">15 Active</span>
+            <span className="text-[10px] text-blue-400 font-semibold bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20 font-mono">Cursor/Claude</span>
           </div>
         </div>
       </div>
 
       {/* Main Table Card */}
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+      <div className="bg-[#0E0D17] border border-white/[0.08] rounded-2xl overflow-hidden shadow-xl">
         {/* Toolbar */}
-        <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="p-4 border-b border-white/[0.08] bg-[#141322] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div className="relative w-full sm:w-80">
-            <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
+            <Search size={14} className="absolute left-3 top-2.5 text-zinc-500" />
             <input 
               type="text" 
               placeholder="Filter by hostname, engineer, OS, or IP..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 outline-none font-mono focus:border-[#2563EB]"
+              className="w-full bg-[#0A0910] border border-white/[0.08] rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-zinc-500 outline-none font-mono focus:border-blue-500"
             />
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 text-xs font-mono">
+            <div className="flex items-center bg-[#0A0910] border border-white/[0.08] rounded-xl p-0.5 text-xs font-mono">
               <button 
                 onClick={() => setStatusFilter("ALL")}
-                className={`px-3 py-1 rounded transition ${statusFilter === "ALL" ? "bg-slate-900 text-white font-semibold" : "text-slate-500"}`}
+                className={`px-3 py-1 rounded-lg transition cursor-pointer ${statusFilter === "ALL" ? "bg-blue-600 text-white font-semibold" : "text-zinc-400 hover:text-white"}`}
               >
                 All ({devices.length})
               </button>
               <button 
                 onClick={() => setStatusFilter("ONLINE")}
-                className={`px-3 py-1 rounded transition ${statusFilter === "ONLINE" ? "bg-emerald-100 text-emerald-800 font-semibold" : "text-slate-500"}`}
+                className={`px-3 py-1 rounded-lg transition cursor-pointer ${statusFilter === "ONLINE" ? "bg-emerald-500/20 text-emerald-300 font-semibold" : "text-zinc-400 hover:text-white"}`}
               >
                 Online
               </button>
               <button 
                 onClick={() => setStatusFilter("DRIFT")}
-                className={`px-3 py-1 rounded transition ${statusFilter === "DRIFT" ? "bg-amber-100 text-amber-800 font-semibold" : "text-slate-500"}`}
+                className={`px-3 py-1 rounded-lg transition cursor-pointer ${statusFilter === "DRIFT" ? "bg-amber-500/20 text-amber-300 font-semibold" : "text-zinc-400 hover:text-white"}`}
               >
                 Drift Detected
               </button>
@@ -167,7 +167,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-mono text-[10px]">
+              <tr className="bg-[#141322] border-b border-white/[0.08] text-zinc-400 uppercase font-mono text-[10px]">
                 <th className="py-3 px-4 font-medium">Device &amp; Hostname</th>
                 <th className="py-3 px-4 font-medium">Assigned Engineer</th>
                 <th className="py-3 px-4 font-medium">OS Platform</th>
@@ -178,28 +178,28 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                 <th className="py-3 px-4 font-medium text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-mono text-slate-700">
+            <tbody className="divide-y divide-white/[0.04] font-mono text-zinc-300">
               {filteredDevices.map((dev) => (
-                <tr key={dev.id} className="hover:bg-slate-50/80 transition">
+                <tr key={dev.id} className="hover:bg-white/[0.02] transition">
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2">
-                      <Laptop size={15} className={dev.isLocal ? "text-[#2563EB]" : "text-slate-400"} />
+                      <Laptop size={15} className={dev.isLocal ? "text-blue-400" : "text-zinc-500"} />
                       <div>
-                        <span className="font-bold text-slate-900 block">{dev.hostname}</span>
-                        <span className="text-[10px] text-slate-500 font-mono">{dev.ip}</span>
+                        <span className="font-bold text-white block">{dev.hostname}</span>
+                        <span className="text-[10px] text-zinc-500 font-mono">{dev.ip}</span>
                       </div>
                       {dev.isLocal && (
-                        <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-blue-100 text-[#2563EB] border border-blue-200">
+                        <span className="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
                           THIS HOST
                         </span>
                       )}
                     </div>
                   </td>
                   <td className="py-3 px-4">
-                    <span className="font-bold text-blue-700">@{dev.user}</span>
-                    <span className="block text-[10px] text-slate-500">{dev.department}</span>
+                    <span className="font-bold text-blue-400">@{dev.user}</span>
+                    <span className="block text-[10px] text-zinc-500">{dev.department}</span>
                   </td>
-                  <td className="py-3 px-4 text-slate-600 text-[11px]">
+                  <td className="py-3 px-4 text-zinc-300 text-[11px]">
                     <div className="flex items-center gap-1.5">
                       <ClientBrandIcon name={dev.os.toLowerCase().includes("mac") || dev.os.toLowerCase().includes("darwin") ? "macos" : "windows"} size="xs" />
                       <span>{dev.os}</span>
@@ -207,12 +207,12 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                   </td>
                   <td className="py-3 px-4">
                     {dev.daemonStatus === "ONLINE" ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         ONLINE ({dev.autoHealLatency})
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
                         <AlertTriangle size={11} /> DRIFT DETECTED
                       </span>
                     )}
@@ -220,7 +220,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                   <td className="py-3 px-4">
                     <div className="flex flex-wrap gap-1.5 max-w-xs">
                       {dev.shieldedClients.map((client, idx) => (
-                        <span key={idx} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] bg-slate-50 text-slate-800 border border-slate-200 font-sans font-medium">
+                        <span key={idx} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] bg-[#141322] text-zinc-200 border border-white/[0.08] font-sans font-medium">
                           <ClientBrandIcon name={client} size="xs" />
                           <span>{client}</span>
                         </span>
@@ -228,15 +228,15 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                     </div>
                   </td>
                   <td className="py-3 px-4">
-                    <span className="font-mono text-[11px] text-slate-800 font-semibold">{dev.policyVersion}</span>
+                    <span className="font-mono text-[11px] text-zinc-200 font-semibold">{dev.policyVersion}</span>
                   </td>
-                  <td className="py-3 px-4 text-right text-slate-500 text-[11px]">
+                  <td className="py-3 px-4 text-right text-zinc-400 text-[11px]">
                     {dev.lastHeartbeat}
                   </td>
                   <td className="py-3 px-4 text-center">
                     <button 
                       onClick={() => handleForceSync(dev.hostname)}
-                      className="px-2.5 py-1 rounded bg-slate-100 hover:bg-blue-50 hover:text-[#2563EB] hover:border-blue-200 border border-slate-200 text-[11px] font-semibold transition"
+                      className="px-2.5 py-1 rounded-lg bg-white/[0.06] hover:bg-blue-600 hover:text-white border border-white/[0.08] text-[11px] font-semibold transition cursor-pointer text-zinc-300"
                       title="Force immediate policy refresh and auto-heal verification"
                     >
                       Sync Policy
@@ -251,29 +251,29 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
 
       {/* Onboarding & Device Enrollment Modal */}
       {showEnrollModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[92vh]">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-[#0E0D17] border border-white/[0.1] rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[92vh]">
             
             {/* Modal Header */}
-            <div className="p-6 border-b border-slate-100 flex items-start justify-between bg-slate-50/50">
+            <div className="p-6 border-b border-white/[0.08] flex items-start justify-between bg-[#141322]">
               <div className="flex items-start gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/sevlex-icon.png" alt="Sevlex" className="w-9 h-9 object-contain shrink-0 mt-0.5 rounded-lg shadow-xs" />
+                <img src="/sevlex-icon.png" alt="Sevlex" className="w-9 h-9 object-contain shrink-0 mt-0.5 rounded-xl shadow-md" />
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                  <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
                     Enroll Device to Sevlex Gateway
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-bold uppercase">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold uppercase">
                       L7 Watch
                     </span>
                   </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-zinc-400 mt-0.5">
                     Connect an engineering laptop or deploy across the entire fleet in under 30 seconds.
                   </p>
                 </div>
               </div>
               <button 
                 onClick={() => setShowEnrollModal(false)}
-                className="text-slate-400 hover:text-slate-700 transition p-1 rounded-lg hover:bg-slate-100"
+                className="text-zinc-400 hover:text-white transition p-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -283,20 +283,20 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
             <div className="p-6 overflow-y-auto space-y-6">
               
               {/* Method Switcher */}
-              <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-1 text-xs font-mono">
+              <div className="flex rounded-xl border border-white/[0.08] bg-[#0A0910] p-1 text-xs font-mono">
                 <button
                   onClick={() => setEnrollTab("quickstart")}
-                  className={`flex-1 py-1.5 rounded-md font-semibold transition flex items-center justify-center gap-1.5 ${
-                    enrollTab === "quickstart" ? "bg-white text-slate-900 shadow-xs border border-slate-200" : "text-slate-500 hover:text-slate-800"
+                  className={`flex-1 py-1.5 rounded-lg font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                    enrollTab === "quickstart" ? "bg-blue-600 text-white shadow-md shadow-blue-600/25" : "text-zinc-400 hover:text-white"
                   }`}
                 >
-                  <Terminal size={13} className="text-[#2563EB]" />
+                  <Terminal size={13} className="text-blue-200" />
                   <span>1-Click Terminal Quickstart</span>
                 </button>
                 <button
                   onClick={() => setEnrollTab("mdm")}
-                  className={`flex-1 py-1.5 rounded-md font-semibold transition flex items-center justify-center gap-2 ${
-                    enrollTab === "mdm" ? "bg-white text-slate-900 shadow-xs border border-slate-200" : "text-slate-500 hover:text-slate-800"
+                  className={`flex-1 py-1.5 rounded-lg font-semibold transition flex items-center justify-center gap-2 cursor-pointer ${
+                    enrollTab === "mdm" ? "bg-blue-600 text-white shadow-md shadow-blue-600/25" : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center -space-x-1 shrink-0">
@@ -307,8 +307,8 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                 </button>
                 <button
                   onClick={() => setEnrollTab("manual")}
-                  className={`flex-1 py-1.5 rounded-md font-semibold transition flex items-center justify-center gap-1.5 ${
-                    enrollTab === "manual" ? "bg-white text-slate-900 shadow-xs border border-slate-200" : "text-slate-500 hover:text-slate-800"
+                  className={`flex-1 py-1.5 rounded-lg font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                    enrollTab === "manual" ? "bg-blue-600 text-white shadow-md shadow-blue-600/25" : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center -space-x-1 shrink-0">
@@ -323,16 +323,16 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
               {enrollTab === "quickstart" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
                       Target Operating System
                     </span>
-                    <div className="flex gap-1.5 bg-slate-100 p-1 rounded-lg text-[11px] font-mono">
+                    <div className="flex gap-1.5 bg-[#0A0910] border border-white/[0.08] p-1 rounded-xl text-[11px] font-mono">
                       <button
                         onClick={() => setEnrollPlatform("windows")}
-                        className={`flex items-center gap-1.5 px-3 py-1 rounded-md transition ${
+                        className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition cursor-pointer ${
                           enrollPlatform === "windows" 
-                            ? "bg-white text-slate-900 font-bold shadow-2xs border border-slate-200" 
-                            : "text-slate-500 hover:text-slate-800"
+                            ? "bg-blue-600 text-white font-bold" 
+                            : "text-zinc-400 hover:text-white"
                         }`}
                       >
                         <ClientBrandIcon name="windows" size="xs" />
@@ -340,10 +340,10 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                       </button>
                       <button
                         onClick={() => setEnrollPlatform("macos")}
-                        className={`flex items-center gap-1.5 px-3 py-1 rounded-md transition ${
+                        className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition cursor-pointer ${
                           enrollPlatform === "macos" 
-                            ? "bg-white text-slate-900 font-bold shadow-2xs border border-slate-200" 
-                            : "text-slate-500 hover:text-slate-800"
+                            ? "bg-blue-600 text-white font-bold" 
+                            : "text-zinc-400 hover:text-white"
                         }`}
                       >
                         <div className="flex items-center gap-1">
@@ -356,9 +356,9 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                   </div>
 
                   {/* Command Snippet */}
-                  <div className="p-3.5 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs relative group border border-slate-800">
-                    <p className="text-[10px] text-slate-400 mb-1.5 uppercase font-sans font-bold">Run as Administrator in terminal:</p>
-                    <code className="text-blue-400 block break-all select-all pr-16 text-[11px]">
+                  <div className="p-3.5 rounded-xl bg-[#060609] text-zinc-100 font-mono text-xs relative group border border-white/[0.08]">
+                    <p className="text-[10px] text-zinc-400 mb-1.5 uppercase font-sans font-bold">Run as Administrator in terminal:</p>
+                    <code className="text-emerald-400 block break-all select-all pr-16 text-[11px]">
                       {enrollPlatform === "windows"
                         ? "irm https://raw.githubusercontent.com/meetpanchal-sevlex/sevlex-mcp-gateway/main/deploy/deploy-mdm.ps1 | iex"
                         : "curl -fsSL https://raw.githubusercontent.com/meetpanchal-sevlex/sevlex-mcp-gateway/main/deploy/deploy-mdm.sh | bash"}
@@ -373,7 +373,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                         setPingStatus("📋 Copied enrollment command to clipboard!");
                         setTimeout(() => setCopiedEnroll(false), 3000);
                       }}
-                      className="absolute right-3 top-3 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-sans font-medium flex items-center gap-1 transition"
+                      className="absolute right-3 top-3 px-2 py-1 rounded-lg bg-white/[0.08] hover:bg-white/[0.15] text-white text-[11px] font-sans font-medium flex items-center gap-1 transition cursor-pointer"
                     >
                       {copiedEnroll ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
                       {copiedEnroll ? "Copied" : "Copy"}
@@ -381,37 +381,37 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                   </div>
 
                   {/* 4-Step Explanation */}
-                  <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2.5 text-xs">
-                    <p className="font-bold text-slate-800">What happens when this command runs:</p>
-                    <ul className="space-y-1.5 text-slate-600 font-mono text-[11px]">
+                  <div className="p-4 rounded-xl border border-white/[0.08] bg-[#12111D] space-y-2.5 text-xs">
+                    <p className="font-bold text-white">What happens when this command runs:</p>
+                    <ul className="space-y-1.5 text-zinc-300 font-mono text-[11px]">
                       <li className="flex items-start gap-2">
-                        <span className="text-[#2563EB] font-bold">1. Scan:</span>
+                        <span className="text-blue-400 font-bold">1. Scan:</span>
                         <span className="flex items-center gap-1.5 flex-wrap">
                           <span>Auto-detects</span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white border border-slate-200 font-sans font-bold text-slate-900 text-[10px] shadow-2xs">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="cursor" size="xs" /> Cursor
                           </span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white border border-slate-200 font-sans font-bold text-slate-900 text-[10px] shadow-2xs">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="claude" size="xs" /> Claude Desktop
                           </span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white border border-slate-200 font-sans font-bold text-slate-900 text-[10px] shadow-2xs">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="claude" size="xs" /> Claude Code CLI
                           </span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white border border-slate-200 font-sans font-bold text-slate-900 text-[10px] shadow-2xs">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="windsurf" size="xs" /> Windsurf
                           </span>
                         </span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-[#2563EB] font-bold">2. Wrap:</span>
-                        <span>Injects <code>sevlex-firewall</code> proxy without breaking developer's existing tools.</span>
+                        <span className="text-blue-400 font-bold">2. Wrap:</span>
+                        <span>Injects Layer 7 proxy without breaking existing MCP server tools.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-[#2563EB] font-bold">3. Daemon:</span>
+                        <span className="text-blue-400 font-bold">3. Daemon:</span>
                         <span>Starts 30ms auto-heal background service with tamper resistance.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-emerald-600 font-bold">4. Live:</span>
+                        <span className="text-emerald-400 font-bold">4. Live:</span>
                         <span>Reports device specs &amp; heartbeats to this dashboard immediately.</span>
                       </li>
                     </ul>
@@ -422,32 +422,32 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
               {/* Tab 2: MDM Rollout */}
               {enrollTab === "mdm" && (
                 <div className="space-y-4">
-                  <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/60 text-xs text-blue-900 leading-relaxed">
-                    <strong className="font-bold block text-slate-900 mb-1">Zero-Touch IT Fleet Deployment</strong>
+                  <div className="p-4 rounded-xl border border-blue-500/20 bg-blue-950/20 text-xs text-blue-200 leading-relaxed">
+                    <strong className="font-bold block text-white mb-1">Zero-Touch IT Fleet Deployment</strong>
                     Push Sevlex silently across 50-500 employee laptops using your existing corporate MDM portal. No employee intervention or terminal access required.
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 transition shadow-xs flex items-center justify-between">
+                    <div className="p-4 rounded-xl border border-white/[0.08] bg-[#12111D] hover:border-blue-500/40 transition shadow-xl flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <ClientBrandIcon name="microsoft" size="lg" className="rounded-md shrink-0" />
                         <div>
-                          <p className="text-xs font-bold text-slate-900">Microsoft Intune</p>
-                          <p className="text-[11px] text-slate-500 font-mono mt-0.5">sevlex.intunewin</p>
+                          <p className="text-xs font-bold text-white">Microsoft Intune</p>
+                          <p className="text-[11px] text-zinc-400 font-mono mt-0.5">sevlex.intunewin</p>
                         </div>
                       </div>
-                      <span className="text-[10px] font-bold text-[#2563EB] bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-mono">Win32</span>
+                      <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 font-mono">Win32</span>
                     </div>
 
-                    <div className="p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 transition shadow-xs flex items-center justify-between">
+                    <div className="p-4 rounded-xl border border-white/[0.08] bg-[#12111D] hover:border-blue-500/40 transition shadow-xl flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <ClientBrandIcon name="jamf" size="lg" className="rounded-md shrink-0" />
                         <div>
-                          <p className="text-xs font-bold text-slate-900">Jamf Pro</p>
-                          <p className="text-[11px] text-slate-500 font-mono mt-0.5">sevlex.pkg</p>
+                          <p className="text-xs font-bold text-white">Jamf Pro</p>
+                          <p className="text-[11px] text-zinc-400 font-mono mt-0.5">sevlex.pkg</p>
                         </div>
                       </div>
-                      <span className="text-[10px] font-bold text-[#2563EB] bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-mono">macOS PKG</span>
+                      <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 font-mono">macOS PKG</span>
                     </div>
                   </div>
 
@@ -457,7 +457,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                         setShowEnrollModal(false);
                         onNavigateToMdm();
                       }}
-                      className="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs"
+                      className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25 cursor-pointer"
                     >
                       Open Rollout Packages Tab <ArrowRight size={14} />
                     </button>
@@ -468,16 +468,16 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
               {/* Tab 3: Manual MCP JSON */}
               {enrollTab === "manual" && (
                 <div className="space-y-3">
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-zinc-400">
                     If testing directly in Cursor or Claude Desktop without a background daemon, add this to your local config:
                   </p>
-                  <pre className="p-3.5 rounded-xl bg-slate-900 text-blue-300 font-mono text-[11px] overflow-x-auto border border-slate-800">
+                  <pre className="p-3.5 rounded-xl bg-[#060609] text-blue-300 font-mono text-[11px] overflow-x-auto border border-white/[0.08]">
 {`"mcpServers": {
   "sevlex-firewall": {
     "command": "npx",
-    "args": ["-y", "@sevlex/gateway"],
+    "args": ["-y", "sevlex", "demo"],
     "env": {
-      "SEVLEX_GATEWAY_URL": "http://localhost:3000"
+      "SEVLEX_GATEWAY_URL": "https://app.sevlex.com"
     }
   }
 }`}
@@ -488,14 +488,14 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="text-slate-500 font-mono flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <div className="p-4 bg-[#141322] border-t border-white/[0.08] flex items-center justify-between text-xs">
+              <span className="text-zinc-400 font-mono flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>Listening for device heartbeats</span>
               </span>
               <button
                 onClick={() => setShowEnrollModal(false)}
-                className="px-4 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold transition"
+                className="px-4 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.08] text-white text-xs font-bold transition cursor-pointer"
               >
                 Close
               </button>

@@ -36,22 +36,22 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white border border-slate-200 p-6 rounded-xl shadow-xs">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#0E0D17] border border-white/[0.08] p-6 rounded-2xl shadow-xl">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Bot className="text-[#2563EB]" size={22} />
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Shadow AI &amp; Agent Discovery (AgentGuard)</h2>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider font-mono">
+            <Bot className="text-blue-400" size={22} />
+            <h2 className="text-xl font-bold text-white tracking-tight">Shadow AI &amp; Agent Discovery (AgentGuard)</h2>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider font-mono">
               Official Client Manifests
             </span>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-zinc-400">
             Real-time inventory of all AI developer IDEs, autonomous agents, and terminal CLIs bound to enterprise data.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>{activeCount} AI Agents Governed</span>
           </span>
         </div>
@@ -59,32 +59,32 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Discovered AI Runtimes</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Discovered AI Runtimes</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-slate-900 font-mono">{runtimes.length}</span>
-            <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">100% Detected</span>
+            <span className="text-2xl font-extrabold text-white font-mono">{runtimes.length}</span>
+            <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-mono">100% Detected</span>
           </div>
         </div>
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Tool Executions</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Tool Executions</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-[#2563EB] font-mono">{totalCalls.toLocaleString("en-US")}</span>
-            <span className="text-[10px] text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-mono">L7 DPI</span>
+            <span className="text-2xl font-extrabold text-blue-400 font-mono">{totalCalls.toLocaleString("en-US")}</span>
+            <span className="text-[10px] text-blue-400 font-semibold bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 font-mono">L7 DPI</span>
           </div>
         </div>
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Unsanctioned Shadow AI</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Unsanctioned Shadow AI</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-emerald-600 font-mono">0</span>
-            <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">No Leakage</span>
+            <span className="text-2xl font-extrabold text-emerald-400 font-mono">0</span>
+            <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-mono">No Leakage</span>
           </div>
         </div>
-        <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-          <span className="text-[11px] text-slate-500 font-mono uppercase block mb-1">Firewall Interception</span>
+        <div className="bg-[#0E0D17] border border-white/[0.08] p-4 rounded-2xl shadow-xl">
+          <span className="text-[11px] text-zinc-400 font-mono uppercase block mb-1">Firewall Interception</span>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold text-slate-900 font-mono">Active</span>
-            <span className="text-[10px] text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-mono">Fail-Closed</span>
+            <span className="text-2xl font-extrabold text-white font-mono">Active</span>
+            <span className="text-[10px] text-blue-400 font-semibold bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 font-mono">Fail-Closed</span>
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
         
         {/* Left Column (5 cols): AI Agents List with Official Logos */}
         <div className="lg:col-span-5 space-y-3">
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">
+          <div className="text-xs font-bold text-zinc-400 uppercase tracking-wider px-1">
             Detected AI Agent Runtimes
           </div>
           {runtimes.map((agent) => {
@@ -104,34 +104,34 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
               <div
                 key={agent.name}
                 onClick={() => setSelectedAgent(agent)}
-                className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-white border-[#2563EB] shadow-md ring-1 ring-[#2563EB]"
-                    : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+                    ? "bg-[#141322] border-blue-500 shadow-xl shadow-blue-500/10 ring-1 ring-blue-500 text-white"
+                    : "bg-[#0E0D17] border-white/[0.08] hover:border-white/[0.15] text-zinc-300"
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3">
                     <ClientBrandIcon name={agent.name} size="lg" className="rounded-md shrink-0" />
                     <div>
-                      <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                      <h3 className={`text-sm font-bold flex items-center gap-1.5 ${isSelected ? "text-white" : "text-zinc-200"}`}>
                         {agent.name}
-                        <span className="text-[10px] text-slate-400 font-mono font-normal">({agent.version})</span>
+                        <span className="text-[10px] text-zinc-500 font-mono font-normal">({agent.version})</span>
                       </h3>
-                      <p className="text-[11px] text-slate-500 mt-0.5 font-mono">{agent.type}</p>
+                      <p className="text-[11px] text-zinc-400 mt-0.5 font-mono">{agent.type}</p>
                     </div>
                   </div>
 
                   <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${
-                    isShielded ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-slate-100 text-slate-500 border border-slate-200"
+                    isShielded ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-white/[0.06] text-zinc-400 border border-white/[0.08]"
                   }`}>
                     {agent.status}
                   </span>
                 </div>
 
-                <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                <div className="mt-3 pt-3 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-zinc-400">
                   <span>{agent.boundServers.length} MCP Servers Bound</span>
-                  <span className="text-slate-700 font-semibold">{agent.callsTotal.toLocaleString("en-US")} Calls</span>
+                  <span className="text-zinc-200 font-semibold">{agent.callsTotal.toLocaleString("en-US")} Calls</span>
                 </div>
               </div>
             );
@@ -139,27 +139,27 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
         </div>
 
         {/* Right Column (7 cols): Selected Agent Topology & Bound Tools Matrix */}
-        <div className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 shadow-xs space-y-6">
+        <div className="lg:col-span-7 bg-[#0E0D17] border border-white/[0.08] rounded-2xl p-6 shadow-xl space-y-6">
           {selectedAgent ? (
             <>
               {/* Agent Overview Bar */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-white/[0.08]">
                 <div className="flex items-center gap-3">
-                  <ClientBrandIcon name={selectedAgent.name} size="xl" className="rounded-lg shrink-0" />
+                  <ClientBrandIcon name={selectedAgent.name} size="xl" className="rounded-xl shrink-0" />
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-base font-bold text-slate-900">{selectedAgent.name}</span>
-                      <span className="text-xs text-slate-500 font-mono">[{selectedAgent.type}]</span>
+                      <span className="text-base font-bold text-white">{selectedAgent.name}</span>
+                      <span className="text-xs text-zinc-400 font-mono">[{selectedAgent.type}]</span>
                     </div>
-                    <p className="text-xs text-slate-500 font-mono mt-0.5 truncate max-w-md">
+                    <p className="text-xs text-zinc-400 font-mono mt-0.5 truncate max-w-md">
                       Manifest: {selectedAgent.configPath}
                     </p>
                   </div>
                 </div>
                 <span className={`px-2.5 py-1 rounded text-xs font-bold font-mono ${
                   selectedAgent.riskTier.includes("CRITICAL") 
-                    ? "bg-red-50 text-red-700 border border-red-200" 
-                    : "bg-blue-50 text-blue-700 border border-blue-200"
+                    ? "bg-red-500/10 text-red-400 border border-red-500/20" 
+                    : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
                 }`}>
                   Risk: {selectedAgent.riskTier}
                 </span>
@@ -167,25 +167,25 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
 
               {/* Data Flow Diagram (Client ➔ Sevlex Gateway ➔ Enterprise Tools) */}
               <div className="space-y-2">
-                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
                   Layer 7 Architecture Topology
                 </span>
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 font-mono text-xs">
-                  <div className="flex items-center justify-between p-2.5 rounded bg-white border border-slate-200">
-                    <span className="text-slate-600 font-semibold flex items-center gap-2">
+                <div className="p-4 rounded-xl bg-[#12111D] border border-white/[0.08] space-y-3 font-mono text-xs">
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#141322] border border-white/[0.08]">
+                    <span className="text-zinc-300 font-semibold flex items-center gap-2">
                       <ClientBrandIcon name={selectedAgent.name} size="xs" /> 1. AI Client Agent
                     </span>
-                    <span className="text-slate-900 font-bold">{selectedAgent.name} ({selectedAgent.version})</span>
+                    <span className="text-white font-bold">{selectedAgent.name} ({selectedAgent.version})</span>
                   </div>
-                  <div className="flex items-center justify-between p-2.5 rounded bg-blue-50 border border-blue-200 text-[#2563EB]">
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-blue-950/40 border border-blue-500/30 text-blue-300">
                     <span className="font-bold flex items-center gap-1.5">
                       <ShieldCheck size={14} /> 2. Sevlex L7 Inspection
                     </span>
-                    <span className="font-semibold">30ms Auto-Heal &bull; Fail-Closed</span>
+                    <span className="font-semibold text-emerald-400">30ms Auto-Heal &bull; Fail-Closed</span>
                   </div>
-                  <div className="flex items-center justify-between p-2.5 rounded bg-white border border-slate-200">
-                    <span className="text-slate-600 font-semibold">3. Bound MCP Servers</span>
-                    <span className="text-emerald-700 font-bold">{selectedAgent.boundServers.length} Configured</span>
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#141322] border border-white/[0.08]">
+                    <span className="text-zinc-300 font-semibold">3. Bound MCP Servers</span>
+                    <span className="text-emerald-400 font-bold">{selectedAgent.boundServers.length} Configured</span>
                   </div>
                 </div>
               </div>
@@ -193,12 +193,12 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
               {/* Bound MCP Servers Grid */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
                     Connected Corporate MCP Servers
                   </span>
                   <button 
                     onClick={onNavigateToPolicy}
-                    className="text-xs text-[#2563EB] hover:underline font-bold flex items-center gap-1"
+                    className="text-xs text-blue-400 hover:text-blue-300 hover:underline font-bold flex items-center gap-1 cursor-pointer"
                   >
                     Configure Policy Rules <ArrowRight size={12} />
                   </button>
@@ -207,37 +207,37 @@ export default function AgentDiscoveryTab({ runtimes = [], onNavigateToPolicy, s
                 {selectedAgent.boundServers.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {selectedAgent.boundServers.map((server, idx) => (
-                      <div key={idx} className="p-3 rounded-lg border border-slate-200 bg-white hover:border-blue-200 transition shadow-xs flex items-center justify-between">
+                      <div key={idx} className="p-3 rounded-xl border border-white/[0.08] bg-[#12111D] hover:border-blue-500/40 transition shadow-xl flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <ClientBrandIcon name={server} size="md" className="rounded-md shrink-0" />
                           <div>
-                            <p className="text-xs font-bold text-slate-900">{server}</p>
-                            <span className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1">
+                            <p className="text-xs font-bold text-white">{server}</p>
+                            <span className="text-[10px] text-emerald-400 font-mono font-medium flex items-center gap-1">
                               ● Shielded Proxy
                             </span>
                           </div>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-mono">L7 DPI</span>
+                        <span className="text-[10px] text-zinc-500 font-mono">L7 DPI</span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="p-6 rounded-lg border border-slate-200 bg-slate-50 text-center text-xs text-slate-500 font-mono">
+                  <div className="p-6 rounded-xl border border-white/[0.08] bg-[#12111D] text-center text-xs text-zinc-500 font-mono">
                     No corporate MCP servers configured on this client.
                   </div>
                 )}
               </div>
 
               {/* Security Recommendations */}
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+              <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-400 font-mono">
                 <span>Shadow AI Policy: Real-time Config Watcher</span>
-                <span className="text-emerald-600 font-semibold flex items-center gap-1">
+                <span className="text-emerald-400 font-semibold flex items-center gap-1">
                   <Check size={13} /> Tamper Resistance Active
                 </span>
               </div>
             </>
           ) : (
-            <div className="py-12 text-center text-slate-400 font-mono text-xs">
+            <div className="py-12 text-center text-zinc-500 font-mono text-xs">
               Select an AI Agent runtime to inspect topology.
             </div>
           )}
