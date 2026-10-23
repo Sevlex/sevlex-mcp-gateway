@@ -9,28 +9,35 @@ interface ClientBrandIconProps {
   className?: string;
 }
 
-const LOGO_DEV_TOKEN = "pk_fdAoKVsxTvadheeQhynG5A";
+export const LOGO_DEV_TOKEN = process.env.NEXT_PUBLIC_LOGO_DEV_TOKEN || "pk_fdAoKVsxTvadheeQhynG5A";
+
+export const getLogoDevUrl = (domain: string, size = 128) => {
+  return `https://img.logo.dev/${domain}?token=${LOGO_DEV_TOKEN}&size=${size}&format=png`;
+};
 
 export const getDomainForBrand = (name: string): string | null => {
-  const norm = (name || "").toLowerCase();
+  const norm = (name || "").toLowerCase().trim();
+  if (!norm) return null;
   if (norm.includes("cursor")) return "cursor.com";
   if (norm.includes("claude") || norm.includes("anthropic")) return "anthropic.com";
   if (norm.includes("windsurf") || norm.includes("codeium")) return "codeium.com";
   if (norm.includes("antigravity")) return null; // Use official extracted Antigravity app icon
-  if (norm.includes("drive")) return null; // Use official Google Drive vector icon
-  if (norm.includes("node")) return "nodejs.org"; // Use official Node.js logo
+  if (norm.includes("drive")) return "google.com";
+  if (norm.includes("node")) return "nodejs.org";
   if (norm.includes("gemini") || norm.includes("google")) return "google.com";
-  if (norm.includes("postgres")) return "postgresql.org";
+  if (norm.includes("postgres") || norm.includes("pgsql")) return "postgresql.org";
   if (norm.includes("aws") || norm.includes("amazon") || norm.includes("s3")) return "aws.amazon.com";
   if (norm.includes("github")) return "github.com";
+  if (norm.includes("gitlab")) return "gitlab.com";
+  if (norm.includes("bitbucket")) return "bitbucket.org";
   if (norm.includes("slack")) return "slack.com";
-  if (norm.includes("jira") || norm.includes("atlassian")) return "atlassian.com";
+  if (norm.includes("jira") || norm.includes("atlassian") || norm.includes("confluence")) return "atlassian.com";
   if (norm.includes("docker")) return "docker.com";
   if (norm.includes("kubernetes") || norm.includes("k8s")) return "kubernetes.io";
   if (norm.includes("linear")) return "linear.app";
   if (norm.includes("notion")) return "notion.so";
   if (norm.includes("figma")) return "figma.com";
-  if (norm.includes("windows") || norm.includes("microsoft") || norm.includes("intune")) return "microsoft.com";
+  if (norm.includes("windows") || norm.includes("microsoft") || norm.includes("intune") || norm.includes("azure")) return "microsoft.com";
   if (norm.includes("macos") || norm.includes("apple") || norm.includes("darwin")) return "apple.com";
   if (norm.includes("jamf")) return "jamf.com";
   if (norm.includes("linux") || norm.includes("ubuntu")) return "ubuntu.com";
@@ -42,6 +49,42 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("snowflake")) return "snowflake.com";
   if (norm.includes("openai") || norm.includes("chatgpt")) return "openai.com";
   if (norm.includes("vscode") || norm.includes("visual studio")) return "code.visualstudio.com";
+  if (norm.includes("stripe")) return "stripe.com";
+  if (norm.includes("supabase")) return "supabase.com";
+  if (norm.includes("neon")) return "neon.tech";
+  if (norm.includes("cloudflare")) return "cloudflare.com";
+  if (norm.includes("mongodb") || norm.includes("mongo")) return "mongodb.com";
+  if (norm.includes("redis")) return "redis.io";
+  if (norm.includes("mysql")) return "mysql.com";
+  if (norm.includes("elastic") || norm.includes("elasticsearch")) return "elastic.co";
+  if (norm.includes("okta")) return "okta.com";
+  if (norm.includes("auth0")) return "auth0.com";
+  if (norm.includes("twilio")) return "twilio.com";
+  if (norm.includes("huggingface") || norm.includes("hf")) return "huggingface.co";
+  if (norm.includes("cohere")) return "cohere.com";
+  if (norm.includes("pinecone")) return "pinecone.io";
+  if (norm.includes("salesforce")) return "salesforce.com";
+  if (norm.includes("hubspot")) return "hubspot.com";
+  if (norm.includes("zendesk")) return "zendesk.com";
+  if (norm.includes("zoom")) return "zoom.us";
+  if (norm.includes("trello")) return "trello.com";
+  if (norm.includes("asana")) return "asana.com";
+  if (norm.includes("airtable")) return "airtable.com";
+  if (norm.includes("vercel")) return "vercel.com";
+  if (norm.includes("postman")) return "postman.com";
+  if (norm.includes("hashicorp") || norm.includes("terraform") || norm.includes("vault")) return "hashicorp.com";
+
+  // If the name is already a valid domain, use it directly
+  if (norm.includes(".") && !norm.includes(" ")) {
+    return norm;
+  }
+
+  // Fallback: try clean_name.com for any other company
+  const clean = norm.replace(/[^a-z0-9]/g, "");
+  if (clean.length > 2) {
+    return `${clean}.com`;
+  }
+
   return null;
 };
 

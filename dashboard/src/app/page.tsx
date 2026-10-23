@@ -37,7 +37,7 @@ import {
   Network,
   GitBranch,
 } from "lucide-react";
-import ClientBrandIcon from "./components/ClientBrandIcon";
+import ClientBrandIcon, { getLogoDevUrl } from "./components/ClientBrandIcon";
 
 // Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({
@@ -1309,9 +1309,9 @@ export default function LandingPage() {
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/slack.svg"
+                        src={getLogoDevUrl("slack.com", 64)}
                         alt="Slack"
-                        className={`size-3 invert ${dispatchTab === "slack" ? "invert-0" : "opacity-80"}`}
+                        className="size-3.5 object-contain shrink-0"
                       />
                       <span>Slack SecOps</span>
                     </button>
