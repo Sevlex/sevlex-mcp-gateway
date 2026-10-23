@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { checkAuth } from '@/lib/auth';
 
 // Locate the exact sevlex.json file used by the Gateway
 const CONFIG_PATH = process.env.SEVLEX_POLICY_PATH || path.resolve(process.cwd(), '../gateway/sevlex.json');
 const DISCOVERED_TOOLS_PATH = process.env.SEVLEX_DISCOVERED_TOOLS_PATH || path.resolve(process.cwd(), '../gateway/discovered_tools.json');
 
 export async function GET(request: Request) {
-  if (request.headers.get('Authorization') !== process.env.ADMIN_API_KEY) {
+  if (!checkAuth(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -31,7 +32,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (request.headers.get('Authorization') !== process.env.ADMIN_API_KEY) {
+  if (!checkAuth(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

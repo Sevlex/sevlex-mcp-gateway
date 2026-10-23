@@ -59,36 +59,109 @@ export default function Dashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputKey, setInputKey] = useState("");
   const [loginError, setLoginError] = useState(false);
+  const [authLoadingProvider, setAuthLoadingProvider] = useState<string | null>(null);
+  const [authUser, setAuthUser] = useState<{
+    id?: string;
+    name: string;
+    email: string;
+    avatarUrl?: string;
+    provider: 'github' | 'google' | 'microsoft' | 'api_key';
+    orgName?: string;
+    plan?: string;
+    role?: string;
+  } | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("sevlex_admin_key");
+    const storedUser = localStorage.getItem("sevlex_user_profile");
     if (stored) {
       setApiKey(stored);
       setIsAuthenticated(true);
+      if (storedUser) {
+        try {
+          setAuthUser(JSON.parse(storedUser));
+        } catch {}
+      }
+    } else if (typeof window !== "undefined") {
+      // Check if URL has ?provider=github or ?auth=github
+      const params = new URLSearchParams(window.location.search);
+      const urlProvider = params.get("provider") || params.get("auth");
+      if (urlProvider === "github" || urlProvider === "google") {
+        handleOAuthLogin(urlProvider as 'github' | 'google');
+      }
     }
   }, []);
+
+  const handleOAuthLogin = async (provider: 'github' | 'google' | 'microsoft') => {
+    setAuthLoadingProvider(provider);
+    setLoginError(false);
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setLoginError(true);
+        setAuthLoadingProvider(null);
+        return;
+      }
+      setApiKey(data.token);
+      setAuthUser(data.user);
+      setIsAuthenticated(true);
+      localStorage.setItem("sevlex_admin_key", data.token);
+      localStorage.setItem("sevlex_user_profile", JSON.stringify(data.user));
+    } catch {
+      setLoginError(true);
+    } finally {
+      setAuthLoadingProvider(null);
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError(false);
+    setAuthLoadingProvider("api_key");
     try {
-      const res = await fetch("/api/policy", { headers: { "Authorization": inputKey } });
-      if (res.status === 401) {
-        setLoginError(true);
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: "api_key", key: inputKey })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        // Fallback check against /api/policy
+        const checkRes = await fetch("/api/policy", { headers: { "Authorization": inputKey } });
+        if (checkRes.status === 401) {
+          setLoginError(true);
+          setAuthLoadingProvider(null);
+          return;
+        }
+        setApiKey(inputKey);
+        setIsAuthenticated(true);
+        localStorage.setItem("sevlex_admin_key", inputKey);
+        setAuthLoadingProvider(null);
         return;
       }
-      setApiKey(inputKey);
+      setApiKey(data.token);
+      setAuthUser(data.user);
       setIsAuthenticated(true);
-      localStorage.setItem("sevlex_admin_key", inputKey);
+      localStorage.setItem("sevlex_admin_key", data.token);
+      localStorage.setItem("sevlex_user_profile", JSON.stringify(data.user));
     } catch {
       setLoginError(true);
+    } finally {
+      setAuthLoadingProvider(null);
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("sevlex_admin_key");
+    localStorage.removeItem("sevlex_user_profile");
     setIsAuthenticated(false);
     setApiKey("");
+    setAuthUser(null);
   };
 
   // Fetch Logs (Polling every 3s)
@@ -228,31 +301,154 @@ export default function Dashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#08080C] text-zinc-300 font-sans flex items-center justify-center p-4 selection:bg-blue-600/30">
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-blue-600/10 blur-[140px] pointer-events-none rounded-full" />
-        <form onSubmit={handleLogin} className="bg-[#0E0D17] p-8 rounded-2xl border border-white/[0.08] shadow-2xl max-w-sm w-full text-center relative overflow-hidden z-10 backdrop-blur-md">
+      <div className="min-h-screen bg-[#08080C] text-zinc-300 font-sans flex items-center justify-center p-4 selection:bg-blue-600/30 relative overflow-hidden">
+        {/* Ambient atmospheric glows */}
+        <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-blue-600/15 via-indigo-600/10 to-transparent blur-[160px] pointer-events-none rounded-full" />
+        <div className="fixed -bottom-32 -right-32 w-[450px] h-[450px] bg-purple-600/10 blur-[150px] pointer-events-none rounded-full" />
+        <div className="fixed -top-32 -left-32 w-[450px] h-[450px] bg-emerald-600/10 blur-[150px] pointer-events-none rounded-full" />
+
+        <div className="bg-[#0E0D17]/95 border border-white/[0.12] rounded-3xl p-7 sm:p-9 shadow-2xl max-w-md w-full relative z-10 backdrop-blur-xl">
+          {/* Top Security Badge */}
+          <div className="flex justify-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 shadow-sm">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+              <span>Zero-Trust SecOps Console • v1.0.5</span>
+            </div>
+          </div>
+
+          {/* Brand Logo */}
           <div className="flex justify-center mb-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src="/sevlex-brand-horizontal.png" 
               alt="Sevlex" 
-              className="h-10 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
+              className="h-9 sm:h-10 w-auto object-contain filter drop-shadow-[0_0_18px_rgba(59,130,246,0.35)]" 
             />
           </div>
-          <h2 className="text-base font-bold text-white mb-1 tracking-tight">Enterprise SecOps Console</h2>
-          <p className="text-xs text-zinc-400 mb-6">Enter Admin API Key to access Layer 7 telemetry.</p>
-          <input
-            type="password"
-            placeholder="Admin API Key"
-            value={inputKey}
-            onChange={(e) => setInputKey(e.target.value)}
-            className="w-full bg-[#141322] border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-sm text-white mb-4 focus:outline-none focus:border-blue-500 font-mono transition-colors"
-          />
-          {loginError && <p className="text-red-400 text-xs mb-4">Invalid Admin Key. Check .env.local</p>}
-          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-blue-600/25 cursor-pointer">
-            Authenticate Session
-          </button>
-        </form>
+
+          <div className="text-center mb-6">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              Sign In to Sevlex Cloud
+            </h1>
+            <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+              Authenticate your developer identity to manage MCP AST firewall rules, device fleet telemetry, and dual-custody clearance.
+            </p>
+          </div>
+
+          {/* Multi-Platform Social Login Section */}
+          <div className="space-y-2.5 mb-5">
+            {/* 1. Continue with GitHub */}
+            <button
+              onClick={() => handleOAuthLogin('github')}
+              disabled={Boolean(authLoadingProvider)}
+              className="w-full bg-[#141320] hover:bg-[#1C1A2E] active:scale-[0.99] border border-white/[0.12] hover:border-blue-500/50 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-between transition-all shadow-md group cursor-pointer disabled:opacity-50"
+            >
+              <div className="flex items-center gap-3">
+                <svg className="w-4 h-4 fill-white shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 24 24">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                <span className="font-semibold">
+                  {authLoadingProvider === 'github' ? 'Connecting to GitHub...' : 'Continue with GitHub'}
+                </span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
+                1-Click Instant
+              </span>
+            </button>
+
+            {/* 2. Continue with Google */}
+            <button
+              onClick={() => handleOAuthLogin('google')}
+              disabled={Boolean(authLoadingProvider)}
+              className="w-full bg-[#141320] hover:bg-[#1C1A2E] active:scale-[0.99] border border-white/[0.12] hover:border-blue-500/50 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-between transition-all shadow-md group cursor-pointer disabled:opacity-50"
+            >
+              <div className="flex items-center gap-3">
+                <svg className="w-4 h-4 shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                </svg>
+                <span className="font-semibold">
+                  {authLoadingProvider === 'google' ? 'Connecting to Google...' : 'Continue with Google'}
+                </span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold">
+                Workspace SSO
+              </span>
+            </button>
+
+            {/* 3. Enterprise SSO (Okta / SAML / Microsoft) */}
+            <button
+              onClick={() => handleOAuthLogin('microsoft')}
+              disabled={Boolean(authLoadingProvider)}
+              className="w-full bg-[#141320] hover:bg-[#1C1A2E] active:scale-[0.99] border border-white/[0.12] hover:border-purple-500/50 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-between transition-all shadow-md group cursor-pointer disabled:opacity-50"
+            >
+              <div className="flex items-center gap-3">
+                <Lock className="w-4 h-4 text-purple-400 shrink-0 group-hover:scale-105 transition-transform" />
+                <span className="font-semibold">
+                  {authLoadingProvider === 'microsoft' ? 'Authenticating SAML...' : 'Enterprise SSO (Okta / Azure)'}
+                </span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 font-bold">
+                SAML 2.0
+              </span>
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className="relative my-5">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/[0.08]" />
+            </div>
+            <div className="relative flex justify-center text-[11px] font-mono uppercase tracking-wider">
+              <span className="bg-[#0E0D17] px-3 text-zinc-500">or sign in with API key</span>
+            </div>
+          </div>
+
+          {/* Direct Key Authentication Form */}
+          <form onSubmit={handleLogin} className="space-y-3">
+            <div className="relative">
+              <Key className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3" />
+              <input
+                type="password"
+                placeholder="slx_live_... or Admin Key"
+                value={inputKey}
+                onChange={(e) => setInputKey(e.target.value)}
+                className="w-full bg-[#141322] border border-white/[0.08] focus:border-blue-500 rounded-xl pl-10 pr-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none font-mono transition-colors"
+              />
+            </div>
+
+            {loginError && (
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-950/40 border border-red-500/30 text-red-300 text-xs text-left">
+                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                <span>Invalid credentials. Enter your Organization API Key or Admin Secret.</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={Boolean(authLoadingProvider) || !inputKey.trim()}
+              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white font-medium py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>{authLoadingProvider === 'api_key' ? 'Verifying...' : 'Authenticate with Key'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </form>
+
+          {/* Trust Footnote */}
+          <div className="mt-6 pt-4 border-t border-white/[0.06] text-center">
+            <div className="flex items-center justify-center gap-3 text-[10px] text-zinc-500 font-mono">
+              <span className="flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-emerald-400" /> SOC 2 Chain
+              </span>
+              <span>•</span>
+              <span>Sub-3ms AST DPI</span>
+              <span>•</span>
+              <span>Zero-Trust</span>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -328,24 +524,55 @@ export default function Dashboard() {
         </div>
 
         {/* Bottom Profile & Host Specs */}
-        <div className="p-3 border-t border-white/[0.08] bg-[#0E0D17]">
-          <div className="flex items-center justify-between text-xs mb-2">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-white font-medium truncate max-w-[110px]">{fleetData?.host?.hostname || "Meet-Panchal"}</span>
+        <div className="p-3 border-t border-white/[0.08] bg-[#0E0D17] space-y-2">
+          {authUser ? (
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                {authUser.avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={authUser.avatarUrl}
+                    alt={authUser.name}
+                    className="w-7 h-7 rounded-full border border-blue-500/30 object-cover shrink-0"
+                  />
+                ) : (
+                  <div className="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-400 text-xs font-bold flex items-center justify-center shrink-0">
+                    {authUser.name.slice(0, 2).toUpperCase()}
+                  </div>
+                )}
+                <div className="min-w-0 truncate">
+                  <div className="text-xs font-semibold text-white truncate flex items-center gap-1.5">
+                    <span>{authUser.name}</span>
+                  </div>
+                  <span className="text-[10px] text-zinc-400 truncate block">
+                    {authUser.email}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                title="Sign out"
+                className="p-1.5 rounded-lg hover:bg-white/[0.08] text-zinc-400 hover:text-red-400 transition cursor-pointer shrink-0"
+              >
+                <LogOut size={13} />
+              </button>
             </div>
-            <span className="text-[10px] text-zinc-500 font-mono">win32-x64</span>
-          </div>
+          ) : (
+            <div className="flex items-center justify-between text-xs mb-1">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className="text-white font-medium truncate max-w-[110px]">{fleetData?.host?.hostname || "Meet-Panchal"}</span>
+              </div>
+              <span className="text-[10px] text-zinc-500 font-mono">win32-x64</span>
+            </div>
+          )}
 
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-2 border-t border-white/[0.06]">
-            <span>@{fleetData?.host?.user || "meetp"}</span>
-            <button 
-              onClick={handleLogout}
-              title="Sign out"
-              className="text-zinc-500 hover:text-white transition cursor-pointer"
-            >
-              <LogOut size={13} />
-            </button>
+          <div className="flex items-center justify-between text-[10px] font-mono pt-1.5 border-t border-white/[0.06] text-zinc-400">
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              {authUser?.provider ? `${authUser.provider.toUpperCase()} SSO` : `@${fleetData?.host?.user || "meetp"}`}
+            </span>
+            <span className="text-zinc-500">{authUser?.plan || "Free Tier"}</span>
           </div>
         </div>
       </aside>

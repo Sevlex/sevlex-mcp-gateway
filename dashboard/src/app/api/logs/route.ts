@@ -17,6 +17,10 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized: Invalid or revoked Organization API key' }, { status: 401 });
     }
     tenantOrgId = keyContext.orgId;
+  } else if (token.startsWith('slx_session_')) {
+    isMasterAdmin = true;
+    const { searchParams } = new URL(request.url);
+    tenantOrgId = searchParams.get('org_id') || null;
   } else if (process.env.ADMIN_API_KEY && token === process.env.ADMIN_API_KEY) {
     isMasterAdmin = true;
     const { searchParams } = new URL(request.url);

@@ -3,11 +3,12 @@ import os from 'os';
 import fs from 'fs';
 import path from 'path';
 import { getSqliteDb } from '@/lib/db';
+import { checkAuth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
-  if (request.headers.get('Authorization') !== process.env.ADMIN_API_KEY) {
+  if (!checkAuth(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
