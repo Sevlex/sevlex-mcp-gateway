@@ -68,12 +68,19 @@ function SpotlightCard({
 
 export default function LandingPage() {
   const [copied, setCopied] = useState(false);
-  const [terminalTab, setTerminalTab] = useState<"init" | "status" | "verify">("init");
+  const [copiedDemo, setCopiedDemo] = useState(false);
+  const [terminalTab, setTerminalTab] = useState<"demo" | "init" | "status" | "verify">("demo");
 
   const copyInstall = () => {
     navigator.clipboard.writeText("npx sevlex init");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const copyDemo = () => {
+    navigator.clipboard.writeText("npx sevlex demo");
+    setCopiedDemo(true);
+    setTimeout(() => setCopiedDemo(false), 2000);
   };
 
   return (
@@ -92,7 +99,7 @@ export default function LandingPage() {
           </div>
           <span className="text-lg font-bold tracking-tight text-white">Sevlex</span>
           <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            v1.0.3
+            v1.0.5
           </span>
         </div>
 
@@ -145,16 +152,30 @@ export default function LandingPage() {
           </p>
 
           {/* Install Command Hero Pill */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div className="flex items-center gap-3 bg-[#111116] border border-white/[0.12] rounded-2xl px-5 py-3 shadow-2xl backdrop-blur-md">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="flex items-center gap-3 bg-[#111116] border border-emerald-500/30 rounded-2xl px-5 py-3 shadow-2xl backdrop-blur-md">
               <span className="text-zinc-500 font-mono text-sm select-none">$</span>
               <code className="text-sm font-mono text-emerald-400 font-semibold tracking-wide">
+                npx sevlex demo
+              </code>
+              <button
+                onClick={copyDemo}
+                className="ml-3 p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-zinc-300 transition cursor-pointer"
+                title="Copy demo command"
+              >
+                {copiedDemo ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3 bg-[#111116] border border-white/[0.12] rounded-2xl px-5 py-3 shadow-2xl backdrop-blur-md">
+              <span className="text-zinc-500 font-mono text-sm select-none">$</span>
+              <code className="text-sm font-mono text-blue-400 font-semibold tracking-wide">
                 npx sevlex init
               </code>
               <button
                 onClick={copyInstall}
                 className="ml-3 p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-zinc-300 transition cursor-pointer"
-                title="Copy command"
+                title="Copy install command"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
               </button>
@@ -162,9 +183,9 @@ export default function LandingPage() {
 
             <a
               href="/console"
-              className="px-6 py-3 rounded-2xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-sm font-semibold text-white transition flex items-center gap-2"
+              className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-sm font-semibold text-white transition flex items-center gap-2 shadow-lg shadow-blue-600/25"
             >
-              Open SecOps Console <ArrowRight className="w-4 h-4 text-zinc-400" />
+              SecOps Console <ArrowRight className="w-4 h-4" />
             </a>
           </div>
 
@@ -200,6 +221,16 @@ export default function LandingPage() {
 
             <div className="flex items-center gap-1 bg-black/40 p-1 rounded-lg border border-white/[0.05]">
               <button
+                onClick={() => setTerminalTab("demo")}
+                className={`px-2.5 py-1 rounded-md text-xs font-mono transition ${
+                  terminalTab === "demo"
+                    ? "bg-emerald-600 text-white font-semibold"
+                    : "text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                npx sevlex demo
+              </button>
+              <button
                 onClick={() => setTerminalTab("init")}
                 className={`px-2.5 py-1 rounded-md text-xs font-mono transition ${
                   terminalTab === "init"
@@ -234,6 +265,26 @@ export default function LandingPage() {
 
           {/* Terminal Output Body */}
           <div className="p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[260px] text-zinc-300">
+            {terminalTab === "demo" && (
+              <div className="space-y-1.5">
+                <p className="text-zinc-500">$ npx sevlex demo</p>
+                <p className="text-blue-400 font-semibold">[Sevlex Demo] Testing Layer 7 Zero-Trust Interception &amp; AST Parameter Rules...</p>
+                <p className="text-zinc-400">TEST 1: Autonomous Agent runs legitimate Read Query (SELECT id FROM users)</p>
+                <p className="text-emerald-400 font-semibold">✔ RESULT: ALLOWED (0.18ms) - Query executed with zero delay.</p>
+                <p className="text-zinc-400 mt-2">TEST 2: Autonomous Agent attempts destructive schema deletion (DROP TABLE production_users)</p>
+                <p className="text-emerald-400 font-semibold">
+                  ✔ RESULT: ARRESTED IN 2.94ms! <span className="text-red-400 font-mono">[LAYER 7 AST BLOCK] Destructive database operation</span>
+                </p>
+                <p className="text-zinc-400 mt-2">TEST 3: Autonomous Agent attempts credential exfiltration (cat .env)</p>
+                <p className="text-emerald-400 font-semibold">
+                  ✔ RESULT: ARRESTED IN 2.71ms! <span className="text-red-400 font-mono">[SECURITY POLICY BLOCK] Access to private credentials</span>
+                </p>
+                <p className="text-emerald-400 font-bold mt-2">
+                  ✔ ALL ZERO-TRUST SHIELD TESTS VERIFIED SUCCESSFULLY
+                </p>
+              </div>
+            )}
+
             {terminalTab === "init" && (
               <div className="space-y-1.5">
                 <p className="text-zinc-500">$ npx sevlex init</p>
