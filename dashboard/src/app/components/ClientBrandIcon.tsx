@@ -56,7 +56,39 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
     size === "md" ? "w-7 h-7" :
     size === "lg" ? "w-8 h-8" : "w-10 h-10";
 
-  // If Logo.dev has a domain and hasn't failed, use the official full-color high-res PNG
+  // Priority 1: Official Transparent SVGs for Core Coding Agents (Zero white box, Zero border)
+  if (norm.includes("claude")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/claude-icon.svg" alt="Claude" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("cursor")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/cursor-icon.svg" alt="Cursor" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("windsurf") || norm.includes("codeium")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/windsurf-icon.svg" alt="Windsurf" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("antigravity")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/gemini-logo.svg" alt="Google Antigravity" className={`${sizeClass} object-contain shrink-0 text-[#4E82EE] ${className}`} />
+    );
+  }
+  if (norm.includes("node")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/nodejs-icon.svg" alt="Node.js" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+
+  // Priority 2: If Logo.dev has a domain and hasn't failed, use for external SaaS catalogs
   if (domain && !loadFailed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -66,20 +98,6 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
         onError={() => setLoadFailed(true)}
         className={`${sizeClass} object-contain shrink-0 rounded-xs ${className}`} 
       />
-    );
-  }
-
-  // Local Brand Fallbacks
-  if (norm.includes("cursor")) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/cursor-icon.png" alt="Cursor" className={`${sizeClass} object-contain shrink-0 ${className}`} />
-    );
-  }
-  if (norm.includes("claude")) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/claude-icon.png" alt="Claude" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
   if (norm.includes("antigravity")) {

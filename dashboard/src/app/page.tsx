@@ -565,9 +565,11 @@ export default function LandingPage() {
             </a>
           </div>
 
-          {/* Client Ecosystem Badges */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-2.5 text-xs text-[#797D86]">
-            <span className="font-mono text-[11px] text-[#61646B] uppercase tracking-wider mr-1">Zero-Config Shields:</span>
+          {/* Client Ecosystem Showcase (100% borderless, transparent, seamless) */}
+          <div className="mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#797D86]">
+            <span className="font-mono text-[11px] text-[#61646B] uppercase tracking-wider">
+              Zero-Config Shields:
+            </span>
             {[
               { name: "Cursor IDE", brand: "cursor" },
               { name: "Claude Desktop", brand: "claude" },
@@ -575,14 +577,13 @@ export default function LandingPage() {
               { name: "Antigravity", brand: "antigravity" },
               { name: "Node / TS SDK", brand: "node" },
             ].map((client) => (
-              <span
+              <div
                 key={client.name}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#131415] border border-[#242628] text-[#C9CBCF] text-xs font-medium hover:border-[#303236] transition-colors"
+                className="flex items-center gap-2 text-[#94979E] hover:text-white transition-colors duration-200 cursor-default group"
               >
-                <ClientBrandIcon name={client.brand} size="xs" className="size-4" />
-                <span>{client.name}</span>
-                <span className="size-1 rounded-full bg-[#34D59A]" />
-              </span>
+                <ClientBrandIcon name={client.brand} size="xs" className="size-4 transition-transform duration-200 group-hover:scale-110" />
+                <span className="font-medium tracking-tight text-xs sm:text-sm">{client.name}</span>
+              </div>
             ))}
           </div>
         </div>
