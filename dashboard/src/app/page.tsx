@@ -33,11 +33,11 @@ import {
   Bot,
 } from "lucide-react";
 
-// Interactive Spotlight Card with mouse-following radial gradient
+// Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({
   children,
   className = "",
-  spotlightColor = "rgba(59, 130, 246, 0.12)",
+  spotlightColor = "rgba(52, 213, 154, 0.08)",
   id,
 }: {
   children: React.ReactNode;
@@ -59,13 +59,13 @@ function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setOpacity(1)}
       onMouseLeave={() => setOpacity(0)}
-      className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0E0D17] p-6 shadow-xl transition-all duration-300 ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-[#242628] bg-[#0E0E12] p-6 shadow-xl transition-all duration-300 hover:border-[#303236] ${className}`}
     >
       <div
         className="pointer-events-none absolute -inset-px transition-opacity duration-300"
         style={{
           opacity,
-          background: `radial-gradient(500px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`,
+          background: `radial-gradient(450px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`,
         }}
       />
       <div className="relative z-10">{children}</div>
@@ -270,13 +270,13 @@ const AGENT_STATION_DATA: Record<AgentStationId, AgentStationItem> = {
     cliCommand: "npx sevlex init && npx sevlex demo",
     logs: [
       { tag: "●", text: "Cursor Composer: Scanning local workspace config...", color: "text-blue-400" },
-      { tag: "[Sevlex]", text: "Found Cursor MCP configuration at", highlight: "~/.cursor/mcp.json", color: "text-zinc-300" },
-      { tag: "[Sevlex]", text: "Created safety snapshot:", highlight: "mcp.json.sevlex.bak (100% reversible)", color: "text-emerald-400" },
+      { tag: "[Sevlex]", text: "Found Cursor MCP configuration at", highlight: "~/.cursor/mcp.json", color: "text-[#C9CBCF]" },
+      { tag: "[Sevlex]", text: "Created safety snapshot:", highlight: "mcp.json.sevlex.bak (100% reversible)", color: "text-[#34D59A]" },
       { tag: "[Sevlex]", text: "Injected Layer 7 proxy into 4 downstream servers:", highlight: "github, postgres, slack, filesystem", color: "text-blue-300" },
       { tag: "●", text: "Cursor Composer: Executing 'npx sevlex demo' security verification...", color: "text-amber-400" },
       { tag: "[ToolGuard™]", text: "DROP TABLE AST query ->", highlight: "ARRESTED & BLOCKED (0.42ms)", color: "text-red-400" },
       { tag: "[ToolGuard™]", text: "AWS credential exfiltration ->", highlight: "ARRESTED & BLOCKED (0.38ms)", color: "text-red-400" },
-      { tag: "✓", text: "Cursor IDE is fully shielded. Zero-Trust Layer 7 firewall active.", color: "text-emerald-300" },
+      { tag: "✓", text: "Cursor IDE is fully shielded. Zero-Trust Layer 7 firewall active.", color: "text-[#34D59A]" },
     ],
   },
   claude: {
@@ -291,12 +291,12 @@ const AGENT_STATION_DATA: Record<AgentStationId, AgentStationItem> = {
     cliCommand: "claude \"npx sevlex init && npx sevlex demo\"",
     logs: [
       { tag: "$", text: "claude \"npx sevlex init && npx sevlex demo\"", color: "text-blue-400" },
-      { tag: "[Sevlex]", text: "Auto-detected Claude Desktop & CLI config:", highlight: "~/.claude.json", color: "text-zinc-300" },
-      { tag: "[Sevlex]", text: "Safety snapshot saved:", highlight: "~/.claude.json.sevlex.bak", color: "text-emerald-400" },
+      { tag: "[Sevlex]", text: "Auto-detected Claude Desktop & CLI config:", highlight: "~/.claude.json", color: "text-[#C9CBCF]" },
+      { tag: "[Sevlex]", text: "Safety snapshot saved:", highlight: "~/.claude.json.sevlex.bak", color: "text-[#34D59A]" },
       { tag: "[Sevlex]", text: "Wrapped stdio transport with Sevlex Zero-Trust L7 proxy", color: "text-blue-300" },
       { tag: "[Sevlex]", text: "Running parameter-level AST test suite (npx sevlex demo)...", color: "text-amber-400" },
-      { tag: "[AuditChain]", text: "4/4 exploit vectors arrested. Cryptographic Merkle receipt generated.", color: "text-emerald-400" },
-      { tag: "✓", text: "Claude MCP servers fully secured with zero human configuration required.", color: "text-emerald-300" },
+      { tag: "[AuditChain]", text: "4/4 exploit vectors arrested. Cryptographic Merkle receipt generated.", color: "text-[#34D59A]" },
+      { tag: "✓", text: "Claude MCP servers fully secured with zero human configuration required.", color: "text-[#34D59A]" },
     ],
   },
   windsurf: {
@@ -311,12 +311,12 @@ const AGENT_STATION_DATA: Record<AgentStationId, AgentStationItem> = {
     cliCommand: "npx sevlex init && npx sevlex demo",
     logs: [
       { tag: "●", text: "Cascade Agent: Executing automated setup flow...", color: "text-blue-400" },
-      { tag: "[Sevlex]", text: "Detected Windsurf environment:", highlight: "~/.codeium/windsurf/mcp_config.json", color: "text-zinc-300" },
-      { tag: "[Sevlex]", text: "Created safety snapshot:", highlight: "mcp_config.json.sevlex.bak", color: "text-emerald-400" },
+      { tag: "[Sevlex]", text: "Detected Windsurf environment:", highlight: "~/.codeium/windsurf/mcp_config.json", color: "text-[#C9CBCF]" },
+      { tag: "[Sevlex]", text: "Created safety snapshot:", highlight: "mcp_config.json.sevlex.bak", color: "text-[#34D59A]" },
       { tag: "[Sevlex]", text: "Injected Layer 7 Deep Packet Inspection proxy into active tools", color: "text-blue-300" },
       { tag: "●", text: "Cascade Agent: Running AST verification check...", color: "text-amber-400" },
-      { tag: "[ToolGuard™]", text: "AST query validator passed with", highlight: "<0.5ms overhead", color: "text-emerald-400" },
-      { tag: "✓", text: "Windsurf Cascade tools hardened. Ready for autonomous coding.", color: "text-emerald-300" },
+      { tag: "[ToolGuard™]", text: "AST query validator passed with", highlight: "<0.5ms overhead", color: "text-[#34D59A]" },
+      { tag: "✓", text: "Windsurf Cascade tools hardened. Ready for autonomous coding.", color: "text-[#34D59A]" },
     ],
   },
   chatgpt: {
@@ -331,12 +331,12 @@ const AGENT_STATION_DATA: Record<AgentStationId, AgentStationItem> = {
     cliCommand: "curl -s https://sevlex.com/llms.txt | npx sevlex init --json",
     logs: [
       { tag: "●", text: "Agent: Fetching machine specification from", highlight: "https://sevlex.com/llms.txt", color: "text-blue-400" },
-      { tag: "●", text: "Agent: Parsing llms.txt endpoints & non-interactive execution flags...", color: "text-zinc-300" },
-      { tag: "[Sevlex]", text: "Executing: npx sevlex init --json", color: "text-emerald-400" },
+      { tag: "●", text: "Agent: Parsing llms.txt endpoints & non-interactive execution flags...", color: "text-[#C9CBCF]" },
+      { tag: "[Sevlex]", text: "Executing: npx sevlex init --json", color: "text-[#34D59A]" },
       { tag: "→", text: "JSON stdout: {\"status\": \"success\", \"shielded\": 4, \"backup\": true}", color: "text-blue-300 font-bold" },
       { tag: "●", text: "Agent: Executing verification: npx sevlex status --json", color: "text-amber-400" },
-      { tag: "[Sevlex]", text: "All proxies operating in Zero-Trust Layer 7 enforcement mode", color: "text-emerald-400" },
-      { tag: "✓", text: "Autonomous setup completed with zero human intervention.", color: "text-emerald-300" },
+      { tag: "[Sevlex]", text: "All proxies operating in Zero-Trust Layer 7 enforcement mode", color: "text-[#34D59A]" },
+      { tag: "✓", text: "Autonomous setup completed with zero human intervention.", color: "text-[#34D59A]" },
     ],
   },
 };
@@ -382,145 +382,206 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#08080C] text-zinc-100 font-sans selection:bg-blue-600/30 selection:text-blue-200 overflow-x-hidden">
-      {/* Ambient background glows */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-gradient-to-b from-blue-600/15 via-indigo-600/10 to-transparent blur-[140px] pointer-events-none rounded-full" />
-      <div className="fixed top-1/3 -right-40 w-[550px] h-[550px] bg-purple-600/10 blur-[160px] pointer-events-none rounded-full" />
-      <div className="fixed top-2/3 -left-40 w-[500px] h-[500px] bg-blue-600/10 blur-[150px] pointer-events-none rounded-full" />
+    <main className="min-h-screen bg-[#000000] text-[#F8FAFC] font-sans selection:bg-[#34D59A]/30 selection:text-white overflow-x-hidden">
+      {/* Precision hairline grid backdrop */}
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,#131415_1px,transparent_1px),linear-gradient(to_bottom,#131415_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none opacity-40" />
 
-      {/* Navigation Header */}
-      <nav className="sticky top-0 z-50 bg-[#08080C]/85 backdrop-blur-md border-b border-white/[0.06]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      {/* Subtle restrained atmospheric radial illumination */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(52,213,154,0.08),transparent_70%)] pointer-events-none" />
+
+      {/* ========================================================================= */}
+      {/* 1. TOP ANNOUNCEMENT RIBBON (Exact Neon Structure)                        */}
+      {/* ========================================================================= */}
+      <aside className="group relative z-50 flex h-9 w-full items-center justify-center border-b border-[#242628] bg-[#0C0D0E] px-4 text-xs font-medium text-[#C9CBCF] transition-colors hover:text-white">
+        <a
+          href="https://github.com/Sevlex/sevlex-mcp-gateway"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-2"
+        >
+          <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse" />
+          <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[#34D59A]">
+            Sevlex v1.0.5 Live
+          </span>
+          <span className="text-[#494B50] hidden sm:inline">•</span>
+          <span className="hidden sm:inline">Zero-Trust Layer 7 MCP Firewall for Cursor, Claude Desktop & Coding Agents</span>
+          <span className="sm:hidden">Zero-Trust Layer 7 MCP Firewall</span>
+          <ChevronRight className="ml-1 size-3.5 text-[#797D86] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-white" />
+        </a>
+      </aside>
+
+      {/* ========================================================================= */}
+      {/* 2. NAVIGATION HEADER                                                     */}
+      {/* ========================================================================= */}
+      <nav className="sticky top-0 z-40 bg-[#000000]/85 backdrop-blur-md border-b border-[#242628]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+          {/* Brand Logo & Version Pill */}
           <div className="flex items-center gap-3">
             <a href="/" className="flex items-center gap-2 group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/sevlex-brand-horizontal.png"
                 alt="Sevlex"
-                className="h-8 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(59,130,246,0.25)] transition group-hover:brightness-110"
+                className="h-7 w-auto object-contain transition-all duration-200 group-hover:brightness-110"
               />
             </a>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold">
+            <span className="font-mono text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full bg-[#18191B] border border-[#242628] text-[#34D59A] font-semibold">
               v1.0.5
             </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400">
-            <a href="#simulator" className="hover:text-white transition-colors flex items-center gap-1.5 text-blue-400 font-semibold">
-              <Sparkles className="w-3.5 h-3.5" /> Exploit Simulator
+          {/* Desktop Nav Items */}
+          <div className="hidden lg:flex items-center gap-7 text-xs font-medium text-[#94979E]">
+            <a href="#agents" className="hover:text-white transition-colors flex items-center gap-1.5 text-white font-medium">
+              <Sparkles className="size-3 text-[#34D59A]" /> Built for Agents
             </a>
-            <a href="#features" className="hover:text-white transition-colors">Security Engines</a>
-            <a href="#terminal" className="hover:text-white transition-colors">CLI Gateway</a>
-            <a href="#compliance" className="hover:text-white transition-colors">SOC 2 Merkle Chain</a>
+            <a href="#simulator" className="hover:text-white transition-colors">
+              Exploit Simulator
+            </a>
+            <a href="#features" className="hover:text-white transition-colors">
+              Security Engines
+            </a>
+            <a href="#terminal" className="hover:text-white transition-colors">
+              CLI Gateway
+            </a>
+            <a href="#compliance" className="hover:text-white transition-colors">
+              SOC 2 Merkle
+            </a>
           </div>
 
+          {/* Action Pills */}
           <div className="flex items-center gap-2.5">
+            {/* GitHub Stars Button */}
             <a
               href="https://github.com/Sevlex/sevlex-mcp-gateway"
               target="_blank"
               rel="noreferrer"
-              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] text-xs font-semibold text-zinc-300 hover:bg-white/[0.08] hover:text-white transition"
+              className="hidden md:inline-flex items-center gap-2 h-9 px-3.5 rounded-full border border-[#242628] bg-white/[0.02] text-xs font-medium text-[#C9CBCF] hover:border-white hover:text-white transition duration-200"
             >
-              <Code2 className="w-3.5 h-3.5 text-zinc-400" /> GitHub
-            </a>
-            <a
-              href="/console?auth=github"
-              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-white/[0.12] bg-[#141320] hover:bg-[#1C1A2E] text-xs font-semibold text-zinc-200 hover:text-white transition shadow-sm cursor-pointer"
-            >
-              <svg className="w-3.5 h-3.5 fill-white shrink-0" viewBox="0 0 24 24">
+              <svg className="size-3.5 fill-current" viewBox="0 0 24 24">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
               </svg>
-              <span>Sign In with GitHub</span>
+              <span>GitHub</span>
+              <span className="text-[#61646B]">•</span>
+              <span className="font-mono text-[11px] text-[#AFB1B6]">★ 1.8k</span>
             </a>
+
+            {/* Sign in with GitHub Pill */}
+            <a
+              href="/console?auth=github"
+              className="hidden sm:inline-flex items-center gap-2 h-9 px-4 rounded-full border border-[#242628] bg-[#18191B] hover:bg-[#242628] text-xs font-medium text-white transition duration-200"
+            >
+              <svg className="size-3.5 fill-white" viewBox="0 0 24 24">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+              <span>Sign in</span>
+            </a>
+
+            {/* Primary Console Pill */}
             <a
               href="/console"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition shadow-lg shadow-blue-600/25"
+              className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
             >
-              SecOps Console <ArrowRight className="w-3.5 h-3.5" />
+              <span>SecOps Console</span>
+              <ArrowRight className="size-3.5" />
             </a>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-16 pb-14 md:pt-24 md:pb-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Top Announcement Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 shadow-sm backdrop-blur-md">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Sevlex v1.0.5 Live: Sub-3ms Zero-Trust AST Interception for All MCP Clients</span>
+      {/* ========================================================================= */}
+      {/* 3. HERO SECTION (Neon Aesthetic & High-Craft Typography)                  */}
+      {/* ========================================================================= */}
+      <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 text-center">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Eyebrow Pill */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] border border-[#242628] text-[#797D86] mb-6">
+            <span className="text-[#34D59A] font-semibold">LAYER 7 ZERO-TRUST</span>
+            <span className="text-[#303236]">•</span>
+            <span className="text-[#AFB1B6]">FIREWALL FOR MODEL CONTEXT PROTOCOL</span>
           </div>
 
-          {/* Heading */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.08]">
-            Zero-Trust Security for AI Agents.{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-indigo-300 to-emerald-400 bg-clip-text text-transparent">
-              Stop Autonomous Data Exfiltration.
-            </span>
+          {/* Master Display Heading */}
+          <h1 className="text-4xl sm:text-6xl md:text-[4.25rem] font-medium tracking-tight text-white max-w-4xl mx-auto leading-[1.06] text-balance">
+            The security layer for coding agents. Intercept, inspect, and quarantine MCP tools in real time.
           </h1>
 
-          {/* Subtitle */}
-          <p className="mt-6 text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Transparently wraps stdio and SSE JSON-RPC traffic between Cursor, Claude Desktop, and downstream MCP servers.
-            Sub-millisecond parameter deep packet inspection, in-flight secret redaction, and cryptographic SOC 2 audit receipts.
+          {/* Master Subtitle */}
+          <p className="mt-6 text-base sm:text-lg text-[#94979E] max-w-2xl mx-auto leading-relaxed text-pretty">
+            Transparently wraps stdio and SSE JSON-RPC channels between Cursor, Claude Desktop, and downstream servers.
+            Zero configuration, sub-0.5ms parameter deep packet inspection, and cryptographic audit proofs.
           </p>
 
-          {/* Quickstart Command Bar */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <div className="flex items-center gap-3 bg-[#111118] border border-emerald-500/40 rounded-2xl px-5 py-3 shadow-2xl backdrop-blur-md">
-              <span className="text-zinc-500 font-mono text-sm select-none">$</span>
-              <code className="text-sm font-mono text-emerald-400 font-bold tracking-wide">
+          {/* Interactive Quickstart Command Bar & CTAs */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            {/* Demo command snippet pill */}
+            <div className="inline-flex items-center gap-3 bg-[#131415] border border-[#34D59A]/30 rounded-full px-5 py-2.5 shadow-xl">
+              <span className="text-[#61646B] font-mono text-xs select-none">$</span>
+              <code className="text-xs font-mono text-[#34D59A] font-medium tracking-wide">
                 npx sevlex demo
               </code>
               <button
                 onClick={copyDemo}
-                className="ml-3 p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-zinc-300 transition cursor-pointer"
+                className="p-1 rounded-full text-[#797D86] hover:text-white hover:bg-white/[0.08] transition cursor-pointer"
                 title="Copy demo command"
               >
-                {copiedDemo ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copiedDemo ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
               </button>
             </div>
 
-            <div className="flex items-center gap-3 bg-[#111118] border border-white/[0.12] rounded-2xl px-5 py-3 shadow-2xl backdrop-blur-md">
-              <span className="text-zinc-500 font-mono text-sm select-none">$</span>
-              <code className="text-sm font-mono text-blue-400 font-bold tracking-wide">
+            {/* Init command snippet pill */}
+            <div className="inline-flex items-center gap-3 bg-[#131415] border border-[#242628] rounded-full px-5 py-2.5 shadow-xl">
+              <span className="text-[#61646B] font-mono text-xs select-none">$</span>
+              <code className="text-xs font-mono text-[#C9CBCF] font-medium tracking-wide">
                 npx sevlex init
               </code>
               <button
                 onClick={copyInstall}
-                className="ml-3 p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-zinc-300 transition cursor-pointer"
-                title="Copy install command"
+                className="p-1 rounded-full text-[#797D86] hover:text-white hover:bg-white/[0.08] transition cursor-pointer"
+                title="Copy init command"
               >
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
               </button>
             </div>
 
+            {/* Primary Console Pill */}
             <a
               href="/console"
-              className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-sm font-semibold text-white transition flex items-center gap-2 shadow-lg shadow-blue-600/25"
+              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-sm gap-2"
             >
-              Open SecOps Console <ArrowRight className="w-4 h-4" />
+              <span>Launch SecOps Console</span>
+              <ArrowRight className="size-4" />
+            </a>
+
+            {/* Glass Docs Pill */}
+            <a
+              href="/llms.txt"
+              target="_blank"
+              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white/[0.03] border border-[#303236] text-white hover:border-[#61646B] hover:bg-white/[0.06] text-sm gap-2"
+            >
+              <span>Read llms.txt</span>
+              <ExternalLink className="size-3.5 text-[#797D86]" />
             </a>
           </div>
 
-          {/* Supported AI Clients with Official Brand Badges */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-3 text-xs text-zinc-400">
-            <span className="text-zinc-500 font-mono">Zero-Config Shields:</span>
+          {/* Client Ecosystem Badges */}
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-2.5 text-xs text-[#797D86]">
+            <span className="font-mono text-[11px] text-[#61646B] uppercase tracking-wider mr-1">Zero-Config Shields:</span>
             {[
               { name: "Cursor IDE", icon: "/cursor-icon.svg" },
               { name: "Claude Desktop", icon: "/claude-icon.svg" },
               { name: "Windsurf", icon: "/windsurf-icon.svg" },
               { name: "Antigravity", icon: "/antigravity-icon.png" },
-              { name: "Node / TypeScript", icon: "/nodejs-icon.svg" },
+              { name: "Node / TS SDK", icon: "/nodejs-icon.svg" },
             ].map((client) => (
               <span
                 key={client.name}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-200 text-xs font-medium backdrop-blur-sm"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#131415] border border-[#242628] text-[#C9CBCF] text-xs font-medium"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={client.icon} alt={client.name} className="w-4 h-4 object-contain" />
+                <img src={client.icon} alt={client.name} className="size-3.5 object-contain" />
                 <span>{client.name}</span>
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span className="size-1 rounded-full bg-[#34D59A]" />
               </span>
             ))}
           </div>
@@ -528,36 +589,77 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* AI AGENT-FRIENDLY SETUP (Multi-Agent Prompt Station: Cursor, Claude, Windsurf, Devin) */}
+      {/* 4. READY FOR CODING AGENTS (Neon-Grade Bento Section)                     */}
       {/* ========================================================================= */}
-      <section className="py-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-blue-500/25 bg-gradient-to-b from-[#0F101A] via-[#0E0D17] to-[#0A0910] p-6 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-md">
+      <section id="agents" className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+        {/* Section Header */}
+        <header className="min-w-0 mb-12">
+          <h2 className="text-3xl sm:text-5xl font-normal tracking-tight text-pretty text-[#797D86] max-w-4xl">
+            <span className="text-white font-medium">Ready for coding agents.</span> Intercept and secure MCP tools the way you inspect network packets, with full access via CLI, SDK, and 1-click prompts.
+          </h2>
+        </header>
+
+        {/* 3 Bento Feature Highlights */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="flex flex-col gap-2.5 p-6 rounded-2xl bg-[#0E0E12] border border-[#242628] transition-colors hover:border-[#303236]">
+            <div className="size-8 rounded-full bg-[#34D59A]/10 border border-[#34D59A]/20 flex items-center justify-center text-[#34D59A] mb-1">
+              <Zap className="size-4" />
+            </div>
+            <h3 className="text-base font-medium tracking-tight text-white">Instant Intercept</h3>
+            <p className="text-sm font-normal text-[#797D86] leading-relaxed">
+              Infrastructure that responds instantly. Injects into stdio in &lt;0.1ms without proxy daemons, background docker containers, or iptables routing.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-2.5 p-6 rounded-2xl bg-[#0E0E12] border border-[#242628] transition-colors hover:border-[#303236]">
+            <div className="size-8 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-1">
+              <ShieldCheck className="size-4" />
+            </div>
+            <h3 className="text-base font-medium tracking-tight text-white">AST Parameter Guard</h3>
+            <p className="text-sm font-normal text-[#797D86] leading-relaxed">
+              Deep packet inspection parses SQL ASTs and shell parameters in-flight. Destructive operations (<code className="text-red-400 font-mono text-xs">DROP TABLE</code>, <code className="text-red-400 font-mono text-xs">rm -rf</code>) are arrested before reaching the downstream server.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-2.5 p-6 rounded-2xl bg-[#0E0E12] border border-[#242628] transition-colors hover:border-[#303236]">
+            <div className="size-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-1">
+              <RotateCcw className="size-4" />
+            </div>
+            <h3 className="text-base font-medium tracking-tight text-white">Safe Automation & Rollback</h3>
+            <p className="text-sm font-normal text-[#797D86] leading-relaxed">
+              Fast development requires fast recovery. Every configuration change automatically saves a 100% reversible <code className="text-[#34D59A] font-mono text-xs">*.sevlex.bak</code> backup snapshot.
+            </p>
+          </div>
+        </div>
+
+        {/* 1-Click Interactive Agent Station Container */}
+        <div className="rounded-3xl border border-[#242628] bg-[#0C0D0E] p-6 sm:p-8 shadow-2xl relative overflow-hidden">
           {/* Header Row */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-white/[0.08]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[#242628]">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
-                <Bot className="w-3.5 h-3.5" /> 100% AI Agent-Native Setup
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-[#34D59A] border border-[#242628] mb-2">
+                <Bot className="size-3.5" /> 1-Click Machine Setup
               </div>
-              <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-medium text-white tracking-tight">
                 Set Up with Your AI Agent in 1 Click
-              </h2>
-              <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl leading-relaxed">
-                Don&apos;t configure JSON files manually. Select your AI coding assistant below, copy the prompt, and paste it. Sevlex executes non-interactively, generates safety backups (<code className="text-blue-400 font-mono">*.sevlex.bak</code>), and verifies AST defense in &lt;3ms.
+              </h3>
+              <p className="text-xs sm:text-sm text-[#797D86] mt-1 max-w-2xl leading-relaxed">
+                Don&apos;t configure JSON files manually. Select your coding assistant, copy the prompt, and paste it into your agent chat. Sevlex executes non-interactively with safe backups.
               </p>
             </div>
 
             <a
               href="/llms.txt"
               target="_blank"
-              className="px-3.5 py-1.5 rounded-xl border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 text-xs font-mono text-blue-300 transition flex items-center gap-1.5 shrink-0 shadow-sm"
+              className="h-9 px-4 rounded-full border border-[#242628] bg-[#131415] hover:bg-[#18191B] text-xs font-mono text-[#AFB1B6] hover:text-white transition flex items-center gap-2 shrink-0"
             >
-              <span>llms.txt Manifest</span>
-              <ExternalLink size={12} className="text-blue-400" />
+              <span>llms.txt Machine Manifest</span>
+              <ExternalLink size={12} className="text-[#797D86]" />
             </a>
           </div>
 
           {/* Agent Selector Tab Pills */}
-          <div className="mt-6 flex flex-wrap items-center gap-2.5 pb-2">
+          <div className="mt-6 flex flex-wrap items-center gap-2 pb-2">
             {(Object.keys(AGENT_STATION_DATA) as AgentStationId[]).map((key) => {
               const item = AGENT_STATION_DATA[key];
               const isSelected = selectedAgent === key;
@@ -565,24 +667,24 @@ export default function LandingPage() {
                 <button
                   key={key}
                   onClick={() => setSelectedAgent(key)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-2.5 cursor-pointer border ${
+                  className={`h-9 px-4 rounded-full text-xs font-medium transition flex items-center gap-2.5 cursor-pointer border ${
                     isSelected
-                      ? "border-blue-500/50 bg-blue-600/15 text-white shadow-[0_0_20px_rgba(59,130,246,0.2)] ring-1 ring-blue-500/40"
-                      : "border-white/[0.08] bg-white/[0.03] text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06]"
+                      ? "border-white bg-white text-black"
+                      : "border-[#242628] bg-[#131415] text-[#94979E] hover:text-white hover:border-[#303236]"
                   }`}
                 >
                   {item.iconSrc ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.iconSrc} alt={item.name} className="w-4 h-4 object-contain" />
+                    <img src={item.iconSrc} alt={item.name} className="size-3.5 object-contain" />
                   ) : (
-                    <Bot className="w-4 h-4 text-emerald-400" />
+                    <Bot className="size-3.5 text-[#34D59A]" />
                   )}
                   <span>{item.name}</span>
                   <span
-                    className={`text-[10px] font-mono px-2 py-0.5 rounded-md ${
+                    className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
                       isSelected
-                        ? "bg-blue-500/20 text-blue-300 border border-blue-500/30 font-bold"
-                        : "bg-white/[0.05] text-zinc-500 border border-white/[0.05]"
+                        ? "bg-black/10 text-black font-semibold"
+                        : "bg-white/[0.05] text-[#61646B]"
                     }`}
                   >
                     {item.shortcut}
@@ -593,46 +695,46 @@ export default function LandingPage() {
           </div>
 
           {/* Two-Column Interactive Body: Prompt Station + Simulated Terminal */}
-          <div className="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             {/* Left Column: Prompt Station (7 cols) */}
             <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
                 {/* Meta details bar */}
-                <div className="flex items-center justify-between text-xs text-zinc-400">
+                <div className="flex items-center justify-between text-xs text-[#797D86]">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                    <span className="font-semibold text-white">Paste into {activeAgent.name}:</span>
+                    <Sparkles className="size-3.5 text-[#34D59A]" />
+                    <span className="font-medium text-white">Paste into {activeAgent.name}:</span>
                   </div>
-                  <span className="text-[11px] font-mono text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
-                    Config: <span className="text-blue-300">{activeAgent.configFile}</span>
+                  <span className="text-[11px] font-mono text-[#797D86] bg-[#131415] px-2.5 py-1 rounded-full border border-[#242628]">
+                    Target Config: <span className="text-white">{activeAgent.configFile}</span>
                   </span>
                 </div>
 
                 {/* Prompt Card */}
-                <div className="relative group bg-[#060609] border border-blue-500/25 rounded-2xl p-4 text-xs font-mono text-zinc-200 leading-relaxed shadow-inner">
+                <div className="relative group bg-[#000000] border border-[#242628] rounded-2xl p-4 text-xs font-mono text-[#C9CBCF] leading-relaxed shadow-inner">
                   <div className="pr-4 pb-12 sm:pb-10">
-                    <span className="text-zinc-500 select-none">&ldquo;</span>
-                    <span className="text-blue-200 font-medium">{activeAgent.prompt}</span>
-                    <span className="text-zinc-500 select-none">&rdquo;</span>
+                    <span className="text-[#61646B] select-none">&ldquo;</span>
+                    <span className="text-white font-medium">{activeAgent.prompt}</span>
+                    <span className="text-[#61646B] select-none">&rdquo;</span>
                   </div>
 
                   <div className="absolute right-3 bottom-3 flex items-center gap-2">
                     <button
                       onClick={copyAgentPrompt}
-                      className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-semibold flex items-center gap-1.5 transition shadow-lg shadow-blue-600/25 cursor-pointer"
+                      className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-9 px-4 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-xs gap-1.5"
                     >
-                      {copiedAgentPrompt ? <Check size={13} className="text-emerald-300" /> : <Copy size={13} />}
+                      {copiedAgentPrompt ? <Check size={13} className="text-[#34D59A]" /> : <Copy size={13} />}
                       {copiedAgentPrompt ? `Copied for ${activeAgent.name}!` : `Copy Prompt for ${activeAgent.name}`}
                     </button>
                   </div>
                 </div>
 
                 {/* Direct CLI fallback */}
-                <div className="flex items-center justify-between bg-white/[0.02] border border-white/[0.06] rounded-xl px-3 py-2 text-xs font-mono text-zinc-400">
+                <div className="flex items-center justify-between bg-[#131415] border border-[#242628] rounded-full px-4 py-2 text-xs font-mono text-[#797D86]">
                   <div className="flex items-center gap-2 truncate">
-                    <Terminal className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                    <span className="text-zinc-500 select-none">Direct execution:</span>
-                    <code className="text-zinc-200 font-bold truncate">{activeAgent.cliCommand}</code>
+                    <Terminal className="size-3.5 text-[#34D59A] shrink-0" />
+                    <span className="text-[#61646B] select-none">Direct execution:</span>
+                    <code className="text-[#C9CBCF] font-medium truncate">{activeAgent.cliCommand}</code>
                   </div>
                   <button
                     onClick={() => {
@@ -640,51 +742,51 @@ export default function LandingPage() {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className="p-1 rounded hover:bg-white/[0.08] text-zinc-400 hover:text-white transition cursor-pointer shrink-0 ml-2"
+                    className="p-1 rounded hover:bg-white/[0.08] text-[#797D86] hover:text-white transition cursor-pointer shrink-0 ml-2"
                     title="Copy CLI command"
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
                   </button>
                 </div>
               </div>
 
               {/* 4 Agent Guarantees Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-[11px] text-zinc-400 font-mono">
-                <div className="flex items-center gap-1.5 bg-white/[0.02] border border-white/[0.05] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[11px] text-[#797D86] font-mono">
+                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
+                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
                   <span>Non-Interactive (-y)</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-white/[0.02] border border-white/[0.05] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
+                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
                   <span>Safe Backup (*.bak)</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-white/[0.02] border border-white/[0.05] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
+                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
                   <span>1-Command Restore</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-white/[0.02] border border-white/[0.05] p-2 rounded-xl">
-                  <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                <div className="flex items-center gap-1.5 bg-[#131415] border border-[#242628] p-2 rounded-xl">
+                  <CheckCircle2 size={13} className="text-[#34D59A] shrink-0" />
                   <span>--json Machine Mode</span>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Simulated AI Agent Execution Trace (5 cols) */}
-            <div className="lg:col-span-5 rounded-2xl border border-white/[0.1] bg-[#07060B] overflow-hidden flex flex-col font-mono text-xs shadow-2xl">
+            <div className="lg:col-span-5 rounded-2xl border border-[#242628] bg-[#000000] overflow-hidden flex flex-col font-mono text-xs shadow-2xl">
               {/* Window Bar */}
-              <div className="bg-[#100F1A] px-3.5 py-2.5 border-b border-white/[0.08] flex items-center justify-between">
+              <div className="bg-[#0C0D0E] px-3.5 py-2.5 border-b border-[#242628] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
+                    <span className="size-2 rounded-full bg-red-500/80 inline-block" />
+                    <span className="size-2 rounded-full bg-amber-500/80 inline-block" />
+                    <span className="size-2 rounded-full bg-emerald-500/80 inline-block" />
                   </div>
-                  <span className="text-[11px] text-zinc-400 font-semibold ml-2">
+                  <span className="text-[11px] text-[#797D86] font-medium ml-2">
                     agent-trace ({activeAgent.id})
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <div className="flex items-center gap-1.5 text-[10px] text-[#34D59A] bg-[#34D59A]/10 border border-[#34D59A]/20 px-2.5 py-0.5 rounded-full font-bold">
+                  <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse" />
                   <span>Machine Execution</span>
                 </div>
               </div>
@@ -694,7 +796,7 @@ export default function LandingPage() {
                 {activeAgent.logs.map((log, idx) => (
                   <div key={idx} className="flex items-start gap-2">
                     <span className={`${log.color} font-bold shrink-0 select-none`}>{log.tag}</span>
-                    <span className="text-zinc-300">
+                    <span className="text-[#C9CBCF]">
                       {log.text}{" "}
                       {log.highlight && <span className={`${log.color} font-bold`}>{log.highlight}</span>}
                     </span>
@@ -703,12 +805,12 @@ export default function LandingPage() {
               </div>
 
               {/* Terminal Footer */}
-              <div className="bg-[#0A0912] px-3.5 py-2 border-t border-white/[0.06] flex items-center justify-between text-[10px] text-zinc-500">
+              <div className="bg-[#0C0D0E] px-3.5 py-2 border-t border-[#242628] flex items-center justify-between text-[10px] text-[#61646B]">
                 <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  <span className="size-1.5 rounded-full bg-[#34D59A]" />
                   <span>0 user prompts needed</span>
                 </span>
-                <span className="text-zinc-400 font-mono">AST overhead: &lt;0.5ms</span>
+                <span className="text-[#797D86] font-mono">AST overhead: &lt;0.5ms</span>
               </div>
             </div>
           </div>
@@ -716,28 +818,28 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* INTERACTIVE IN-BROWSER EXPLOIT SIMULATOR                                  */}
+      {/* 5. INTERACTIVE IN-BROWSER EXPLOIT SIMULATOR                               */}
       {/* ========================================================================= */}
       <section id="simulator" className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-red-500/10 text-red-400 border border-red-500/20 mb-3">
-            <ShieldAlert className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-red-400 border border-[#242628] mb-3">
+            <ShieldAlert className="size-3.5" />
             Interactive Layer 7 Sandbox
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-medium text-white tracking-tight">
             Simulate Autonomous AI Attacks Live
           </h2>
-          <p className="mt-3 text-zinc-400 text-sm sm:text-base">
+          <p className="mt-3 text-[#797D86] text-sm sm:text-base">
             Click any scenario below to trigger a live simulation. See how Sevlex intercepts raw JSON-RPC traffic, arrests malicious payloads in &lt;0.5ms, and dispatches instant Slack SecOps cards.
           </p>
         </div>
 
         {/* Simulator Container */}
-        <div className="rounded-3xl border border-white/[0.12] bg-[#0E0D17] shadow-2xl overflow-hidden">
+        <div className="rounded-3xl border border-[#242628] bg-[#0E0E12] shadow-2xl overflow-hidden">
           {/* Top Scenario Selector Strip */}
-          <div className="p-3 sm:p-4 bg-[#141322] border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+          <div className="p-3 sm:p-4 bg-[#0C0D0E] border-b border-[#242628] flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono text-zinc-400 font-semibold px-2">Select Threat Vector:</span>
+              <span className="text-xs font-mono text-[#61646B] font-medium px-2">Select Threat Vector:</span>
               {(Object.keys(SCENARIOS) as AttackScenario[]).map((key) => {
                 const s = SCENARIOS[key];
                 const isActive = activeScenario === key;
@@ -745,10 +847,10 @@ export default function LandingPage() {
                   <button
                     key={key}
                     onClick={() => handleTriggerScenario(key)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold font-mono transition flex items-center gap-2 cursor-pointer ${
+                    className={`h-8 px-3.5 rounded-full text-xs font-medium font-mono transition flex items-center gap-2 cursor-pointer border ${
                       isActive
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 ring-1 ring-blue-400"
-                        : "bg-white/[0.04] text-zinc-300 hover:bg-white/[0.08] border border-white/[0.06]"
+                        ? "border-white bg-white text-black font-semibold"
+                        : "border-[#242628] bg-[#131415] text-[#C9CBCF] hover:border-[#303236] hover:text-white"
                     }`}
                   >
                     <span>{s.title}</span>
@@ -762,26 +864,26 @@ export default function LandingPage() {
 
             <button
               onClick={() => handleTriggerScenario(activeScenario)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-1.5 h-8 px-4 rounded-full bg-[#34D59A] hover:bg-[#47D18C] text-black text-xs font-mono font-medium transition cursor-pointer"
             >
-              <RotateCcw className={`w-3.5 h-3.5 ${isSimulating ? "animate-spin" : ""}`} />
+              <RotateCcw className={`size-3.5 ${isSimulating ? "animate-spin" : ""}`} />
               Re-Run Intercept
             </button>
           </div>
 
           {/* Simulator Two-Column Body */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.08]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#242628]">
             {/* Left Column: Intercepted JSON-RPC Wire Traffic (7 cols) */}
             <div className="lg:col-span-7 p-6 font-mono space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
-                <div className="flex items-center gap-2 text-xs text-zinc-400">
-                  <Terminal className="w-4 h-4 text-blue-400" />
+              <div className="flex items-center justify-between pb-3 border-b border-[#242628]">
+                <div className="flex items-center gap-2 text-xs text-[#797D86]">
+                  <Terminal className="size-3.5 text-[#34D59A]" />
                   <span>Client Ingress:</span>
-                  <span className="text-white font-semibold">{scenario.client}</span>
+                  <span className="text-white font-medium">{scenario.client}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-zinc-500">Overhead:</span>
-                  <span className="text-emerald-400 font-bold text-xs">{scenario.latency}</span>
+                  <span className="text-[11px] text-[#61646B]">Overhead:</span>
+                  <span className="text-[#34D59A] font-bold text-xs">{scenario.latency}</span>
                 </div>
               </div>
 
@@ -789,18 +891,18 @@ export default function LandingPage() {
               <div
                 className={`p-3.5 rounded-xl border flex items-start gap-3 transition-all duration-300 ${
                   scenario.decision === "BLOCKED"
-                    ? "bg-red-950/30 border-red-500/30 text-red-200"
+                    ? "bg-red-950/20 border-red-500/30 text-red-200"
                     : scenario.decision === "CIRCUIT_BROKEN"
-                    ? "bg-amber-950/30 border-amber-500/30 text-amber-200"
-                    : "bg-emerald-950/30 border-emerald-500/30 text-emerald-200"
+                    ? "bg-amber-950/20 border-amber-500/30 text-amber-200"
+                    : "bg-emerald-950/20 border-emerald-500/30 text-emerald-200"
                 }`}
               >
                 {scenario.decision === "BLOCKED" ? (
-                  <ShieldAlert className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  <ShieldAlert className="size-5 text-red-400 shrink-0 mt-0.5" />
                 ) : scenario.decision === "CIRCUIT_BROKEN" ? (
-                  <Zap className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <Zap className="size-5 text-amber-400 shrink-0 mt-0.5" />
                 ) : (
-                  <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                  <ShieldCheck className="size-5 text-[#34D59A] shrink-0 mt-0.5" />
                 )}
                 <div>
                   <div className="flex items-center gap-2">
@@ -815,85 +917,85 @@ export default function LandingPage() {
                       {scenario.latency}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-300 mt-1">{scenario.ruleViolated}</p>
+                  <p className="text-xs text-[#C9CBCF] mt-1">{scenario.ruleViolated}</p>
                 </div>
               </div>
 
               {/* Raw JSON-RPC Code Frame */}
               <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] text-zinc-400">
+                <div className="flex items-center justify-between text-[11px] text-[#797D86]">
                   <span>Intercepted stdio Wire Packet (tools/call):</span>
-                  <span className="text-blue-400">{scenario.tool}</span>
+                  <span className="text-[#34D59A]">{scenario.tool}</span>
                 </div>
-                <pre className="p-4 rounded-xl bg-[#090810] border border-white/[0.08] text-xs text-zinc-200 overflow-x-auto leading-relaxed shadow-inner">
+                <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner">
                   <code>{scenario.payload}</code>
                 </pre>
               </div>
 
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
+              <p className="text-xs text-[#797D86] leading-relaxed font-sans">
                 {scenario.explanation}
               </p>
             </div>
 
             {/* Right Column: Simulated Live Slack SecOps Dispatch (5 cols) */}
-            <div className="lg:col-span-5 p-6 bg-[#0B0A13] flex flex-col justify-between space-y-6">
+            <div className="lg:col-span-5 p-6 bg-[#0C0D0E] flex flex-col justify-between space-y-6">
               <div>
-                <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#242628] mb-4">
                   <div className="flex items-center gap-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/slack.svg"
                       alt="Slack"
-                      className="w-4 h-4 invert opacity-80"
+                      className="size-3.5 invert opacity-80"
                     />
-                    <span className="text-xs font-bold text-white font-mono">
+                    <span className="text-xs font-medium text-white font-mono">
                       {scenario.slackAlert.channel}
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-zinc-500">Live Webhook Relay</span>
+                  <span className="text-[10px] font-mono text-[#61646B]">Live Webhook Relay</span>
                 </div>
 
                 {/* Slack Message Card */}
-                <div className="rounded-2xl border border-white/[0.1] bg-[#141320] p-4 text-xs font-sans shadow-lg relative">
+                <div className="rounded-2xl border border-[#242628] bg-[#131415] p-4 text-xs font-sans shadow-lg relative">
                   <div className="flex items-start gap-3">
-                    <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center shrink-0 shadow-md shadow-blue-600/30">
-                      <Shield className="w-5 h-5 text-white" />
+                    <div className="size-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+                      <Shield className="size-4 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white text-xs">Sevlex Security Bot</span>
+                        <span className="font-medium text-white text-xs">Sevlex Security Bot</span>
                         <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">
                           APP
                         </span>
-                        <span className="text-[11px] text-zinc-500 ml-auto">Just now</span>
+                        <span className="text-[11px] text-[#61646B] ml-auto">Just now</span>
                       </div>
 
-                      <div className="mt-2.5 p-3 rounded-xl bg-[#0A0910] border border-white/[0.06] space-y-2">
-                        <p className="font-bold text-white text-xs leading-snug">
+                      <div className="mt-2.5 p-3 rounded-xl bg-[#000000] border border-[#242628] space-y-2">
+                        <p className="font-medium text-white text-xs leading-snug">
                           {scenario.slackAlert.title}
                         </p>
-                        <p className="text-zinc-400 text-[11px] leading-relaxed">
+                        <p className="text-[#94979E] text-[11px] leading-relaxed">
                           {scenario.slackAlert.details}
                         </p>
 
-                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/[0.06] text-[10px] font-mono text-zinc-400">
+                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#242628] text-[10px] font-mono text-[#797D86]">
                           <div>
-                            <span className="text-zinc-500 block">Authenticated User:</span>
-                            <span className="text-blue-400 font-semibold">@meetp (Staff Eng)</span>
+                            <span className="text-[#61646B] block">User:</span>
+                            <span className="text-blue-400 font-medium">@meetp (Staff Eng)</span>
                           </div>
                           <div>
-                            <span className="text-zinc-500 block">Host Daemon:</span>
-                            <span className="text-emerald-400 font-semibold">macbook-m3-corp</span>
+                            <span className="text-[#61646B] block">Host Daemon:</span>
+                            <span className="text-[#34D59A] font-medium">macbook-m3-corp</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Slack Action Buttons */}
                       <div className="mt-3 flex items-center gap-2">
-                        <button className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-[11px] transition shadow-xs">
+                        <button className="h-7 px-3 rounded-full bg-red-600 hover:bg-red-500 text-white font-medium text-[11px] transition">
                           Quarantine Agent Session
                         </button>
-                        <button className="px-3 py-1.5 rounded-lg bg-white/[0.08] hover:bg-white/[0.15] text-zinc-200 font-medium text-[11px] transition border border-white/[0.08]">
+                        <button className="h-7 px-3 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-[#C9CBCF] font-medium text-[11px] transition border border-[#242628]">
                           Open Ticket #8914
                         </button>
                       </div>
@@ -903,12 +1005,12 @@ export default function LandingPage() {
               </div>
 
               {/* Bottom Guarantee */}
-              <div className="p-3.5 rounded-xl bg-blue-950/20 border border-blue-500/20 text-xs text-blue-200 flex items-center justify-between">
+              <div className="p-3.5 rounded-full bg-[#131415] border border-[#242628] text-xs text-[#AFB1B6] flex items-center justify-between">
                 <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-blue-400" /> SOC 2 Evidence Automatically Sealed
+                  <CheckCircle2 className="size-4 text-[#34D59A]" /> SOC 2 Cryptographic Audit Sealed
                 </span>
-                <a href="/console" className="font-semibold underline hover:text-white flex items-center gap-1">
-                  View in Console <ArrowRight className="w-3 h-3" />
+                <a href="/console" className="font-medium text-white underline hover:text-[#34D59A] flex items-center gap-1">
+                  View in Console <ArrowRight className="size-3" />
                 </a>
               </div>
             </div>
@@ -916,57 +1018,59 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Live Interactive Terminal Section */}
+      {/* ========================================================================= */}
+      {/* 6. LIVE INTERACTIVE TERMINAL SECTION                                      */}
+      {/* ========================================================================= */}
       <section id="terminal" className="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-white/[0.12] bg-[#0E0D17] shadow-2xl overflow-hidden">
+        <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] shadow-2xl overflow-hidden">
           {/* Terminal Window Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-[#141322] border-b border-white/[0.06]">
+          <div className="flex items-center justify-between px-4 py-3 bg-[#0C0D0E] border-b border-[#242628]">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500/80" />
-              <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-              <span className="ml-2 text-xs font-mono text-zinc-400 flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-blue-400" /> sevlex-developer-gateway
+              <div className="size-2.5 rounded-full bg-red-500/80" />
+              <div className="size-2.5 rounded-full bg-amber-500/80" />
+              <div className="size-2.5 rounded-full bg-emerald-500/80" />
+              <span className="ml-2 text-xs font-mono text-[#797D86] flex items-center gap-1.5">
+                <Terminal className="size-3.5 text-[#34D59A]" /> sevlex-developer-gateway
               </span>
             </div>
 
-            <div className="flex items-center gap-1 bg-black/40 p-1 rounded-lg border border-white/[0.05]">
+            <div className="flex items-center gap-1 bg-[#000000] p-1 rounded-full border border-[#242628]">
               <button
                 onClick={() => setTerminalTab("demo")}
-                className={`px-2.5 py-1 rounded-md text-xs font-mono transition cursor-pointer ${
+                className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer ${
                   terminalTab === "demo"
-                    ? "bg-emerald-600 text-white font-semibold"
-                    : "text-zinc-400 hover:text-zinc-200"
+                    ? "bg-[#34D59A] text-black font-semibold"
+                    : "text-[#797D86] hover:text-white"
                 }`}
               >
                 npx sevlex demo
               </button>
               <button
                 onClick={() => setTerminalTab("init")}
-                className={`px-2.5 py-1 rounded-md text-xs font-mono transition cursor-pointer ${
+                className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer ${
                   terminalTab === "init"
-                    ? "bg-blue-600 text-white font-semibold"
-                    : "text-zinc-400 hover:text-zinc-200"
+                    ? "bg-white text-black font-semibold"
+                    : "text-[#797D86] hover:text-white"
                 }`}
               >
                 npx sevlex init
               </button>
               <button
                 onClick={() => setTerminalTab("status")}
-                className={`px-2.5 py-1 rounded-md text-xs font-mono transition cursor-pointer ${
+                className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer ${
                   terminalTab === "status"
-                    ? "bg-blue-600 text-white font-semibold"
-                    : "text-zinc-400 hover:text-zinc-200"
+                    ? "bg-white text-black font-semibold"
+                    : "text-[#797D86] hover:text-white"
                 }`}
               >
                 npx sevlex status
               </button>
               <button
                 onClick={() => setTerminalTab("verify")}
-                className={`px-2.5 py-1 rounded-md text-xs font-mono transition cursor-pointer ${
+                className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer ${
                   terminalTab === "verify"
-                    ? "bg-blue-600 text-white font-semibold"
-                    : "text-zinc-400 hover:text-zinc-200"
+                    ? "bg-white text-black font-semibold"
+                    : "text-[#797D86] hover:text-white"
                 }`}
               >
                 npx sevlex verify
@@ -975,22 +1079,22 @@ export default function LandingPage() {
           </div>
 
           {/* Terminal Output Body */}
-          <div className="p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[260px] text-zinc-300">
+          <div className="p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[250px] text-[#C9CBCF] bg-[#000000]">
             {terminalTab === "demo" && (
               <div className="space-y-1.5">
-                <p className="text-zinc-500">$ npx sevlex demo</p>
-                <p className="text-blue-400 font-semibold">[Sevlex Demo] Testing Layer 7 Zero-Trust Interception &amp; AST Parameter Rules...</p>
-                <p className="text-zinc-400">TEST 1: Autonomous Agent runs legitimate Read Query (SELECT id FROM users)</p>
-                <p className="text-emerald-400 font-semibold">✔ RESULT: ALLOWED (0.18ms) - Query executed with zero delay.</p>
-                <p className="text-zinc-400 mt-2">TEST 2: Autonomous Agent attempts destructive schema deletion (DROP TABLE production_users)</p>
-                <p className="text-emerald-400 font-semibold">
+                <p className="text-[#61646B]">$ npx sevlex demo</p>
+                <p className="text-white font-medium">[Sevlex Demo] Testing Layer 7 Zero-Trust Interception &amp; AST Parameter Rules...</p>
+                <p className="text-[#797D86]">TEST 1: Autonomous Agent runs legitimate Read Query (SELECT id FROM users)</p>
+                <p className="text-[#34D59A] font-medium">✔ RESULT: ALLOWED (0.18ms) - Query executed with zero delay.</p>
+                <p className="text-[#797D86] mt-2">TEST 2: Autonomous Agent attempts destructive schema deletion (DROP TABLE production_users)</p>
+                <p className="text-[#34D59A] font-medium">
                   ✔ RESULT: ARRESTED IN 2.94ms! <span className="text-red-400 font-mono">[LAYER 7 AST BLOCK] Destructive database operation</span>
                 </p>
-                <p className="text-zinc-400 mt-2">TEST 3: Autonomous Agent attempts credential exfiltration (cat .env)</p>
-                <p className="text-emerald-400 font-semibold">
+                <p className="text-[#797D86] mt-2">TEST 3: Autonomous Agent attempts credential exfiltration (cat .env)</p>
+                <p className="text-[#34D59A] font-medium">
                   ✔ RESULT: ARRESTED IN 2.71ms! <span className="text-red-400 font-mono">[SECURITY POLICY BLOCK] Access to private credentials</span>
                 </p>
-                <p className="text-emerald-400 font-bold mt-2">
+                <p className="text-[#34D59A] font-bold mt-2">
                   ✔ ALL ZERO-TRUST SHIELD TESTS VERIFIED SUCCESSFULLY
                 </p>
               </div>
@@ -998,15 +1102,15 @@ export default function LandingPage() {
 
             {terminalTab === "init" && (
               <div className="space-y-1.5">
-                <p className="text-zinc-500">$ npx sevlex init</p>
-                <p className="text-blue-400 font-semibold">[Sevlex Init] Scanning host for MCP-enabled AI runtimes...</p>
-                <p className="text-zinc-300">✔ Found Claude Desktop (1 server(s) wrapped in Layer 7 firewall)</p>
-                <p className="text-zinc-300">✔ Found Cursor IDE (0 servers unmanaged, policy injected)</p>
-                <p className="text-zinc-300">✔ Found Google Antigravity (1 server(s) shielded)</p>
-                <p className="text-emerald-400 font-semibold mt-2">
+                <p className="text-[#61646B]">$ npx sevlex init</p>
+                <p className="text-white font-medium">[Sevlex Init] Scanning host for MCP-enabled AI runtimes...</p>
+                <p className="text-[#C9CBCF]">✔ Found Claude Desktop (1 server(s) wrapped in Layer 7 firewall)</p>
+                <p className="text-[#C9CBCF]">✔ Found Cursor IDE (0 servers unmanaged, policy injected)</p>
+                <p className="text-[#C9CBCF]">✔ Found Google Antigravity (1 server(s) shielded)</p>
+                <p className="text-[#34D59A] font-medium mt-2">
                   ✔ SUCCESS: 6 AI runtimes shielded. Backups preserved at *.sevlex.bak
                 </p>
-                <p className="text-zinc-500 mt-2">
+                <p className="text-[#61646B] mt-2">
                   Stdio intercept activated with &lt;0.1ms overhead. Run &apos;npx sevlex status&apos; to inspect.
                 </p>
               </div>
@@ -1014,24 +1118,24 @@ export default function LandingPage() {
 
             {terminalTab === "status" && (
               <div className="space-y-1.5">
-                <p className="text-zinc-500">$ npx sevlex status</p>
-                <p className="text-zinc-400">● Cloud Workspace:  <span className="text-emerald-400 font-semibold">✔ CONNECTED</span> -&gt; &quot;Sevlex Core Workspace&quot;</p>
-                <p className="text-zinc-400">● Cloud Endpoint:   <span className="text-blue-400">https://app.sevlex.com</span></p>
-                <p className="text-zinc-400">● Active Rules:     <span className="text-white">2 blocked tools, 1 HITL clearance approvals</span></p>
-                <p className="text-zinc-400">● DLP Engine:       <span className="text-emerald-400 font-semibold">Active (AWS, Stripe, GitHub PAT, SSN)</span></p>
-                <p className="text-zinc-400">● Circuit Breaker:  <span className="text-emerald-400 font-semibold">Armed (Threshold: 25 calls / 30s)</span></p>
-                <p className="text-zinc-400">● Cryptographic Log: <span className="text-emerald-400 font-semibold">392 SHA-256 receipts [100% VALID]</span></p>
+                <p className="text-[#61646B]">$ npx sevlex status</p>
+                <p className="text-[#797D86]">● Cloud Workspace:  <span className="text-[#34D59A] font-medium">✔ CONNECTED</span> -&gt; &quot;Sevlex Core Workspace&quot;</p>
+                <p className="text-[#797D86]">● Cloud Endpoint:   <span className="text-white">https://app.sevlex.com</span></p>
+                <p className="text-[#797D86]">● Active Rules:     <span className="text-white">2 blocked tools, 1 HITL clearance approvals</span></p>
+                <p className="text-[#797D86]">● DLP Engine:       <span className="text-[#34D59A] font-medium">Active (AWS, Stripe, GitHub PAT, SSN)</span></p>
+                <p className="text-[#797D86]">● Circuit Breaker:  <span className="text-[#34D59A] font-medium">Armed (Threshold: 25 calls / 30s)</span></p>
+                <p className="text-[#797D86]">● Cryptographic Log: <span className="text-[#34D59A] font-medium">392 SHA-256 receipts [100% VALID]</span></p>
               </div>
             )}
 
             {terminalTab === "verify" && (
               <div className="space-y-1.5">
-                <p className="text-zinc-500">$ npx sevlex verify</p>
-                <p className="text-blue-400 font-semibold">[SOC 2 Audit Engine] Performing mathematical non-repudiation audit...</p>
-                <p className="text-zinc-300">Traversing SQLite WAL Merkle Hash Chain backwards from root...</p>
-                <p className="text-zinc-400">Receipt #392: SHA256(prev || receipt) == 8e1a3b... [VALID]</p>
-                <p className="text-zinc-400">Receipt #391: SHA256(prev || receipt) == d4c92f... [VALID]</p>
-                <p className="text-emerald-400 font-semibold mt-2">
+                <p className="text-[#61646B]">$ npx sevlex verify</p>
+                <p className="text-white font-medium">[SOC 2 Audit Engine] Performing mathematical non-repudiation audit...</p>
+                <p className="text-[#C9CBCF]">Traversing SQLite WAL Merkle Hash Chain backwards from root...</p>
+                <p className="text-[#797D86]">Receipt #392: SHA256(prev || receipt) == 8e1a3b... [VALID]</p>
+                <p className="text-[#797D86]">Receipt #391: SHA256(prev || receipt) == d4c92f... [VALID]</p>
+                <p className="text-[#34D59A] font-medium mt-2">
                   ✔ AUDIT SUCCESS: 392 cryptographic receipts verified. Zero tamper events detected.
                 </p>
               </div>
@@ -1040,54 +1144,58 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Metrics Counter Grid */}
-      <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y border-white/[0.06] my-8">
+      {/* ========================================================================= */}
+      {/* 7. METRICS PROOF COUNTER (Neon Stark Typography)                          */}
+      {/* ========================================================================= */}
+      <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y border-[#242628] my-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-mono">
+            <div className="text-3xl sm:text-4xl font-normal text-white tracking-tight font-mono">
               142,394+
             </div>
-            <div className="mt-1 text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
               Tool Calls Inspected
             </div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-emerald-400 tracking-tight font-mono">
+            <div className="text-3xl sm:text-4xl font-normal text-[#34D59A] tracking-tight font-mono">
               &lt;0.1ms
             </div>
-            <div className="mt-1 text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
               Gateway Overhead
             </div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-blue-400 tracking-tight font-mono">
+            <div className="text-3xl sm:text-4xl font-normal text-white tracking-tight font-mono">
               100%
             </div>
-            <div className="mt-1 text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
               Zero Data Exfiltration
             </div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-purple-400 tracking-tight font-mono">
+            <div className="text-3xl sm:text-4xl font-normal text-[#AFB1B6] tracking-tight font-mono">
               30ms
             </div>
-            <div className="mt-1 text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
               Auto-Healing Daemon
             </div>
           </div>
         </div>
       </section>
 
-      {/* Core Security Engines Bento Grid */}
+      {/* ========================================================================= */}
+      {/* 8. CORE SECURITY ENGINES BENTO GRID                                       */}
+      {/* ========================================================================= */}
       <section id="features" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs uppercase tracking-widest text-blue-400 font-mono font-semibold">
+          <h2 className="text-xs uppercase tracking-widest text-[#34D59A] font-mono font-medium">
             Enterprise Governance Suite
           </h2>
-          <p className="mt-3 text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          <p className="mt-3 text-3xl sm:text-4xl font-normal text-white tracking-tight">
             Comprehensive Defense Against Autonomous Agent Risks
           </p>
-          <p className="mt-4 text-zinc-400 text-sm sm:text-base">
+          <p className="mt-4 text-[#797D86] text-sm sm:text-base">
             Everything SecOps and CISOs need to safely embrace agentic AI without risking source code theft or database corruption.
           </p>
         </div>
@@ -1096,18 +1204,18 @@ export default function LandingPage() {
           {/* Bento Card 1: ToolGuard */}
           <SpotlightCard className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400">
-                <ShieldCheck className="w-6 h-6" />
+              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A]">
+                <ShieldCheck className="size-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">ToolGuard™ Parameter Deep Packet Inspection</h3>
-                <p className="text-xs text-zinc-400 font-mono">In-Flight AST &amp; Regex Sanitization</p>
+                <h3 className="text-lg font-medium text-white">ToolGuard™ Parameter Deep Packet Inspection</h3>
+                <p className="text-xs text-[#797D86] font-mono">In-Flight AST &amp; Regex Sanitization</p>
               </div>
             </div>
-            <p className="text-sm text-zinc-300 leading-relaxed mb-6">
+            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-6">
               Blocks catastrophic command injections before execution. Automatically arrests destructive SQL commands (<code className="text-red-400 font-mono">DROP TABLE</code>, <code className="text-red-400 font-mono">TRUNCATE</code>), arbitrary shell executions (<code className="text-red-400 font-mono">rm -rf /</code>), and directory traversals (<code className="text-red-400 font-mono">../../.ssh/id_rsa</code>).
             </p>
-            <div className="bg-black/50 border border-white/[0.08] rounded-xl p-3 font-mono text-xs text-zinc-400">
+            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-[#797D86]">
               <span className="text-red-400 font-semibold">[BLOCKED]</span> JSON-RPC tools/call -&gt; postgres:execute_query &#123; query: &quot;DROP TABLE users;&quot; &#125;
             </div>
           </SpotlightCard>
@@ -1115,18 +1223,18 @@ export default function LandingPage() {
           {/* Bento Card 2: AgentGuard */}
           <SpotlightCard>
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
-                <Zap className="w-6 h-6" />
+              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-amber-400">
+                <Zap className="size-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">AgentGuard™ Circuit Breaker</h3>
-                <p className="text-xs text-zinc-400 font-mono">Loop &amp; Velocity Limiter</p>
+                <h3 className="text-lg font-medium text-white">AgentGuard™ Circuit Breaker</h3>
+                <p className="text-xs text-[#797D86] font-mono">Loop &amp; Velocity Limiter</p>
               </div>
             </div>
-            <p className="text-sm text-zinc-300 leading-relaxed mb-4">
+            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-4">
               Halts runaway hallucination loops when agents retry identical failures 3 consecutive times or exceed 25 calls per 30 seconds.
             </p>
-            <div className="bg-black/50 border border-white/[0.08] rounded-xl p-3 font-mono text-xs text-amber-400">
+            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-amber-400">
               Tripped: Error -32002 Agent Velocity Exceeded
             </div>
           </SpotlightCard>
@@ -1134,18 +1242,18 @@ export default function LandingPage() {
           {/* Bento Card 3: In-Flight Output DLP */}
           <SpotlightCard>
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
-                <Eye className="w-6 h-6" />
+              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-purple-400">
+                <Eye className="size-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">In-Flight Output DLP</h3>
-                <p className="text-xs text-zinc-400 font-mono">Microsecond Redaction</p>
+                <h3 className="text-lg font-medium text-white">In-Flight Output DLP</h3>
+                <p className="text-xs text-[#797D86] font-mono">Microsecond Redaction</p>
               </div>
             </div>
-            <p className="text-sm text-zinc-300 leading-relaxed mb-4">
+            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-4">
               Scrubs high-entropy AWS access keys, Stripe tokens, GitHub PATs, and SSNs from downstream MCP responses before the LLM ingests them.
             </p>
-            <div className="bg-black/50 border border-white/[0.08] rounded-xl p-3 font-mono text-xs text-purple-300">
+            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-purple-300">
               AKIAIOSFODNN7EXAMPLE ➔ [REDACTED_AWS_KEY]
             </div>
           </SpotlightCard>
@@ -1153,70 +1261,117 @@ export default function LandingPage() {
           {/* Bento Card 4: SOC 2 Merkle Audit Chain */}
           <SpotlightCard id="compliance" className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                <FileCheck2 className="w-6 h-6" />
+              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A]">
+                <FileCheck2 className="size-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">SOC 2 Cryptographic Merkle Hash Chain</h3>
-                <p className="text-xs text-zinc-400 font-mono">Immutable Non-Repudiation</p>
+                <h3 className="text-lg font-medium text-white">SOC 2 Cryptographic Merkle Hash Chain</h3>
+                <p className="text-xs text-[#797D86] font-mono">Immutable Non-Repudiation</p>
               </div>
             </div>
-            <p className="text-sm text-zinc-300 leading-relaxed mb-4">
-              Every audit receipt in SQLite WAL mode is mathematically bound to its predecessor: <code className="text-emerald-400 font-mono">entry_hash = SHA256(prev_hash || receipt)</code>. Any alteration or deletion instantly breaks the cryptographic chain.
+            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-4">
+              Every audit receipt in SQLite WAL mode is mathematically bound to its predecessor: <code className="text-[#34D59A] font-mono">entry_hash = SHA256(prev_hash || receipt)</code>. Any alteration or deletion instantly breaks the cryptographic chain.
             </p>
-            <div className="bg-black/50 border border-white/[0.08] rounded-xl p-3 font-mono text-xs text-zinc-400 flex items-center justify-between">
+            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-[#797D86] flex items-center justify-between">
               <span>H(prev || id || user || tool || status)</span>
-              <span className="text-emerald-400 font-semibold font-mono">100% Cryptographically Valid</span>
+              <span className="text-[#34D59A] font-semibold font-mono">100% Cryptographically Valid</span>
             </div>
           </SpotlightCard>
         </div>
       </section>
 
-      {/* CTA Bottom Banner */}
+      {/* ========================================================================= */}
+      {/* 9. SOCIAL PROOF & SCALE GRID (Neon-Style Three-Column Grid)              */}
+      {/* ========================================================================= */}
+      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
+            <div className="text-[11px] font-mono uppercase tracking-widest text-[#34D59A] mb-3">
+              WHERE DEVELOPERS BUILD
+            </div>
+            <h4 className="text-lg font-medium text-white mb-2">Local Zero-Friction Shield</h4>
+            <p className="text-xs text-[#797D86] leading-relaxed">
+              Run <code className="text-[#C9CBCF] font-mono">npx sevlex init</code> to instantly wrap Cursor and Claude Desktop. No accounts, no credit cards, 100% local stdio inspection.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
+            <div className="text-[11px] font-mono uppercase tracking-widest text-blue-400 mb-3">
+              WHERE TEAMS COLLABORATE
+            </div>
+            <h4 className="text-lg font-medium text-white mb-2">Shared Policy Governance</h4>
+            <p className="text-xs text-[#797D86] leading-relaxed">
+              Sync global allowlists and blocklists across your engineering team. Receive real-time Slack and PagerDuty alerts the millisecond an agent attacks.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
+            <div className="text-[11px] font-mono uppercase tracking-widest text-purple-400 mb-3">
+              WHERE ENTERPRISES COMPLY
+            </div>
+            <h4 className="text-lg font-medium text-white mb-2">SOC 2 Mathematical Proofs</h4>
+            <p className="text-xs text-[#797D86] leading-relaxed">
+              Cryptographically seal every autonomous agent interaction. Prove to enterprise compliance auditors that private credentials never left developer laptops.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 10. CTA BOTTOM BANNER (Neon Pill Standards)                               */}
+      {/* ========================================================================= */}
       <section className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="rounded-3xl border border-white/[0.12] bg-gradient-to-b from-blue-950/30 via-[#0E0D17] to-[#08080C] p-10 sm:p-14 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-40 bg-blue-500/20 blur-[90px] pointer-events-none rounded-full" />
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight relative z-10">
+        <div className="rounded-3xl border border-[#242628] bg-[#0C0D0E] p-10 sm:p-14 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-36 bg-[#34D59A]/10 blur-[90px] pointer-events-none rounded-full" />
+          <h2 className="text-3xl sm:text-5xl font-medium text-white tracking-tight relative z-10">
             Shield Your AI Agents in 10 Seconds
           </h2>
-          <p className="mt-4 text-zinc-400 max-w-xl mx-auto text-sm sm:text-base relative z-10">
+          <p className="mt-4 text-[#797D86] max-w-xl mx-auto text-sm sm:text-base relative z-10">
             No Docker, no kernel drivers, no root permissions. Run one command to wrap MCP servers across Cursor, Claude Desktop, and Antigravity.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-            <div className="flex items-center gap-3 bg-[#111118] border border-white/[0.15] rounded-xl px-4 py-2.5">
-              <span className="text-zinc-500 font-mono text-sm">$</span>
-              <code className="text-sm font-mono text-emerald-400 font-bold">npx sevlex init</code>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10">
+            {/* Install pill */}
+            <div className="inline-flex items-center gap-3 bg-[#131415] border border-[#242628] rounded-full px-5 py-2.5">
+              <span className="text-[#61646B] font-mono text-xs">$</span>
+              <code className="text-xs font-mono text-[#34D59A] font-medium">npx sevlex init</code>
               <button
                 onClick={copyInstall}
-                className="p-1 text-zinc-400 hover:text-white transition cursor-pointer"
+                className="p-1 text-[#797D86] hover:text-white transition cursor-pointer"
                 title="Copy install command"
               >
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
               </button>
             </div>
+
+            {/* GitHub Sign Up Pill */}
             <a
               href="/console?auth=github"
-              className="px-5 py-2.5 rounded-xl border border-white/[0.15] bg-[#141320] hover:bg-[#1C1A2E] text-white text-sm font-semibold transition flex items-center gap-2 shadow-sm cursor-pointer"
+              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-6 tracking-tight font-medium bg-[#18191B] border border-[#242628] text-white hover:bg-[#242628] text-xs gap-2"
             >
-              <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+              <svg className="size-4 fill-white" viewBox="0 0 24 24">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
               </svg>
               <span>Sign Up with GitHub</span>
             </a>
+
+            {/* SecOps Console Primary Pill */}
             <a
               href="/console"
-              className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition shadow-lg shadow-blue-600/30"
+              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-xs gap-2"
             >
-              Sign In to SecOps Console
+              <span>Sign In to SecOps Console</span>
+              <ArrowRight className="size-3.5" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
-        <div className="flex items-center gap-3 text-zinc-400">
+      {/* ========================================================================= */}
+      {/* 11. FOOTER                                                               */}
+      {/* ========================================================================= */}
+      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-[#242628] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#797D86]">
+        <div className="flex items-center gap-3 text-[#94979E]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/sevlex-brand-horizontal.png"
@@ -1226,11 +1381,12 @@ export default function LandingPage() {
           <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
         </div>
         <div className="flex items-center gap-6">
-          <a href="#simulator" className="hover:text-zinc-300 transition">Exploit Simulator</a>
-          <a href="#features" className="hover:text-zinc-300 transition">Features</a>
-          <a href="/console" className="hover:text-zinc-300 transition">Console</a>
-          <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className="hover:text-zinc-300 transition">GitHub</a>
-          <a href="https://calendly.com/meetpxnchl/meeting" target="_blank" rel="noreferrer" className="hover:text-zinc-300 transition">Book Enterprise Demo</a>
+          <a href="#agents" className="hover:text-white transition">Agent Setup</a>
+          <a href="#simulator" className="hover:text-white transition">Exploit Simulator</a>
+          <a href="#features" className="hover:text-white transition">Features</a>
+          <a href="/console" className="hover:text-white transition">Console</a>
+          <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a>
+          <a href="https://calendly.com/meetpxnchl/meeting" target="_blank" rel="noreferrer" className="hover:text-white transition">Book Enterprise Demo</a>
         </div>
       </footer>
     </main>
