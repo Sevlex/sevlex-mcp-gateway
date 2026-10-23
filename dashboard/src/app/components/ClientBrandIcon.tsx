@@ -18,7 +18,7 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("windsurf") || norm.includes("codeium")) return "codeium.com";
   if (norm.includes("antigravity")) return null; // Use official extracted Antigravity app icon
   if (norm.includes("drive")) return null; // Use official Google Drive vector icon
-  if (norm.includes("node")) return null; // Use official Node.js vector icon
+  if (norm.includes("node")) return "nodejs.org"; // Use official Node.js logo
   if (norm.includes("gemini") || norm.includes("google")) return "google.com";
   if (norm.includes("postgres")) return "postgresql.org";
   if (norm.includes("aws") || norm.includes("amazon") || norm.includes("s3")) return "aws.amazon.com";
@@ -51,7 +51,7 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
   const domain = getDomainForBrand(name);
 
   const sizeClass = 
-    size === "xs" ? "w-3.5 h-3.5" :
+    size === "xs" ? "w-4 h-4" :
     size === "sm" ? "w-5 h-5" :
     size === "md" ? "w-7 h-7" :
     size === "lg" ? "w-8 h-8" : "w-10 h-10";

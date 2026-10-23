@@ -32,6 +32,7 @@ import {
   RotateCcw,
   Bot,
 } from "lucide-react";
+import ClientBrandIcon from "./components/ClientBrandIcon";
 
 // Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({
@@ -568,18 +569,17 @@ export default function LandingPage() {
           <div className="mt-12 flex flex-wrap items-center justify-center gap-2.5 text-xs text-[#797D86]">
             <span className="font-mono text-[11px] text-[#61646B] uppercase tracking-wider mr-1">Zero-Config Shields:</span>
             {[
-              { name: "Cursor IDE", icon: "/cursor-icon.svg" },
-              { name: "Claude Desktop", icon: "/claude-icon.svg" },
-              { name: "Windsurf", icon: "/windsurf-icon.svg" },
-              { name: "Antigravity", icon: "/antigravity-icon.png" },
-              { name: "Node / TS SDK", icon: "/nodejs-icon.svg" },
+              { name: "Cursor IDE", brand: "cursor" },
+              { name: "Claude Desktop", brand: "claude" },
+              { name: "Windsurf", brand: "windsurf" },
+              { name: "Antigravity", brand: "antigravity" },
+              { name: "Node / TS SDK", brand: "node" },
             ].map((client) => (
               <span
                 key={client.name}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#131415] border border-[#242628] text-[#C9CBCF] text-xs font-medium"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#131415] border border-[#242628] text-[#C9CBCF] text-xs font-medium hover:border-[#303236] transition-colors"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={client.icon} alt={client.name} className="size-3.5 object-contain" />
+                <ClientBrandIcon name={client.brand} size="xs" className="size-4" />
                 <span>{client.name}</span>
                 <span className="size-1 rounded-full bg-[#34D59A]" />
               </span>
@@ -662,12 +662,7 @@ export default function LandingPage() {
                         : "text-[#797D86] hover:text-white hover:bg-white/[0.04]"
                     }`}
                   >
-                    {item.iconSrc ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.iconSrc} alt={item.name} className="size-3.5 object-contain" />
-                    ) : (
-                      <Bot className="size-3.5 text-[#34D59A]" />
-                    )}
+                    <ClientBrandIcon name={item.id} size="xs" className="size-4" />
                     <span>{item.name}</span>
                   </button>
                 );
