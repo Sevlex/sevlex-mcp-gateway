@@ -667,8 +667,8 @@ export default function LandingPage() {
             <a href="#features" className="hover:text-white transition-colors">
               Security Engines
             </a>
-            <a href="#terminal" className="hover:text-white transition-colors">
-              CLI Gateway
+            <a href="#docs" className="hover:text-white transition-colors">
+              Documentation
             </a>
             <a href="#compliance" className="hover:text-white transition-colors">
               SOC 2 Merkle
@@ -781,12 +781,11 @@ export default function LandingPage() {
 
             {/* Glass Docs Pill */}
             <a
-              href="/llms.txt"
-              target="_blank"
+              href="#docs"
               className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white/[0.03] border border-[#303236] text-white hover:border-[#61646B] hover:bg-white/[0.06] text-sm gap-2"
             >
-              <span>Read llms.txt</span>
-              <ExternalLink className="size-3.5 text-[#797D86]" />
+              <span>Documentation</span>
+              <ArrowRight className="size-3.5 text-[#797D86]" />
             </a>
           </div>
 
@@ -1444,9 +1443,21 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. LIVE INTERACTIVE TERMINAL SECTION                                      */}
+      {/* 6. DEVELOPER DOCUMENTATION & INTERACTIVE CLI WORKBENCH                    */}
       {/* ========================================================================= */}
-      <section id="terminal" className="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="docs" className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+        <div id="terminal" className="text-center max-w-2xl mx-auto mb-10">
+          <div className="flex items-center justify-center gap-2 text-xs font-mono font-medium uppercase tracking-widest text-[#34D59A] mb-3">
+            <Terminal className="size-3.5 text-[#34D59A]" />
+            <span>DEVELOPER DOCUMENTATION &amp; QUICKSTART</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-white">
+            Zero-Config L7 Gateway CLI
+          </h2>
+          <p className="mt-2 text-xs sm:text-sm text-[#797D86]">
+            One command scans your host, transparently wraps downstream stdio MCP tools in Layer 7 zero-trust filters, and creates safe backups.
+          </p>
+        </div>
         <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] shadow-2xl overflow-hidden">
           {/* Terminal Window Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-[#0C0D0E] border-b border-[#242628]">
@@ -1565,6 +1576,41 @@ export default function LandingPage() {
                 </p>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Machine-Readable Documentation Card (llms.txt Standard) */}
+        <div className="mt-6 p-5 rounded-2xl border border-[#242628] bg-[#0E0E12] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#34D59A] shrink-0 mt-0.5">
+              <FileCode className="size-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white">Agent Manifest: llms.txt</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#34D59A]/10 text-[#34D59A] border border-[#34D59A]/20 font-bold uppercase">
+                  Machine Standard
+                </span>
+              </div>
+              <p className="text-xs text-[#797D86] mt-1 max-w-xl">
+                Structured plain-text specification optimized for Claude Code, Cursor, Windsurf, and autonomous AI agents to ingest CLI commands without web scraping.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+            <div className="hidden md:flex items-center gap-2 bg-[#000000] border border-[#242628] px-3 py-1.5 rounded-xl text-xs font-mono text-[#AFB1B6]">
+              <span className="text-[#61646B]">$</span>
+              <code>curl -s sevlex.com/llms.txt</code>
+            </div>
+            <a
+              href="/llms.txt"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-xs font-medium text-white border border-white/[0.08] transition shrink-0 cursor-pointer"
+            >
+              <span>View llms.txt</span>
+              <ExternalLink size={12} className="text-[#797D86]" />
+            </a>
           </div>
         </div>
       </section>
@@ -1805,11 +1851,13 @@ export default function LandingPage() {
           />
           <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-6">
+          <a href="#docs" className="hover:text-white transition">Documentation</a>
           <a href="#agents" className="hover:text-white transition">Agent Setup</a>
           <a href="#simulator" className="hover:text-white transition">Exploit Simulator</a>
           <a href="#features" className="hover:text-white transition">Features</a>
           <a href="/console" className="hover:text-white transition">Console</a>
+          <a href="/llms.txt" target="_blank" className="hover:text-white transition font-mono text-[11px]">llms.txt</a>
           <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a>
           <a href="https://calendly.com/meetpxnchl/meeting" target="_blank" rel="noreferrer" className="hover:text-white transition">Book Enterprise Demo</a>
         </div>
