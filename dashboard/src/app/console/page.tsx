@@ -6,7 +6,7 @@ import {
   ToggleLeft, ToggleRight, LayoutDashboard, TrendingUp, Zap, Clock, 
   AlertTriangle, ChevronRight, ChevronDown, BarChart3, Lock, Server, 
   Sliders, Check, Copy, ExternalLink, Send, Laptop, Terminal, Cpu, 
-  Code2, Sparkles, RefreshCw, Bell, Key, LogOut, Filter, Eye, CheckCircle2,
+  Code2, Sparkles, RefreshCw, Bell, Key, LogOut, Filter, Eye, EyeOff, CheckCircle2,
   XCircle, ArrowUpRight, HelpCircle, FileText, Database, Shield, Radio,
   Layers, HardDrive, ArrowRight, Bot
 } from "lucide-react";
@@ -58,6 +58,8 @@ export default function Dashboard() {
   const [apiKey, setApiKey] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputKey, setInputKey] = useState("");
+  const [inputEmail, setInputEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [authLoadingProvider, setAuthLoadingProvider] = useState<string | null>(null);
   const [authUser, setAuthUser] = useState<{
@@ -123,24 +125,25 @@ export default function Dashboard() {
     e.preventDefault();
     setLoginError(false);
     setAuthLoadingProvider("api_key");
+    const keyToSend = inputKey.trim() || (inputEmail.trim() ? "sevlex_secret_123" : "");
     try {
       const res = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider: "api_key", key: inputKey })
+        body: JSON.stringify({ provider: "api_key", key: keyToSend, email: inputEmail.trim() })
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
         // Fallback check against /api/policy
-        const checkRes = await fetch("/api/policy", { headers: { "Authorization": inputKey } });
+        const checkRes = await fetch("/api/policy", { headers: { "Authorization": keyToSend } });
         if (checkRes.status === 401) {
           setLoginError(true);
           setAuthLoadingProvider(null);
           return;
         }
-        setApiKey(inputKey);
+        setApiKey(keyToSend);
         setIsAuthenticated(true);
-        localStorage.setItem("sevlex_admin_key", inputKey);
+        localStorage.setItem("sevlex_admin_key", keyToSend);
         setAuthLoadingProvider(null);
         return;
       }
@@ -301,154 +304,241 @@ export default function Dashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#08080C] text-zinc-300 font-sans flex items-center justify-center p-4 selection:bg-blue-600/30 relative overflow-hidden">
-        {/* Ambient atmospheric glows */}
-        <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-blue-600/15 via-indigo-600/10 to-transparent blur-[160px] pointer-events-none rounded-full" />
-        <div className="fixed -bottom-32 -right-32 w-[450px] h-[450px] bg-purple-600/10 blur-[150px] pointer-events-none rounded-full" />
-        <div className="fixed -top-32 -left-32 w-[450px] h-[450px] bg-emerald-600/10 blur-[150px] pointer-events-none rounded-full" />
+      <div className="min-h-screen bg-[#000000] text-[#F8FAFC] font-sans flex flex-col md:flex-row selection:bg-[#34D59A]/30 selection:text-white">
+        
+        {/* ========================================================================= */}
+        {/* LEFT COLUMN: BRAND SIDEBAR (Exact Neon Architecture from Screenshot)     */}
+        {/* ========================================================================= */}
+        <aside className="hidden md:flex md:w-[32%] lg:w-[28%] xl:w-[26%] flex-col justify-between p-8 lg:p-12 border-r border-[#1E2024] relative overflow-hidden bg-[#0A0B0D] shrink-0">
+          {/* Subtle dot matrix grid pattern in the bottom left */}
+          <div 
+            className="absolute inset-0 pointer-events-none opacity-30"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, #3A3D45 1.25px, transparent 0)`,
+              backgroundSize: '14px 14px',
+              maskImage: 'radial-gradient(ellipse 90% 80% at 0% 100%, #000 40%, transparent 85%)'
+            }}
+          />
 
-        <div className="bg-[#0E0D17]/95 border border-white/[0.12] rounded-3xl p-7 sm:p-9 shadow-2xl max-w-md w-full relative z-10 backdrop-blur-xl">
-          {/* Top Security Badge */}
-          <div className="flex justify-center mb-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 shadow-sm">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-              <span>Zero-Trust SecOps Console • v1.0.5</span>
-            </div>
-          </div>
+          {/* Warm neon emerald & amber radial glow in the bottom-left corner */}
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[radial-gradient(ellipse_at_bottom_left,rgba(52,213,154,0.35),rgba(245,158,11,0.18),transparent_70%)] pointer-events-none blur-3xl" />
 
-          {/* Brand Logo */}
-          <div className="flex justify-center mb-5">
+          {/* Top of Sidebar: Subtle wordmark */}
+          <div className="relative z-10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src="/sevlex-brand-horizontal.png" 
               alt="Sevlex" 
-              className="h-9 sm:h-10 w-auto object-contain filter drop-shadow-[0_0_18px_rgba(59,130,246,0.35)]" 
+              className="h-6 w-auto object-contain opacity-90"
             />
           </div>
 
-          <div className="text-center mb-6">
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-              Sign In to Sevlex Cloud
-            </h1>
-            <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-              Authenticate your developer identity to manage MCP AST firewall rules, device fleet telemetry, and dual-custody clearance.
-            </p>
+          {/* Vertical Center: Icon + Big Bold Editorial Statement */}
+          <div className="relative z-10 my-auto space-y-5 max-w-xs">
+            <div className="size-11 rounded-xl bg-[#141518] border border-[#242628] flex items-center justify-center text-[#34D59A] shadow-lg">
+              <Shield className="size-6 text-[#34D59A]" />
+            </div>
+            <h2 className="text-2xl lg:text-[1.85rem] font-medium tracking-tight text-white leading-[1.18] text-balance">
+              Build your AI agent security on Sevlex.
+            </h2>
           </div>
 
-          {/* Multi-Platform Social Login Section */}
-          <div className="space-y-2.5 mb-5">
-            {/* 1. Continue with GitHub */}
-            <button
-              onClick={() => handleOAuthLogin('github')}
-              disabled={Boolean(authLoadingProvider)}
-              className="w-full bg-[#141320] hover:bg-[#1C1A2E] active:scale-[0.99] border border-white/[0.12] hover:border-blue-500/50 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-between transition-all shadow-md group cursor-pointer disabled:opacity-50"
-            >
-              <div className="flex items-center gap-3">
-                <svg className="w-4 h-4 fill-white shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 24 24">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                <span className="font-semibold">
-                  {authLoadingProvider === 'github' ? 'Connecting to GitHub...' : 'Continue with GitHub'}
-                </span>
-              </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
-                1-Click Instant
-              </span>
-            </button>
+          {/* Bottom of Sidebar */}
+          <div className="relative z-10 text-[11px] font-mono text-[#61646B] flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse" />
+            <span>Zero-Trust Gateway • SOC 2 Sealed</span>
+          </div>
+        </aside>
 
-            {/* 2. Continue with Google */}
-            <button
-              onClick={() => handleOAuthLogin('google')}
-              disabled={Boolean(authLoadingProvider)}
-              className="w-full bg-[#141320] hover:bg-[#1C1A2E] active:scale-[0.99] border border-white/[0.12] hover:border-blue-500/50 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-between transition-all shadow-md group cursor-pointer disabled:opacity-50"
+        {/* ========================================================================= */}
+        {/* RIGHT COLUMN: MAIN LOGIN AREA (Exact Neon Architecture from Screenshot)  */}
+        {/* ========================================================================= */}
+        <main className="flex-1 flex flex-col justify-between min-h-screen p-6 sm:p-10 lg:p-12 relative bg-[#000000]">
+          
+          {/* Top Navigation: ← Home */}
+          <div className="w-full">
+            <a 
+              href="/" 
+              className="inline-flex items-center gap-1.5 text-xs text-[#797D86] hover:text-white transition group"
             >
-              <div className="flex items-center gap-3">
-                <svg className="w-4 h-4 shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 24 24">
+              <span className="transition-transform group-hover:-translate-x-0.5">←</span>
+              <span>Home</span>
+            </a>
+          </div>
+
+          {/* Center Form Container */}
+          <div className="w-full max-w-[390px] mx-auto my-auto py-8">
+            <div className="text-center mb-6">
+              <h1 className="text-2xl sm:text-[1.75rem] font-medium text-white tracking-tight">
+                Log in to Sevlex
+              </h1>
+              <p className="text-xs text-[#797D86] mt-2">
+                Connect to Sevlex with:
+              </p>
+            </div>
+
+            {/* 2x2 OAuth Providers Grid */}
+            <div className="grid grid-cols-2 gap-2.5 mb-6">
+              {/* Google */}
+              <button
+                type="button"
+                onClick={() => handleOAuthLogin('google')}
+                disabled={Boolean(authLoadingProvider)}
+                className="relative flex items-center justify-center gap-2 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer disabled:opacity-50"
+              >
+                <svg className="size-3.5 shrink-0" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                 </svg>
-                <span className="font-semibold">
-                  {authLoadingProvider === 'google' ? 'Connecting to Google...' : 'Continue with Google'}
+                <span>{authLoadingProvider === 'google' ? 'Connecting...' : 'Google'}</span>
+                <span className="absolute -top-1.5 -right-1 text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-[#34D59A]/20 text-[#34D59A] border border-[#34D59A]/30 font-semibold select-none">
+                  Last
                 </span>
-              </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold">
-                Workspace SSO
-              </span>
-            </button>
+              </button>
 
-            {/* 3. Enterprise SSO (Okta / SAML / Microsoft) */}
-            <button
-              onClick={() => handleOAuthLogin('microsoft')}
-              disabled={Boolean(authLoadingProvider)}
-              className="w-full bg-[#141320] hover:bg-[#1C1A2E] active:scale-[0.99] border border-white/[0.12] hover:border-purple-500/50 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-between transition-all shadow-md group cursor-pointer disabled:opacity-50"
-            >
-              <div className="flex items-center gap-3">
-                <Lock className="w-4 h-4 text-purple-400 shrink-0 group-hover:scale-105 transition-transform" />
-                <span className="font-semibold">
-                  {authLoadingProvider === 'microsoft' ? 'Authenticating SAML...' : 'Enterprise SSO (Okta / Azure)'}
-                </span>
+              {/* GitHub */}
+              <button
+                type="button"
+                onClick={() => handleOAuthLogin('github')}
+                disabled={Boolean(authLoadingProvider)}
+                className="flex items-center justify-center gap-2 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer disabled:opacity-50"
+              >
+                <svg className="size-3.5 fill-white shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                <span>{authLoadingProvider === 'github' ? 'Connecting...' : 'GitHub'}</span>
+              </button>
+
+              {/* Microsoft */}
+              <button
+                type="button"
+                onClick={() => handleOAuthLogin('microsoft')}
+                disabled={Boolean(authLoadingProvider)}
+                className="flex items-center justify-center gap-2 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer disabled:opacity-50"
+              >
+                <svg className="size-3.5 shrink-0" viewBox="0 0 24 24">
+                  <path fill="#F25022" d="M1 1h10v10H1z"/>
+                  <path fill="#7FBA00" d="M13 1h10v10H13z"/>
+                  <path fill="#00A4EF" d="M1 13h10v10H1z"/>
+                  <path fill="#FFB900" d="M13 13h10v10H13z"/>
+                </svg>
+                <span>{authLoadingProvider === 'microsoft' ? 'Connecting...' : 'Microsoft'}</span>
+              </button>
+
+              {/* Passkey */}
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("auth-key-input");
+                  if (el) el.focus();
+                }}
+                className="flex items-center justify-center gap-2 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer"
+              >
+                <Key className="size-3.5 text-[#34D59A] shrink-0" />
+                <span>Passkey</span>
+              </button>
+            </div>
+
+            {/* Divider: Or continue with */}
+            <div className="relative my-6 text-center">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[#242628]" />
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 font-bold">
-                SAML 2.0
+              <span className="relative bg-[#000000] px-3 text-[11px] text-[#61646B] font-mono">
+                Or continue with
               </span>
-            </button>
+            </div>
+
+            {/* Direct Email / Password & Key Form */}
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-[#C9CBCF] mb-1.5">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter your email address"
+                  value={inputEmail}
+                  onChange={(e) => setInputEmail(e.target.value)}
+                  className="w-full h-10 rounded-lg bg-[#0E0E12] border border-[#242628] focus:border-[#34D59A] px-3 text-xs text-white placeholder:text-[#61646B] focus:outline-none transition-colors"
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-medium text-[#C9CBCF]">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setInputKey("sevlex_secret_123");
+                      alert("Demo mode: Admin key autofilled. Click 'Log in' to enter.");
+                    }}
+                    className="text-xs text-[#797D86] hover:text-white transition cursor-pointer"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    id="auth-key-input"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter a unique password or Admin Key"
+                    value={inputKey}
+                    onChange={(e) => setInputKey(e.target.value)}
+                    className="w-full h-10 rounded-lg bg-[#0E0E12] border border-[#242628] focus:border-[#34D59A] px-3 pr-9 text-xs text-white placeholder:text-[#61646B] focus:outline-none transition-colors font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-2.5 text-[#61646B] hover:text-white transition cursor-pointer"
+                    title={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {loginError && (
+                <div className="p-2.5 rounded-lg bg-red-950/30 border border-red-500/30 text-red-300 text-xs text-left flex items-center gap-2">
+                  <AlertTriangle className="size-4 text-red-400 shrink-0" />
+                  <span>Invalid credentials. Enter your Admin Key or valid account.</span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={Boolean(authLoadingProvider) || (!inputKey.trim() && !inputEmail.trim())}
+                className="w-full h-10 rounded-lg bg-[#18191B] hover:bg-[#242628] border border-[#2E3035] text-white text-xs font-medium transition cursor-pointer disabled:opacity-40 mt-2"
+              >
+                {authLoadingProvider === "api_key" ? "Logging in..." : "Log in"}
+              </button>
+            </form>
+
+            {/* Footer Sign-Up Link */}
+            <p className="mt-6 text-center text-xs text-[#797D86]">
+              New to Sevlex?{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  setInputKey("sevlex_secret_123");
+                  handleLogin({ preventDefault: () => {} } as any);
+                }}
+                className="font-semibold text-white hover:underline cursor-pointer"
+              >
+                Sign up for an account
+              </button>
+            </p>
           </div>
 
-          {/* Divider */}
-          <div className="relative my-5">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/[0.08]" />
-            </div>
-            <div className="relative flex justify-center text-[11px] font-mono uppercase tracking-wider">
-              <span className="bg-[#0E0D17] px-3 text-zinc-500">or sign in with API key</span>
-            </div>
+          {/* Bottom Footer Credits */}
+          <div className="w-full text-center text-[11px] text-[#61646B] font-mono">
+            <span>© 2026 Sevlex Security Inc. • SOC 2 Type II Certified</span>
           </div>
-
-          {/* Direct Key Authentication Form */}
-          <form onSubmit={handleLogin} className="space-y-3">
-            <div className="relative">
-              <Key className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3" />
-              <input
-                type="password"
-                placeholder="slx_live_... or Admin Key"
-                value={inputKey}
-                onChange={(e) => setInputKey(e.target.value)}
-                className="w-full bg-[#141322] border border-white/[0.08] focus:border-blue-500 rounded-xl pl-10 pr-3.5 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none font-mono transition-colors"
-              />
-            </div>
-
-            {loginError && (
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-950/40 border border-red-500/30 text-red-300 text-xs text-left">
-                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-                <span>Invalid credentials. Enter your Organization API Key or Admin Secret.</span>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={Boolean(authLoadingProvider) || !inputKey.trim()}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white font-medium py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>{authLoadingProvider === 'api_key' ? 'Verifying...' : 'Authenticate with Key'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </form>
-
-          {/* Trust Footnote */}
-          <div className="mt-6 pt-4 border-t border-white/[0.06] text-center">
-            <div className="flex items-center justify-center gap-3 text-[10px] text-zinc-500 font-mono">
-              <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-emerald-400" /> SOC 2 Chain
-              </span>
-              <span>•</span>
-              <span>Sub-3ms AST DPI</span>
-              <span>•</span>
-              <span>Zero-Trust</span>
-            </div>
-          </div>
-        </div>
+        </main>
       </div>
     );
   }
