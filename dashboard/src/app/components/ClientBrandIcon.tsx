@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Cpu, Server, Database } from "lucide-react";
+import { Cpu, Server, Database, Terminal, GitBranch, Folder, FileCode } from "lucide-react";
 
 interface ClientBrandIconProps {
   name: string;
@@ -18,12 +18,27 @@ export const getLogoDevUrl = (domain: string, size = 128) => {
 export const getDomainForBrand = (name: string): string | null => {
   const norm = (name || "").toLowerCase().trim();
   if (!norm) return null;
+
+  // Filter out internal and generic agent labels so they don't query arbitrary domains
+  if (
+    norm.includes("script") ||
+    norm.includes("custom") ||
+    norm.includes("shell") ||
+    norm.includes("terminal") ||
+    norm.includes("workspace") ||
+    norm.includes("knowledge")
+  ) {
+    return null;
+  }
+
+  // Developer Agents & Platforms
+  if (norm.includes("claude")) return "claude.ai";
+  if (norm.includes("anthropic")) return "anthropic.com";
   if (norm.includes("cursor")) return "cursor.com";
-  if (norm.includes("claude") || norm.includes("anthropic")) return "anthropic.com";
   if (norm.includes("windsurf") || norm.includes("codeium")) return "codeium.com";
-  if (norm.includes("antigravity")) return null; // Use official extracted Antigravity app icon
-  if (norm.includes("drive")) return "google.com";
+  if (norm.includes("antigravity")) return null; // Uses official local high-res Google Antigravity arch asset
   if (norm.includes("node")) return "nodejs.org";
+  if (norm.includes("drive")) return "google.com";
   if (norm.includes("gemini") || norm.includes("google")) return "google.com";
   if (norm.includes("postgres") || norm.includes("pgsql")) return "postgresql.org";
   if (norm.includes("aws") || norm.includes("amazon") || norm.includes("s3")) return "aws.amazon.com";
@@ -79,12 +94,6 @@ export const getDomainForBrand = (name: string): string | null => {
     return norm;
   }
 
-  // Fallback: try clean_name.com for any other company
-  const clean = norm.replace(/[^a-z0-9]/g, "");
-  if (clean.length > 2) {
-    return `${clean}.com`;
-  }
-
   return null;
 };
 
@@ -99,7 +108,7 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
     size === "md" ? "w-7 h-7" :
     size === "lg" ? "w-8 h-8" : "w-10 h-10";
 
-  // Priority 1: Official Transparent SVGs for Core Coding Agents (Zero white box, Zero border)
+  // Priority 1: Official Transparent Vectors for Core Coding Agents & Development Environments
   if (norm.includes("claude")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -121,8 +130,20 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
   if (norm.includes("antigravity")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src="/gemini-logo.svg" alt="Google Antigravity" className={`${sizeClass} object-contain shrink-0 text-[#4E82EE] ${className}`} />
+      <img src="/antigravity-icon.png" alt="Google Antigravity" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
+  }
+  if (norm.includes("custom") || norm.includes("script") || norm.includes("mcp script")) {
+    return <Terminal className={`${sizeClass} text-emerald-400 shrink-0 ${className}`} />;
+  }
+  if (norm.includes("shell") || norm.includes("bash") || norm.includes("zsh") || norm.includes("system shell")) {
+    return <Terminal className={`${sizeClass} text-blue-400 shrink-0 ${className}`} />;
+  }
+  if (norm.includes("git")) {
+    return <GitBranch className={`${sizeClass} text-orange-400 shrink-0 ${className}`} />;
+  }
+  if (norm.includes("workspace") || norm.includes("file")) {
+    return <Folder className={`${sizeClass} text-yellow-400 shrink-0 ${className}`} />;
   }
   if (norm.includes("node")) {
     return (
@@ -131,7 +152,7 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
     );
   }
 
-  // Priority 2: If Logo.dev has a domain and hasn't failed, use for external SaaS catalogs
+  // Priority 2: Verified Logo.dev CDN Token for SaaS & Enterprise Services
   if (domain && !loadFailed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -139,38 +160,22 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
         src={`https://img.logo.dev/${domain}?token=${LOGO_DEV_TOKEN}&size=128&format=png`} 
         alt={`${name} logo`} 
         onError={() => setLoadFailed(true)}
-        className={`${sizeClass} object-contain shrink-0 rounded-xs ${className}`} 
+        className={`${sizeClass} object-contain shrink-0 ${className}`} 
       />
     );
   }
-  if (norm.includes("antigravity")) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/antigravity-icon.png" alt="Antigravity" className={`${sizeClass} object-contain shrink-0 rounded-xs ${className}`} />
-    );
-  }
+
+  // Priority 3: Local SVG / PNG Fallbacks
   if (norm.includes("drive")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/google-drive-icon.svg" alt="Google Drive" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-  if (norm.includes("node")) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/nodejs-icon.svg" alt="Node.js" className={`${sizeClass} object-contain shrink-0 ${className}`} />
-    );
-  }
   if (norm.includes("gemini") || norm.includes("google")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/gemini-logo.svg" alt="Gemini" className={`${sizeClass} object-contain shrink-0 ${className}`} />
-    );
-  }
-  if (norm.includes("windsurf") || norm.includes("codeium")) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/windsurf-icon.png" alt="Windsurf" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
   if (norm.includes("windows") || norm.includes("microsoft") || norm.includes("intune")) {

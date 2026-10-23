@@ -220,7 +220,7 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                   <td className="py-3 px-4">
                     <div className="flex flex-wrap gap-1.5 max-w-xs">
                       {dev.shieldedClients.map((client, idx) => (
-                        <span key={idx} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] bg-[#141322] text-zinc-200 border border-white/[0.08] font-sans font-medium">
+                        <span key={idx} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] bg-white/[0.05] hover:bg-white/[0.08] text-zinc-200 font-sans font-medium transition-colors">
                           <ClientBrandIcon name={client} size="xs" />
                           <span>{client}</span>
                         </span>
@@ -388,16 +388,16 @@ export default function DeviceFleetTab({ devices = [], setPingStatus, onNavigate
                         <span className="text-blue-400 font-bold">1. Scan:</span>
                         <span className="flex items-center gap-1.5 flex-wrap">
                           <span>Auto-detects</span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.06] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="cursor" size="xs" /> Cursor
                           </span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.06] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="claude" size="xs" /> Claude Desktop
                           </span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.06] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="claude" size="xs" /> Claude Code CLI
                           </span>
-                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#141322] border border-white/[0.08] font-sans font-bold text-white text-[10px]">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.06] font-sans font-bold text-white text-[10px]">
                             <ClientBrandIcon name="windsurf" size="xs" /> Windsurf
                           </span>
                         </span>
