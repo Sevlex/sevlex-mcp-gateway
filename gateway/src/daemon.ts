@@ -16,16 +16,36 @@ export interface MonitoredClient {
   configPath: string;
 }
 
-export function getMcpProxyEntry(userConfig?: { apiKey?: string | undefined; endpoint?: string | undefined }): Record<string, any> {
+export function resolveGatewayPath(): string {
+  // Always prioritize the valid gateway engine inside the package distribution
+  const localGateway = path.resolve(__dirname, "gateway.js");
+  if (fs.existsSync(localGateway)) return localGateway;
+
+  const distGateway = path.resolve(__dirname, "../dist/gateway.js");
+  if (fs.existsSync(distGateway)) return distGateway;
+
+  const srcGateway = path.resolve(__dirname, "gateway.ts");
+  if (fs.existsSync(srcGateway)) return srcGateway;
+
+  return localGateway;
+}
+
+export function resolvePolicyPath(): string {
   const isWindows = process.platform === "win32";
   const sysDir = isWindows ? "C:\\ProgramData\\Sevlex" : "/etc/sevlex";
-  const corporateGateway = path.join(sysDir, "gateway.js");
-  const localGateway = path.resolve(__dirname, "gateway.js");
-  const gatewayPath = fs.existsSync(corporateGateway) ? corporateGateway : localGateway;
   const userPolicy = path.join(os.homedir(), ".sevlex", "sevlex.json");
   const sysPolicy = path.join(sysDir, "sevlex.json");
   const localPolicy = path.resolve(__dirname, "../sevlex.json");
-  const policyPath = fs.existsSync(userPolicy) ? userPolicy : fs.existsSync(sysPolicy) ? sysPolicy : localPolicy;
+
+  if (fs.existsSync(userPolicy)) return userPolicy;
+  if (fs.existsSync(sysPolicy)) return sysPolicy;
+  if (fs.existsSync(localPolicy)) return localPolicy;
+  return userPolicy;
+}
+
+export function getMcpProxyEntry(userConfig?: { apiKey?: string | undefined; endpoint?: string | undefined }): Record<string, any> {
+  const gatewayPath = resolveGatewayPath();
+  const policyPath = resolvePolicyPath();
 
   const env: Record<string, string> = {
     SEVLEX_POLICY_PATH: policyPath,
@@ -36,9 +56,12 @@ export function getMcpProxyEntry(userConfig?: { apiKey?: string | undefined; end
     env.SEVLEX_INGEST_URL = `${(userConfig.endpoint || "https://app.sevlex.com").replace(/\/$/, "")}/api/ingest`;
   }
 
+  // Wrap mock MCP server so it functions as a valid MCP diagnostic endpoint if explicitly called
+  const mockServerPath = path.resolve(path.dirname(gatewayPath), "mock_mcp_server.js");
+
   return {
     command: "node",
-    args: [gatewayPath],
+    args: [gatewayPath, "node", mockServerPath],
     env,
   };
 }
@@ -107,49 +130,10 @@ function getMcpProxyEntryList(profile: string): MonitoredClient[] {
   return getMonitoredClientsForUser(profile);
 }
 
-export function inspectAndHealClient(client: MonitoredClient): boolean {
+export function inspectAndHealClient(client: MonitoredClient, userConfig?: { apiKey?: string | undefined; endpoint?: string | undefined }): boolean {
   try {
-    const dir = path.dirname(client.configPath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-
-    let data: any = { mcpServers: {} };
-    let needsHeal = false;
-
-    if (fs.existsSync(client.configPath)) {
-      try {
-        const raw = fs.readFileSync(client.configPath, "utf-8");
-        if (raw.trim()) {
-          data = JSON.parse(raw);
-        }
-      } catch {
-        needsHeal = true;
-      }
-    } else {
-      needsHeal = true;
-    }
-
-    data.mcpServers = data.mcpServers || {};
-
-    // Check if sevlex-firewall is missing or tampered with
-    if (!data.mcpServers["sevlex-firewall"]) {
-      needsHeal = true;
-    }
-
-    if (needsHeal) {
-      // Create backup
-      if (fs.existsSync(client.configPath)) {
-        try {
-          fs.copyFileSync(client.configPath, `${client.configPath}.sevlex.bak`);
-        } catch {}
-      }
-
-      data.mcpServers["sevlex-firewall"] = getMcpProxyEntry();
-      fs.writeFileSync(client.configPath, JSON.stringify(data, null, 2), "utf-8");
-      console.log(`[Sevlex Daemon] 🛡️ [AUTO-HEALED] Restored firewall in ${client.name} -> ${client.configPath}`);
-      return true;
-    }
+    const res = injectClient(client, userConfig);
+    return res.status === "INJECTED";
   } catch (err: any) {
     console.error(`[Sevlex Daemon] Error inspecting ${client.name}:`, err.message);
   }
@@ -204,26 +188,29 @@ export function injectClient(client: MonitoredClient, userConfig?: { apiKey?: st
       } catch {}
     }
 
-    const isWindows = process.platform === "win32";
-    const sysDir = isWindows ? "C:\\ProgramData\\Sevlex" : "/etc/sevlex";
-    const corporateGateway = path.join(sysDir, "gateway.js");
-    const localGateway = path.resolve(__dirname, "gateway.js");
-    const gatewayPath = fs.existsSync(corporateGateway) ? corporateGateway : localGateway;
-    const userPolicy = path.join(os.homedir(), ".sevlex", "sevlex.json");
-    const sysPolicy = path.join(sysDir, "sevlex.json");
-    const localPolicy = path.resolve(__dirname, "../sevlex.json");
-    const policyPath = fs.existsSync(userPolicy) ? userPolicy : fs.existsSync(sysPolicy) ? sysPolicy : localPolicy;
+    const gatewayPath = resolveGatewayPath();
+    const policyPath = resolvePolicyPath();
 
     const wrappedServers: string[] = [];
+
+    // Clean up any legacy or dead dummy sevlex-firewall entry
+    if (data.mcpServers["sevlex-firewall"]) {
+      delete data.mcpServers["sevlex-firewall"];
+    }
 
     for (const key of serverKeys) {
       if (key === "sevlex-firewall") continue;
       const srv = data.mcpServers[key];
       if (!srv || typeof srv !== "object") continue;
 
+      // CRITICAL FIX: Skip remote HTTP/SSE MCP servers (e.g., Neon, Cloudflare)
+      if (srv.url || srv.serverUrl || !srv.command || typeof srv.command !== "string") {
+        continue;
+      }
+
       // Check if already injected
       if (srv._sevlex_injected) continue;
-      if (srv.args && Array.isArray(srv.args) && srv.args.some((a: string) => typeof a === "string" && a.includes("gateway.js"))) {
+      if (srv.args && Array.isArray(srv.args) && srv.args.some((a: string) => typeof a === "string" && (a.includes("gateway.js") || a.includes("gateway.ts")))) {
         continue;
       }
 
@@ -251,19 +238,19 @@ export function injectClient(client: MonitoredClient, userConfig?: { apiKey?: st
       wrappedServers.push(key);
     }
 
-    // Ensure sevlex-firewall entry is also present
-    if (!data.mcpServers["sevlex-firewall"]) {
-      data.mcpServers["sevlex-firewall"] = getMcpProxyEntry(userConfig);
-    }
-
     fs.writeFileSync(client.configPath, JSON.stringify(data, null, 2), "utf-8");
+
+    const totalLocalServers = Object.keys(data.mcpServers).filter(k => {
+      const s = data.mcpServers[k];
+      return s && typeof s === "object" && (s.command || s._sevlex_injected);
+    }).length;
 
     return {
       client: client.name,
       configPath: client.configPath,
-      status: wrappedServers.length > 0 || !serverKeys.includes("sevlex-firewall") ? "INJECTED" : "ALREADY_SHIELDED",
+      status: wrappedServers.length > 0 ? "INJECTED" : "ALREADY_SHIELDED",
       wrappedServers,
-      totalServers: Object.keys(data.mcpServers).filter(k => k !== "sevlex-firewall").length,
+      totalServers: totalLocalServers,
       backupPath: fs.existsSync(backupPath) ? backupPath : undefined,
     };
   } catch (err: any) {

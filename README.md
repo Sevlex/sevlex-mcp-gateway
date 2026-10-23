@@ -20,14 +20,15 @@
 Protect your developer workstations in 10 seconds:
 
 ```bash
-# 1. Install Sevlex globally from npm
-npm install -g sevlex
+# 1. Experience the instant 5-second Zero-Trust Shield Demo (no config needed):
+npx sevlex demo
 
-# 2. Transparently shield Claude Desktop, Cursor, Cline & Windsurf
-sevlex inject
+# 2. Transparently shield Claude Desktop, Cursor, Cline & Windsurf:
+npx sevlex init
 
-# 3. Verify security status
-sevlex status
+# 3. Verify security status and cryptographic audit integrity:
+npx sevlex status
+npx sevlex verify
 ```
 
 ---
