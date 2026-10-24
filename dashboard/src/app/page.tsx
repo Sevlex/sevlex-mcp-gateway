@@ -632,19 +632,16 @@ export default function LandingPage() {
             </a>
           </div>
 
-          {/* Desktop Nav Items - Clean & Single-Product Focused */}
+          {/* Desktop Nav Items - Clean 3-Item Architecture: Product, Service, About */}
           <div className="hidden md:flex items-center gap-8 text-xs font-medium text-[#94979E]">
-            <a href="#features" className="hover:text-white transition-colors">
-              Features
-            </a>
-            <a href="#simulator" className="hover:text-white transition-colors">
-              Live Demo
+            <a href="#product" className="hover:text-white transition-colors">
+              Product
             </a>
             <a href="#services" className="hover:text-white transition-colors">
-              Custom MCP
+              Service
             </a>
-            <a href="#docs" className="hover:text-white transition-colors">
-              Documentation
+            <a href="#about" className="hover:text-white transition-colors">
+              About
             </a>
           </div>
 
@@ -1599,9 +1596,10 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 8. CORE SECURITY ENGINES BENTO GRID                                       */}
+      {/* 8. PRODUCT: CORE SECURITY ENGINES BENTO GRID                              */}
       {/* ========================================================================= */}
-      <section id="features" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="product" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="features" />
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-xs uppercase tracking-widest text-[#34D59A] font-mono font-medium">
             Enterprise Governance Suite
@@ -1887,6 +1885,59 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
+      {/* 9.6 ABOUT SEVLEX                                                          */}
+      {/* ========================================================================= */}
+      <section id="about" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+        <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] border border-[#242628] text-[#797D86] mb-4">
+            <span className="text-[#34D59A] font-semibold">ABOUT SEVLEX</span>
+            <span className="text-[#303236]">•</span>
+            <span className="text-[#AFB1B6]">OUR MISSION</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-white">
+            Securing the Autonomous Agent Frontier
+          </h2>
+          <p className="mt-4 text-[#797D86] text-sm sm:text-base leading-relaxed">
+            Autonomous coding agents and the Model Context Protocol are revolutionizing software engineering.
+            Sevlex exists to give engineering leaders complete confidence to adopt agents at scale—preventing
+            catastrophic database mutations, source code theft, and credential leaks without slowing developers down.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
+            <div className="size-9 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A] mb-3">
+              <Shield className="size-4" />
+            </div>
+            <h4 className="text-sm font-medium text-white mb-1.5">Zero-Trust by Default</h4>
+            <p className="text-xs text-[#797D86] leading-relaxed">
+              Every JSON-RPC packet passing between Claude, Cursor, and downstream systems is inspected in-flight. Destructive operations are arrested in microseconds.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
+            <div className="size-9 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-blue-400 mb-3">
+              <Terminal className="size-4" />
+            </div>
+            <h4 className="text-sm font-medium text-white mb-1.5">Developer Velocity First</h4>
+            <p className="text-xs text-[#797D86] leading-relaxed">
+              Security that gets in the way gets bypassed. Sevlex operates transparently over stdio pipes with &lt;0.1ms wire overhead and zero workflow disruption.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
+            <div className="size-9 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-purple-400 mb-3">
+              <FileCheck2 className="size-4" />
+            </div>
+            <h4 className="text-sm font-medium text-white mb-1.5">Mathematical Proof</h4>
+            <p className="text-xs text-[#797D86] leading-relaxed">
+              Every tool execution receipt is mathematically linked in an immutable SQLite WAL Merkle chain. Complete SOC 2 audit readiness built into every packet.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 10. CTA BOTTOM BANNER (Neon Pill Standards)                               */}
       {/* ========================================================================= */}
       <section className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -1950,10 +2001,9 @@ export default function LandingPage() {
           <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
-          <a href="#features" className="hover:text-white transition">Features</a>
-          <a href="#simulator" className="hover:text-white transition">Live Demo</a>
-          <a href="#services" className="hover:text-white transition">Custom MCP</a>
-          <a href="#docs" className="hover:text-white transition">Documentation</a>
+          <a href="#product" className="hover:text-white transition">Product</a>
+          <a href="#services" className="hover:text-white transition">Service</a>
+          <a href="#about" className="hover:text-white transition">About</a>
           <a href="/console" className="hover:text-white transition">Console</a>
           <a href="/llms.txt" target="_blank" className="hover:text-white transition font-mono text-[11px]">llms.txt</a>
           <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a>
