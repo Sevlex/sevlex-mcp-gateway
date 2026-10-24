@@ -36,9 +36,12 @@ import {
   Hash,
   Network,
   GitBranch,
+  Sun,
+  Moon,
 } from "lucide-react";
 import ClientBrandIcon, { getLogoDevUrl } from "./components/ClientBrandIcon";
 import EngineBentoGrid from "./components/EngineBentoGrid";
+import { useTheme } from "./components/ThemeProvider";
 
 // Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({
@@ -548,6 +551,8 @@ const AGENT_STATION_DATA: Record<AgentStationId, AgentStationItem> = {
 };
 
 export default function LandingPage() {
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
   const [copied, setCopied] = useState(false);
   const [copiedDemo, setCopiedDemo] = useState(false);
   const [terminalTab, setTerminalTab] = useState<"demo" | "init" | "status" | "verify">("demo");
@@ -609,9 +614,15 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#000000] text-[#F8FAFC] font-sans selection:bg-[#34D59A]/30 selection:text-white overflow-x-hidden">
+    <main className={`min-h-screen font-sans selection:bg-[#34D59A]/30 selection:text-white overflow-x-hidden transition-colors duration-200 ${
+      isDark ? "bg-[#000000] text-[#F8FAFC]" : "bg-[#FAFAFA] text-[#090A0F]"
+    }`}>
       {/* Precision hairline grid backdrop */}
-      <div className="fixed inset-0 bg-[linear-gradient(to_right,#131415_1px,transparent_1px),linear-gradient(to_bottom,#131415_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none opacity-40" />
+      <div className={`fixed inset-0 pointer-events-none transition-opacity duration-200 ${
+        isDark
+          ? "bg-[linear-gradient(to_right,#131415_1px,transparent_1px),linear-gradient(to_bottom,#131415_1px,transparent_1px)] opacity-40"
+          : "bg-[linear-gradient(to_right,#E5E7EB_1px,transparent_1px),linear-gradient(to_bottom,#E5E7EB_1px,transparent_1px)] opacity-60"
+      } bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]`} />
 
       {/* Subtle restrained atmospheric radial illumination */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(52,213,154,0.08),transparent_70%)] pointer-events-none" />
@@ -619,14 +630,16 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* NAVIGATION HEADER                                                         */}
       {/* ========================================================================= */}
-      <nav className="sticky top-0 z-40 bg-[#000000]/85 backdrop-blur-md border-b border-[#242628]">
+      <nav className={`sticky top-0 z-40 backdrop-blur-md transition-colors duration-200 ${
+        isDark ? "bg-[#000000]/85 border-b border-[#242628]" : "bg-white/85 border-b border-[#E5E7EB]"
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           {/* Brand Logo */}
           <div className="flex items-center">
             <a href="/" className="flex items-center gap-2 group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/sevlex-brand-horizontal.png"
+                src={isDark ? "/sevlex-brand-horizontal.png" : "/sevlex-brand-horizontal-dark.png"}
                 alt="Sevlex"
                 className="h-7 w-auto object-contain transition-all duration-200 group-hover:brightness-110"
               />
@@ -634,44 +647,72 @@ export default function LandingPage() {
           </div>
 
           {/* Desktop Nav Items - Clean 3-Item Architecture: Product, Service, About */}
-          <div className="hidden md:flex items-center gap-8 text-xs font-medium text-[#94979E]">
-            <a href="/product" className="hover:text-white transition-colors">
+          <div className={`hidden md:flex items-center gap-8 text-xs font-medium ${
+            isDark ? "text-[#94979E]" : "text-[#6B7280]"
+          }`}>
+            <a href="/product" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               Product
             </a>
-            <a href="/service" className="hover:text-white transition-colors">
+            <a href="/service" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               Service
             </a>
-            <a href="/about" className="hover:text-white transition-colors">
+            <a href="/about" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               About
             </a>
-            <a href="/docs" className="hover:text-white transition-colors">
+            <a href="/docs" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               Docs
             </a>
           </div>
 
           {/* Action Pills */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Theme Toggle Sun / Moon */}
+            <button
+              onClick={toggleTheme}
+              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+              aria-label="Toggle Theme"
+              className={`p-2 rounded-full border transition-colors ${
+                isDark
+                  ? "border-[#242628] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
+                  : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
+              }`}
+            >
+              {isDark ? (
+                <Sun className="size-4 text-amber-400" />
+              ) : (
+                <Moon className="size-4 text-slate-700" />
+              )}
+            </button>
+
             {/* GitHub Stars Button */}
             <a
               href="https://github.com/Sevlex/sevlex-mcp-gateway"
               target="_blank"
               rel="noreferrer"
-              className="hidden md:inline-flex items-center gap-2 h-9 px-3.5 rounded-full border border-[#242628] bg-white/[0.02] text-xs font-medium text-[#C9CBCF] hover:border-white hover:text-white transition duration-200"
+              className={`hidden md:inline-flex items-center gap-2 h-9 px-3.5 rounded-full border text-xs font-medium transition duration-200 ${
+                isDark
+                  ? "border-[#242628] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
+                  : "border-[#E5E7EB] bg-black/[0.02] text-[#4B5563] hover:border-black hover:text-black"
+              }`}
             >
               <svg className="size-3.5 fill-current" viewBox="0 0 24 24">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
               </svg>
               <span>GitHub</span>
-              <span className="text-[#61646B]">•</span>
-              <span className="font-mono text-[11px] text-[#AFB1B6]">★ 1.8k</span>
+              <span className={isDark ? "text-[#61646B]" : "text-[#9CA3AF]"}>•</span>
+              <span className={`font-mono text-[11px] ${isDark ? "text-[#AFB1B6]" : "text-[#4B5563]"}`}>★ 1.8k</span>
             </a>
 
             {/* Sign in with GitHub Pill */}
             <a
               href="/api/auth/github"
-              className="hidden sm:inline-flex items-center gap-2 h-9 px-4 rounded-full border border-[#242628] bg-[#18191B] hover:bg-[#242628] text-xs font-medium text-white transition duration-200"
+              className={`hidden sm:inline-flex items-center gap-2 h-9 px-4 rounded-full border text-xs font-medium transition duration-200 ${
+                isDark
+                  ? "border-[#242628] bg-[#18191B] hover:bg-[#242628] text-white"
+                  : "border-[#E5E7EB] bg-[#F3F4F6] hover:bg-[#E5E7EB] text-gray-900"
+              }`}
             >
-              <svg className="size-3.5 fill-white" viewBox="0 0 24 24">
+              <svg className={`size-3.5 ${isDark ? "fill-white" : "fill-gray-900"}`} viewBox="0 0 24 24">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
               </svg>
               <span>Sign in</span>
@@ -680,7 +721,11 @@ export default function LandingPage() {
             {/* Primary Console Pill */}
             <a
               href="/console"
-              className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
+              className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-xs font-medium transition duration-200 ${
+                isDark
+                  ? "bg-white text-black hover:bg-[#E4E5E7]"
+                  : "bg-black text-white hover:bg-gray-800 shadow-sm"
+              }`}
             >
               <span>Console</span>
               <ArrowRight className="size-3.5" />

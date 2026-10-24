@@ -11,25 +11,25 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "light",
+  theme: "dark",
   setTheme: () => {},
   toggleTheme: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check saved theme or default to light (matching Corsair aesthetic request)
+    // Check saved theme or default to dark (matching Council decision)
     const saved = localStorage.getItem("sevlex-theme") as Theme | null;
     if (saved === "dark" || saved === "light") {
       setThemeState(saved);
       applyTheme(saved);
     } else {
-      // Default to light mode for crisp docs
-      setThemeState("light");
-      applyTheme("light");
+      // Default to dark mode for cyber authority
+      setThemeState("dark");
+      applyTheme("dark");
     }
     setMounted(true);
   }, []);

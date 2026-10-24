@@ -11,6 +11,15 @@
   --neon-green: #34D59A;
 }
 
+html.light, .light {
+  --background: #FFFFFF;
+  --foreground: #090A0F;
+  --sidebar-bg: #F8F9FA;
+  --surface: #FFFFFF;
+  --surface-border: #E5E7EB;
+  --color-black-pure: #FFFFFF;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
