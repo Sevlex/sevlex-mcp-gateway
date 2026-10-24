@@ -27,6 +27,7 @@ export default function ServicePage() {
   const isDark = theme === "dark";
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,10 +36,19 @@ export default function ServicePage() {
     details: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const mailto = `mailto:founder@sevlex.com?subject=Custom MCP Server Request: ${formData.sourceType}&body=Name: ${encodeURIComponent(formData.name)}%0D%0AEmail: ${encodeURIComponent(formData.email)}%0D%0ASource: ${encodeURIComponent(formData.sourceType)}%0D%0AAI Client: ${encodeURIComponent(formData.aiClient)}%0D%0ADetails: ${encodeURIComponent(formData.details)}`;
-    window.location.href = mailto;
+    setIsSubmitting(true);
+    try {
+      await fetch("/api/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+    } catch (err) {
+      console.error("Intake submission fallback notice:", err);
+    }
+    setIsSubmitting(false);
     setSubmitted(true);
   };
 
@@ -552,14 +562,15 @@ export default function ServicePage() {
                 </span>
                 <button
                   type="submit"
-                  className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 h-10 px-6 rounded-full text-xs font-medium transition duration-200 cursor-pointer shadow-lg ${
+                  disabled={isSubmitting}
+                  className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 h-10 px-6 rounded-full text-xs font-medium transition duration-200 cursor-pointer shadow-lg disabled:opacity-50 ${
                     isDark
                       ? "bg-white text-black hover:bg-[#E4E5E7]"
                       : "bg-slate-900 text-white hover:bg-slate-800"
                   }`}
                 >
-                  <Send className="size-3.5" />
-                  <span>Submit Spec for Scoping</span>
+                  <Send className={`size-3.5 ${isSubmitting ? "animate-spin" : ""}`} />
+                  <span>{isSubmitting ? "Submitting Spec..." : "Submit Spec for Scoping"}</span>
                 </button>
               </div>
             </form>

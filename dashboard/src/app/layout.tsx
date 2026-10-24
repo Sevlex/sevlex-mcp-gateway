@@ -16,8 +16,55 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sevlex Enterprise | Layer 7 Zero-Trust MCP Security Gateway",
-  description: "Enterprise Layer 7 Zero-Trust MCP Firewall, Shadow AI discovery, and continuous endpoint governance for Claude, Cursor, and Windsurf.",
+  metadataBase: new URL("https://sevlex.com"),
+  title: {
+    default: "Sevlex | Layer 7 Zero-Trust MCP Security Gateway",
+    template: "%s | Sevlex Enterprise",
+  },
+  description: "Enterprise Layer 7 Zero-Trust MCP Firewall, Shadow AI discovery, AST parameter guardrails, in-flight DLP redaction, and continuous endpoint governance for Claude, Cursor, and Windsurf.",
+  keywords: [
+    "MCP",
+    "Model Context Protocol",
+    "AI Security",
+    "Zero-Trust AI Gateway",
+    "MCP Firewall",
+    "AgentGuard",
+    "ToolGuard",
+    "Claude Desktop Security",
+    "Cursor IDE Security",
+    "Windsurf Gateway",
+    "In-Flight DLP",
+    "Merkle Audit Ledger",
+  ],
+  authors: [{ name: "Sevlex Security Team", url: "https://sevlex.com" }],
+  creator: "Sevlex",
+  publisher: "Sevlex",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://sevlex.com",
+    siteName: "Sevlex Enterprise",
+    title: "Sevlex | Layer 7 Zero-Trust MCP Security Gateway",
+    description: "Enterprise Layer 7 Zero-Trust MCP Firewall, Shadow AI discovery, AST parameter guardrails, and cryptographic Merkle audit non-repudiation.",
+    images: [
+      {
+        url: "/Sevlex_Twitter_Banner.png",
+        width: 1200,
+        height: 630,
+        alt: "Sevlex Enterprise Zero-Trust MCP Gateway",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sevlex | Layer 7 Zero-Trust MCP Security Gateway",
+    description: "Enterprise Layer 7 Zero-Trust MCP Firewall, AST parameter guardrails, and autonomous agent circuit breakers.",
+    images: ["/Sevlex_Twitter_Banner.png"],
+    creator: "@sevlex",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -26,6 +73,17 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon.ico",
     apple: "/sevlex-icon.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

@@ -280,7 +280,7 @@ export default function AboutPage() {
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 relative z-10">
             <a
-              href="/#services"
+              href="/service"
               className={`inline-flex items-center gap-2 h-11 px-6 rounded-full border text-xs font-medium transition duration-200 ${
                 isDark
                   ? "border-[#242628] bg-[#18191B] hover:bg-[#242628] text-white"
