@@ -964,28 +964,28 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 5. INTERACTIVE IN-BROWSER EXPLOIT SIMULATOR                               */}
+      {/* 5. IN-FLIGHT THREAT INTERCEPTION & POLICY GUARD (2-PANE ARCHITECTURE)      */}
       {/* ========================================================================= */}
-      <section id="simulator" className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="simulator" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-red-400 border border-[#242628] mb-3">
-            <ShieldAlert className="size-3.5" />
-            Interactive Layer 7 Sandbox
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-[#34D59A] border border-[#242628] mb-3">
+            <ShieldCheck className="size-3.5 text-[#34D59A]" />
+            Zero-Trust Policy Guard
           </div>
-          <h2 className="text-3xl sm:text-4xl font-medium text-white tracking-tight">
-            Simulate Autonomous AI Attacks Live
+          <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">
+            In-Flight Agent Threat Interception
           </h2>
-          <p className="mt-3 text-[#797D86] text-sm sm:text-base">
-            Click any scenario below to trigger a live simulation. See how Sevlex intercepts raw JSON-RPC traffic, arrests malicious payloads in &lt;0.5ms, and dispatches instant Slack SecOps cards.
+          <p className="mt-3 text-[#797D86] text-sm sm:text-base leading-relaxed">
+            When an autonomous coding agent attempts unauthorized operations, Sevlex halts execution before the tool call ever touches your infrastructure.
           </p>
         </div>
 
-        {/* Simulator Container */}
-        <div className="rounded-3xl border border-[#242628] bg-[#0E0E12] shadow-2xl overflow-hidden">
-          {/* Top Scenario Selector Strip */}
+        {/* 2-Pane Policy Guard Container */}
+        <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] shadow-2xl overflow-hidden">
+          {/* Scenario Selector Strip */}
           <div className="p-3 sm:p-4 bg-[#0C0D0E] border-b border-[#242628] flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono text-[#61646B] font-medium px-2">Select Threat Vector:</span>
+              <span className="text-xs font-mono text-[#61646B] font-medium px-2">Select Scenario:</span>
               {(Object.keys(SCENARIOS) as AttackScenario[]).map((key) => {
                 const s = SCENARIOS[key];
                 const isActive = activeScenario === key;
@@ -1000,384 +1000,141 @@ export default function LandingPage() {
                     }`}
                   >
                     <span>{s.title}</span>
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full border ${s.badgeColor}`}>
-                      {s.badge}
-                    </span>
                   </button>
                 );
               })}
             </div>
 
-            <button
-              onClick={() => handleTriggerScenario(activeScenario)}
-              className="inline-flex items-center gap-1.5 h-8 px-4 rounded-full bg-[#34D59A] hover:bg-[#47D18C] text-black text-xs font-mono font-medium transition cursor-pointer"
-            >
-              <RotateCcw className={`size-3.5 ${isSimulating ? "animate-spin" : ""}`} />
-              Re-Run Intercept
-            </button>
-          </div>
-
-          {/* Live Wire Transmission Pipeline (Visual Protocol Flow) */}
-          <div className="px-6 py-4 bg-[#0A0A0C] border-b border-[#242628] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-              {/* Node 1: Client Runtime */}
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#131415] border border-[#242628]">
-                <ClientBrandIcon name={scenario.clientBrand} size="xs" className="size-4" />
-                <span className="text-white font-medium">{scenario.client}</span>
-              </div>
-
-              {/* Wire Hop 1 */}
-              <div className="flex items-center gap-1 text-[#61646B]">
-                <span className="text-[10px] text-[#34D59A] animate-pulse">stdio / fd0</span>
-                <span>───▶</span>
-              </div>
-
-              {/* Node 2: Sevlex L7 DPI */}
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#34D59A]/10 border border-[#34D59A]/30 text-[#34D59A]">
-                <ShieldCheck className="size-4 shrink-0" />
-                <span className="font-semibold">Sevlex L7 DPI ({scenario.latency})</span>
-              </div>
-
-              {/* Wire Hop 2 */}
-              <div className="flex items-center gap-1 text-[#61646B]">
-                <span>───▶</span>
-                <span className="text-[10px] text-[#61646B]">pipe / fd1</span>
-              </div>
-
-              {/* Node 3: Target MCP Server */}
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${
-                scenario.decision === "BLOCKED"
-                  ? "bg-red-500/10 border-red-500/30 text-red-400"
-                  : scenario.decision === "CIRCUIT_BROKEN"
-                  ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
-                  : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-              }`}>
-                <Database className="size-3.5 shrink-0" />
-                <span className="font-medium">{scenario.server}</span>
-              </div>
-            </div>
-
-            {/* Wire Interception State Pill */}
             <div className="flex items-center gap-2">
-              <span className="text-[#61646B] text-[11px]">Wire State:</span>
-              <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
-                scenario.decision === "BLOCKED"
-                  ? "bg-red-950/40 border-red-500/40 text-red-300 animate-pulse"
-                  : scenario.decision === "CIRCUIT_BROKEN"
-                  ? "bg-amber-950/40 border-amber-500/40 text-amber-300"
-                  : "bg-emerald-950/40 border-emerald-500/40 text-emerald-300"
-              }`}>
-                {scenario.decision === "BLOCKED"
-                  ? "⚡ ARRESTED (0 BYTES FORWARDED)"
-                  : scenario.decision === "CIRCUIT_BROKEN"
-                  ? "⚡ CIRCUIT TRIPPED (COOLDOWN)"
-                  : "✔ WIRE PASSTHROUGH (<0.15ms)"}
+              <span className="text-[11px] font-mono text-[#797D86]">Latency:</span>
+              <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-[#34D59A]/10 text-[#34D59A] border border-[#34D59A]/30">
+                {scenario.latency}
               </span>
             </div>
           </div>
 
-          {/* Simulator Two-Column Body */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#242628]">
-            {/* Left Column: Bidirectional Wire Packet Inspector (7 cols) */}
-            <div className="lg:col-span-7 p-6 font-mono space-y-4">
-              {/* Inspector Header & Sub-Tabs */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#242628]">
-                <div className="flex items-center gap-1.5 bg-[#000000] p-1 rounded-full border border-[#242628]">
-                  <button
-                    onClick={() => setSimulatorTab("request")}
-                    className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
-                      simulatorTab === "request"
-                        ? "bg-white text-black font-semibold"
-                        : "text-[#797D86] hover:text-white"
-                    }`}
-                  >
-                    <Braces className="size-3" />
-                    <span>Request (Ingress)</span>
-                  </button>
-                  <button
-                    onClick={() => setSimulatorTab("response")}
-                    className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
-                      simulatorTab === "response"
-                        ? "bg-white text-black font-semibold"
-                        : "text-[#797D86] hover:text-white"
-                    }`}
-                  >
-                    <FileCode className="size-3" />
-                    <span>Response (Egress)</span>
-                  </button>
-                  <button
-                    onClick={() => setSimulatorTab("ast")}
-                    className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
-                      simulatorTab === "ast"
-                        ? "bg-[#34D59A] text-black font-semibold"
-                        : "text-[#797D86] hover:text-white"
-                    }`}
-                  >
-                    <GitBranch className="size-3" />
-                    <span>AST Syntax Guard</span>
-                  </button>
+          {/* Two-Pane Body */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-[#242628]">
+            {/* Left Pane: Ingress Attempt */}
+            <div className="p-6 space-y-4 font-mono">
+              <div className="flex items-center justify-between pb-3 border-b border-[#242628]">
+                <div className="flex items-center gap-2.5">
+                  <ClientBrandIcon name={scenario.clientBrand} size="xs" className="size-4" />
+                  <span className="text-xs font-bold text-white uppercase tracking-wider">
+                    {scenario.client}
+                  </span>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-[#61646B] font-mono">RPC: {scenario.rpcId}</span>
-                  <button
-                    onClick={() =>
-                      copyPacket(
-                        simulatorTab === "request"
-                          ? scenario.payload
-                          : simulatorTab === "response"
-                          ? scenario.responsePayload
-                          : scenario.astAnalysis.astTreeVisual
-                      )
-                    }
-                    className="p-1.5 rounded-full text-[#797D86] hover:text-white hover:bg-white/[0.08] transition cursor-pointer"
-                    title="Copy active payload"
-                  >
-                    {copiedPacket ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
-                  </button>
-                </div>
+                <span className="text-[11px] text-[#61646B]">
+                  Target: {scenario.server}
+                </span>
               </div>
 
-              {/* Status Banner */}
-              <div
-                className={`p-3.5 rounded-xl border flex items-start gap-3 transition-all duration-300 ${
-                  scenario.decision === "BLOCKED"
-                    ? "bg-red-950/20 border-red-500/30 text-red-200"
-                    : scenario.decision === "CIRCUIT_BROKEN"
-                    ? "bg-amber-950/20 border-amber-500/30 text-amber-200"
-                    : "bg-emerald-950/20 border-emerald-500/30 text-emerald-200"
-                }`}
-              >
-                {scenario.decision === "BLOCKED" ? (
-                  <ShieldAlert className="size-5 text-red-400 shrink-0 mt-0.5" />
-                ) : scenario.decision === "CIRCUIT_BROKEN" ? (
-                  <Zap className="size-5 text-amber-400 shrink-0 mt-0.5" />
-                ) : (
-                  <ShieldCheck className="size-5 text-[#34D59A] shrink-0 mt-0.5" />
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-bold text-xs truncate">
-                      {scenario.decision === "BLOCKED"
-                        ? "ARRESTED AT LAYER 7 (ZERO DOWNSTREAM LEAK)"
-                        : scenario.decision === "CIRCUIT_BROKEN"
-                        ? "CIRCUIT BREAKER ENGAGED (RATE LIMITED)"
-                        : "PASSED PARAMETER INSPECTION (EXECUTION PERMITTED)"}
-                    </span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/40 font-mono text-[#34D59A] shrink-0">
-                      {scenario.latency}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[#C9CBCF] mt-1">{scenario.ruleViolated}</p>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-[11px] text-[#797D86]">
+                  <span>Attempted Tool Call:</span>
+                  <span className="text-[#34D59A]">{scenario.tool}</span>
                 </div>
+                <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner max-h-[260px]">
+                  <code>{scenario.payload}</code>
+                </pre>
               </div>
 
-              {/* Tab 1: Request Ingress View */}
-              {simulatorTab === "request" && (
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] text-[#797D86]">
-                    <span>stdio Ingress Wire Packet (tools/call):</span>
-                    <span className="text-[#34D59A] font-semibold">{scenario.tool}</span>
-                  </div>
-                  <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner max-h-[320px]">
-                    <code>{scenario.payload}</code>
-                  </pre>
-                </div>
-              )}
-
-              {/* Tab 2: Response Egress View */}
-              {simulatorTab === "response" && (
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] text-[#797D86]">
-                    <span>Synthesized Stdio Wire Egress (to Client):</span>
-                    <span className={scenario.decision === "BLOCKED" ? "text-red-400 font-semibold" : "text-[#34D59A] font-semibold"}>
-                      {scenario.decision === "BLOCKED" ? "JSON-RPC Error -32600" : "JSON-RPC Result 200"}
-                    </span>
-                  </div>
-                  <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner max-h-[320px]">
-                    <code>{scenario.responsePayload}</code>
-                  </pre>
-                </div>
-              )}
-
-              {/* Tab 3: AST Deep Packet Inspection View */}
-              {simulatorTab === "ast" && (
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3 text-xs">
-                    <div className="p-3 rounded-xl bg-[#141416] border border-[#242628]">
-                      <span className="text-[#61646B] block text-[10px] uppercase">AST Node Type:</span>
-                      <span className="text-white font-medium">{scenario.astAnalysis.statementType}</span>
-                    </div>
-                    <div className="p-3 rounded-xl bg-[#141416] border border-[#242628]">
-                      <span className="text-[#61646B] block text-[10px] uppercase">Threat Class:</span>
-                      <span className={`font-medium ${
-                        scenario.decision === "BLOCKED" ? "text-red-400" : scenario.decision === "CIRCUIT_BROKEN" ? "text-amber-400" : "text-[#34D59A]"
-                      }`}>
-                        {scenario.astAnalysis.riskScore}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] text-[#797D86]">
-                      <span>In-Flight AST Syntax Parsing Graph:</span>
-                      <span className="text-[#34D59A]">Deep Packet Inspection</span>
-                    </div>
-                    <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#34D59A] overflow-x-auto leading-relaxed shadow-inner font-mono max-h-[220px]">
-                      <code>{scenario.astAnalysis.astTreeVisual}</code>
-                    </pre>
-                  </div>
-                </div>
-              )}
-
-              <p className="text-xs text-[#797D86] leading-relaxed font-sans">
+              <p className="text-xs text-[#797D86] leading-relaxed font-sans pt-1">
                 {scenario.explanation}
               </p>
             </div>
 
-            {/* Right Column: SecOps Alert & Merkle Audit Ledger (5 cols) */}
-            <div className="lg:col-span-5 p-6 bg-[#0C0D0E] flex flex-col justify-between space-y-6">
-              <div>
-                {/* Right Column Sub-Tabs */}
-                <div className="flex items-center justify-between pb-3 border-b border-[#242628] mb-4">
-                  <div className="flex items-center gap-1.5 bg-[#000000] p-1 rounded-full border border-[#242628]">
-                    <button
-                      onClick={() => setDispatchTab("slack")}
-                      className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
-                        dispatchTab === "slack"
-                          ? "bg-white text-black font-semibold"
-                          : "text-[#797D86] hover:text-white"
-                      }`}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={getLogoDevUrl("slack.com", 64)}
-                        alt="Slack"
-                        className="size-3.5 object-contain shrink-0"
-                      />
-                      <span>Slack SecOps</span>
-                    </button>
-                    <button
-                      onClick={() => setDispatchTab("merkle")}
-                      className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer flex items-center gap-1.5 ${
-                        dispatchTab === "merkle"
-                          ? "bg-[#34D59A] text-black font-semibold"
-                          : "text-[#797D86] hover:text-white"
-                      }`}
-                    >
-                      <Hash className="size-3" />
-                      <span>SOC 2 Merkle WAL</span>
-                    </button>
+            {/* Right Pane: Sevlex Zero-Trust Enforcement */}
+            <div className="p-6 space-y-4 bg-[#0A0B0E] font-mono flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#242628]">
+                  <div className="flex items-center gap-2">
+                    <Shield className="size-4 text-[#34D59A]" />
+                    <span className="text-xs font-bold text-white uppercase tracking-wider">
+                      Sevlex Policy Enforcement
+                    </span>
                   </div>
-
-                  <span className="text-[10px] font-mono text-[#61646B]">
-                    {dispatchTab === "slack" ? "Live Webhook" : "SQLite WAL Mode"}
+                  <span
+                    className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${
+                      scenario.decision === "BLOCKED"
+                        ? "bg-rose-500/10 border-rose-500/30 text-rose-400"
+                        : scenario.decision === "CIRCUIT_BROKEN"
+                        ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                        : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                    }`}
+                  >
+                    {scenario.decision === "BLOCKED"
+                      ? "🛑 INTERCEPTED & QUARANTINED"
+                      : scenario.decision === "CIRCUIT_BROKEN"
+                      ? "⚡ CIRCUIT BREAKER ENGAGED"
+                      : "✔ VERIFIED BENIGN"}
                   </span>
                 </div>
 
-                {/* Dispatch Tab 1: Slack Webhook Relay */}
-                {dispatchTab === "slack" && (
-                  <div className="rounded-2xl border border-[#242628] bg-[#131415] p-4 text-xs font-sans shadow-lg relative">
-                    <div className="flex items-start gap-3">
-                      <div className="size-8 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
-                        <Shield className="size-4 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-white text-xs">Sevlex Security Bot</span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">
-                            APP
-                          </span>
-                          <span className="text-[11px] text-[#61646B] ml-auto">Just now</span>
-                        </div>
-
-                        <div className="mt-2.5 p-3 rounded-xl bg-[#000000] border border-[#242628] space-y-2">
-                          <p className="font-medium text-white text-xs leading-snug">
-                            {scenario.slackAlert.title}
-                          </p>
-                          <p className="text-[#94979E] text-[11px] leading-relaxed">
-                            {scenario.slackAlert.details}
-                          </p>
-
-                          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#242628] text-[10px] font-mono text-[#797D86]">
-                            <div>
-                              <span className="text-[#61646B] block">User:</span>
-                              <span className="text-blue-400 font-medium">@meetp (Staff Eng)</span>
-                            </div>
-                            <div>
-                              <span className="text-[#61646B] block">Host Daemon:</span>
-                              <span className="text-[#34D59A] font-medium">macbook-m3-corp</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Slack Action Buttons */}
-                        <div className="mt-3 flex items-center gap-2">
-                          <button className="h-7 px-3 rounded-full bg-red-600 hover:bg-red-500 text-white font-medium text-[11px] transition">
-                            Quarantine Agent Session
-                          </button>
-                          <button className="h-7 px-3 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-[#C9CBCF] font-medium text-[11px] transition border border-[#242628]">
-                            Open Ticket #8914
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                {/* 4-Item Policy Breakdown Grid */}
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
+                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                      Policy Rule
+                    </span>
+                    <span className="text-white font-medium text-[11px] truncate block mt-0.5">
+                      {scenario.ruleViolated}
+                    </span>
                   </div>
-                )}
-
-                {/* Dispatch Tab 2: Cryptographic Merkle WAL Ledger */}
-                {dispatchTab === "merkle" && (
-                  <div className="rounded-2xl border border-[#242628] bg-[#131415] p-4 text-xs font-mono shadow-lg space-y-3">
-                    <div className="flex items-center justify-between pb-2 border-b border-[#242628]">
-                      <span className="text-white font-medium flex items-center gap-2">
-                        <FileCheck2 className="size-4 text-[#34D59A]" />
-                        <span>Merkle Receipt #{scenario.merkleReceipt.blockIndex}</span>
-                      </span>
-                      <span className="text-[10px] text-[#34D59A] bg-[#34D59A]/10 border border-[#34D59A]/30 px-2 py-0.5 rounded-full font-bold">
-                        NON-REPUDIATION VERIFIED
-                      </span>
-                    </div>
-
-                    <div className="space-y-2 text-[11px]">
-                      <div>
-                        <span className="text-[#61646B] block text-[10px] uppercase">Receipt ID:</span>
-                        <code className="text-[#C9CBCF]">{scenario.merkleReceipt.receiptId}</code>
-                      </div>
-                      <div>
-                        <span className="text-[#61646B] block text-[10px] uppercase">Previous Block Hash (H_prev):</span>
-                        <code className="text-[#797D86] text-[10px] truncate block">{scenario.merkleReceipt.prevHash}</code>
-                      </div>
-                      <div>
-                        <span className="text-[#61646B] block text-[10px] uppercase">SHA-256 Entry Hash:</span>
-                        <code className="text-[#34D59A] text-[10px] truncate block">{scenario.merkleReceipt.entryHash}</code>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#242628]">
-                        <div>
-                          <span className="text-[#61646B] block text-[10px] uppercase">Actor Identity:</span>
-                          <span className="text-white">{scenario.merkleReceipt.actor}</span>
-                        </div>
-                        <div>
-                          <span className="text-[#61646B] block text-[10px] uppercase">Audit Ledger:</span>
-                          <span className="text-[#34D59A]">SQLite WAL (local)</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-2.5 rounded-xl bg-[#000000] border border-[#242628] text-[10px] text-[#797D86]">
-                      <span>Chain Integrity: </span>
-                      <span className="text-white">SHA256(H_prev || payload) == {scenario.merkleReceipt.entryHash.slice(0, 16)}...</span>
-                    </div>
+                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
+                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                      Downstream Impact
+                    </span>
+                    <span className="text-[#34D59A] font-semibold text-[11px] block mt-0.5">
+                      {scenario.decision === "BLOCKED"
+                        ? "0 Bytes Forwarded (Drop)"
+                        : scenario.decision === "CIRCUIT_BROKEN"
+                        ? "Throttled / 429 Cooldown"
+                        : "Permitted (<0.15ms)"}
+                    </span>
                   </div>
-                )}
+                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
+                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                      Detection Engine
+                    </span>
+                    <span className="text-[#C9CBCF] font-medium text-[11px] block mt-0.5">
+                      {scenario.astAnalysis.statementType}
+                    </span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
+                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                      Audit Ledger
+                    </span>
+                    <span className="text-blue-400 font-medium text-[11px] block mt-0.5 truncate">
+                      Merkle #{scenario.merkleReceipt.blockIndex} (Neon DB)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Synthesized Response returned to Agent */}
+                <div className="space-y-1.5 pt-1">
+                  <div className="flex items-center justify-between text-[11px] text-[#797D86]">
+                    <span>Synthesized Response (Returned to Agent):</span>
+                    <span className="text-[#AFB1B6]">{scenario.latency}</span>
+                  </div>
+                  <pre className="p-3.5 rounded-xl bg-[#000000] border border-[#242628] text-[11px] text-[#94979E] overflow-x-auto leading-relaxed shadow-inner max-h-[140px]">
+                    <code>{scenario.responsePayload}</code>
+                  </pre>
+                </div>
               </div>
 
-              {/* Bottom Guarantee */}
-              <div className="p-3.5 rounded-full bg-[#131415] border border-[#242628] text-xs text-[#AFB1B6] flex items-center justify-between">
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-[#34D59A]" /> SOC 2 Cryptographic Audit Sealed
+              {/* Bottom Console Link */}
+              <div className="pt-2 flex items-center justify-between text-xs text-[#797D86] border-t border-[#242628]">
+                <span className="flex items-center gap-1.5 text-[#34D59A]">
+                  <CheckCircle2 className="size-3.5" />
+                  <span>SOC 2 Type II Non-Repudiation Sealed</span>
                 </span>
-                <a href="/console" className="font-medium text-white underline hover:text-[#34D59A] flex items-center gap-1">
-                  View in Console <ArrowRight className="size-3" />
+                <a
+                  href="/console"
+                  className="font-medium text-white hover:text-[#34D59A] flex items-center gap-1 transition"
+                >
+                  <span>SecOps Console</span>
+                  <ArrowRight className="size-3" />
                 </a>
               </div>
             </div>
