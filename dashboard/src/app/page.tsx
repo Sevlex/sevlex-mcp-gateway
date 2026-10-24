@@ -38,6 +38,7 @@ import {
   GitBranch,
 } from "lucide-react";
 import ClientBrandIcon, { getLogoDevUrl } from "./components/ClientBrandIcon";
+import EngineBentoGrid from "./components/EngineBentoGrid";
 
 // Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({
@@ -1356,138 +1357,9 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 8. PRODUCT: CORE SECURITY ENGINES BENTO GRID                              */}
+      {/* 8. PRODUCT: CORE SECURITY ENGINES BENTO GRID (WITH 3D MOTION GRAPHICS)    */}
       {/* ========================================================================= */}
-      <section id="product" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div id="features" />
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs uppercase tracking-widest text-[#34D59A] font-mono font-medium">
-            Enterprise Governance Suite
-          </h2>
-          <p className="mt-3 text-3xl sm:text-4xl font-normal text-white tracking-tight">
-            Comprehensive Defense Against Autonomous Agent Risks
-          </p>
-          <p className="mt-4 text-[#797D86] text-sm sm:text-base">
-            Everything SecOps and CISOs need to safely embrace agentic AI without risking source code theft or database corruption.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Bento Card 1: ToolGuard */}
-          <SpotlightCard className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A]">
-                <ShieldCheck className="size-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-white">ToolGuard™ Parameter Deep Packet Inspection</h3>
-                <p className="text-xs text-[#797D86] font-mono">In-Flight AST &amp; Regex Sanitization</p>
-              </div>
-            </div>
-            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-6">
-              Blocks catastrophic command injections before execution. Automatically arrests destructive SQL commands (<code className="text-red-400 font-mono">DROP TABLE</code>, <code className="text-red-400 font-mono">TRUNCATE</code>), arbitrary shell executions (<code className="text-red-400 font-mono">rm -rf /</code>), and directory traversals (<code className="text-red-400 font-mono">../../.ssh/id_rsa</code>).
-            </p>
-            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-[#797D86]">
-              <span className="text-red-400 font-semibold">[BLOCKED]</span> JSON-RPC tools/call -&gt; postgres:execute_query &#123; query: &quot;DROP TABLE users;&quot; &#125;
-            </div>
-          </SpotlightCard>
-
-          {/* Bento Card 2: AgentGuard */}
-          <SpotlightCard>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-amber-400">
-                <Zap className="size-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-white">AgentGuard™ Circuit Breaker</h3>
-                <p className="text-xs text-[#797D86] font-mono">Loop &amp; Velocity Limiter</p>
-              </div>
-            </div>
-            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-4">
-              Halts runaway hallucination loops when agents retry identical failures 3 consecutive times or exceed 25 calls per 30 seconds.
-            </p>
-            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-amber-400">
-              Tripped: Error -32002 Agent Velocity Exceeded
-            </div>
-          </SpotlightCard>
-
-          {/* Bento Card 3: In-Flight Output DLP */}
-          <SpotlightCard>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-purple-400">
-                <Eye className="size-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-white">In-Flight Output DLP</h3>
-                <p className="text-xs text-[#797D86] font-mono">Microsecond Redaction</p>
-              </div>
-            </div>
-            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-4">
-              Scrubs high-entropy AWS access keys, Stripe tokens, GitHub PATs, and SSNs from downstream MCP responses before the LLM ingests them.
-            </p>
-            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-purple-300">
-              AKIAIOSFODNN7EXAMPLE ➔ [REDACTED_AWS_KEY]
-            </div>
-          </SpotlightCard>
-
-          {/* Bento Card 4: SOC 2 Merkle Audit Chain */}
-          <SpotlightCard id="compliance" className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A]">
-                <FileCheck2 className="size-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-white">SOC 2 Cryptographic Merkle Hash Chain</h3>
-                <p className="text-xs text-[#797D86] font-mono">Immutable Non-Repudiation</p>
-              </div>
-            </div>
-            <p className="text-sm text-[#C9CBCF] leading-relaxed mb-4">
-              Every audit receipt in SQLite WAL mode is mathematically bound to its predecessor: <code className="text-[#34D59A] font-mono">entry_hash = SHA256(prev_hash || receipt)</code>. Any alteration or deletion instantly breaks the cryptographic chain.
-            </p>
-            <div className="bg-[#000000] border border-[#242628] rounded-xl p-3 font-mono text-xs text-[#797D86] flex items-center justify-between">
-              <span>H(prev || id || user || tool || status)</span>
-              <span className="text-[#34D59A] font-semibold font-mono">100% Cryptographically Valid</span>
-            </div>
-          </SpotlightCard>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 9. SOCIAL PROOF & SCALE GRID (Neon-Style Three-Column Grid)              */}
-      {/* ========================================================================= */}
-      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
-            <div className="text-[11px] font-mono uppercase tracking-widest text-[#34D59A] mb-3">
-              WHERE DEVELOPERS BUILD
-            </div>
-            <h4 className="text-lg font-medium text-white mb-2">Local Zero-Friction Shield</h4>
-            <p className="text-xs text-[#797D86] leading-relaxed">
-              Run <code className="text-[#C9CBCF] font-mono">npx sevlex init</code> to instantly wrap Cursor and Claude Desktop. No accounts, no credit cards, 100% local stdio inspection.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
-            <div className="text-[11px] font-mono uppercase tracking-widest text-blue-400 mb-3">
-              WHERE TEAMS COLLABORATE
-            </div>
-            <h4 className="text-lg font-medium text-white mb-2">Shared Policy Governance</h4>
-            <p className="text-xs text-[#797D86] leading-relaxed">
-              Sync global allowlists and blocklists across your engineering team. Receive real-time Slack and PagerDuty alerts the millisecond an agent attacks.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
-            <div className="text-[11px] font-mono uppercase tracking-widest text-purple-400 mb-3">
-              WHERE ENTERPRISES COMPLY
-            </div>
-            <h4 className="text-lg font-medium text-white mb-2">SOC 2 Mathematical Proofs</h4>
-            <p className="text-xs text-[#797D86] leading-relaxed">
-              Cryptographically seal every autonomous agent interaction. Prove to enterprise compliance auditors that private credentials never left developer laptops.
-            </p>
-          </div>
-        </div>
-      </section>
+      <EngineBentoGrid />
 
       {/* ========================================================================= */}
       {/* 9.5 WHITE-GLOVE CUSTOM MCP SERVER & AGENT INTEGRATION SERVICE             */}
