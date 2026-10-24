@@ -135,38 +135,12 @@ function DocsContent() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Left: Brand + Top Tabs */}
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                  isDark
-                    ? "bg-[#16181F] border border-[#272A35] group-hover:border-blue-500/50"
-                    : "bg-[#F3F4F6] border border-[#E5E7EB] group-hover:border-blue-500/50"
-                }`}
-              >
-                <img
-                  src="/sevlex-icon.png"
-                  alt="Sevlex"
-                  className="w-5 h-5 object-contain"
-                />
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span
-                  className={`text-base font-bold tracking-tight ${
-                    isDark ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  Sevlex
-                </span>
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                    isDark
-                      ? "bg-blue-950/60 text-blue-400 border border-blue-800/40"
-                      : "bg-blue-50 text-blue-600 border border-blue-200"
-                  }`}
-                >
-                  Docs
-                </span>
-              </div>
+            <Link href="/" className="flex items-center group">
+              <img
+                src={isDark ? "/sevlex-brand-horizontal.png" : "/sevlex-brand-horizontal-dark.png"}
+                alt="Sevlex"
+                className="h-7 w-auto object-contain transition-all duration-200 group-hover:opacity-90"
+              />
             </Link>
 
             {/* Nav Tabs */}
