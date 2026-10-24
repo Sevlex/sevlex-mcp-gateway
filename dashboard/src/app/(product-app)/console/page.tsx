@@ -358,16 +358,16 @@ export default function Dashboard() {
           </div>
 
           {/* Vertical Center: Brand Logo + Editorial Statement */}
-          <div className="relative z-10 my-auto space-y-6 max-w-xs">
+          <div className="relative z-10 my-auto space-y-6 max-w-sm">
             <a href="/" className="inline-block group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src="/sevlex-brand-horizontal.png" 
                 alt="Sevlex Logo" 
-                className="h-8 w-auto object-contain transition-all duration-200 group-hover:brightness-110 filter drop-shadow-[0_0_16px_rgba(52,213,154,0.25)]" 
+                className="h-11 lg:h-12 w-auto object-contain transition-all duration-200 group-hover:brightness-110 filter drop-shadow-[0_0_20px_rgba(52,213,154,0.25)]" 
               />
             </a>
-            <h2 className="text-2xl lg:text-[1.85rem] font-medium tracking-tight text-white leading-[1.18] text-balance">
+            <h2 className="text-2xl lg:text-[1.95rem] font-medium tracking-tight text-white leading-[1.18] text-balance">
               Build your AI agent security on Sevlex.
             </h2>
           </div>
