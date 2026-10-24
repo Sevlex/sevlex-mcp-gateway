@@ -143,7 +143,7 @@ export default function EngineBentoGrid() {
         <div className={`flex items-center justify-between px-5 py-2.5 rounded-xl border text-xs font-mono transition-colors ${
           isDark
             ? "bg-[#0F1015] border-[#20222B] text-gray-400"
-            : "bg-white border-slate-200 text-slate-600 shadow-xs"
+            : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] text-slate-600 shadow-xs"
         }`}>
           <div className="flex items-center gap-2">
             <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -170,10 +170,10 @@ export default function EngineBentoGrid() {
                   isExpanded
                     ? isDark
                       ? `bg-[#0E1017] ${layer.accentBorder} shadow-lg shadow-black/40`
-                      : `bg-white border-slate-300 shadow-md shadow-slate-200/50`
+                      : `bg-white border-slate-300/90 ring-1 ring-slate-900/[0.08] shadow-[0_4px_20px_-4px_rgba(15,23,42,0.08)]`
                     : isDark
                     ? "bg-[#0B0C10] border-[#1C1E26] hover:border-[#2C2E3B] hover:bg-[#0D0E13]"
-                    : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/50 shadow-xs"
+                    : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] hover:shadow-md transition-all shadow-[0_1px_3px_rgba(15,23,42,0.03)]"
                 }`}
               >
                 {/* Main Layer Header Row */}
@@ -302,7 +302,7 @@ export default function EngineBentoGrid() {
         <div className={`flex items-center justify-between px-5 py-2.5 rounded-xl border text-xs font-mono transition-colors ${
           isDark
             ? "bg-[#0F1015] border-[#20222B] text-gray-400"
-            : "bg-white border-slate-200 text-slate-600 shadow-xs"
+            : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] text-slate-600 shadow-xs"
         }`}>
           <div className="flex items-center gap-2">
             <CheckCircle2 className="size-4 text-emerald-400" />
@@ -319,15 +319,17 @@ export default function EngineBentoGrid() {
       {/* =======================================================================
           3. CONNECTED 3-PILLAR DEPLOYMENT DOCK
           ======================================================================= */}
-      <div className={`mt-12 p-2 rounded-3xl border shadow-xl relative z-10 transition-colors ${
-        isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200 bg-slate-100/70"
+      <div className={`mt-12 p-2.5 rounded-3xl border shadow-xl relative z-10 transition-colors ${
+        isDark
+          ? "border-[#242628] bg-[#0E0E12]"
+          : "border-slate-200/90 bg-slate-100/80 ring-1 ring-slate-900/[0.03] shadow-md shadow-slate-200/40"
       }`}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
           {/* Pillar 1 */}
           <div className={`p-5 rounded-2xl border transition-all group ${
             isDark
               ? "bg-[#12141A] border-[#1E2028] hover:border-emerald-500/30"
-              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+              : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] shadow-xs"
           }`}>
             <div className="text-[11px] font-mono uppercase tracking-widest text-[#34D59A] font-semibold mb-1.5 flex items-center gap-2">
               <Terminal className="size-3.5" />
@@ -347,7 +349,7 @@ export default function EngineBentoGrid() {
           <div className={`p-6 rounded-2xl border transition-all group ${
             isDark
               ? "bg-[#12141A] border-[#1E2028] hover:border-blue-500/30"
-              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+              : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] shadow-xs"
           }`}>
             <div className="text-[11px] font-mono uppercase tracking-widest text-blue-400 font-semibold mb-1.5 flex items-center gap-2">
               <Layers className="size-3.5" />
@@ -367,7 +369,7 @@ export default function EngineBentoGrid() {
           <div className={`p-6 rounded-2xl border transition-all group ${
             isDark
               ? "bg-[#12141A] border-[#1E2028] hover:border-purple-500/30"
-              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+              : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] shadow-xs"
           }`}>
             <div className="text-[11px] font-mono uppercase tracking-widest text-purple-400 font-semibold mb-1.5 flex items-center gap-2">
               <Fingerprint className="size-3.5" />
