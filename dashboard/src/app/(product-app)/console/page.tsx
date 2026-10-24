@@ -346,21 +346,27 @@ export default function Dashboard() {
           {/* Warm neon emerald & amber radial glow in the bottom-left corner */}
           <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[radial-gradient(ellipse_at_bottom_left,rgba(52,213,154,0.35),rgba(245,158,11,0.18),transparent_70%)] pointer-events-none blur-3xl" />
 
-          {/* Top of Sidebar: Subtle wordmark */}
+          {/* Top of Sidebar: Navigation back to marketing site */}
           <div className="relative z-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src="/sevlex-brand-horizontal.png" 
-              alt="Sevlex" 
-              className="h-6 w-auto object-contain opacity-90"
-            />
+            <a 
+              href="/" 
+              className="inline-flex items-center gap-1.5 text-xs text-[#797D86] hover:text-white transition group"
+            >
+              <span className="transition-transform group-hover:-translate-x-0.5">←</span>
+              <span>Back to sevlex.com</span>
+            </a>
           </div>
 
-          {/* Vertical Center: Icon + Big Bold Editorial Statement */}
-          <div className="relative z-10 my-auto space-y-5 max-w-xs">
-            <div className="size-11 rounded-xl bg-[#141518] border border-[#242628] flex items-center justify-center text-[#34D59A] shadow-lg">
-              <Shield className="size-6 text-[#34D59A]" />
-            </div>
+          {/* Vertical Center: Brand Logo + Editorial Statement */}
+          <div className="relative z-10 my-auto space-y-6 max-w-xs">
+            <a href="/" className="inline-block group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src="/sevlex-brand-horizontal.png" 
+                alt="Sevlex Logo" 
+                className="h-8 w-auto object-contain transition-all duration-200 group-hover:brightness-110 filter drop-shadow-[0_0_16px_rgba(52,213,154,0.25)]" 
+              />
+            </a>
             <h2 className="text-2xl lg:text-[1.85rem] font-medium tracking-tight text-white leading-[1.18] text-balance">
               Build your AI agent security on Sevlex.
             </h2>
@@ -392,6 +398,17 @@ export default function Dashboard() {
           {/* Center Form Container */}
           <div className="w-full max-w-[390px] mx-auto my-auto py-8">
             <div className="text-center mb-6">
+              {/* Mobile-only brand logo */}
+              <div className="md:hidden flex justify-center mb-4">
+                <a href="/" className="inline-block">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src="/sevlex-brand-horizontal.png" 
+                    alt="Sevlex Logo" 
+                    className="h-7 w-auto object-contain" 
+                  />
+                </a>
+              </div>
               <h1 className="text-2xl sm:text-[1.75rem] font-medium text-white tracking-tight">
                 Log in to Sevlex
               </h1>
