@@ -664,7 +664,7 @@ export default function LandingPage() {
 
             {/* Sign in with GitHub Pill */}
             <a
-              href="/console?auth=github"
+              href="/api/auth/github"
               className="hidden sm:inline-flex items-center gap-2 h-9 px-4 rounded-full border border-[#242628] bg-[#18191B] hover:bg-[#242628] text-xs font-medium text-white transition duration-200"
             >
               <svg className="size-3.5 fill-white" viewBox="0 0 24 24">
@@ -1966,7 +1966,7 @@ export default function LandingPage() {
 
             {/* GitHub Sign Up Pill */}
             <a
-              href="/console?auth=github"
+              href="/api/auth/github"
               className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-6 tracking-tight font-medium bg-[#18191B] border border-[#242628] text-white hover:bg-[#242628] text-xs gap-2"
             >
               <svg className="size-4 fill-white" viewBox="0 0 24 24">

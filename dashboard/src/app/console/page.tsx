@@ -74,6 +74,25 @@ export default function Dashboard() {
   } | null>(null);
 
   useEffect(() => {
+    // 1. Check for cookie session from real GitHub OAuth callback
+    if (typeof document !== "undefined") {
+      const cookieMatch = document.cookie.match(/sevlex_admin_key=([^;]+)/);
+      const userMatch = document.cookie.match(/sevlex_user_profile=([^;]+)/);
+      if (cookieMatch && cookieMatch[1]) {
+        const token = decodeURIComponent(cookieMatch[1]);
+        localStorage.setItem("sevlex_admin_key", token);
+        setApiKey(token);
+        setIsAuthenticated(true);
+        if (userMatch && userMatch[1]) {
+          try {
+            const parsed = JSON.parse(decodeURIComponent(userMatch[1]));
+            localStorage.setItem("sevlex_user_profile", JSON.stringify(parsed));
+            setAuthUser(parsed);
+          } catch {}
+        }
+      }
+    }
+
     const stored = localStorage.getItem("sevlex_admin_key");
     const storedUser = localStorage.getItem("sevlex_user_profile");
     if (stored) {
@@ -88,13 +107,31 @@ export default function Dashboard() {
       // Check if URL has ?provider=github or ?auth=github
       const params = new URLSearchParams(window.location.search);
       const urlProvider = params.get("provider") || params.get("auth");
-      if (urlProvider === "github" || urlProvider === "google") {
-        handleOAuthLogin(urlProvider as 'github' | 'google');
+      if (urlProvider === "github") {
+        window.location.href = "/api/auth/github";
+      } else if (urlProvider === "google") {
+        handleOAuthLogin("google");
+      }
+    }
+
+    // Clean URL query params if auth_success
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("auth_success")) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      if (params.get("auth_error")) {
+        setLoginError(true);
       }
     }
   }, []);
 
   const handleOAuthLogin = async (provider: 'github' | 'google' | 'microsoft') => {
+    if (provider === 'github') {
+      setAuthLoadingProvider('github');
+      window.location.href = '/api/auth/github';
+      return;
+    }
     setAuthLoadingProvider(provider);
     setLoginError(false);
     try {

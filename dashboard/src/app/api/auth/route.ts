@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { authenticateWithProvider, checkAuth } from '@/lib/auth';
+import { authenticateWithProvider, checkAuth, getSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,5 +31,12 @@ export async function GET(request: Request) {
     return NextResponse.json({ authenticated: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  return NextResponse.json({ authenticated: true });
+  const authHeader = request.headers.get('Authorization') || request.headers.get('x-sevlex-api-key') || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+  const sessionUser = getSession(token);
+
+  return NextResponse.json({ 
+    authenticated: true,
+    user: sessionUser || undefined
+  });
 }

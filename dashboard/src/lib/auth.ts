@@ -24,6 +24,22 @@ export interface AuthSessionResponse {
 const sessionStore = new Map<string, { user: AuthUser; expiresAt: number }>();
 
 /**
+ * Registers an active session token with its associated user profile.
+ */
+export function registerSession(token: string, user: AuthUser, ttlSeconds = 60 * 60 * 24 * 30): void {
+  sessionStore.set(token, {
+    user,
+    expiresAt: Date.now() + ttlSeconds * 1000,
+  });
+}
+
+export function getSession(token: string): AuthUser | null {
+  const session = sessionStore.get(token);
+  if (!session || session.expiresAt < Date.now()) return null;
+  return session.user;
+}
+
+/**
  * Validates whether an incoming request has a valid Master Admin Key,
  * Organization API Key (slx_live_...), or User Session Token (slx_session_...).
  */
