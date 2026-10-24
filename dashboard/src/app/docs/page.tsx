@@ -133,8 +133,8 @@ function DocsContent() {
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          {/* Left: Brand + Top Tabs */}
-          <div className="flex items-center gap-8">
+          {/* Left: Brand */}
+          <div className="flex items-center">
             <Link href="/" className="flex items-center group">
               <img
                 src={isDark ? "/sevlex-brand-horizontal.png" : "/sevlex-brand-horizontal-dark.png"}
@@ -142,50 +142,6 @@ function DocsContent() {
                 className="h-7 w-auto object-contain transition-all duration-200 group-hover:opacity-90"
               />
             </Link>
-
-            {/* Nav Tabs */}
-            <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
-              <Link
-                href="/docs"
-                className={`px-3 py-1.5 rounded-md transition-colors ${
-                  isDark
-                    ? "text-white bg-[#1A1D26]"
-                    : "text-gray-900 bg-gray-100"
-                }`}
-              >
-                Docs
-              </Link>
-              <Link
-                href="/product"
-                className={`px-3 py-1.5 rounded-md transition-colors ${
-                  isDark
-                    ? "text-gray-400 hover:text-white hover:bg-[#161820]"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
-              >
-                Security Engines
-              </Link>
-              <Link
-                href="/service"
-                className={`px-3 py-1.5 rounded-md transition-colors ${
-                  isDark
-                    ? "text-gray-400 hover:text-white hover:bg-[#161820]"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
-              >
-                Services
-              </Link>
-              <Link
-                href="/about"
-                className={`px-3 py-1.5 rounded-md transition-colors ${
-                  isDark
-                    ? "text-gray-400 hover:text-white hover:bg-[#161820]"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
-              >
-                About
-              </Link>
-            </nav>
           </div>
 
           {/* Center: Search Bar Trigger (Ctrl+K) */}
