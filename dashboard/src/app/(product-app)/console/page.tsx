@@ -330,21 +330,42 @@ export default function Dashboard() {
       <div className="min-h-screen bg-[#000000] text-[#F8FAFC] font-sans flex flex-col md:flex-row selection:bg-[#34D59A]/30 selection:text-white">
         
         {/* ========================================================================= */}
-        {/* LEFT COLUMN: BRAND SIDEBAR (Exact Neon Architecture from Screenshot)     */}
+        {/* LEFT COLUMN: SEVLEX SIGNATURE BRAND CANVAS (Quantum Merkle Perimeter)    */}
         {/* ========================================================================= */}
-        <aside className="hidden md:flex md:w-[32%] lg:w-[28%] xl:w-[26%] flex-col justify-between p-8 lg:p-12 border-r border-[#1E2024] relative overflow-hidden bg-[#0A0B0D] shrink-0">
-          {/* Subtle dot matrix grid pattern in the bottom left */}
-          <div 
-            className="absolute inset-0 pointer-events-none opacity-30"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, #3A3D45 1.25px, transparent 0)`,
-              backgroundSize: '14px 14px',
-              maskImage: 'radial-gradient(ellipse 90% 80% at 0% 100%, #000 40%, transparent 85%)'
-            }}
-          />
+        <aside className="hidden md:flex md:w-[32%] lg:w-[28%] xl:w-[26%] flex-col justify-between p-8 lg:p-12 border-r border-[#1B1D22] relative overflow-hidden bg-[#050608] shrink-0">
+          
+          {/* 1. Precision Cryptographic Merkle Lattice (Vector SVG Matrix) */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <svg 
+              className="absolute inset-0 size-full opacity-60" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <pattern id="merkle-grid" width="22" height="22" patternUnits="userSpaceOnUse">
+                  <circle cx="11" cy="11" r="1.1" fill="#4B5563" opacity="0.7" />
+                  <path d="M 0 11 L 22 11 M 11 0 L 11 22" stroke="rgba(255,255,255,0.025)" strokeWidth="0.5" />
+                </pattern>
+                <radialGradient id="merkle-glow-mask" cx="25%" cy="88%" r="80%">
+                  <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+                  <stop offset="45%" stopColor="#FFFFFF" stopOpacity="0.6" />
+                  <stop offset="75%" stopColor="#FFFFFF" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+                </radialGradient>
+                <mask id="mesh-caustic-mask">
+                  <rect width="100%" height="100%" fill="url(#merkle-glow-mask)" />
+                </mask>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#merkle-grid)" mask="url(#mesh-caustic-mask)" />
+            </svg>
+          </div>
 
-          {/* Warm neon emerald & amber radial glow in the bottom-left corner */}
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[radial-gradient(ellipse_at_bottom_left,rgba(52,213,154,0.35),rgba(245,158,11,0.18),transparent_70%)] pointer-events-none blur-3xl" />
+          {/* 2. Signature Chromatic Caustic (Electric Cyan + Mint + Deep Indigo) */}
+          <div className="absolute -bottom-28 -left-28 w-[480px] h-[480px] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,240,255,0.32)_0%,rgba(52,213,154,0.22)_35%,rgba(99,102,241,0.15)_65%,transparent_80%)] pointer-events-none blur-3xl" />
+          <div className="absolute bottom-16 -right-20 w-80 h-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.22)_0%,rgba(139,92,246,0.16)_45%,transparent_75%)] pointer-events-none blur-2xl" />
+
+          {/* 3. Laser Firewall Boundary Wire */}
+          <div className="absolute bottom-32 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00F0FF]/50 to-transparent pointer-events-none" />
+          <div className="absolute bottom-32 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-[#34D59A]/70 to-transparent blur-[1px] pointer-events-none" />
 
           {/* Top of Sidebar: Navigation back to marketing site */}
           <div className="relative z-10">
@@ -357,35 +378,48 @@ export default function Dashboard() {
             </a>
           </div>
 
-          {/* Vertical Center: Brand Logo + Editorial Statement */}
+          {/* Vertical Center: Official Brand Logo + Editorial Statement */}
           <div className="relative z-10 my-auto space-y-6 max-w-sm">
             <a href="/" className="inline-block group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src="/sevlex-brand-horizontal.png" 
                 alt="Sevlex Logo" 
-                className="h-11 lg:h-12 w-auto object-contain transition-all duration-200 group-hover:brightness-110 filter drop-shadow-[0_0_20px_rgba(52,213,154,0.25)]" 
+                className="h-11 lg:h-12 w-auto object-contain transition-all duration-200 group-hover:brightness-110 filter drop-shadow-[0_0_24px_rgba(0,240,255,0.35)]" 
               />
             </a>
             <h2 className="text-2xl lg:text-[1.95rem] font-medium tracking-tight text-white leading-[1.18] text-balance">
               Build your AI agent security on Sevlex.
             </h2>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0D1017]/90 border border-[#212635] text-[11px] text-[#8B949E] shadow-sm backdrop-blur-xs">
+              <span className="size-1.5 rounded-full bg-[#00F0FF] animate-pulse" />
+              <span className="font-medium tracking-tight text-[#C9D1D9]">Layer 7 Zero-Trust Perimeter</span>
+            </div>
           </div>
 
-          {/* Bottom of Sidebar */}
-          <div className="relative z-10 text-[11px] font-mono text-[#61646B] flex items-center gap-2">
-            <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse" />
-            <span>Zero-Trust Gateway • Cryptographically Sealed</span>
+          {/* Bottom of Sidebar: Cryptographic Sentinel Status */}
+          <div className="relative z-10 text-[11px] font-mono text-[#8B909D] flex items-center justify-between border-t border-white/[0.06] pt-4">
+            <div className="flex items-center gap-2">
+              <span className="relative flex size-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0FF] opacity-75" />
+                <span className="relative inline-flex rounded-full size-2 bg-[#34D59A]" />
+              </span>
+              <span className="text-[#A1A7B5] font-medium">Merkle Ledger Active</span>
+            </div>
+            <span className="text-[10px] text-[#616572]">v1.0.5 • SHA-256</span>
           </div>
         </aside>
 
         {/* ========================================================================= */}
-        {/* RIGHT COLUMN: MAIN LOGIN AREA (Exact Neon Architecture from Screenshot)  */}
+        {/* RIGHT COLUMN: MAIN AUTH PORTAL                                         */}
         {/* ========================================================================= */}
-        <main className="flex-1 flex flex-col justify-between min-h-screen p-6 sm:p-10 lg:p-12 relative bg-[#000000]">
+        <main className="flex-1 flex flex-col justify-between min-h-screen p-6 sm:p-10 lg:p-12 relative bg-[#060709] overflow-hidden">
+          
+          {/* Subtle Ambient Subsurface Field */}
+          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(6,182,212,0.035),transparent_70%)]" />
           
           {/* Top Navigation: ← Home */}
-          <div className="w-full">
+          <div className="w-full relative z-10">
             <a 
               href="/" 
               className="inline-flex items-center gap-1.5 text-xs text-[#797D86] hover:text-white transition group"
