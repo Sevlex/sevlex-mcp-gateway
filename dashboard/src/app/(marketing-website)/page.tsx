@@ -42,6 +42,8 @@ import {
 import ClientBrandIcon, { getLogoDevUrl } from "@/app/components/ClientBrandIcon";
 import EngineBentoGrid from "@/app/components/EngineBentoGrid";
 import { useTheme } from "@/app/components/ThemeProvider";
+import { QuantumSpectrogram } from "@/app/components/QuantumSpectrogram";
+import { EcosystemMarquee } from "@/app/components/EcosystemMarquee";
 
 // Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({
@@ -498,8 +500,41 @@ export default function LandingPage() {
           : "bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] opacity-35 bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_45%_at_50%_0%,#000_60%,transparent_100%)]"
       }`} />
 
-      {/* Subtle restrained atmospheric radial illumination */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(52,213,154,0.08),transparent_70%)] pointer-events-none" />
+      {/* Signature Sevlex Quantum Caustic Aurora */}
+      <div 
+        aria-hidden="true"
+        className={`fixed top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[520px] rounded-full pointer-events-none blur-3xl transition-opacity duration-300 ${
+          isDark 
+            ? "bg-[radial-gradient(ellipse_at_top,rgba(0,240,255,0.12)_0%,rgba(52,213,154,0.09)_35%,rgba(99,102,241,0.05)_70%,transparent_85%)] opacity-85"
+            : "bg-[radial-gradient(ellipse_at_top,rgba(2,132,199,0.09)_0%,rgba(5,150,105,0.06)_40%,transparent_80%)] opacity-70"
+        }`} 
+      />
+
+      {/* ========================================================================= */}
+      {/* 0. GLOBAL ANNOUNCEMENT RIBBON                                             */}
+      {/* ========================================================================= */}
+      <div className={`w-full py-2 px-4 text-xs font-mono text-center border-b transition-colors duration-200 relative z-50 flex items-center justify-center gap-2.5 ${
+        isDark 
+          ? "bg-[#06080C] border-[#1C1F26] text-[#94979E]" 
+          : "bg-[#F1F5F9] border-slate-200 text-slate-600"
+      }`}>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/25 shadow-[0_0_12px_rgba(0,240,255,0.15)]">
+          <span className="size-1.5 rounded-full bg-[#00F0FF] animate-pulse" />
+          v1.0.5 Live
+        </span>
+        <span className="font-sans font-medium text-xs hidden sm:inline">
+          Universal Layer 7 Zero-Trust MCP Gateway with Merkle Non-Repudiation.
+        </span>
+        <a 
+          href="/docs" 
+          className={`inline-flex items-center gap-1 font-sans font-semibold underline underline-offset-4 transition-colors ${
+            isDark ? "text-white hover:text-[#00F0FF]" : "text-slate-900 hover:text-cyan-700"
+          }`}
+        >
+          Explore Docs
+          <ArrowRight className="size-3" />
+        </a>
+      </div>
 
       {/* ========================================================================= */}
       {/* NAVIGATION HEADER                                                         */}
@@ -609,14 +644,17 @@ export default function LandingPage() {
       </nav>
 
       {/* ========================================================================= */}
-      {/* 3. HERO SECTION (Neon Aesthetic & High-Craft Typography)                  */}
+      {/* 3. HERO SECTION (Quantum Merkle Spectrogram & Signature Typography)        */}
       {/* ========================================================================= */}
-      <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 text-center">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 text-center overflow-hidden">
+        {/* Procedural Quantum Merkle Spectrogram Signature Canvas */}
+        <QuantumSpectrogram />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Eyebrow Pill */}
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium mb-6 ${
             isDark
-              ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+              ? "bg-[#131415]/80 backdrop-blur-sm border border-[#242628] text-[#797D86] shadow-[0_0_20px_rgba(0,240,255,0.06)]"
               : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 shadow-xs"
           }`}>
             <span className="text-[#34D59A] font-semibold">LAYER 7 ZERO-TRUST</span>
@@ -644,9 +682,9 @@ export default function LandingPage() {
             {/* Primary Console Pill */}
             <a
               href="/console"
-              className={`inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium text-sm gap-2 shadow-md ${
+              className={`inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-all duration-200 h-11 px-7 tracking-tight font-medium text-sm gap-2 shadow-lg ${
                 isDark
-                  ? "bg-white text-black hover:bg-[#E4E5E7] shadow-white/5"
+                  ? "bg-white text-black hover:bg-[#E4E5E7] shadow-cyan-500/10 hover:shadow-cyan-500/20"
                   : "bg-[#0F172A] text-white hover:bg-[#1E293B] shadow-slate-900/10"
               }`}
             >
@@ -667,32 +705,11 @@ export default function LandingPage() {
               <ArrowRight className={`size-3.5 ${isDark ? "text-[#797D86]" : "text-[#64748B]"}`} />
             </a>
           </div>
-
-          {/* Client Ecosystem Showcase (100% borderless, transparent, seamless) */}
-          <div className="mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#797D86]">
-            <span className={`font-mono text-[11px] uppercase tracking-wider ${isDark ? "text-[#61646B]" : "text-[#64748B]"}`}>
-              Zero-Config Shields:
-            </span>
-            {[
-              { name: "Cursor IDE", brand: "cursor" },
-              { name: "Claude Desktop", brand: "claude" },
-              { name: "Windsurf", brand: "windsurf" },
-              { name: "Antigravity", brand: "antigravity" },
-              { name: "Node / TS SDK", brand: "node" },
-            ].map((client) => (
-              <div
-                key={client.name}
-                className={`flex items-center gap-2 transition-colors duration-200 cursor-default group ${
-                  isDark ? "text-[#94979E] hover:text-white" : "text-[#475569] hover:text-[#0F172A]"
-                }`}
-              >
-                <ClientBrandIcon name={client.brand} size="xs" className="size-4 transition-transform duration-200 group-hover:scale-110" />
-                <span className="font-medium tracking-tight text-xs sm:text-sm">{client.name}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
+
+      {/* Infinite Horizontal Ecosystem Marquee */}
+      <EcosystemMarquee />
 
       {/* ========================================================================= */}
       {/* 4. ARCHITECTURAL CAPABILITIES (High-Performance Layer 7 Defense)           */}

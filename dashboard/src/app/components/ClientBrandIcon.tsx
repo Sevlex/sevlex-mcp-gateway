@@ -97,7 +97,7 @@ export const getDomainForBrand = (name: string): string | null => {
   return null;
 };
 
-export default function ClientBrandIcon({ name, size = "md", className = "" }: ClientBrandIconProps) {
+export function ClientBrandIcon({ name, size = "md", className = "" }: ClientBrandIconProps) {
   const [loadFailed, setLoadFailed] = useState(false);
   const norm = (name || "").toLowerCase();
   const domain = getDomainForBrand(name);
@@ -217,3 +217,5 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
 
   return <Server className={`${sizeClass} text-slate-500 shrink-0 ${className}`} />;
 }
+
+export default ClientBrandIcon;
