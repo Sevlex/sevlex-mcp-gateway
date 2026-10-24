@@ -634,13 +634,13 @@ export default function LandingPage() {
 
           {/* Desktop Nav Items - Clean 3-Item Architecture: Product, Service, About */}
           <div className="hidden md:flex items-center gap-8 text-xs font-medium text-[#94979E]">
-            <a href="#product" className="hover:text-white transition-colors">
+            <a href="/product" className="hover:text-white transition-colors">
               Product
             </a>
-            <a href="#services" className="hover:text-white transition-colors">
+            <a href="/service" className="hover:text-white transition-colors">
               Service
             </a>
-            <a href="#about" className="hover:text-white transition-colors">
+            <a href="/about" className="hover:text-white transition-colors">
               About
             </a>
           </div>
@@ -2001,9 +2001,9 @@ export default function LandingPage() {
           <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
-          <a href="#product" className="hover:text-white transition">Product</a>
-          <a href="#services" className="hover:text-white transition">Service</a>
-          <a href="#about" className="hover:text-white transition">About</a>
+          <a href="/product" className="hover:text-white transition">Product</a>
+          <a href="/service" className="hover:text-white transition">Service</a>
+          <a href="/about" className="hover:text-white transition">About</a>
           <a href="/console" className="hover:text-white transition">Console</a>
           <a href="/llms.txt" target="_blank" className="hover:text-white transition font-mono text-[11px]">llms.txt</a>
           <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a>

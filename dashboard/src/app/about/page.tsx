@@ -33,10 +33,10 @@ export default function AboutPage() {
 
           {/* Desktop Nav Items - Clean 3-Item Architecture */}
           <div className="hidden md:flex items-center gap-8 text-xs font-medium text-[#94979E]">
-            <a href="/#product" className="hover:text-white transition-colors">
+            <a href="/product" className="hover:text-white transition-colors">
               Product
             </a>
-            <a href="/#services" className="hover:text-white transition-colors">
+            <a href="/service" className="hover:text-white transition-colors">
               Service
             </a>
             <a href="/about" className="text-[#34D59A] font-semibold transition-colors">
@@ -201,8 +201,8 @@ export default function AboutPage() {
           <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
-          <a href="/#product" className="hover:text-white transition">Product</a>
-          <a href="/#services" className="hover:text-white transition">Service</a>
+          <a href="/product" className="hover:text-white transition">Product</a>
+          <a href="/service" className="hover:text-white transition">Service</a>
           <a href="/about" className="hover:text-white transition">About</a>
           <a href="/console" className="hover:text-white transition">Console</a>
           <a href="/llms.txt" target="_blank" className="hover:text-white transition font-mono text-[11px]">llms.txt</a>
