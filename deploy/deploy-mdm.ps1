@@ -52,7 +52,10 @@ if (Test-Path $PolicySource) {
 }
 
 # Deploy Sevlex Gateway Engine binary to ProgramData
-$GatewaySource = Join-Path $ScriptDir "..\gateway\dist\src\gateway.js"
+$GatewaySource = Join-Path $ScriptDir "..\gateway\dist\gateway.js"
+if (-not (Test-Path $GatewaySource)) {
+    $GatewaySource = Join-Path $ScriptDir "..\gateway\dist\src\gateway.js"
+}
 $GatewayTarget = Join-Path $SevlexSysDir "gateway.js"
 
 if (Test-Path $GatewaySource) {

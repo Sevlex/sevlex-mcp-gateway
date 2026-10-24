@@ -1,7 +1,7 @@
 <div align="center">
   <h1>🛡️ Sevlex</h1>
   <p><b>Layer 7 Zero-Trust Security Gateway & Control Plane for the Model Context Protocol (MCP)</b></p>
-  <p><i>Real-Time Deep Packet Inspection • Autonomous AgentGuard™ Circuit Breaker • In-Flight Output DLP • Dual-Custody Slack HITL • SOC 2 Merkle Audit Chaining</i></p>
+  <p><i>Real-Time Deep Packet Inspection • Autonomous AgentGuard™ Circuit Breaker • In-Flight Output DLP • Dual-Custody Slack HITL • Tamper-Evident Merkle Audit Chaining</i></p>
 
   <p>
     <a href="https://github.com/meetpanchal-sevlex/sevlex-mcp-gateway/actions"><img src="https://img.shields.io/badge/CI%2FCD-passing-emerald?style=flat-square&logo=githubactions" alt="CI/CD Status"></a>
@@ -98,7 +98,7 @@ flowchart TD
 | **In-Flight Output DLP (AWS, Stripe, PAT, SSN)** | **✔ Sub-millisecond Regex** | ⚠️ Partial | ⚠️ Pre-release | ❌ None |
 | **AgentGuard™ Hallucination Loop Breaker** | **✔ Stateful (Velocity + Anomaly)** | ❌ None | ❌ None | ⚠️ Simple Rate Limiting |
 | **1-Click Slack Dual-Custody HITL** | **✔ Native Block Kit Interactive** | ⚠️ Connector Auth Only | ✔ Slack Webhook | ❌ Manual Webhooks |
-| **SOC 2 Cryptographic Merkle Audit Hash Chain** | **✔ SHA-256 Chain Verification** | ❌ Centralized SaaS Logs | ❌ Standard JSON Logs | ❌ External SIEM Dependent |
+| **Cryptographic Merkle Audit Hash Chain** | **✔ SHA-256 Chain Verification** | ❌ Centralized SaaS Logs | ❌ Standard JSON Logs | ❌ External SIEM Dependent |
 | **Zero-Touch Client Auto-Patcher (`sevlex inject`)** | **✔ 6 AI Clients Supported** | ⚠️ Proprietary Agent | ❌ Manual Config | ❌ Not Supported |
 | **Tamper-Resistant 30ms Auto-Heal Daemon** | **✔ Active 24/7 File Watcher** | ✔ Runlayer Watch | ❌ Manual Restart | ❌ Not Supported |
 | **Air-Gapped VPC Deployment (Docker Compose)** | **✔ Single-Command Self-Hosted** | ❌ SaaS Hosted Only | ✔ Open Source | ✔ Self-Hosted |
@@ -124,7 +124,7 @@ Designed to eliminate catastrophic autonomous AI agent failure modes:
 * SecOps authorizes with one tap on their laptop or phone. Slack sends an interactive event to `/api/hitl/slack`, updating the card in-place with an immutable cryptographic signature.
 * Retrying agents are granted seamless execution; clearances are atomically consumed (`CONSUMED`) to guarantee anti-replay security.
 
-### 4. Cryptographic SHA-256 Merkle Audit Chain (SOC 2 Non-Repudiation)
+### 4. Cryptographic SHA-256 Merkle Audit Chain (Tamper-Evident Non-Repudiation)
 Every execution receipt recorded in SQLite WAL mode is mathematically bound to its predecessor:
 $$\text{entry\_hash} = \text{SHA256}(\text{prev\_hash} \parallel \text{id} \parallel \text{user\_id} \parallel \text{tool\_name} \parallel \text{status} \parallel \text{raw\_request} \parallel \text{timestamp})$$
 Run `sevlex verify` at any time to mathematically audit the entire history. Any database record alteration, tampering, or deletion breaks the hash chain instantly.
@@ -142,7 +142,7 @@ sevlex inject
 # Unhook Sevlex and atomically restore original client configs from backup
 sevlex restore
 
-# Cryptographically verify the SHA-256 Merkle audit chain for SOC 2 audits
+# Cryptographically verify the SHA-256 Merkle audit chain non-repudiation
 sevlex verify
 
 # Query active dual-custody HITL clearance tickets
@@ -191,7 +191,7 @@ npm run dev
 # Run 8-stage live security simulation suite
 npm run simulate
 
-# Verify cryptographic audit integrity (SOC 2 Non-Repudiation Merkle Hash Chain)
+# Verify cryptographic audit integrity (Merkle Non-Repudiation Hash Chain)
 npm run verify
 
 # Strict TypeScript compilation across workspaces

@@ -64,7 +64,7 @@ Every commit must pass the automated verification suite before a pull request ca
    cd gateway && npm run simulate
    ```
 
-4. **Verify Merkle Hash Chain Integrity (SOC 2 Proof):**
+4. **Verify Merkle Hash Chain Integrity (Cryptographic Proof):**
    ```bash
    cd gateway && node bin/sevlex.js verify
    ```

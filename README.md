@@ -91,7 +91,7 @@ flowchart TD
 | **1-Click Slack Dual-Custody HITL** | **✔ Native Block Kit Interactive** | ⚠️ Connector Auth Only | ✔ Slack Webhook | ❌ Manual Webhooks |
 | **Enterprise Private VPC (AWS ECS Fargate)** | **✔ CloudFormation & Terraform** | ✔ Managed VPC | ❌ Manual Docker | ⚠️ Generic K8s |
 | **Enterprise Database Standard** | **✔ Native PostgreSQL 16 / RDS** | ✔ Postgres | ⚠️ SQLite / JSON | ✔ RDBMS |
-| **SOC 2 Cryptographic Merkle Hash Chain** | **✔ SHA-256 Non-Repudiation** | ❌ Centralized SaaS Logs | ❌ Standard JSON Logs | ❌ External SIEM Dependent |
+| **Cryptographic Merkle Hash Chain** | **✔ SHA-256 Non-Repudiation** | ❌ Centralized SaaS Logs | ❌ Standard JSON Logs | ❌ External SIEM Dependent |
 | **Zero-Touch Client Auto-Patcher (`sevlex inject`)** | **✔ 6 AI Clients Supported** | ⚠️ Proprietary Agent | ❌ Manual Config | ❌ Not Supported |
 
 ---
@@ -115,7 +115,7 @@ Designed to eliminate catastrophic autonomous AI agent runaway failure modes:
 * SecOps authorizes with one tap on their laptop or phone. Slack sends an interactive event to `/api/hitl/slack`, updating the card in-place with an immutable cryptographic signature.
 * Retrying agents are granted seamless execution; clearances are atomically consumed (`CONSUMED`) to guarantee anti-replay security.
 
-### 4. Cryptographic SHA-256 Merkle Audit Chain (SOC 2 Non-Repudiation)
+### 4. Cryptographic SHA-256 Merkle Audit Chain (Tamper-Evident Non-Repudiation)
 Every execution receipt recorded in SQLite WAL mode is mathematically bound to its predecessor:
 $$\text{entry\_hash} = \text{SHA256}(\text{prev\_hash} \parallel \text{id} \parallel \text{user\_id} \parallel \text{tool\_name} \parallel \text{status} \parallel \text{raw\_request} \parallel \text{timestamp})$$
 Run `sevlex verify` at any time to mathematically audit the entire history. Any database record alteration, tampering, or deletion breaks the hash chain instantly.
@@ -179,7 +179,7 @@ sevlex inject
 # Unhook Sevlex and atomically restore original client configs from backup
 sevlex restore
 
-# Cryptographically verify the SHA-256 Merkle audit chain for SOC 2 audits
+# Cryptographically verify the SHA-256 Merkle audit chain non-repudiation
 sevlex verify
 
 # Query active dual-custody HITL clearance tickets

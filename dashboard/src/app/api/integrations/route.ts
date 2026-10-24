@@ -42,7 +42,11 @@ export async function POST(request: Request) {
     // 1. Action: Test Datadog Ping
     if (body.action === 'test_datadog') {
       const endpoint = body.endpoint || 'https://http-intake.logs.us5.datadoghq.com/api/v2/logs';
-      const apiKey = body.apiKey || process.env.SEVLEX_SIEM_API_KEY || '70bb17537553cedfad6a9cc2e57dfa52';
+      const apiKey = body.apiKey || process.env.SEVLEX_SIEM_API_KEY;
+
+      if (!apiKey) {
+        return NextResponse.json({ success: false, error: 'No Datadog API key configured. Enter a valid Datadog API key.' }, { status: 400 });
+      }
 
       const payload = [{
         ddsource: 'sevlex-dashboard',
@@ -96,7 +100,9 @@ export async function POST(request: Request) {
       const client = body.client || 'all'; // 'claude_desktop' | 'claude_code' | 'antigravity' | 'all'
       const homedir = os.homedir();
       const appData = process.env.APPDATA || path.join(homedir, 'AppData', 'Roaming');
-      const gatewayDist = path.resolve(process.cwd(), '../gateway/dist/src/gateway.js');
+      const distPath = path.resolve(process.cwd(), '../gateway/dist/gateway.js');
+      const legacyDistPath = path.resolve(process.cwd(), '../gateway/dist/src/gateway.js');
+      const gatewayDist = fs.existsSync(distPath) ? distPath : legacyDistPath;
       const testTool = path.resolve(process.cwd(), '../gateway/test_tool.js');
 
       const mcpEntry = {
@@ -105,7 +111,7 @@ export async function POST(request: Request) {
         env: {
           SEVLEX_USER: os.userInfo().username,
           SEVLEX_SIEM_PROVIDER: "datadog",
-          SEVLEX_SIEM_API_KEY: process.env.SEVLEX_SIEM_API_KEY || "70bb17537553cedfad6a9cc2e57dfa52",
+          SEVLEX_SIEM_API_KEY: process.env.SEVLEX_SIEM_API_KEY || "",
           SEVLEX_SIEM_ENDPOINT: "https://http-intake.logs.us5.datadoghq.com/api/v2/logs"
         }
       };

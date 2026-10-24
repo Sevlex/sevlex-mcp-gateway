@@ -2,7 +2,7 @@
 
 > The Layer 7 Zero-Trust Security Firewall for AI Agents and the Model Context Protocol (MCP).
 
-Sevlex transparently wraps JSON-RPC stdio and SSE traffic between AI runtimes (Cursor, Claude Desktop, Claude Code, Windsurf, Google Antigravity) and downstream MCP servers (PostgreSQL, Filesystem, GitHub, AWS, Slack). It enforces sub-millisecond AST parameter deep packet inspection (DPI), in-flight credential redaction (DLP), runaway hallucination loop breakers, and cryptographic SOC 2 audit non-repudiation.
+Sevlex transparently wraps JSON-RPC stdio and SSE traffic between AI runtimes (Cursor, Claude Desktop, Claude Code, Windsurf, Google Antigravity) and downstream MCP servers (PostgreSQL, Filesystem, GitHub, AWS, Slack). It enforces sub-millisecond AST parameter deep packet inspection (DPI), in-flight credential redaction (DLP), runaway hallucination loop breakers, and cryptographic Merkle audit non-repudiation.
 
 ## Instructions for AI Agents (Claude Code, Cursor, Windsurf, Devin)
 
@@ -89,7 +89,7 @@ To unhook and revert all files to their pristine state:
 npx sevlex restore
 ```
 
-## Mathematical Audit Non-Repudiation (SOC 2)
+## Mathematical Cryptographic Merkle Audit Non-Repudiation
 Sevlex writes all tool receipts into SQLite WAL mode, linking every entry to its predecessor via SHA-256 Merkle chain:
 ```bash
 npx sevlex verify

@@ -62,7 +62,7 @@ export async function GET() {
     {
       status: healthy ? "healthy" : "degraded",
       service: "sevlex-enterprise-gateway",
-      version: "1.0.2",
+      version: "1.0.5",
       timestamp: new Date().toISOString(),
       database: {
         type: storageType,

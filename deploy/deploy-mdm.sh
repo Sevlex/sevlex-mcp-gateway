@@ -50,7 +50,10 @@ fi
 
 # Deploy Gateway Engine binary
 GATEWAY_TARGET="$SEVLEX_SYS_DIR/gateway.js"
-GATEWAY_SOURCE="$SCRIPT_DIR/../gateway/dist/src/gateway.js"
+GATEWAY_SOURCE="$SCRIPT_DIR/../gateway/dist/gateway.js"
+if [ ! -f "$GATEWAY_SOURCE" ]; then
+  GATEWAY_SOURCE="$SCRIPT_DIR/../gateway/dist/src/gateway.js"
+fi
 if [ -f "$GATEWAY_SOURCE" ]; then
   cp "$GATEWAY_SOURCE" "$GATEWAY_TARGET"
   chmod 755 "$GATEWAY_TARGET"

@@ -34,7 +34,7 @@ jobs:
         working-directory: ./gateway
         run: npm run simulate
 
-      - name: Verify Cryptographic Merkle Hash Chain (SOC 2 Non-Repudiation)
+      - name: Verify Cryptographic Merkle Hash Chain (Tamper-Evident Non-Repudiation)
         working-directory: ./gateway
         run: node bin/sevlex.js verify
 

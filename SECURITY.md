@@ -50,7 +50,7 @@ To help us triage and patch the issue as quickly as possible, please include:
 ### In Scope
 - Gateway stream parser (`gateway/src/gateway.ts`, `gateway/src/sse_proxy.ts`)
 - Deep Packet Inspection (DPI) & Policy Engine (`gateway/src/policy_engine.ts`, `gateway/src/circuit_breaker.ts`)
-- SOC 2 Merkle hash chain audit integrity (`gateway/src/merkle_chain.ts`, `gateway/src/logger.ts`)
+- Tamper-evident Merkle hash chain audit integrity (`gateway/src/merkle_chain.ts`, `gateway/src/logger.ts`)
 - Dual-Custody HITL token verification (`dashboard/src/app/api/hitl/`)
 - Enterprise fleet deployment manifests (`deploy/`)
 

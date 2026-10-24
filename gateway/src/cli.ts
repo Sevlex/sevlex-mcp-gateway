@@ -21,7 +21,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 //   npx sevlex login [key]        -> Link machine to app.sevlex.com via slx_live_... key
 //   npx sevlex status             -> Health diagnostics, cloud workspace & shield report
 //   npx sevlex restore            -> Unhook Sevlex and restore original client configs
-//   npx sevlex verify             -> Verify SOC 2 SHA-256 Merkle chain integrity
+//   npx sevlex verify             -> Verify cryptographic SHA-256 Merkle chain integrity
 //   npx sevlex hitl               -> Query dual-custody authorization tickets
 //   npx sevlex scan               -> Sweep machine for Shadow AI tools
 //   npx sevlex [cmd] [args...]    -> Transparent Layer 7 MCP Proxy execution
@@ -72,7 +72,7 @@ async function main() {
     return;
   }
 
-  // 6. Command: VERIFY (SOC 2 Cryptographic Merkle Chain)
+  // 6. Command: VERIFY (Cryptographic Merkle Chain)
   if (firstArg === "verify" || firstArg === "--verify") {
     runVerify();
     return;
@@ -460,7 +460,7 @@ function runVerify() {
   const logger = new AuditLogger(dbPath);
   const result = logger.verifyAuditChain();
   console.log("\n=================================================================");
-  console.log("  SEVLEX CRYPTOGRAPHIC AUDIT INTEGRITY CHECK (SOC 2 Non-Repudiation)");
+  console.log("  SEVLEX CRYPTOGRAPHIC AUDIT INTEGRITY CHECK (Merkle Non-Repudiation)");
   console.log("=================================================================");
   if (result.valid) {
     console.log(`\n  \x1b[32m✔ CRYPTOGRAPHIC INTEGRITY: 100% VALID\x1b[0m`);
@@ -536,7 +536,7 @@ COMMANDS:
   logout                 Clear stored credentials and revert to local standalone mode
   status                 Inspect health, cloud workspace, active policy & shields
   restore                Unhook Sevlex & restore original client configurations
-  verify                 Verify SHA-256 cryptographic audit chain for SOC 2
+  verify                 Verify SHA-256 cryptographic audit chain non-repudiation
   hitl                   List active dual-custody authorization tickets
   scan                   Scan system for Shadow AI tools and unmanaged servers
   sse <port> <url>       Start remote MCP Server-Sent Events (SSE) proxy
