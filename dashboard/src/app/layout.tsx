@@ -16,7 +16,13 @@ export const metadata: Metadata = {
   title: "Sevlex Enterprise | Layer 7 Zero-Trust MCP Security Gateway",
   description: "Enterprise Layer 7 Zero-Trust MCP Firewall, Shadow AI discovery, and continuous endpoint governance for Claude, Cursor, and Windsurf.",
   icons: {
-    icon: "/sevlex-icon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/sevlex-icon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/sevlex-icon.png",
   },
 };
 
