@@ -61,6 +61,7 @@ export default function Dashboard() {
   const [inputEmail, setInputEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState<string | null>(null);
   const [authLoadingProvider, setAuthLoadingProvider] = useState<string | null>(null);
   const [authUser, setAuthUser] = useState<{
     id?: string;
@@ -122,39 +123,24 @@ export default function Dashboard() {
       }
       if (params.get("auth_error")) {
         setLoginError(true);
+        setAuthErrorMessage(decodeURIComponent(params.get("auth_error") || "Authentication failed"));
       }
     }
   }, []);
 
-  const handleOAuthLogin = async (provider: 'github' | 'google' | 'microsoft') => {
+  const handleOAuthLogin = (provider: 'github' | 'google') => {
+    setAuthLoadingProvider(provider);
+    setLoginError(false);
+    setAuthErrorMessage(null);
+
     if (provider === 'github') {
-      setAuthLoadingProvider('github');
       window.location.href = '/api/auth/github';
       return;
     }
-    setAuthLoadingProvider(provider);
-    setLoginError(false);
-    try {
-      const res = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        setLoginError(true);
-        setAuthLoadingProvider(null);
-        return;
-      }
-      setApiKey(data.token);
-      setAuthUser(data.user);
-      setIsAuthenticated(true);
-      localStorage.setItem("sevlex_admin_key", data.token);
-      localStorage.setItem("sevlex_user_profile", JSON.stringify(data.user));
-    } catch {
-      setLoginError(true);
-    } finally {
-      setAuthLoadingProvider(null);
+
+    if (provider === 'google') {
+      window.location.href = '/api/auth/google';
+      return;
     }
   };
 
@@ -414,58 +400,30 @@ export default function Dashboard() {
               </p>
             </div>
 
-            {/* 2x2 OAuth Providers Grid */}
-            <div className="grid grid-cols-2 gap-2.5 mb-6">
-              {/* Google */}
-              <button
-                type="button"
-                onClick={() => handleOAuthLogin('google')}
-                disabled={Boolean(authLoadingProvider)}
-                className="relative flex items-center justify-center gap-2.5 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer disabled:opacity-50"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={getLogoDevUrl("google.com", 64)} alt="Google" className="size-4 object-contain shrink-0" />
-                <span>{authLoadingProvider === 'google' ? 'Connecting...' : 'Google'}</span>
-                <span className="absolute -top-1.5 -right-1 text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-[#34D59A]/20 text-[#34D59A] border border-[#34D59A]/30 font-semibold select-none">
-                  Last
-                </span>
-              </button>
-
-              {/* GitHub */}
+            {/* Real OAuth Providers: GitHub & Google (Council Standard) */}
+            <div className="space-y-2.5 mb-6">
+              {/* GitHub (Primary Developer Identity) */}
               <button
                 type="button"
                 onClick={() => handleOAuthLogin('github')}
                 disabled={Boolean(authLoadingProvider)}
-                className="flex items-center justify-center gap-2.5 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer disabled:opacity-50"
+                className="w-full relative flex items-center justify-center gap-2.5 h-11 px-4 rounded-xl border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-semibold text-white transition cursor-pointer disabled:opacity-50 shadow-sm"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={getLogoDevUrl("github.com", 64)} alt="GitHub" className="size-4 object-contain shrink-0" />
-                <span>{authLoadingProvider === 'github' ? 'Connecting...' : 'GitHub'}</span>
+                <span>{authLoadingProvider === 'github' ? 'Redirecting to GitHub...' : 'Continue with GitHub'}</span>
               </button>
 
-              {/* Microsoft */}
+              {/* Google (Google Workspace SSO) */}
               <button
                 type="button"
-                onClick={() => handleOAuthLogin('microsoft')}
+                onClick={() => handleOAuthLogin('google')}
                 disabled={Boolean(authLoadingProvider)}
-                className="flex items-center justify-center gap-2.5 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer disabled:opacity-50"
+                className="w-full relative flex items-center justify-center gap-2.5 h-11 px-4 rounded-xl border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-semibold text-white transition cursor-pointer disabled:opacity-50 shadow-sm"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={getLogoDevUrl("microsoft.com", 64)} alt="Microsoft" className="size-4 object-contain shrink-0" />
-                <span>{authLoadingProvider === 'microsoft' ? 'Connecting...' : 'Microsoft'}</span>
-              </button>
-
-              {/* Passkey */}
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById("auth-key-input");
-                  if (el) el.focus();
-                }}
-                className="flex items-center justify-center gap-2 h-10 px-3 rounded-lg border border-[#242628] bg-[#0E0E12] hover:bg-[#18191B] hover:border-[#383A3F] text-xs font-medium text-white transition cursor-pointer"
-              >
-                <Key className="size-3.5 text-[#34D59A] shrink-0" />
-                <span>Passkey</span>
+                <img src={getLogoDevUrl("google.com", 64)} alt="Google" className="size-4 object-contain shrink-0" />
+                <span>{authLoadingProvider === 'google' ? 'Redirecting to Google...' : 'Continue with Google'}</span>
               </button>
             </div>
 
@@ -531,9 +489,9 @@ export default function Dashboard() {
               </div>
 
               {loginError && (
-                <div className="p-2.5 rounded-lg bg-red-950/30 border border-red-500/30 text-red-300 text-xs text-left flex items-center gap-2">
-                  <AlertTriangle className="size-4 text-red-400 shrink-0" />
-                  <span>Invalid credentials. Enter your Admin Key or valid account.</span>
+                <div className="p-3 rounded-xl bg-red-950/40 border border-red-500/30 text-red-300 text-xs text-left flex items-start gap-2.5">
+                  <AlertTriangle className="size-4 text-red-400 shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">{authErrorMessage || "Invalid credentials. Enter your Admin Key or valid account."}</span>
                 </div>
               )}
 
@@ -542,7 +500,7 @@ export default function Dashboard() {
                 disabled={Boolean(authLoadingProvider) || (!inputKey.trim() && !inputEmail.trim())}
                 className="w-full h-10 rounded-lg bg-[#18191B] hover:bg-[#242628] border border-[#2E3035] text-white text-xs font-medium transition cursor-pointer disabled:opacity-40 mt-2"
               >
-                {authLoadingProvider === "api_key" ? "Logging in..." : "Log in"}
+                {authLoadingProvider === "api_key" ? "Logging in..." : "Log in with Key / Password"}
               </button>
             </form>
 
@@ -557,8 +515,16 @@ export default function Dashboard() {
                 }}
                 className="font-semibold text-white hover:underline cursor-pointer"
               >
-                Sign up for an account
+                Instant Developer Access
               </button>
+            </p>
+
+            {/* Enterprise SSO Footnote */}
+            <p className="mt-3 text-center text-[11px] text-[#61646B] font-mono">
+              Need SAML / Okta SSO?{" "}
+              <a href="mailto:founder@sevlex.com?subject=Enterprise%20SAML%20SSO%20Inquiry" className="text-[#34D59A] hover:underline">
+                Contact Enterprise Sales
+              </a>
             </p>
           </div>
 
