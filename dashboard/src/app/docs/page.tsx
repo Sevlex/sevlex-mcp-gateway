@@ -116,7 +116,7 @@ function DocsContent() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-200 ${
+      className={`min-h-screen font-sans transition-colors duration-200 ${
         isDark
           ? "bg-[#0A0B0E] text-[#F3F4F6] selection:bg-blue-600/30 selection:text-blue-200"
           : "bg-[#FFFFFF] text-[#111827] selection:bg-blue-100 selection:text-blue-900"
