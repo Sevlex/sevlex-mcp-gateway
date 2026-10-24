@@ -33,6 +33,9 @@ import {
   Bot,
   Command,
   X,
+  FileText,
+  Sliders,
+  Laptop,
 } from "lucide-react";
 import { ThemeProvider, useTheme } from "@/app/components/ThemeProvider";
 
@@ -44,19 +47,17 @@ function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-// Top documentation sections
 const DOCS_NAV = [
   {
-    group: "Get Started",
+    group: "Getting Started",
     items: [
-      { id: "intro", title: "Introduction", badge: "Core" },
-      { id: "quickstart", title: "Quickstart (5 min)", badge: "New" },
-      { id: "architecture", title: "Architecture & Data Flow" },
-      { id: "zero-trust", title: "Zero-Trust MCP Model" },
+      { id: "intro", title: "Introduction" },
+      { id: "quickstart", title: "Quickstart (3 Mins)" },
+      { id: "architecture", title: "Architecture & Wire Flow" },
     ],
   },
   {
-    group: "Security Engines",
+    group: "Core Engines",
     items: [
       { id: "toolguard", title: "ToolGuard™ AST DPI" },
       { id: "agentguard", title: "AgentGuard™ Circuit Breaker" },
@@ -84,6 +85,57 @@ const DOCS_NAV = [
   },
 ];
 
+function CodeBlock({ code, language = "bash", id, isDark, onCopy, copiedId }: {
+  code: string;
+  language?: string;
+  id: string;
+  isDark: boolean;
+  onCopy: (code: string, id: string) => void;
+  copiedId: string | null;
+}) {
+  return (
+    <div className={`rounded-xl border overflow-hidden my-4 transition-colors ${
+      isDark ? "border-[#222530] bg-[#0E1017]" : "border-[#E5E7EB] bg-[#F8FAFC]"
+    }`}>
+      <div className={`flex items-center justify-between px-4 py-2 border-b text-xs font-mono ${
+        isDark ? "border-[#1E212B] bg-[#141620] text-gray-300" : "border-[#E5E7EB] bg-[#F1F5F9] text-gray-600"
+      }`}>
+        <div className="flex items-center gap-2">
+          {language === "bash" ? (
+            <Terminal className="w-3.5 h-3.5 text-emerald-500" />
+          ) : (
+            <FileCode className="w-3.5 h-3.5 text-blue-500" />
+          )}
+          <span>{language}</span>
+        </div>
+        <button
+          onClick={() => onCopy(code, id)}
+          className={`flex items-center gap-1.5 px-2 py-1 rounded text-xs transition-colors cursor-pointer ${
+            isDark ? "hover:bg-white/10 text-gray-300" : "hover:bg-gray-200 text-gray-700"
+          }`}
+        >
+          {copiedId === id ? (
+            <>
+              <Check className="w-3 h-3 text-emerald-500" />
+              <span className="text-emerald-500 font-medium">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3 h-3" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+      <div className="p-4 font-mono text-xs sm:text-sm overflow-x-auto leading-relaxed">
+        <pre className={isDark ? "text-gray-300" : "text-gray-800"}>
+          {code}
+        </pre>
+      </div>
+    </div>
+  );
+}
+
 function DocsContent() {
   const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState("intro");
@@ -91,7 +143,6 @@ function DocsContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Keyboard shortcut for Cmd+K / Ctrl+K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -114,6 +165,11 @@ function DocsContent() {
 
   const isDark = theme === "dark";
 
+  const currentItem = DOCS_NAV.flatMap((g) => g.items).find((i) => i.id === activeTab) || {
+    id: "intro",
+    title: "Introduction",
+  };
+
   return (
     <div
       className={`min-h-screen font-sans transition-colors duration-200 ${
@@ -122,20 +178,16 @@ function DocsContent() {
           : "bg-[#FFFFFF] text-[#111827] selection:bg-blue-100 selection:text-blue-900"
       }`}
     >
-      {/* =========================================================================
-          TOP NAVBAR (CORSAIR STYLE)
-          ========================================================================= */}
+      {/* Header */}
       <header
         className={`sticky top-0 z-40 w-full border-b backdrop-blur-md transition-colors duration-200 ${
-          isDark
-            ? "border-[#1E2028] bg-[#0A0B0E]/90"
-            : "border-[#E5E7EB] bg-[#FFFFFF]/90"
+          isDark ? "border-[#1E2028] bg-[#0A0B0E]/90" : "border-[#E5E7EB] bg-[#FFFFFF]/90"
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          {/* Left: Brand */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={isDark ? "/sevlex-brand-horizontal.png" : "/sevlex-brand-horizontal-dark.png"}
                 alt="Sevlex"
@@ -144,109 +196,84 @@ function DocsContent() {
             </Link>
           </div>
 
-          {/* Center: Search Bar Trigger (Ctrl+K) */}
           <div className="flex-1 max-w-md mx-2 sm:mx-6">
             <button
               onClick={() => setSearchOpen(true)}
-              className={`w-full flex items-center justify-between px-3.5 py-1.5 rounded-lg border text-sm transition-all ${
+              className={`w-full flex items-center justify-between px-3.5 py-1.5 rounded-lg border text-xs sm:text-sm transition-all cursor-pointer ${
                 isDark
-                  ? "bg-[#12141A] border-[#222530] text-gray-400 hover:border-gray-700 hover:text-gray-200"
-                  : "bg-[#F9FAFB] border-[#E5E7EB] text-gray-500 hover:border-gray-400 hover:text-gray-700 shadow-xs"
+                  ? "bg-[#12141C] border-[#222532] text-gray-400 hover:border-gray-600 hover:text-gray-200"
+                  : "bg-gray-50 border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-900 shadow-xs"
               }`}
             >
               <div className="flex items-center gap-2">
                 <Search className="w-4 h-4 text-gray-400" />
-                <span>Search docs...</span>
+                <span>Search documentation...</span>
               </div>
-              <div className="flex items-center gap-1">
-                <kbd
-                  className={`text-[11px] font-mono px-1.5 py-0.5 rounded border ${
-                    isDark
-                      ? "bg-[#1A1D26] border-[#2E3240] text-gray-400"
-                      : "bg-white border-gray-200 text-gray-500 shadow-2xs"
-                  }`}
-                >
-                  Ctrl K
-                </kbd>
-              </div>
+              <kbd
+                className={`hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono ${
+                  isDark ? "bg-[#1E212D] text-gray-400" : "bg-gray-200 text-gray-600"
+                }`}
+              >
+                ⌘K
+              </kbd>
             </button>
           </div>
 
-          {/* Right: GitHub Repo Pill + Theme Toggle + Console */}
           <div className="flex items-center gap-3">
-            {/* GitHub Repo with Stars */}
+            <button
+              onClick={toggleTheme}
+              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+              aria-label="Toggle Theme"
+              className={`p-2 rounded-lg border transition-colors cursor-pointer ${
+                isDark
+                  ? "border-[#222530] bg-[#12141C] text-gray-300 hover:text-white"
+                  : "border-gray-200 bg-gray-50 text-gray-700 hover:text-gray-900"
+              }`}
+            >
+              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
+            </button>
             <a
               href="https://github.com/Sevlex/sevlex-mcp-gateway"
               target="_blank"
               rel="noreferrer"
-              className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
+              className={`p-2 rounded-lg border transition-colors hidden sm:flex items-center ${
                 isDark
-                  ? "border-[#222530] bg-[#12141A] text-gray-300 hover:text-white hover:border-gray-700"
-                  : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
+                  ? "border-[#222530] bg-[#12141C] text-gray-300 hover:text-white"
+                  : "border-gray-200 bg-gray-50 text-gray-700 hover:text-gray-900"
               }`}
+              title="View on GitHub"
             >
-              <GithubIcon className="w-3.5 h-3.5" />
-              <span>Sevlex/sevlex-mcp-gateway</span>
-              <span
-                className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
-                  isDark ? "bg-[#1E212B] text-gray-400" : "bg-gray-200 text-gray-600"
-                }`}
-              >
-                ★ 1.2k
-              </span>
+              <GithubIcon className="w-4 h-4" />
             </a>
-
-            {/* Theme Toggle Sun / Moon (Corsair Style) */}
-            <button
-              onClick={toggleTheme}
-              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
-              className={`p-2 rounded-lg border transition-colors ${
-                isDark
-                  ? "border-[#222530] bg-[#12141A] text-gray-300 hover:text-white hover:border-gray-700"
-                  : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
-              }`}
-            >
-              {isDark ? (
-                <Sun className="w-4 h-4 text-amber-400 hover:rotate-45 transition-transform" />
-              ) : (
-                <Moon className="w-4 h-4 text-slate-700 hover:-rotate-12 transition-transform" />
-              )}
-            </button>
-
-            {/* Console Link */}
             <Link
               href="/console"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#34D59A] text-black hover:bg-[#2bc48b] transition"
             >
               <span>Console</span>
-              <ChevronRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
       </header>
 
-      {/* =========================================================================
-          BODY: THREE-COLUMN DOCS LAYOUT
-          ========================================================================= */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex">
-        {/* =========================================================================
-            LEFT SIDEBAR (STICKY NAVIGATION)
-            ========================================================================= */}
+      {/* Main Container */}
+      <div className="max-w-[1440px] mx-auto flex">
+        {/* Left Sidebar */}
         <aside
-          className={`w-64 shrink-0 hidden lg:block sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pr-6 border-r transition-colors ${
+          className={`w-64 shrink-0 hidden md:block sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pr-4 border-r transition-colors ${
             isDark ? "border-[#1E2028]" : "border-[#E5E7EB]"
           }`}
         >
           <div className="space-y-6">
             {DOCS_NAV.map((section) => (
               <div key={section.group} className="space-y-1.5">
-                <h4
+                <h3
                   className={`text-xs font-bold uppercase tracking-wider px-3 ${
                     isDark ? "text-gray-400" : "text-gray-500"
                   }`}
                 >
                   {section.group}
-                </h4>
+                </h3>
                 <ul className="space-y-0.5">
                   {section.items.map((item) => {
                     const isActive = activeTab === item.id;
@@ -254,32 +281,17 @@ function DocsContent() {
                       <li key={item.id}>
                         <button
                           onClick={() => setActiveTab(item.id)}
-                          className={`w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors flex items-center justify-between ${
+                          className={`w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors flex items-center justify-between cursor-pointer ${
                             isActive
                               ? isDark
-                                ? "bg-blue-600/15 text-blue-400 font-semibold border-l-2 border-blue-500 rounded-l-none"
-                                : "bg-blue-50 text-blue-700 font-semibold border-l-2 border-blue-600 rounded-l-none"
+                                ? "bg-emerald-500/15 text-emerald-400 font-semibold border-l-2 border-emerald-500 rounded-l-none"
+                                : "bg-emerald-50 text-emerald-800 font-semibold border-l-2 border-emerald-600 rounded-l-none"
                               : isDark
                               ? "text-gray-400 hover:text-gray-200 hover:bg-[#14161E]"
                               : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                           }`}
                         >
                           <span className="truncate">{item.title}</span>
-                          {item.badge && (
-                            <span
-                              className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-medium ${
-                                isActive
-                                  ? isDark
-                                    ? "bg-blue-900/50 text-blue-300"
-                                    : "bg-blue-100 text-blue-700"
-                                  : isDark
-                                  ? "bg-[#1E212B] text-gray-400"
-                                  : "bg-gray-100 text-gray-600"
-                              }`}
-                            >
-                              {item.badge}
-                            </span>
-                          )}
                         </button>
                       </li>
                     );
@@ -290,10 +302,8 @@ function DocsContent() {
           </div>
         </aside>
 
-        {/* =========================================================================
-            CENTER MAIN ARTICLE
-            ========================================================================= */}
-        <main className="flex-1 min-w-0 py-8 lg:px-10 xl:px-12">
+        {/* Center Main Article */}
+        <main className="flex-1 min-w-0 py-8 px-4 sm:px-8 lg:px-12">
           {/* Breadcrumb */}
           <div
             className={`flex items-center gap-1.5 text-xs font-medium mb-6 ${
@@ -302,11 +312,8 @@ function DocsContent() {
           >
             <span>Docs</span>
             <ChevronRight className="w-3 h-3 text-gray-400" />
-            <span>Get Started</span>
-            <ChevronRight className="w-3 h-3 text-gray-400" />
             <span className={isDark ? "text-white" : "text-gray-900"}>
-              {DOCS_NAV.flatMap((g) => g.items).find((i) => i.id === activeTab)
-                ?.title || "Introduction"}
+              {currentItem.title}
             </span>
           </div>
 
@@ -318,7 +325,7 @@ function DocsContent() {
                 v1.0.5 Engine
               </span>
               <span className="text-xs text-gray-400">·</span>
-              <span className="text-xs text-gray-400">Layer 7 Zero-Trust MCP Proxy</span>
+              <span className="text-xs text-gray-400">Layer 7 Zero-Trust MCP Gateway</span>
             </div>
 
             <h1
@@ -326,83 +333,36 @@ function DocsContent() {
                 isDark ? "text-white" : "text-gray-900"
               }`}
             >
-              Introduction to Sevlex
+              {currentItem.title}
             </h1>
-
-            <p
-              className={`text-base sm:text-lg leading-relaxed ${
-                isDark ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              Sevlex is the enterprise-grade Layer 7 zero-trust security gateway
-              and reverse proxy for AI coding agents. Run it locally or in your
-              VPC to inspect, sanitize, and audit every Model Context Protocol (MCP)
-              tool call in flight.
-            </p>
           </div>
 
-          {/* Article Body */}
+          {/* Dynamic Article Content */}
           <div className="mt-8 space-y-8">
-            {/* The Problem & Solution Prose */}
-            <section className="space-y-4">
-              <h2
-                className={`text-xl font-bold tracking-tight ${
-                  isDark ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Why Agent Security Matters
-              </h2>
-              <p
-                className={`text-sm sm:text-base leading-relaxed ${
-                  isDark ? "text-gray-300" : "text-gray-600"
-                }`}
-              >
-                Autonomous agents like Cursor, Claude Desktop, and Windsurf are
-                granted direct access to your local filesystem, bash shells, and
-                cloud APIs. Without runtime governance, an agent compromised by a
-                poisoned prompt or dependency can execute destructive commands
-                like <code className="px-1.5 py-0.5 rounded text-xs font-mono bg-red-500/10 text-red-500 border border-red-500/20">rm -rf /</code>,
-                leak sensitive credentials via outbound webhooks, or perform silent data exfiltration.
-              </p>
-              <p
-                className={`text-sm sm:text-base leading-relaxed ${
-                  isDark ? "text-gray-300" : "text-gray-600"
-                }`}
-              >
-                Sevlex intercepts tool calls before execution. By wrapping the
-                standard JSON-RPC transport over stdio and SSE, it enforces AST-based
-                deep packet inspection, in-flight DLP, and cryptographically signs
-                every transaction to a Merkle audit trail backed by Neon PostgreSQL.
-              </p>
-            </section>
+            {/* 1. INTRO */}
+            {activeTab === "intro" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Sevlex is an enterprise-grade Layer 7 zero-trust security gateway and reverse proxy for autonomous AI coding agents. Run it locally or across your fleet to intercept, sanitize, and cryptographically audit every Model Context Protocol (MCP) tool call in flight.
+                </p>
 
-            {/* Code Snippet 1: sevlex.config.ts */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-gray-400">
-                <span>Configure Sevlex Gateway once, protect every agent:</span>
-              </div>
-              <div
-                className={`rounded-xl border overflow-hidden transition-colors ${
-                  isDark
-                    ? "border-[#222530] bg-[#0E1017]"
-                    : "border-[#E5E7EB] bg-[#F8FAFC]"
-                }`}
-              >
-                <div
-                  className={`flex items-center justify-between px-4 py-2 border-b text-xs font-mono ${
-                    isDark
-                      ? "border-[#1E212B] bg-[#141620] text-gray-300"
-                      : "border-[#E5E7EB] bg-[#F1F5F9] text-gray-600"
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <FileCode className="w-3.5 h-3.5 text-blue-500" />
-                    <span>sevlex.config.ts</span>
-                  </div>
-                  <button
-                    onClick={() =>
-                      handleCopy(
-                        `import { createGateway, ToolGuard, AgentGuard } from '@sevlex/gateway';
+                <h2 className={`text-xl font-bold tracking-tight pt-4 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Why Agent Security Matters
+                </h2>
+                <p className={`text-sm sm:text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                  Autonomous agents like Cursor Composer, Claude Desktop, and Windsurf are granted direct access to filesystems, bash terminals, and internal APIs. Without runtime governance, an agent compromised by an indirect prompt injection can execute destructive SQL queries, wipe source trees (<code className="text-red-400 font-mono text-xs">rm -rf /</code>), or leak AWS and database credentials via outbound webhooks.
+                </p>
+
+                <h3 className={`text-base font-semibold pt-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Declarative Gateway Configuration (`sevlex.config.ts`)
+                </h3>
+                <CodeBlock
+                  id="code-intro-config"
+                  language="typescript"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`import { createGateway, ToolGuard, AgentGuard } from '@sevlex/gateway';
 
 export const gateway = createGateway({
   listen: { port: 8080, transport: 'sse' },
@@ -422,423 +382,458 @@ export const gateway = createGateway({
     storage: 'neon-postgres',
     merkleLedger: true,
   },
-});`,
-                        "config-code"
-                      )
-                    }
-                    className={`flex items-center gap-1.5 px-2 py-1 rounded text-xs transition-colors ${
-                      isDark
-                        ? "hover:bg-white/10 text-gray-300"
-                        : "hover:bg-gray-200 text-gray-700"
-                    }`}
-                  >
-                    {copiedId === "config-code" ? (
-                      <>
-                        <Check className="w-3 h-3 text-emerald-500" />
-                        <span className="text-emerald-500">Copied</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3 h-3" />
-                        <span>Copy</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-                <div className="p-4 font-mono text-xs sm:text-sm overflow-x-auto leading-relaxed">
-                  <pre
-                    className={
-                      isDark ? "text-gray-300" : "text-gray-800"
-                    }
-                  >
-                    <span className="text-purple-400">import</span> &#123; createGateway, ToolGuard, AgentGuard &#125; <span className="text-purple-400">from</span> <span className="text-emerald-500">&apos;@sevlex/gateway&apos;</span>;{`\n\n`}
-                    <span className="text-blue-400">export const</span> gateway = <span className="text-amber-400">createGateway</span>(&#123;{`\n`}
-                    {"  "}listen: &#123; port: <span className="text-cyan-400">8080</span>, transport: <span className="text-emerald-500">&apos;sse&apos;</span> &#125;,{`\n`}
-                    {"  "}engines: [{`\n`}
-                    {"    "}<span className="text-amber-400">ToolGuard</span>(&#123;{`\n`}
-                    {"      "}blockUnsafeBash: <span className="text-cyan-400">true</span>,{`\n`}
-                    {"      "}allowedSqlDialects: [<span className="text-emerald-500">&apos;postgres&apos;</span>],{`\n`}
-                    {"      "}preventFileTraversal: <span className="text-cyan-400">true</span>,{`\n`}
-                    {"    "}&#125;),{`\n`}
-                    {"    "}<span className="text-amber-400">AgentGuard</span>(&#123;{`\n`}
-                    {"      "}maxToolCallsPerMinute: <span className="text-cyan-400">60</span>,{`\n`}
-                    {"      "}circuitBreakerBudgetUsd: <span className="text-cyan-400">10.0</span>,{`\n`}
-                    {"      "}dlpRedactTokens: [<span className="text-emerald-500">&apos;OPENAI_API_KEY&apos;</span>, <span className="text-emerald-500">&apos;DATABASE_URL&apos;</span>],{`\n`}
-                    {"    "}&#125;),{`\n`}
-                    {"  "}],{`\n`}
-                    {"  "}audit: &#123;{`\n`}
-                    {"    "}storage: <span className="text-emerald-500">&apos;neon-postgres&apos;</span>,{`\n`}
-                    {"    "}merkleLedger: <span className="text-cyan-400">true</span>,{`\n`}
-                    {"  "}&#125;,{`\n`}
-                    &#125;);
-                  </pre>
-                </div>
-              </div>
-            </div>
+});`}
+                />
 
-            {/* Code Snippet 2: Route tool execution */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-gray-400">
-                <span>Call any MCP tool through Sevlex proxy with zero code changes:</span>
-              </div>
-              <div
-                className={`rounded-xl border overflow-hidden transition-colors ${
-                  isDark
-                    ? "border-[#222530] bg-[#0E1017]"
-                    : "border-[#E5E7EB] bg-[#F8FAFC]"
-                }`}
-              >
-                <div
-                  className={`flex items-center justify-between px-4 py-2 border-b text-xs font-mono ${
-                    isDark
-                      ? "border-[#1E212B] bg-[#141620] text-gray-300"
-                      : "border-[#E5E7EB] bg-[#F1F5F9] text-gray-600"
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <Terminal className="w-3.5 h-3.5 text-emerald-500" />
-                    <span>terminal</span>
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6">
                   <button
-                    onClick={() =>
-                      handleCopy(
-                        `# Start the local Layer 7 MCP security gateway
-npx sevlex gateway --port 8080 --neon-db $DATABASE_URL
-
-# Connect Cursor, Claude, or Windsurf instantly
-export MCP_GATEWAY_URL="http://localhost:8080/v1/mcp"`,
-                        "terminal-code"
-                      )
-                    }
-                    className={`flex items-center gap-1.5 px-2 py-1 rounded text-xs transition-colors ${
-                      isDark
-                        ? "hover:bg-white/10 text-gray-300"
-                        : "hover:bg-gray-200 text-gray-700"
+                    onClick={() => setActiveTab("quickstart")}
+                    className={`text-left p-5 rounded-xl border transition-all cursor-pointer ${
+                      isDark ? "border-[#222530] bg-[#10121A] hover:border-emerald-500/50" : "border-gray-200 bg-white hover:border-emerald-500 hover:shadow-md"
                     }`}
                   >
-                    {copiedId === "terminal-code" ? (
-                      <>
-                        <Check className="w-3 h-3 text-emerald-500" />
-                        <span className="text-emerald-500">Copied</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3 h-3" />
-                        <span>Copy</span>
-                      </>
-                    )}
+                    <Rocket className="w-5 h-5 text-emerald-400 mb-2" />
+                    <h4 className="font-semibold text-sm">3-Minute Quickstart</h4>
+                    <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                      Install via npm and protect your local MCP servers in seconds.
+                    </p>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab("cursor")}
+                    className={`text-left p-5 rounded-xl border transition-all cursor-pointer ${
+                      isDark ? "border-[#222530] bg-[#10121A] hover:border-blue-500/50" : "border-gray-200 bg-white hover:border-blue-500 hover:shadow-md"
+                    }`}
+                  >
+                    <Sparkles className="w-5 h-5 text-blue-400 mb-2" />
+                    <h4 className="font-semibold text-sm">Cursor IDE Setup</h4>
+                    <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                      One JSON snippet to shield Cursor Composer from destructive tool calls.
+                    </p>
                   </button>
                 </div>
-                <div className="p-4 font-mono text-xs sm:text-sm overflow-x-auto leading-relaxed">
-                  <pre
-                    className={
-                      isDark ? "text-gray-300" : "text-gray-800"
-                    }
-                  >
-                    <span className="text-gray-500"># Start the local Layer 7 MCP security gateway</span>{`\n`}
-                    <span className="text-emerald-500">npx</span> sevlex gateway --port 8080 --neon-db $DATABASE_URL{`\n\n`}
-                    <span className="text-gray-500"># Connect Cursor, Claude, or Windsurf instantly</span>{`\n`}
-                    <span className="text-blue-400">export</span> MCP_GATEWAY_URL=<span className="text-amber-400">&quot;http://localhost:8080/v1/mcp&quot;</span>
-                  </pre>
+              </div>
+            )}
+
+            {/* 2. QUICKSTART */}
+            {activeTab === "quickstart" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Get up and running with Sevlex in under 3 minutes. No container spinups, no root permissions, and zero code changes required in your agents.
+                </p>
+
+                <h3 className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Step 1: Auto-Discover and Wrap MCP Configs
+                </h3>
+                <p className={`text-xs sm:text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  Sevlex scans Cursor, Claude Desktop, and local tool manifests, wraps them in a Zero-Trust Layer 7 proxy, and creates a 100% reversible <code className="font-mono text-xs text-emerald-500">*.sevlex.bak</code> backup:
+                </p>
+                <CodeBlock
+                  id="code-qs-1"
+                  language="bash"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`npx sevlex init`}
+                />
+
+                <h3 className={`text-base font-semibold pt-4 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Step 2: Verify In-Flight AST Threat Interception
+                </h3>
+                <p className={`text-xs sm:text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  Simulate live attacks (destructive <code className="text-red-400 font-mono text-xs">DROP TABLE</code> queries, credential exfiltration, and bash tampering) to confirm sub-millisecond arrest:
+                </p>
+                <CodeBlock
+                  id="code-qs-2"
+                  language="bash"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`npx sevlex demo`}
+                />
+
+                <h3 className={`text-base font-semibold pt-4 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Step 3: Mathematically Verify Cryptographic Receipts
+                </h3>
+                <p className={`text-xs sm:text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                  Verify that the SHA-256 Merkle chain has zero tamper events:
+                </p>
+                <CodeBlock
+                  id="code-qs-3"
+                  language="bash"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`npx sevlex verify`}
+                />
+              </div>
+            )}
+
+            {/* 3. ARCHITECTURE */}
+            {activeTab === "architecture" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Sevlex operates as a transparent Layer 7 proxy sitting between MCP Client runtimes (Cursor, Claude Desktop, Windsurf, LangChain) and downstream MCP servers (Postgres, GitHub, Slack, Filesystem, Bash).
+                </p>
+
+                <div className={`p-6 rounded-2xl border font-mono text-xs ${
+                  isDark ? "bg-[#0E0E12] border-[#242628] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
+                }`}>
+                  <p className="text-emerald-400 font-bold mb-2">MCP JSON-RPC Wire Topology:</p>
+                  <p>[AI Agent (Cursor/Claude)]</p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;│ (stdio / SSE JSON-RPC Request)</p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;▼</p>
+                  <p><strong>[Sevlex Zero-Trust Gateway (:8080)]</strong></p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;├── 1. ToolGuard AST DPI (&lt;0.42ms SQL/Bash Validation)</p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;├── 2. AgentGuard Circuit Breaker (Velocity &amp; Loop Cap)</p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;├── 3. In-Flight DLP (Token &amp; Credential Redaction)</p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;└── 4. SHA-256 Merkle Audit Chain (Sealed Receipt)</p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;│</p>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;▼ (Forward only if APPROVED)</p>
+                  <p>[Downstream MCP Server (Postgres / GitHub / Bash)]</p>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* =========================================================================
-                GET STARTED 2x2 CARDS (CORSAIR STYLE)
-                ========================================================================= */}
-            <div className="pt-6 space-y-4">
-              <h2
-                className={`text-xl font-bold tracking-tight ${
-                  isDark ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Get Started
-              </h2>
+            {/* 4. TOOLGUARD */}
+            {activeTab === "toolguard" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  <strong>ToolGuard™</strong> performs sub-millisecond Abstract Syntax Tree (AST) deep packet inspection directly over the JSON-RPC wire before downstream tools execute.
+                </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Card 1: Quickstart */}
-                <button
-                  onClick={() => setActiveTab("quickstart")}
-                  className={`text-left p-5 rounded-xl border transition-all group ${
-                    isDark
-                      ? "border-[#222530] bg-[#10121A] hover:border-blue-500/50 hover:bg-[#141722]"
-                      : "border-[#E5E7EB] bg-white hover:border-blue-400 hover:shadow-md"
-                  }`}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-transform group-hover:scale-105 ${
-                      isDark
-                        ? "bg-blue-600/10 text-blue-400 border border-blue-500/20"
-                        : "bg-blue-50 text-blue-600 border border-blue-100"
-                    }`}
-                  >
-                    <Rocket className="w-5 h-5" />
-                  </div>
-                  <h3
-                    className={`text-base font-semibold mb-1 group-hover:text-blue-500 transition-colors ${
-                      isDark ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    Quickstart
-                  </h3>
-                  <p
-                    className={`text-sm ${
-                      isDark ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Empty project to a fully protected agent proxy in three commands.
-                  </p>
-                </button>
+                <h3 className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Rules Enforced by ToolGuard
+                </h3>
+                <ul className="list-disc pl-6 space-y-2 text-xs sm:text-sm">
+                  <li><strong>SQL DDL Interception:</strong> Blocks <code className="text-red-400 font-mono text-xs">DROP TABLE</code>, <code className="text-red-400 font-mono text-xs">ALTER TABLE</code>, and destructive schema wipes.</li>
+                  <li><strong>Bash Command Injection:</strong> Blocks dangerous terminal commands including <code className="text-red-400 font-mono text-xs">rm -rf /</code>, pipe-to-shell (<code className="text-red-400 font-mono text-xs">curl | sh</code>), and privilege escalations (<code className="text-red-400 font-mono text-xs">chmod 777</code>).</li>
+                  <li><strong>Directory Traversal:</strong> Blocks parameter payloads attempting to escape workspace boundaries via <code className="text-red-400 font-mono text-xs">../../etc/passwd</code>.</li>
+                </ul>
 
-                {/* Card 2: Set up with your agent */}
-                <button
-                  onClick={() => setActiveTab("cursor")}
-                  className={`text-left p-5 rounded-xl border transition-all group ${
-                    isDark
-                      ? "border-[#222530] bg-[#10121A] hover:border-purple-500/50 hover:bg-[#141722]"
-                      : "border-[#E5E7EB] bg-white hover:border-purple-400 hover:shadow-md"
-                  }`}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-transform group-hover:scale-105 ${
-                      isDark
-                        ? "bg-purple-600/10 text-purple-400 border border-purple-500/20"
-                        : "bg-purple-50 text-purple-600 border border-purple-100"
-                    }`}
-                  >
-                    <Sparkles className="w-5 h-5" />
-                  </div>
-                  <h3
-                    className={`text-base font-semibold mb-1 group-hover:text-purple-500 transition-colors ${
-                      isDark ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    Set up with your agent
-                  </h3>
-                  <p
-                    className={`text-sm ${
-                      isDark ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    One JSON config snippet to route Claude, Cursor, or Windsurf.
-                  </p>
-                </button>
-
-                {/* Card 3: Security Engines */}
-                <button
-                  onClick={() => setActiveTab("toolguard")}
-                  className={`text-left p-5 rounded-xl border transition-all group ${
-                    isDark
-                      ? "border-[#222530] bg-[#10121A] hover:border-emerald-500/50 hover:bg-[#141722]"
-                      : "border-[#E5E7EB] bg-white hover:border-emerald-400 hover:shadow-md"
-                  }`}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-transform group-hover:scale-105 ${
-                      isDark
-                        ? "bg-emerald-600/10 text-emerald-400 border border-emerald-500/20"
-                        : "bg-emerald-50 text-emerald-600 border border-emerald-100"
-                    }`}
-                  >
-                    <Layers className="w-5 h-5" />
-                  </div>
-                  <h3
-                    className={`text-base font-semibold mb-1 group-hover:text-emerald-500 transition-colors ${
-                      isDark ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    Security Engines
-                  </h3>
-                  <p
-                    className={`text-sm ${
-                      isDark ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Enable AST DPI for SQL/Bash, DLP redactors, and circuit breakers.
-                  </p>
-                </button>
-
-                {/* Card 4: Cryptographic Audit Ledger */}
-                <button
-                  onClick={() => setActiveTab("merkle")}
-                  className={`text-left p-5 rounded-xl border transition-all group ${
-                    isDark
-                      ? "border-[#222530] bg-[#10121A] hover:border-amber-500/50 hover:bg-[#141722]"
-                      : "border-[#E5E7EB] bg-white hover:border-amber-400 hover:shadow-md"
-                  }`}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-transform group-hover:scale-105 ${
-                      isDark
-                        ? "bg-amber-600/10 text-amber-400 border border-amber-500/20"
-                        : "bg-amber-50 text-amber-600 border border-amber-100"
-                    }`}
-                  >
-                    <Database className="w-5 h-5" />
-                  </div>
-                  <h3
-                    className={`text-base font-semibold mb-1 group-hover:text-amber-500 transition-colors ${
-                      isDark ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    Merkle Audit Ledger
-                  </h3>
-                  <p
-                    className={`text-sm ${
-                      isDark ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Immutable cryptographic audit trails synced into Neon PostgreSQL.
-                  </p>
-                </button>
+                <CodeBlock
+                  id="code-tg-rule"
+                  language="json"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`{
+  "engine": "ToolGuard",
+  "action": "BLOCK",
+  "latency_ms": 0.42,
+  "rule_triggered": "SQL_DROP_TABLE_ATTEMPT",
+  "query": "DROP TABLE users; -- wipe production database",
+  "audit_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}`}
+                />
               </div>
-            </div>
+            )}
 
-            {/* Pagination Footer */}
-            <div className="pt-10 pb-6 border-t border-dashed border-gray-200 dark:border-gray-800 flex items-center justify-between">
-              <span className="text-xs text-gray-400">
-                Last updated for v1.0.5 · MIT & Apache 2.0
-              </span>
-              <button
-                onClick={() => setActiveTab("quickstart")}
-                className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
-                  isDark
-                    ? "text-blue-400 hover:text-blue-300"
-                    : "text-blue-600 hover:text-blue-700"
-                }`}
-              >
-                <span>Quickstart Next</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
+            {/* 5. AGENTGUARD */}
+            {activeTab === "agentguard" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  <strong>AgentGuard™</strong> prevents autonomous agents from entering infinite execution loops or exceeding organizational risk budgets.
+                </p>
+                <div className={`p-5 rounded-2xl border ${
+                  isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+                }`}>
+                  <ul className="space-y-3 text-xs sm:text-sm">
+                    <li><strong>Velocity Limits:</strong> Cap maximum tool calls per minute (e.g. 30 calls/minute).</li>
+                    <li><strong>Budget Tripwire:</strong> Automatically shuts off agent tool access if token costs cross a predefined threshold.</li>
+                    <li><strong>Anomaly Thresholds:</strong> Flags irregular execution patterns when an agent queries tools outside its typical behavioral cluster.</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* 6. DLP */}
+            {activeTab === "dlp" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  The Sevlex In-Flight DLP engine redacts high-entropy secrets and sensitive identifiers before packets leave the local security boundary.
+                </p>
+                <CodeBlock
+                  id="code-dlp-spec"
+                  language="json"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`// Inbound Agent Request:
+{
+  "tool": "send_slack_message",
+  "arguments": {
+    "text": "Here is the key: sk-proj-abc12345678901234567890"
+  }
+}
+
+// Sanitized Outbound Wire Payload:
+{
+  "tool": "send_slack_message",
+  "arguments": {
+    "text": "Here is the key: [DLP_REDACTED_OPENAI_KEY_8a2f]"
+  }
+}`}
+                />
+              </div>
+            )}
+
+            {/* 7. MERKLE */}
+            {activeTab === "merkle" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Every tool request and policy outcome is sealed into a SHA-256 Merkle audit chain, guaranteeing cryptographic non-repudiation.
+                </p>
+                <CodeBlock
+                  id="code-merkle-math"
+                  language="bash"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`$ npx sevlex verify
+
+[Merkle Audit Engine] Performing mathematical non-repudiation audit...
+Traversing SQLite WAL Merkle Hash Chain backwards from root...
+Receipt #402: SHA256(prev || receipt) == 8e1a3b... [VALID]
+Receipt #401: SHA256(prev || receipt) == d4c92f... [VALID]
+
+✔ AUDIT SUCCESS: 402 cryptographic receipts verified. Zero tamper events detected.`}
+                />
+              </div>
+            )}
+
+            {/* 8. CURSOR */}
+            {activeTab === "cursor" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Cursor Composer and Agent Mode connect to MCP tools using JSON configurations in <code className="font-mono text-xs text-emerald-500">~/.cursor/mcp.json</code>.
+                </p>
+
+                <h3 className={`text-base font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
+                  `~/.cursor/mcp.json` Snippet:
+                </h3>
+                <CodeBlock
+                  id="code-cursor-json"
+                  language="json"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`{
+  "mcpServers": {
+    "sevlex-gateway": {
+      "command": "npx",
+      "args": ["-y", "sevlex", "proxy", "--upstream-config", "~/.cursor/mcp.orig.json"]
+    }
+  }
+}`}
+                />
+
+                <h3 className={`text-base font-semibold pt-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Recommended `.cursorrules` Prompt:
+                </h3>
+                <CodeBlock
+                  id="code-cursor-rules"
+                  language="markdown"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`Always execute tool calls through the Sevlex Layer 7 Zero-Trust Gateway. Never bypass security proxy boundaries.`}
+                />
+              </div>
+            )}
+
+            {/* 9. CLAUDE */}
+            {activeTab === "claude" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Configure Claude Desktop and Claude Code CLI to route through Sevlex.
+                </p>
+                <CodeBlock
+                  id="code-claude-config"
+                  language="json"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "sevlex", "wrap", "--", "npx", "-y", "@modelcontextprotocol/server-postgres", "postgresql://..."]
+    }
+  }
+}`}
+                />
+              </div>
+            )}
+
+            {/* 10. WINDSURF */}
+            {activeTab === "windsurf" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Route Windsurf Cascade Agent tools through the Sevlex proxy in <code className="font-mono text-xs text-emerald-500">~/.codeium/windsurf/mcp_config.json</code>.
+                </p>
+                <CodeBlock
+                  id="code-windsurf-config"
+                  language="json"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`{
+  "mcpServers": {
+    "sevlex-cascade": {
+      "command": "npx",
+      "args": ["-y", "sevlex", "proxy"]
+    }
+  }
+}`}
+                />
+              </div>
+            )}
+
+            {/* 11. LANGCHAIN */}
+            {activeTab === "langchain" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Use Sevlex with LangChain, LlamaIndex, or OpenAI Swarm agents.
+                </p>
+                <CodeBlock
+                  id="code-langchain-py"
+                  language="python"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`from langchain_mcp_adapters.client import MultiServerMCPClient
+
+client = MultiServerMCPClient({
+    "database": {
+        "url": "http://localhost:8080/v1/mcp",  # Sevlex Zero-Trust Gateway
+        "transport": "sse",
+    }
+})`}
+                />
+              </div>
+            )}
+
+            {/* 12. CLI */}
+            {activeTab === "cli" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  The official `sevlex` CLI binary reference.
+                </p>
+                <div className={`p-4 rounded-xl border font-mono text-xs space-y-3 ${
+                  isDark ? "bg-[#0E0E12] border-[#242628] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
+                }`}>
+                  <p><strong>sevlex init</strong> — Automatically discovers IDE MCP configurations, saves *.bak snapshot, wraps in L7 proxy.</p>
+                  <p><strong>sevlex demo</strong> — Simulates SQL injections and credential leaks to verify interception.</p>
+                  <p><strong>sevlex verify</strong> — Validates cryptographic Merkle hash chain backward from root.</p>
+                  <p><strong>sevlex status</strong> — Reports active proxy health, shielded tool count, and transport mode.</p>
+                  <p><strong>sevlex scan</strong> — Audits machine environment for shadow/unmanaged MCP servers.</p>
+                </div>
+              </div>
+            )}
+
+            {/* 13. API */}
+            {activeTab === "api" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Sevlex Gateway REST and JSON-RPC proxy endpoints.
+                </p>
+                <CodeBlock
+                  id="code-api-health"
+                  language="bash"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`# Health check endpoint
+curl https://sevlex.com/api/health
+
+# Scoped audit logs endpoint (Requires API Key)
+curl -H "Authorization: Bearer slx_live_..." https://sevlex.com/api/logs`}
+                />
+              </div>
+            )}
+
+            {/* 14. DATABASE */}
+            {activeTab === "database" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Sevlex syncs audit receipts permanently to Neon Lakebase PostgreSQL.
+                </p>
+                <CodeBlock
+                  id="code-db-schema"
+                  language="sql"
+                  isDark={isDark}
+                  onCopy={handleCopy}
+                  copiedId={copiedId}
+                  code={`CREATE TABLE IF NOT EXISTS audit_logs (
+  id BIGSERIAL PRIMARY KEY,
+  org_id VARCHAR(64) DEFAULT 'org_default',
+  timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  user_id VARCHAR(128) NOT NULL,
+  tool_name VARCHAR(256) NOT NULL,
+  status VARCHAR(64) NOT NULL,
+  raw_request TEXT NOT NULL,
+  raw_response TEXT,
+  prev_hash VARCHAR(64),
+  entry_hash VARCHAR(64) NOT NULL
+);`}
+                />
+              </div>
+            )}
+
+            {/* 15. ENV */}
+            {activeTab === "env" && (
+              <div className="space-y-6">
+                <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                  Environment variables supported by Sevlex Gateway and Console.
+                </p>
+                <div className={`p-4 rounded-xl border font-mono text-xs space-y-2 ${
+                  isDark ? "bg-[#0E0E12] border-[#242628] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
+                }`}>
+                  <p><strong>DATABASE_URL</strong> — PostgreSQL connection string (Neon pooled endpoint).</p>
+                  <p><strong>DATABASE_SSL</strong> — Set to &apos;true&apos; for SSL-required cloud databases.</p>
+                  <p><strong>SEVLEX_PORT</strong> — Port for local gateway proxy (default: 8080).</p>
+                  <p><strong>GOOGLE_CLIENT_ID</strong> — Google OAuth 2.0 Web Client ID.</p>
+                  <p><strong>GOOGLE_CLIENT_SECRET</strong> — Google OAuth 2.0 Client Secret.</p>
+                </div>
+              </div>
+            )}
           </div>
         </main>
-
-        {/* =========================================================================
-            RIGHT SIDEBAR (ON THIS PAGE - TABLE OF CONTENTS)
-            ========================================================================= */}
-        <aside
-          className={`w-56 shrink-0 hidden xl:block sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pl-6 border-l transition-colors ${
-            isDark ? "border-[#1E2028]" : "border-[#E5E7EB]"
-          }`}
-        >
-          <div className="space-y-4">
-            <h4
-              className={`text-xs font-bold uppercase tracking-wider ${
-                isDark ? "text-gray-400" : "text-gray-500"
-              }`}
-            >
-              On this page
-            </h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <a
-                  href="#overview"
-                  className={`block transition-colors ${
-                    isDark
-                      ? "text-gray-300 hover:text-blue-400"
-                      : "text-gray-600 hover:text-blue-600"
-                  }`}
-                >
-                  Overview & Threat Model
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#why-it-matters"
-                  className={`block transition-colors ${
-                    isDark
-                      ? "text-gray-300 hover:text-blue-400"
-                      : "text-gray-600 hover:text-blue-600"
-                  }`}
-                >
-                  Why Agent Security Matters
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#gateway-config"
-                  className={`block transition-colors ${
-                    isDark
-                      ? "text-gray-300 hover:text-blue-400"
-                      : "text-gray-600 hover:text-blue-600"
-                  }`}
-                >
-                  sevlex.config.ts Spec
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#cli-quickstart"
-                  className={`block transition-colors ${
-                    isDark
-                      ? "text-gray-300 hover:text-blue-400"
-                      : "text-gray-600 hover:text-blue-600"
-                  }`}
-                >
-                  CLI Terminal Proxy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#get-started"
-                  className={`block transition-colors ${
-                    isDark
-                      ? "text-gray-300 hover:text-blue-400"
-                      : "text-gray-600 hover:text-blue-600"
-                  }`}
-                >
-                  Get Started Cards
-                </a>
-              </li>
-            </ul>
-
-            <div className="pt-6 border-t border-gray-200 dark:border-gray-800 space-y-3">
-              <a
-                href="https://github.com/Sevlex/sevlex-mcp-gateway"
-                target="_blank"
-                rel="noreferrer"
-                className={`flex items-center gap-1.5 text-xs transition-colors ${
-                  isDark
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                <GithubIcon className="w-3.5 h-3.5" />
-                <span>Edit this page on GitHub</span>
-              </a>
-              <a
-                href="https://github.com/Sevlex/sevlex-mcp-gateway/issues"
-                target="_blank"
-                rel="noreferrer"
-                className={`flex items-center gap-1.5 text-xs transition-colors ${
-                  isDark
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Report an issue</span>
-              </a>
-            </div>
-          </div>
-        </aside>
       </div>
 
-      {/* =========================================================================
-          INTERACTIVE SEARCH MODAL (CMD + K / CTRL + K)
-          ========================================================================= */}
+      {/* Footer */}
+      <footer className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
+        isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200 text-slate-500"
+      }`}>
+        <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={isDark ? "/sevlex-brand-horizontal.png" : "/sevlex-brand-horizontal-dark.png"}
+            alt="Sevlex"
+            className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition"
+          />
+          <span>&copy; 2026 Sevlex. All rights reserved.</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-6">
+          <a href="/product" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Product</a>
+          <a href="/service" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Service</a>
+          <a href="/about" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>About</a>
+          <a href="/docs" className="text-[#34D59A] font-medium">Docs</a>
+          <a href="/privacy" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Privacy</a>
+          <a href="/terms" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Terms</a>
+          <a href="/console" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Console</a>
+        </div>
+      </footer>
+
+      {/* Search Modal */}
       {searchOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
           <div
             className={`w-full max-w-xl rounded-2xl border shadow-2xl overflow-hidden transition-all ${
-              isDark
-                ? "bg-[#11131A] border-[#252834] text-white"
-                : "bg-white border-gray-200 text-gray-900"
+              isDark ? "bg-[#11131A] border-[#252834] text-white" : "bg-white border-gray-200 text-gray-900"
             }`}
           >
-            {/* Search Input Bar */}
             <div
               className={`flex items-center gap-3 px-4 py-3.5 border-b ${
                 isDark ? "border-[#222532]" : "border-gray-200"
@@ -857,13 +852,12 @@ export MCP_GATEWAY_URL="http://localhost:8080/v1/mcp"`,
               />
               <button
                 onClick={() => setSearchOpen(false)}
-                className="p-1 rounded hover:bg-gray-500/10 text-gray-400 hover:text-gray-200"
+                className="p-1 rounded hover:bg-gray-500/10 text-gray-400 hover:text-gray-200 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Search Results / Quick Suggestions */}
             <div className="max-h-80 overflow-y-auto p-2 space-y-1">
               {DOCS_NAV.flatMap((g) => g.items)
                 .filter(
@@ -879,35 +873,19 @@ export MCP_GATEWAY_URL="http://localhost:8080/v1/mcp"`,
                       setSearchOpen(false);
                       setSearchQuery("");
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center justify-between transition-colors ${
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center justify-between transition-colors cursor-pointer ${
                       isDark
                         ? "hover:bg-[#1A1D27] text-gray-200"
                         : "hover:bg-gray-100 text-gray-800"
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <BookOpen className="w-4 h-4 text-blue-500" />
+                      <BookOpen className="w-4 h-4 text-emerald-500" />
                       <span>{item.title}</span>
                     </div>
                     <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
                   </button>
                 ))}
-            </div>
-
-            {/* Modal Footer */}
-            <div
-              className={`px-4 py-2.5 border-t text-[11px] flex items-center justify-between ${
-                isDark
-                  ? "border-[#222532] bg-[#0E1017] text-gray-500"
-                  : "border-gray-100 bg-gray-50 text-gray-400"
-              }`}
-            >
-              <span>Navigation with keyboard</span>
-              <div className="flex items-center gap-2">
-                <span>ESC to close</span>
-                <span>·</span>
-                <span>↵ to select</span>
-              </div>
             </div>
           </div>
         </div>
