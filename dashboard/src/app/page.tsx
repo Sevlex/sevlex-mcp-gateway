@@ -643,6 +643,9 @@ export default function LandingPage() {
             <a href="/about" className="hover:text-white transition-colors">
               About
             </a>
+            <a href="/docs" className="hover:text-white transition-colors">
+              Docs
+            </a>
           </div>
 
           {/* Action Pills */}

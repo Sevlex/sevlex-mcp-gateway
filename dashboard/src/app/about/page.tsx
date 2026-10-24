@@ -42,6 +42,9 @@ export default function AboutPage() {
             <a href="/about" className="text-[#34D59A] font-semibold transition-colors">
               About
             </a>
+            <a href="/docs" className="hover:text-white transition-colors">
+              Docs
+            </a>
           </div>
 
           <div className="flex items-center gap-2.5">

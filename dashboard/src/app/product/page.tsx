@@ -69,6 +69,9 @@ export default function ProductPage() {
             <a href="/about" className="hover:text-white transition-colors">
               About
             </a>
+            <a href="/docs" className="hover:text-white transition-colors">
+              Docs
+            </a>
           </div>
 
           <div className="flex items-center gap-2.5">
