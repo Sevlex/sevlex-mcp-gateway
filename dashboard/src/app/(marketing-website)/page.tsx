@@ -42,7 +42,8 @@ import {
 import ClientBrandIcon, { getLogoDevUrl } from "@/app/components/ClientBrandIcon";
 import EngineBentoGrid from "@/app/components/EngineBentoGrid";
 import { useTheme } from "@/app/components/ThemeProvider";
-import { QuantumSpectrogram } from "@/app/components/QuantumSpectrogram";
+import { QuantumFieldCanvas } from "@/app/components/QuantumFieldCanvas";
+import { SentinelGatewayHUD } from "@/app/components/SentinelGatewayHUD";
 import { EcosystemMarquee } from "@/app/components/EcosystemMarquee";
 
 // Interactive Spotlight Card with subtle radial hover
@@ -644,11 +645,11 @@ export default function LandingPage() {
       </nav>
 
       {/* ========================================================================= */}
-      {/* 3. HERO SECTION (Quantum Merkle Spectrogram & Signature Typography)        */}
+      {/* 3. HERO SECTION (Clean Typography & Interactive Motion Graphics)           */}
       {/* ========================================================================= */}
-      <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 text-center overflow-hidden">
-        {/* Procedural Quantum Merkle Spectrogram Signature Canvas */}
-        <QuantumSpectrogram />
+      <section className="relative pt-16 pb-6 md:pt-24 md:pb-10 text-center overflow-hidden">
+        {/* Living Quantum Particle Field & Fluid Caustic Engine */}
+        <QuantumFieldCanvas />
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Eyebrow Pill */}
@@ -706,6 +707,9 @@ export default function LandingPage() {
             </a>
           </div>
         </div>
+
+        {/* Centerpiece: Interactive Layer 7 Sentinel Packet Interception HUD */}
+        <SentinelGatewayHUD />
       </section>
 
       {/* Infinite Horizontal Ecosystem Marquee */}
