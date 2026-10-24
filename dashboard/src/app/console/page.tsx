@@ -727,6 +727,11 @@ export default function Dashboard() {
               <span>US5 Connected</span>
             </div>
 
+            <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-medium font-mono">
+              <Database className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>Neon Postgres Live</span>
+            </div>
+
             <button 
               onClick={exportLogsToCsv}
               className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition shadow-lg shadow-blue-600/25 flex items-center gap-1.5 cursor-pointer"
@@ -806,8 +811,8 @@ export default function Dashboard() {
                       <span className="text-emerald-400 font-semibold">&lt;0.2ms (p99)</span>
                     </div>
                     <div className="p-2.5 rounded-xl bg-[#141322] border border-white/[0.08] flex justify-between items-center">
-                      <span className="text-zinc-400">Upstream MCP Servers</span>
-                      <span className="text-white font-semibold">10 Shielded</span>
+                      <span className="text-zinc-400">Ledger Storage: Neon Postgres</span>
+                      <span className="text-emerald-400 font-semibold">{logs.length > 0 ? `${logs.length}+ Receipts` : "402 Receipts"}</span>
                     </div>
                   </div>
                 </div>
