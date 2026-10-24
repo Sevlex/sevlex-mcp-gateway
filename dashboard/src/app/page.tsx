@@ -740,19 +740,27 @@ export default function LandingPage() {
       <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 text-center">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] border border-[#242628] text-[#797D86] mb-6">
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
+            isDark
+              ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+              : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 shadow-xs"
+          }`}>
             <span className="text-[#34D59A] font-semibold">LAYER 7 ZERO-TRUST</span>
-            <span className="text-[#303236]">•</span>
-            <span className="text-[#AFB1B6]">FIREWALL FOR MODEL CONTEXT PROTOCOL</span>
+            <span className={isDark ? "text-[#303236]" : "text-emerald-300"}>•</span>
+            <span className={isDark ? "text-[#AFB1B6]" : "text-emerald-700"}>FIREWALL FOR MODEL CONTEXT PROTOCOL</span>
           </div>
 
           {/* Master Display Heading */}
-          <h1 className="text-4xl sm:text-6xl md:text-[4.25rem] font-medium tracking-tight text-white max-w-4xl mx-auto leading-[1.06] text-balance">
+          <h1 className={`text-4xl sm:text-6xl md:text-[4.25rem] font-medium tracking-tight max-w-4xl mx-auto leading-[1.06] text-balance ${
+            isDark ? "text-white" : "text-[#0F172A]"
+          }`}>
             The security layer for coding agents. Intercept, inspect, and quarantine MCP tools in real time.
           </h1>
 
           {/* Master Subtitle */}
-          <p className="mt-6 text-base sm:text-lg text-[#94979E] max-w-2xl mx-auto leading-relaxed text-pretty">
+          <p className={`mt-6 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed text-pretty ${
+            isDark ? "text-[#94979E]" : "text-[#475569]"
+          }`}>
             Transparently wraps stdio and SSE JSON-RPC channels between Cursor, Claude Desktop, and downstream servers.
             Zero configuration, sub-0.5ms parameter deep packet inspection, and cryptographic audit proofs.
           </p>
@@ -762,7 +770,11 @@ export default function LandingPage() {
             {/* Primary Console Pill */}
             <a
               href="/console"
-              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-sm gap-2 shadow-lg shadow-white/5"
+              className={`inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium text-sm gap-2 shadow-md ${
+                isDark
+                  ? "bg-white text-black hover:bg-[#E4E5E7] shadow-white/5"
+                  : "bg-[#0F172A] text-white hover:bg-[#1E293B] shadow-slate-900/10"
+              }`}
             >
               <span>Launch Console</span>
               <ArrowRight className="size-4" />
@@ -770,17 +782,21 @@ export default function LandingPage() {
 
             {/* Glass Docs Pill */}
             <a
-              href="#docs"
-              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white/[0.03] border border-[#303236] text-white hover:border-[#61646B] hover:bg-white/[0.06] text-sm gap-2"
+              href="/docs"
+              className={`inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium text-sm gap-2 ${
+                isDark
+                  ? "bg-white/[0.03] border border-[#303236] text-white hover:border-[#61646B] hover:bg-white/[0.06]"
+                  : "bg-white border border-[#CBD5E1] text-[#0F172A] hover:border-[#94A3B8] hover:bg-[#F8FAFC] shadow-xs"
+              }`}
             >
               <span>Documentation</span>
-              <ArrowRight className="size-3.5 text-[#797D86]" />
+              <ArrowRight className={`size-3.5 ${isDark ? "text-[#797D86]" : "text-[#64748B]"}`} />
             </a>
           </div>
 
           {/* Client Ecosystem Showcase (100% borderless, transparent, seamless) */}
           <div className="mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#797D86]">
-            <span className="font-mono text-[11px] text-[#61646B] uppercase tracking-wider">
+            <span className={`font-mono text-[11px] uppercase tracking-wider ${isDark ? "text-[#61646B]" : "text-[#64748B]"}`}>
               Zero-Config Shields:
             </span>
             {[
@@ -792,7 +808,9 @@ export default function LandingPage() {
             ].map((client) => (
               <div
                 key={client.name}
-                className="flex items-center gap-2 text-[#94979E] hover:text-white transition-colors duration-200 cursor-default group"
+                className={`flex items-center gap-2 transition-colors duration-200 cursor-default group ${
+                  isDark ? "text-[#94979E] hover:text-white" : "text-[#475569] hover:text-[#0F172A]"
+                }`}
               >
                 <ClientBrandIcon name={client.brand} size="xs" className="size-4 transition-transform duration-200 group-hover:scale-110" />
                 <span className="font-medium tracking-tight text-xs sm:text-sm">{client.name}</span>
@@ -805,7 +823,9 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 4. READY FOR CODING AGENTS (Neon High-Craft Architecture)                 */}
       {/* ========================================================================= */}
-      <section id="agents" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+      <section id="agents" className={`py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t ${
+        isDark ? "border-[#242628]" : "border-slate-200"
+      }`}>
         {/* Editorial Section Header & Watermark */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div className="max-w-3xl">
@@ -815,14 +835,18 @@ export default function LandingPage() {
               </svg>
               <span>OPERATE IT WITH AGENTS</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-normal tracking-tight text-white leading-[1.12]">
+            <h2 className={`text-3xl sm:text-5xl font-normal tracking-tight leading-[1.12] ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
               Ready for coding agents.{" "}
-              <span className="text-[#797D86]">
+              <span className={isDark ? "text-[#797D86]" : "text-[#64748B]"}>
                 Intercept and quarantine MCP tools the way you inspect network packets, with zero configuration.
               </span>
             </h2>
           </div>
-          <div className="hidden lg:block font-mono text-7xl font-light text-[#18191B] select-none tracking-tighter">
+          <div className={`hidden lg:block font-mono text-7xl font-light select-none tracking-tighter ${
+            isDark ? "text-[#18191B]" : "text-slate-200"
+          }`}>
             01
           </div>
         </div>

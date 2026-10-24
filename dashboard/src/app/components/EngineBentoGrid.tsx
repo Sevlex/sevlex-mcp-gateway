@@ -15,6 +15,7 @@ import {
   Fingerprint,
   ChevronDown,
 } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 interface LayerItem {
   id: string;
@@ -101,6 +102,8 @@ const LAYERS: LayerItem[] = [
 ];
 
 export default function EngineBentoGrid() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [expandedLayer, setExpandedLayer] = useState<string>("ast");
 
   return (
@@ -112,14 +115,22 @@ export default function EngineBentoGrid() {
           1. HEADER (SIMPLE, DIRECT, NO JARGON)
           ======================================================================= */}
       <div className="text-center max-w-2xl mx-auto mb-14 relative z-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-[#34D59A] border border-[#242628] mb-4 shadow-sm">
+        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4 shadow-sm ${
+          isDark
+            ? "bg-[#131415] text-[#34D59A] border border-[#242628]"
+            : "bg-emerald-500/10 text-emerald-800 border border-emerald-500/20"
+        }`}>
           <Layers className="size-3.5 text-[#34D59A]" />
           <span>Four Layers of Defense</span>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">
+        <h2 className={`text-3xl sm:text-4xl font-semibold tracking-tight ${
+          isDark ? "text-white" : "text-[#0F172A]"
+        }`}>
           How Sevlex Protects Your Infrastructure
         </h2>
-        <p className="mt-3 text-[#94979E] text-base leading-relaxed">
+        <p className={`mt-3 text-base leading-relaxed ${
+          isDark ? "text-[#94979E]" : "text-[#475569]"
+        }`}>
           Every autonomous tool call passes through four sequential security layers before touching your database or external APIs.
         </p>
       </div>
@@ -129,12 +140,16 @@ export default function EngineBentoGrid() {
           ======================================================================= */}
       <div className="relative z-10 space-y-3">
         {/* Top Ingress Banner */}
-        <div className="flex items-center justify-between px-5 py-2.5 rounded-xl bg-[#0F1015] border border-[#20222B] text-xs font-mono text-gray-400">
+        <div className={`flex items-center justify-between px-5 py-2.5 rounded-xl border text-xs font-mono transition-colors ${
+          isDark
+            ? "bg-[#0F1015] border-[#20222B] text-gray-400"
+            : "bg-white border-slate-200 text-slate-600 shadow-xs"
+        }`}>
           <div className="flex items-center gap-2">
             <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white font-medium">Incoming AI Tool Call</span>
-            <span className="text-gray-600 hidden sm:inline">→</span>
-            <span className="text-gray-400 hidden sm:inline">Cursor / Claude / LangChain</span>
+            <span className={`font-medium ${isDark ? "text-white" : "text-[#0F172A]"}`}>Incoming AI Tool Call</span>
+            <span className="text-gray-400 hidden sm:inline">→</span>
+            <span className="hidden sm:inline">Cursor / Claude / LangChain</span>
           </div>
           <span className="text-[#34D59A] text-[11px] font-semibold">
             Passes Layer 01 to 04 ↓
@@ -153,8 +168,12 @@ export default function EngineBentoGrid() {
                 onClick={() => setExpandedLayer(isExpanded ? "" : layer.id)}
                 className={`cursor-pointer rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isExpanded
-                    ? `bg-[#0E1017] ${layer.accentBorder} shadow-lg shadow-black/40`
-                    : "bg-[#0B0C10] border-[#1C1E26] hover:border-[#2C2E3B] hover:bg-[#0D0E13]"
+                    ? isDark
+                      ? `bg-[#0E1017] ${layer.accentBorder} shadow-lg shadow-black/40`
+                      : `bg-white border-slate-300 shadow-md shadow-slate-200/50`
+                    : isDark
+                    ? "bg-[#0B0C10] border-[#1C1E26] hover:border-[#2C2E3B] hover:bg-[#0D0E13]"
+                    : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/50 shadow-xs"
                 }`}
               >
                 {/* Main Layer Header Row */}
@@ -185,15 +204,19 @@ export default function EngineBentoGrid() {
                         >
                           {layer.badge}
                         </span>
-                        <span className="text-xs text-gray-400 font-mono">
+                        <span className={`text-xs font-mono ${isDark ? "text-gray-400" : "text-slate-500"}`}>
                           {layer.latency}
                         </span>
                       </div>
 
-                      <h3 className="text-base sm:text-lg font-semibold text-white tracking-tight">
+                      <h3 className={`text-base sm:text-lg font-semibold tracking-tight ${
+                        isDark ? "text-white" : "text-[#0F172A]"
+                      }`}>
                         {layer.title}
                       </h3>
-                      <p className="text-xs text-[#94979E] mt-0.5 line-clamp-1">
+                      <p className={`text-xs mt-0.5 line-clamp-1 ${
+                        isDark ? "text-[#94979E]" : "text-[#475569]"
+                      }`}>
                         {layer.whatItDoes}
                       </p>
                     </div>
@@ -264,12 +287,16 @@ export default function EngineBentoGrid() {
         </div>
 
         {/* Bottom Egress Safe Execution Confirmation */}
-        <div className="flex items-center justify-between px-5 py-2.5 rounded-xl bg-[#0F1015] border border-[#20222B] text-xs font-mono text-gray-400">
+        <div className={`flex items-center justify-between px-5 py-2.5 rounded-xl border text-xs font-mono transition-colors ${
+          isDark
+            ? "bg-[#0F1015] border-[#20222B] text-gray-400"
+            : "bg-white border-slate-200 text-slate-600 shadow-xs"
+        }`}>
           <div className="flex items-center gap-2">
             <CheckCircle2 className="size-4 text-emerald-400" />
-            <span className="text-white font-medium">Safe Execution Permitted</span>
-            <span className="text-gray-600 hidden sm:inline">→</span>
-            <span className="text-gray-400 hidden sm:inline">Downstream DB / API Execution</span>
+            <span className={`font-medium ${isDark ? "text-white" : "text-[#0F172A]"}`}>Safe Execution Permitted</span>
+            <span className="text-gray-400 hidden sm:inline">→</span>
+            <span className="hidden sm:inline">Downstream DB / API Execution</span>
           </div>
           <span className="text-emerald-400 text-[11px] font-semibold">
             Zero Malicious Impact
@@ -280,46 +307,66 @@ export default function EngineBentoGrid() {
       {/* =======================================================================
           3. CONNECTED 3-PILLAR DEPLOYMENT DOCK
           ======================================================================= */}
-      <div className="mt-12 p-2 rounded-3xl border border-[#242628] bg-[#0E0E12] shadow-xl relative z-10">
+      <div className={`mt-12 p-2 rounded-3xl border shadow-xl relative z-10 transition-colors ${
+        isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200 bg-slate-100/70"
+      }`}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {/* Pillar 1 */}
-          <div className="p-5 rounded-2xl bg-[#12141A] border border-[#1E2028] hover:border-emerald-500/30 transition-all group">
+          <div className={`p-5 rounded-2xl border transition-all group ${
+            isDark
+              ? "bg-[#12141A] border-[#1E2028] hover:border-emerald-500/30"
+              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+          }`}>
             <div className="text-[11px] font-mono uppercase tracking-widest text-[#34D59A] font-semibold mb-1.5 flex items-center gap-2">
               <Terminal className="size-3.5" />
               <span>Where Developers Build</span>
             </div>
-            <h4 className="text-sm font-semibold text-white mb-1.5 group-hover:text-[#34D59A] transition-colors">
+            <h4 className={`text-sm font-semibold mb-1.5 transition-colors ${
+              isDark ? "text-white group-hover:text-[#34D59A]" : "text-[#0F172A] group-hover:text-emerald-700"
+            }`}>
               Local Zero-Friction Shield
             </h4>
-            <p className="text-xs text-[#94979E] leading-relaxed">
-              Run <code className="text-[#C9CBCF] font-mono bg-[#1E212B] px-1 py-0.5 rounded">npx sevlex init</code> to wrap Cursor, Claude Desktop, and VS Code in local stdio gates. Zero accounts required.
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#94979E]" : "text-[#475569]"}`}>
+              Run <code className={`font-mono px-1 py-0.5 rounded ${isDark ? "text-[#C9CBCF] bg-[#1E212B]" : "text-slate-800 bg-slate-100"}`}>npx sevlex init</code> to wrap Cursor, Claude Desktop, and VS Code in local stdio gates. Zero accounts required.
             </p>
           </div>
 
           {/* Pillar 2 */}
-          <div className="p-6 rounded-2xl bg-[#12141A] border border-[#1E2028] hover:border-blue-500/30 transition-all group">
+          <div className={`p-6 rounded-2xl border transition-all group ${
+            isDark
+              ? "bg-[#12141A] border-[#1E2028] hover:border-blue-500/30"
+              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+          }`}>
             <div className="text-[11px] font-mono uppercase tracking-widest text-blue-400 font-semibold mb-1.5 flex items-center gap-2">
               <Layers className="size-3.5" />
               <span>Where Teams Collaborate</span>
             </div>
-            <h4 className="text-sm font-semibold text-white mb-1.5 group-hover:text-blue-400 transition-colors">
+            <h4 className={`text-sm font-semibold mb-1.5 transition-colors ${
+              isDark ? "text-white group-hover:text-blue-400" : "text-[#0F172A] group-hover:text-blue-700"
+            }`}>
               Shared Policy Governance
             </h4>
-            <p className="text-xs text-[#94979E] leading-relaxed">
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#94979E]" : "text-[#475569]"}`}>
               Sync global allowlists and velocity limits across your organization. Receive instant Slack alerts when an agent attempts an unauthorized action.
             </p>
           </div>
 
           {/* Pillar 3 */}
-          <div className="p-6 rounded-2xl bg-[#12141A] border border-[#1E2028] hover:border-purple-500/30 transition-all group">
+          <div className={`p-6 rounded-2xl border transition-all group ${
+            isDark
+              ? "bg-[#12141A] border-[#1E2028] hover:border-purple-500/30"
+              : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
+          }`}>
             <div className="text-[11px] font-mono uppercase tracking-widest text-purple-400 font-semibold mb-1.5 flex items-center gap-2">
               <Fingerprint className="size-3.5" />
               <span>Where Enterprises Comply</span>
             </div>
-            <h4 className="text-sm font-semibold text-white mb-1.5 group-hover:text-purple-400 transition-colors">
+            <h4 className={`text-sm font-semibold mb-1.5 transition-colors ${
+              isDark ? "text-white group-hover:text-purple-400" : "text-[#0F172A] group-hover:text-purple-700"
+            }`}>
               Mathematical Audit Proofs
             </h4>
-            <p className="text-xs text-[#94979E] leading-relaxed">
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#94979E]" : "text-[#475569]"}`}>
               Every action is cryptographically sealed into Neon PostgreSQL. Hand auditors mathematical proof that dangerous DDL and raw keys never reached downstream models.
             </p>
           </div>
