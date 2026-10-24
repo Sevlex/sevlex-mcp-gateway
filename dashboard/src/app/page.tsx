@@ -446,110 +446,6 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
   },
 };
 
-type AgentStationId = "cursor" | "claude" | "windsurf" | "chatgpt";
-
-interface AgentStationItem {
-  id: AgentStationId;
-  name: string;
-  badge: string;
-  iconSrc?: string;
-  isBot?: boolean;
-  shortcut: string;
-  configFile: string;
-  prompt: string;
-  cliCommand: string;
-  logs: {
-    tag: string;
-    text: string;
-    highlight?: string;
-    color: string;
-  }[];
-}
-
-const AGENT_STATION_DATA: Record<AgentStationId, AgentStationItem> = {
-  cursor: {
-    id: "cursor",
-    name: "Cursor Composer",
-    badge: "Cmd + I / Agent Mode",
-    iconSrc: "/cursor-icon.svg",
-    shortcut: "Cmd + I / Ctrl + I",
-    configFile: "~/.cursor/mcp.json",
-    prompt:
-      "Install and verify Sevlex Layer 7 Zero-Trust MCP Firewall. Run 'npx sevlex init' to automatically discover and wrap my MCP servers in ~/.cursor/mcp.json, then run 'npx sevlex demo' to test AST parameter interception.",
-    cliCommand: "npx sevlex init && npx sevlex demo",
-    logs: [
-      { tag: "●", text: "Cursor Composer: Scanning local workspace config...", color: "text-blue-400" },
-      { tag: "[Sevlex]", text: "Found Cursor MCP configuration at", highlight: "~/.cursor/mcp.json", color: "text-[#C9CBCF]" },
-      { tag: "[Sevlex]", text: "Created safety snapshot:", highlight: "mcp.json.sevlex.bak (100% reversible)", color: "text-[#34D59A]" },
-      { tag: "[Sevlex]", text: "Injected Layer 7 proxy into 4 downstream servers:", highlight: "github, postgres, slack, filesystem", color: "text-blue-300" },
-      { tag: "●", text: "Cursor Composer: Executing 'npx sevlex demo' security verification...", color: "text-amber-400" },
-      { tag: "[ToolGuard™]", text: "DROP TABLE AST query ->", highlight: "ARRESTED & BLOCKED (0.42ms)", color: "text-red-400" },
-      { tag: "[ToolGuard™]", text: "AWS credential exfiltration ->", highlight: "ARRESTED & BLOCKED (0.38ms)", color: "text-red-400" },
-      { tag: "✓", text: "Cursor IDE is fully shielded. Zero-Trust Layer 7 firewall active.", color: "text-[#34D59A]" },
-    ],
-  },
-  claude: {
-    id: "claude",
-    name: "Claude Code CLI",
-    badge: "CLI & Desktop",
-    iconSrc: "/claude-icon.svg",
-    shortcut: "claude \"...\" or Claude Desktop",
-    configFile: "~/.claude.json",
-    prompt:
-      "Run 'npx sevlex init' to wrap all MCP servers in ~/.claude.json, then run 'npx sevlex demo' to verify sub-3ms AST security rules.",
-    cliCommand: "claude \"npx sevlex init && npx sevlex demo\"",
-    logs: [
-      { tag: "$", text: "claude \"npx sevlex init && npx sevlex demo\"", color: "text-blue-400" },
-      { tag: "[Sevlex]", text: "Auto-detected Claude Desktop & CLI config:", highlight: "~/.claude.json", color: "text-[#C9CBCF]" },
-      { tag: "[Sevlex]", text: "Safety snapshot saved:", highlight: "~/.claude.json.sevlex.bak", color: "text-[#34D59A]" },
-      { tag: "[Sevlex]", text: "Wrapped stdio transport with Sevlex Zero-Trust L7 proxy", color: "text-blue-300" },
-      { tag: "[Sevlex]", text: "Running parameter-level AST test suite (npx sevlex demo)...", color: "text-amber-400" },
-      { tag: "[AuditChain]", text: "4/4 exploit vectors arrested. Cryptographic Merkle receipt generated.", color: "text-[#34D59A]" },
-      { tag: "✓", text: "Claude MCP servers fully secured with zero human configuration required.", color: "text-[#34D59A]" },
-    ],
-  },
-  windsurf: {
-    id: "windsurf",
-    name: "Windsurf Cascade",
-    badge: "Cascade Chat",
-    iconSrc: "/windsurf-icon.svg",
-    shortcut: "Cmd + L (Cascade)",
-    configFile: "~/.codeium/windsurf/mcp_config.json",
-    prompt:
-      "Configure Sevlex L7 proxy for all MCP tools in ~/.codeium/windsurf/mcp_config.json using 'npx sevlex init', then verify with 'npx sevlex demo'.",
-    cliCommand: "npx sevlex init && npx sevlex demo",
-    logs: [
-      { tag: "●", text: "Cascade Agent: Executing automated setup flow...", color: "text-blue-400" },
-      { tag: "[Sevlex]", text: "Detected Windsurf environment:", highlight: "~/.codeium/windsurf/mcp_config.json", color: "text-[#C9CBCF]" },
-      { tag: "[Sevlex]", text: "Created safety snapshot:", highlight: "mcp_config.json.sevlex.bak", color: "text-[#34D59A]" },
-      { tag: "[Sevlex]", text: "Injected Layer 7 Deep Packet Inspection proxy into active tools", color: "text-blue-300" },
-      { tag: "●", text: "Cascade Agent: Running AST verification check...", color: "text-amber-400" },
-      { tag: "[ToolGuard™]", text: "AST query validator passed with", highlight: "<0.5ms overhead", color: "text-[#34D59A]" },
-      { tag: "✓", text: "Windsurf Cascade tools hardened. Ready for autonomous coding.", color: "text-[#34D59A]" },
-    ],
-  },
-  chatgpt: {
-    id: "chatgpt",
-    name: "Devin / ChatGPT",
-    badge: "llms.txt Standard",
-    isBot: true,
-    shortcut: "Prompt / Web Agent",
-    configFile: "https://sevlex.com/llms.txt",
-    prompt:
-      "Fetch and follow https://sevlex.com/llms.txt to configure Sevlex Layer 7 Zero-Trust MCP Gateway on this system, then run 'npx sevlex status --json' to verify.",
-    cliCommand: "curl -s https://sevlex.com/llms.txt | npx sevlex init --json",
-    logs: [
-      { tag: "●", text: "Agent: Fetching machine specification from", highlight: "https://sevlex.com/llms.txt", color: "text-blue-400" },
-      { tag: "●", text: "Agent: Parsing llms.txt endpoints & non-interactive execution flags...", color: "text-[#C9CBCF]" },
-      { tag: "[Sevlex]", text: "Executing: npx sevlex init --json", color: "text-[#34D59A]" },
-      { tag: "→", text: "JSON stdout: {\"status\": \"success\", \"shielded\": 4, \"backup\": true}", color: "text-blue-300 font-bold" },
-      { tag: "●", text: "Agent: Executing verification: npx sevlex status --json", color: "text-amber-400" },
-      { tag: "[Sevlex]", text: "All proxies operating in Zero-Trust Layer 7 enforcement mode", color: "text-[#34D59A]" },
-      { tag: "✓", text: "Autonomous setup completed with zero human intervention.", color: "text-[#34D59A]" },
-    ],
-  },
-};
-
 export default function LandingPage() {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
@@ -581,36 +477,14 @@ export default function LandingPage() {
     setTimeout(() => setCopiedDemo(false), 2000);
   };
 
-  const [selectedAgent, setSelectedAgent] = useState<AgentStationId>("cursor");
-  const [copiedAgentPrompt, setCopiedAgentPrompt] = useState(false);
   const [simulatorTab, setSimulatorTab] = useState<"request" | "response" | "ast">("request");
   const [dispatchTab, setDispatchTab] = useState<"slack" | "merkle">("slack");
   const [copiedPacket, setCopiedPacket] = useState(false);
-  const [isPingingWire, setIsPingingWire] = useState(false);
-  const [wirePingSuccess, setWirePingSuccess] = useState(false);
-
-  const activeAgent = AGENT_STATION_DATA[selectedAgent];
-
-  const copyAgentPrompt = () => {
-    navigator.clipboard.writeText(activeAgent.prompt);
-    setCopiedAgentPrompt(true);
-    setTimeout(() => setCopiedAgentPrompt(false), 2000);
-  };
 
   const copyPacket = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedPacket(true);
     setTimeout(() => setCopiedPacket(false), 2000);
-  };
-
-  const triggerWirePing = () => {
-    setIsPingingWire(true);
-    setWirePingSuccess(false);
-    setTimeout(() => {
-      setIsPingingWire(false);
-      setWirePingSuccess(true);
-      setTimeout(() => setWirePingSuccess(false), 2500);
-    }, 380);
   };
 
   return (
@@ -821,24 +695,24 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. READY FOR CODING AGENTS (Neon High-Craft Architecture)                 */}
+      {/* 4. ARCHITECTURAL CAPABILITIES (High-Performance Layer 7 Defense)           */}
       {/* ========================================================================= */}
-      <section id="agents" className={`py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t ${
+      <section id="capabilities" className={`pt-20 pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t ${
         isDark ? "border-[#242628]" : "border-slate-200"
       }`}>
         {/* Editorial Section Header & Watermark */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 text-xs font-mono font-medium uppercase tracking-widest text-[#34D59A] mb-4">
               <svg width="10" height="12" viewBox="0 0 10 12" fill="none" className="shrink-0 text-[#34D59A]">
                 <path d="M10 6L1 11.1962V0.803848L10 6Z" fill="currentColor" />
               </svg>
-              <span>OPERATE IT WITH AGENTS</span>
+              <span>ZERO-TRUST MCP ARCHITECTURE</span>
             </div>
             <h2 className={`text-3xl sm:text-5xl font-normal tracking-tight leading-[1.12] ${
               isDark ? "text-white" : "text-[#0F172A]"
             }`}>
-              Ready for coding agents.{" "}
+              Built for autonomous coding agents.{" "}
               <span className={isDark ? "text-[#797D86]" : "text-[#64748B]"}>
                 Intercept and quarantine MCP tools the way you inspect network packets, with zero configuration.
               </span>
@@ -852,7 +726,7 @@ export default function LandingPage() {
         </div>
 
         {/* 3 Editorial Value Propositions (Structured Card Architecture) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pb-14">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pb-6">
           <div className={`p-5 rounded-2xl border transition-all ${
             isDark
               ? "bg-[#0E0E12]/60 border-[#242628]"
@@ -897,192 +771,6 @@ export default function LandingPage() {
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               Every agent modification automatically preserves a 100% reversible <code className={`${isDark ? "text-[#34D59A]" : "text-emerald-700 font-semibold"} font-mono text-xs`}>*.sevlex.bak</code> backup snapshot with velocity breakers.
             </p>
-          </div>
-        </div>
-
-        {/* The Unified Agent Command Center (A single, sleek developer workbench) */}
-        <div className={`mt-10 rounded-2xl border overflow-hidden transition-all ${
-          isDark
-            ? "border-[#242628] bg-[#0A0A0C] shadow-2xl"
-            : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(15,23,42,0.08)]"
-        }`}>
-          {/* Top Bar: Minimal Client Switcher + llms.txt */}
-          <div className={`flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b transition-colors ${
-            isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200/90 bg-slate-100/75"
-          }`}>
-            <div className="flex items-center gap-1.5">
-              {(Object.keys(AGENT_STATION_DATA) as AgentStationId[]).map((key) => {
-                const item = AGENT_STATION_DATA[key];
-                const isSelected = selectedAgent === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setSelectedAgent(key)}
-                    className={`h-8 px-3.5 rounded-full text-xs font-medium transition-all flex items-center gap-2 cursor-pointer ${
-                      isSelected
-                        ? isDark
-                          ? "bg-white text-black font-semibold shadow-xs"
-                          : "bg-white text-slate-900 font-semibold shadow-xs border border-slate-200/90 ring-1 ring-slate-900/5"
-                        : isDark
-                        ? "text-[#797D86] hover:text-white hover:bg-white/[0.04]"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
-                    }`}
-                  >
-                    <ClientBrandIcon name={item.id} size="xs" className="size-4" />
-                    <span>{item.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <a
-              href="/llms.txt"
-              target="_blank"
-              className={`inline-flex items-center gap-1.5 text-xs font-mono transition px-3 py-1 ${
-                isDark ? "text-[#797D86] hover:text-white" : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <span>llms.txt Machine Spec</span>
-              <ExternalLink size={12} className={isDark ? "text-[#61646B]" : "text-slate-400"} />
-            </a>
-          </div>
-
-          {/* Workbench Grid: Left Setup Directive + Right Live Wire Stream */}
-          <div className={`grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x ${
-            isDark ? "divide-[#242628]" : "divide-slate-200/90"
-          }`}>
-            {/* Left: Agent Setup Directive */}
-            <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-xs font-mono">
-                  <span className={`flex items-center gap-2 font-medium ${isDark ? "text-white" : "text-[#0F172A]"}`}>
-                    <Sparkles className="size-3.5 text-[#34D59A]" />
-                    Paste into {activeAgent.name}:
-                  </span>
-                  <span className={`px-2.5 py-0.5 rounded-full border text-xs font-mono ${
-                    isDark
-                      ? "text-[#AFB1B6] bg-[#141416] border-[#242628]"
-                      : "text-slate-700 bg-slate-100 border-slate-200"
-                  }`}>
-                    {activeAgent.configFile}
-                  </span>
-                </div>
-
-                {/* Prompt Code Block */}
-                <div className={`relative rounded-xl border p-4 text-xs font-mono leading-relaxed transition-colors ${
-                  isDark
-                    ? "border-[#242628] bg-[#000000] text-[#C9CBCF]"
-                    : "border-slate-200/90 bg-slate-50/90 text-slate-800 ring-1 ring-slate-900/[0.02]"
-                }`}>
-                  <pre className="whitespace-pre-wrap font-mono">{activeAgent.prompt}</pre>
-                </div>
-
-                {/* Quick Execution Pills */}
-                <div className="flex flex-wrap items-center gap-3 pt-2">
-                  <button
-                    onClick={copyAgentPrompt}
-                    className={`inline-flex items-center gap-2 h-9 px-5 rounded-full text-xs font-medium transition cursor-pointer ${
-                      isDark
-                        ? "bg-white text-black hover:bg-[#E4E5E7]"
-                        : "bg-slate-900 text-white hover:bg-slate-800 shadow-xs"
-                    }`}
-                  >
-                    {copiedAgentPrompt ? <Check size={13} className="text-[#34D59A]" /> : <Copy size={13} />}
-                    <span>{copiedAgentPrompt ? `Copied for ${activeAgent.name}!` : `Copy Agent Prompt`}</span>
-                  </button>
-
-                  <div className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-mono border transition-colors ${
-                    isDark
-                      ? "bg-[#141416] border-[#242628] text-[#797D86]"
-                      : "bg-slate-100 border-slate-200 text-slate-700"
-                  }`}>
-                    <span className={isDark ? "text-[#61646B]" : "text-slate-400"}>$</span>
-                    <code className={`font-medium ${isDark ? "text-[#C9CBCF]" : "text-slate-900"}`}>{activeAgent.cliCommand}</code>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(activeAgent.cliCommand);
-                        setCopied(true);
-                        setTimeout(() => setCopied(false), 2000);
-                      }}
-                      className={`ml-1 p-1 transition cursor-pointer ${
-                        isDark ? "hover:text-white text-[#797D86]" : "hover:text-slate-900 text-slate-500"
-                      }`}
-                      title="Copy CLI command"
-                    >
-                      {copied ? <Check className="size-3 text-[#34D59A]" /> : <Copy className="size-3" />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Minimal Meta Tags */}
-              <div className={`flex flex-wrap items-center gap-4 text-xs font-mono pt-4 border-t ${
-                isDark ? "text-[#61646B] border-[#242628]/60" : "text-slate-500 border-slate-200"
-              }`}>
-                <span className="flex items-center gap-1.5">
-                  <span className="size-1 rounded-full bg-[#34D59A]" /> Non-interactive (-y)
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="size-1 rounded-full bg-[#34D59A]" /> Reversible snapshot (*.bak)
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="size-1 rounded-full bg-[#34D59A]" /> Machine mode (--json)
-                </span>
-              </div>
-            </div>
-
-            {/* Right: Live Wire Stream & In-Flight Intercept */}
-            <div className={`lg:col-span-5 p-6 flex flex-col justify-between font-mono text-xs transition-colors ${
-              isDark ? "bg-[#000000]" : "bg-[#0B0F19]"
-            }`}>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-[#797D86] pb-3 border-b border-[#242628]">
-                  <span className="flex items-center gap-2 text-white font-medium">
-                    <Terminal className="size-3.5 text-[#34D59A]" />
-                    wire-inspector ({activeAgent.id})
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={triggerWirePing}
-                      disabled={isPingingWire}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-white/[0.04] border border-[#242628] hover:border-[#34D59A] hover:text-[#34D59A] text-[#C9CBCF] transition cursor-pointer disabled:opacity-50"
-                    >
-                      <RotateCcw className={`size-2.5 ${isPingingWire ? "animate-spin text-[#34D59A]" : ""}`} />
-                      <span>{isPingingWire ? "Pinging..." : "Test Wire"}</span>
-                    </button>
-                    <span className="text-[#34D59A] text-[10px] font-bold bg-[#34D59A]/10 border border-[#34D59A]/20 px-2 py-0.5 rounded-full">
-                      {wirePingSuccess ? "0.08ms ACK" : "<0.1ms wire"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="space-y-2 py-2">
-                  {wirePingSuccess && (
-                    <div className="p-2 rounded-lg bg-[#34D59A]/10 border border-[#34D59A]/30 flex items-center justify-between text-[10px] text-[#34D59A] animate-pulse">
-                      <span>✔ Live JSON-RPC Round-Trip Intercept</span>
-                      <span className="font-bold">RTT 0.08ms</span>
-                    </div>
-                  )}
-                  {activeAgent.logs.slice(0, 5).map((log, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-[11px] leading-relaxed">
-                      <span className={`${log.color} font-bold shrink-0 select-none`}>{log.tag}</span>
-                      <span className="text-[#C9CBCF]">
-                        {log.text}{" "}
-                        {log.highlight && <span className={`${log.color} font-bold`}>{log.highlight}</span>}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-between text-[11px] text-[#797D86] mt-4">
-                <span className="flex items-center gap-1.5 text-white">
-                  <CheckCircle2 size={13} className="text-[#34D59A]" />
-                  <span>AST Zero-Trust Filter: ACTIVE</span>
-                </span>
-                <span className="text-[#34D59A] font-bold">&lt;0.5ms</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
