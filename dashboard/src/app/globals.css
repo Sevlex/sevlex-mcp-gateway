@@ -16,134 +16,22 @@ html.light, .light {
   --foreground: #090A0F;
   --sidebar-bg: #F8F9FA;
   --surface: #FFFFFF;
-  --surface-border: #E5E7EB;
+  --surface-border: #E2E8F0;
   --color-black-pure: #FFFFFF;
   color-scheme: light;
 }
 
 /* ========================================================================= */
-/* ULTRA-PREMIUM LIGHT MODE THEME SYSTEM (CORSAIR & STRIPE STANDARD)         */
+/* ULTRA-PREMIUM LIGHT MODE THEME SYSTEM (CLEAN & DYNAMIC)                   */
 /* ========================================================================= */
 html.light body {
   background-color: #FAFAFA !important;
   color: #0F172A !important;
 }
 
-/* Headings and High-Contrast Text */
-html.light h1,
-html.light h2,
-html.light h3,
-html.light h4,
-html.light h5,
-html.light h6,
-html.light .text-white {
-  color: #0F172A !important;
-}
-
-/* Secondary and Muted Text */
-html.light .text-\[\#94979E\],
-html.light .text-\[\#AFB1B6\],
-html.light .text-\[\#C9CBCF\],
-html.light .text-\[\#797D86\] {
-  color: #475569 !important;
-}
-
-html.light .text-\[\#61646B\] {
-  color: #64748B !important;
-}
-
-/* Card Surfaces and Backdrops */
-html.light .bg-\[\#000000\],
-html.light .bg-\[\#0A0A0C\],
-html.light .bg-\[\#0B0C10\],
-html.light .bg-\[\#0C0D0E\],
-html.light .bg-\[\#0C0D12\],
-html.light .bg-\[\#0E0E12\],
-html.light .bg-\[\#0E1017\],
-html.light .bg-\[\#12141A\],
-html.light .bg-\[\#131415\],
-html.light .bg-\[\#141416\],
-html.light .bg-\[\#18191B\],
-html.light .bg-\[\#0F1015\],
-html.light .bg-\[\#08090D\],
-html.light .bg-\[\#050608\],
-html.light .bg-\[\#07080C\] {
-  background-color: #FFFFFF !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
-}
-
-/* Nested Code Panels and Inner Wells */
-html.light .bg-\[\#14151D\],
-html.light .bg-\[\#14161F\],
-html.light .bg-\[\#11131C\],
-html.light .bg-\[\#101218\],
-html.light .bg-\[\#0F1118\],
-html.light .bg-\[\#13151D\],
-html.light .bg-\[\#11131A\] {
-  background-color: #F8FAFC !important;
-  color: #1E293B !important;
-}
-
-/* Borders */
-html.light .border-\[\#242628\],
-html.light .border-\[\#1E2028\],
-html.light .border-\[\#1E212B\],
-html.light .border-\[\#303236\],
-html.light .border-\[\#222530\],
-html.light .border-\[\#1C1E26\],
-html.light .border-\[\#20222B\],
-html.light .border-\[\#181A22\],
-html.light .border-\[\#1A1C24\],
-html.light .border-\[\#222430\],
-html.light .border-\[\#202330\],
-html.light .border-\[\#20232E\],
-html.light .border-\[\#232736\],
-html.light .border-\[\#2B2F3D\] {
-  border-color: #E2E8F0 !important;
-}
-
-/* Watermark Indices */
-html.light .text-\[\#18191B\] {
-  color: #E2E8F0 !important;
-}
-
-/* Buttons in Light Mode */
-html.light .bg-white.text-black {
-  background-color: #0F172A !important;
-  color: #FFFFFF !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
-}
-
-html.light .bg-white.text-black:hover {
-  background-color: #1E293B !important;
-}
-
-html.light a[href="#docs"],
-html.light a[href="/docs"].border {
-  background-color: #FFFFFF !important;
-  border-color: #CBD5E1 !important;
-  color: #0F172A !important;
-}
-
-html.light a[href="#docs"]:hover,
-html.light a[href="/docs"].border:hover {
-  background-color: #F8FAFC !important;
-  border-color: #94A3B8 !important;
-}
-
-/* Eyebrow Pills */
-html.light .bg-\[\#131415\] {
-  background-color: #F1F5F9 !important;
-  border-color: #E2E8F0 !important;
-}
-
-/* Code text colors in light mode */
-html.light code.text-\[\#C9CBCF\] {
-  color: #0F172A !important;
-}
-
-html.light pre.text-\[\#C9CBCF\] {
-  color: #1E293B !important;
+html.light ::selection {
+  background-color: rgba(52, 213, 154, 0.25);
+  color: #0F172A;
 }
 
 @theme inline {

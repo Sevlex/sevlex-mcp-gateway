@@ -852,13 +852,17 @@ export default function LandingPage() {
         </div>
 
         {/* 3 Editorial Value Propositions (Unboxed, typographic, zero slop) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-14 border-b border-[#242628]">
+        <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 pb-14 border-b ${
+          isDark ? "border-[#242628]" : "border-slate-200"
+        }`}>
           <div className="space-y-2">
             <div className="font-mono text-xs text-[#34D59A] font-semibold uppercase tracking-wider">
               01 / In-Flight Intercept
             </div>
-            <h3 className="text-base font-medium text-white tracking-tight">Instant Operations</h3>
-            <p className="text-sm text-[#797D86] leading-relaxed">
+            <h3 className={`text-base font-medium tracking-tight ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+              Instant Operations
+            </h3>
+            <p className={`text-sm leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               Transparent stdio &amp; SSE transport wrapping with &lt;0.1ms overhead. Agents don&apos;t wait for proxy daemons or container spinups.
             </p>
           </div>
@@ -866,8 +870,10 @@ export default function LandingPage() {
             <div className="font-mono text-xs text-blue-400 font-semibold uppercase tracking-wider">
               02 / Deep Packet Inspection
             </div>
-            <h3 className="text-base font-medium text-white tracking-tight">AST Parameter Guard</h3>
-            <p className="text-sm text-[#797D86] leading-relaxed">
+            <h3 className={`text-base font-medium tracking-tight ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+              AST Parameter Guard
+            </h3>
+            <p className={`text-sm leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               In-flight parsing blocks destructive SQL (<code className="text-red-400 font-mono text-xs">DROP TABLE</code>), shell injections, and credential paths before transmission.
             </p>
           </div>
@@ -875,17 +881,25 @@ export default function LandingPage() {
             <div className="font-mono text-xs text-purple-400 font-semibold uppercase tracking-wider">
               03 / Autonomous Safety
             </div>
-            <h3 className="text-base font-medium text-white tracking-tight">Safe Rollback &amp; Circuit Breakers</h3>
-            <p className="text-sm text-[#797D86] leading-relaxed">
-              Every agent modification automatically preserves a 100% reversible <code className="text-[#34D59A] font-mono text-xs">*.sevlex.bak</code> backup snapshot with velocity breakers.
+            <h3 className={`text-base font-medium tracking-tight ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+              Safe Rollback &amp; Circuit Breakers
+            </h3>
+            <p className={`text-sm leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
+              Every agent modification automatically preserves a 100% reversible <code className={`${isDark ? "text-[#34D59A]" : "text-emerald-700 font-semibold"} font-mono text-xs`}>*.sevlex.bak</code> backup snapshot with velocity breakers.
             </p>
           </div>
         </div>
 
         {/* The Unified Agent Command Center (A single, sleek developer workbench) */}
-        <div className="mt-12 rounded-2xl border border-[#242628] bg-[#0A0A0C] overflow-hidden shadow-2xl">
+        <div className={`mt-12 rounded-2xl border overflow-hidden shadow-2xl transition-colors ${
+          isDark
+            ? "border-[#242628] bg-[#0A0A0C]"
+            : "border-slate-200 bg-white shadow-xl shadow-slate-200/50"
+        }`}>
           {/* Top Bar: Minimal Client Switcher + llms.txt */}
-          <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b border-[#242628] bg-[#0E0E12]">
+          <div className={`flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b transition-colors ${
+            isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200 bg-slate-50"
+          }`}>
             <div className="flex items-center gap-1.5">
               {(Object.keys(AGENT_STATION_DATA) as AgentStationId[]).map((key) => {
                 const item = AGENT_STATION_DATA[key];
@@ -896,8 +910,12 @@ export default function LandingPage() {
                     onClick={() => setSelectedAgent(key)}
                     className={`h-8 px-3.5 rounded-full text-xs font-medium transition-all flex items-center gap-2 cursor-pointer ${
                       isSelected
-                        ? "bg-white text-black font-semibold shadow-xs"
-                        : "text-[#797D86] hover:text-white hover:bg-white/[0.04]"
+                        ? isDark
+                          ? "bg-white text-black font-semibold shadow-xs"
+                          : "bg-slate-900 text-white font-semibold shadow-xs"
+                        : isDark
+                        ? "text-[#797D86] hover:text-white hover:bg-white/[0.04]"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
                     }`}
                   >
                     <ClientBrandIcon name={item.id} size="xs" className="size-4" />
@@ -910,30 +928,42 @@ export default function LandingPage() {
             <a
               href="/llms.txt"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-[#797D86] hover:text-white transition px-3 py-1"
+              className={`inline-flex items-center gap-1.5 text-xs font-mono transition px-3 py-1 ${
+                isDark ? "text-[#797D86] hover:text-white" : "text-slate-600 hover:text-slate-900"
+              }`}
             >
               <span>llms.txt Machine Spec</span>
-              <ExternalLink size={12} className="text-[#61646B]" />
+              <ExternalLink size={12} className={isDark ? "text-[#61646B]" : "text-slate-400"} />
             </a>
           </div>
 
           {/* Workbench Grid: Left Setup Directive + Right Live Wire Stream */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#242628]">
+          <div className={`grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x ${
+            isDark ? "divide-[#242628]" : "divide-slate-200"
+          }`}>
             {/* Left: Agent Setup Directive */}
             <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
-                <div className="flex items-center justify-between text-xs font-mono text-[#797D86]">
-                  <span className="flex items-center gap-2 text-white font-medium">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className={`flex items-center gap-2 font-medium ${isDark ? "text-white" : "text-[#0F172A]"}`}>
                     <Sparkles className="size-3.5 text-[#34D59A]" />
                     Paste into {activeAgent.name}:
                   </span>
-                  <span className="text-[#AFB1B6] bg-[#141416] px-2.5 py-0.5 rounded-full border border-[#242628]">
+                  <span className={`px-2.5 py-0.5 rounded-full border text-xs font-mono ${
+                    isDark
+                      ? "text-[#AFB1B6] bg-[#141416] border-[#242628]"
+                      : "text-slate-700 bg-slate-100 border-slate-200"
+                  }`}>
                     {activeAgent.configFile}
                   </span>
                 </div>
 
                 {/* Prompt Code Block */}
-                <div className="relative rounded-xl border border-[#242628] bg-[#000000] p-4 text-xs font-mono text-[#C9CBCF] leading-relaxed">
+                <div className={`relative rounded-xl border p-4 text-xs font-mono leading-relaxed transition-colors ${
+                  isDark
+                    ? "border-[#242628] bg-[#000000] text-[#C9CBCF]"
+                    : "border-slate-200 bg-slate-50 text-slate-800"
+                }`}>
                   <pre className="whitespace-pre-wrap font-mono">{activeAgent.prompt}</pre>
                 </div>
 
@@ -941,22 +971,32 @@ export default function LandingPage() {
                 <div className="flex flex-wrap items-center gap-3 pt-2">
                   <button
                     onClick={copyAgentPrompt}
-                    className="inline-flex items-center gap-2 h-9 px-5 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition cursor-pointer"
+                    className={`inline-flex items-center gap-2 h-9 px-5 rounded-full text-xs font-medium transition cursor-pointer ${
+                      isDark
+                        ? "bg-white text-black hover:bg-[#E4E5E7]"
+                        : "bg-slate-900 text-white hover:bg-slate-800 shadow-xs"
+                    }`}
                   >
                     {copiedAgentPrompt ? <Check size={13} className="text-[#34D59A]" /> : <Copy size={13} />}
                     <span>{copiedAgentPrompt ? `Copied for ${activeAgent.name}!` : `Copy Agent Prompt`}</span>
                   </button>
 
-                  <div className="flex items-center gap-2 bg-[#141416] border border-[#242628] rounded-full px-4 py-1.5 text-xs font-mono text-[#797D86]">
-                    <span className="text-[#61646B]">$</span>
-                    <code className="text-[#C9CBCF] font-medium">{activeAgent.cliCommand}</code>
+                  <div className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-mono border transition-colors ${
+                    isDark
+                      ? "bg-[#141416] border-[#242628] text-[#797D86]"
+                      : "bg-slate-100 border-slate-200 text-slate-700"
+                  }`}>
+                    <span className={isDark ? "text-[#61646B]" : "text-slate-400"}>$</span>
+                    <code className={`font-medium ${isDark ? "text-[#C9CBCF]" : "text-slate-900"}`}>{activeAgent.cliCommand}</code>
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(activeAgent.cliCommand);
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
                       }}
-                      className="ml-1 p-1 hover:text-white text-[#797D86] transition cursor-pointer"
+                      className={`ml-1 p-1 transition cursor-pointer ${
+                        isDark ? "hover:text-white text-[#797D86]" : "hover:text-slate-900 text-slate-500"
+                      }`}
                       title="Copy CLI command"
                     >
                       {copied ? <Check className="size-3 text-[#34D59A]" /> : <Copy className="size-3" />}
@@ -966,7 +1006,9 @@ export default function LandingPage() {
               </div>
 
               {/* Minimal Meta Tags */}
-              <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[#61646B] pt-4 border-t border-[#242628]/60">
+              <div className={`flex flex-wrap items-center gap-4 text-xs font-mono pt-4 border-t ${
+                isDark ? "text-[#61646B] border-[#242628]/60" : "text-slate-500 border-slate-200"
+              }`}>
                 <span className="flex items-center gap-1.5">
                   <span className="size-1 rounded-full bg-[#34D59A]" /> Non-interactive (-y)
                 </span>
@@ -980,7 +1022,9 @@ export default function LandingPage() {
             </div>
 
             {/* Right: Live Wire Stream & In-Flight Intercept */}
-            <div className="lg:col-span-5 p-6 bg-[#000000] flex flex-col justify-between font-mono text-xs">
+            <div className={`lg:col-span-5 p-6 flex flex-col justify-between font-mono text-xs transition-colors ${
+              isDark ? "bg-[#000000]" : "bg-[#0B0F19]"
+            }`}>
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-[#797D86] pb-3 border-b border-[#242628]">
                   <span className="flex items-center gap-2 text-white font-medium">
@@ -1021,7 +1065,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-[#0E0E12] border border-[#242628] flex items-center justify-between text-[11px] text-[#797D86] mt-4">
+              <div className="p-3 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-between text-[11px] text-[#797D86] mt-4">
                 <span className="flex items-center gap-1.5 text-white">
                   <CheckCircle2 size={13} className="text-[#34D59A]" />
                   <span>AST Zero-Trust Filter: ACTIVE</span>
@@ -1038,24 +1082,42 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       <section id="simulator" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-[#34D59A] border border-[#242628] mb-3">
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 ${
+            isDark
+              ? "bg-[#131415] text-[#34D59A] border border-[#242628]"
+              : "bg-emerald-500/10 text-emerald-800 border border-emerald-500/20"
+          }`}>
             <ShieldCheck className="size-3.5 text-[#34D59A]" />
             Live Demo
           </div>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">
+          <h2 className={`text-3xl sm:text-4xl font-semibold tracking-tight ${
+            isDark ? "text-white" : "text-[#0F172A]"
+          }`}>
             See How Sevlex Blocks Dangerous Agent Actions
           </h2>
-          <p className="mt-3 text-[#797D86] text-sm sm:text-base leading-relaxed">
+          <p className={`mt-3 text-sm sm:text-base leading-relaxed ${
+            isDark ? "text-[#797D86]" : "text-[#475569]"
+          }`}>
             When an AI coding agent tries to delete a database or leak credentials, Sevlex stops it in under a millisecond.
           </p>
         </div>
 
         {/* 2-Pane Policy Guard Container */}
-        <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] shadow-2xl overflow-hidden">
+        <div className={`rounded-2xl border overflow-hidden shadow-2xl transition-colors ${
+          isDark
+            ? "border-[#242628] bg-[#0E0E12]"
+            : "border-slate-200 bg-white shadow-xl shadow-slate-200/50"
+        }`}>
           {/* Scenario Selector Strip */}
-          <div className="p-3 sm:p-4 bg-[#0C0D0E] border-b border-[#242628] flex flex-wrap items-center justify-between gap-3">
+          <div className={`p-3 sm:p-4 border-b flex flex-wrap items-center justify-between gap-3 transition-colors ${
+            isDark ? "bg-[#0C0D0E] border-[#242628]" : "bg-slate-50 border-slate-200"
+          }`}>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono text-[#61646B] font-medium px-2">Select Scenario:</span>
+              <span className={`text-xs font-mono font-medium px-2 ${
+                isDark ? "text-[#61646B]" : "text-slate-500"
+              }`}>
+                Select Scenario:
+              </span>
               {(Object.keys(SCENARIOS) as AttackScenario[]).map((key) => {
                 const s = SCENARIOS[key];
                 const isActive = activeScenario === key;
@@ -1065,8 +1127,12 @@ export default function LandingPage() {
                     onClick={() => handleTriggerScenario(key)}
                     className={`h-8 px-3.5 rounded-full text-xs font-medium font-mono transition flex items-center gap-2 cursor-pointer border ${
                       isActive
-                        ? "border-white bg-white text-black font-semibold shadow-xs"
-                        : "border-[#242628] bg-[#131415] text-[#C9CBCF] hover:border-[#303236] hover:text-white"
+                        ? isDark
+                          ? "border-white bg-white text-black font-semibold shadow-xs"
+                          : "border-slate-900 bg-slate-900 text-white font-semibold shadow-xs"
+                        : isDark
+                        ? "border-[#242628] bg-[#131415] text-[#C9CBCF] hover:border-[#303236] hover:text-white"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-900 shadow-xs"
                     }`}
                   >
                     <span>{s.title}</span>
@@ -1076,61 +1142,91 @@ export default function LandingPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono text-[#797D86]">Latency:</span>
-              <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-[#34D59A]/10 text-[#34D59A] border border-[#34D59A]/30">
+              <span className={`text-[11px] font-mono ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>Latency:</span>
+              <span className={`text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full border ${
+                isDark
+                  ? "bg-[#34D59A]/10 text-[#34D59A] border-[#34D59A]/30"
+                  : "bg-emerald-500/10 text-emerald-800 border-emerald-500/20"
+              }`}>
                 {scenario.latency}
               </span>
             </div>
           </div>
 
           {/* Two-Pane Body */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-[#242628]">
+          <div className={`grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x ${
+            isDark ? "divide-[#242628]" : "divide-slate-200"
+          }`}>
             {/* Left Pane: Ingress Attempt */}
             <div className="p-6 space-y-4 font-mono">
-              <div className="flex items-center justify-between pb-3 border-b border-[#242628]">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isDark ? "border-[#242628]" : "border-slate-200"
+              }`}>
                 <div className="flex items-center gap-2.5">
                   <ClientBrandIcon name={scenario.clientBrand} size="xs" className="size-4" />
-                  <span className="text-xs font-bold text-white uppercase tracking-wider">
+                  <span className={`text-xs font-bold uppercase tracking-wider ${
+                    isDark ? "text-white" : "text-[#0F172A]"
+                  }`}>
                     {scenario.client}
                   </span>
                 </div>
-                <span className="text-[11px] text-[#61646B]">
+                <span className={`text-[11px] ${isDark ? "text-[#61646B]" : "text-slate-500"}`}>
                   Target: {scenario.server}
                 </span>
               </div>
 
               <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] text-[#797D86]">
+                <div className={`flex items-center justify-between text-[11px] ${
+                  isDark ? "text-[#797D86]" : "text-slate-600"
+                }`}>
                   <span>Attempted Tool Call:</span>
-                  <span className="text-[#34D59A]">{scenario.tool}</span>
+                  <span className={isDark ? "text-[#34D59A]" : "text-emerald-700 font-semibold"}>{scenario.tool}</span>
                 </div>
-                <pre className="p-4 rounded-xl bg-[#000000] border border-[#242628] text-xs text-[#C9CBCF] overflow-x-auto leading-relaxed shadow-inner max-h-[260px]">
+                <pre className={`p-4 rounded-xl border text-xs overflow-x-auto leading-relaxed shadow-inner max-h-[260px] ${
+                  isDark
+                    ? "bg-[#000000] border-[#242628] text-[#C9CBCF]"
+                    : "bg-[#0B0F19] border-slate-800 text-slate-100"
+                }`}>
                   <code>{scenario.payload}</code>
                 </pre>
               </div>
 
-              <p className="text-xs text-[#797D86] leading-relaxed font-sans pt-1">
+              <p className={`text-xs leading-relaxed font-sans pt-1 ${
+                isDark ? "text-[#797D86]" : "text-[#475569]"
+              }`}>
                 {scenario.explanation}
               </p>
             </div>
 
             {/* Right Pane: Sevlex Zero-Trust Enforcement */}
-            <div className="p-6 space-y-4 bg-[#0A0B0E] font-mono flex flex-col justify-between">
+            <div className={`p-6 space-y-4 font-mono flex flex-col justify-between transition-colors ${
+              isDark ? "bg-[#0A0B0E]" : "bg-slate-50/60"
+            }`}>
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-[#242628]">
+                <div className={`flex items-center justify-between pb-3 border-b ${
+                  isDark ? "border-[#242628]" : "border-slate-200"
+                }`}>
                   <div className="flex items-center gap-2">
                     <Shield className="size-4 text-[#34D59A]" />
-                    <span className="text-xs font-bold text-white uppercase tracking-wider">
+                    <span className={`text-xs font-bold uppercase tracking-wider ${
+                      isDark ? "text-white" : "text-[#0F172A]"
+                    }`}>
                       Sevlex Policy Enforcement
                     </span>
                   </div>
                   <span
                     className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${
                       scenario.decision === "BLOCKED"
-                        ? "bg-rose-500/10 border-rose-500/30 text-rose-400"
+                        ? isDark
+                          ? "bg-rose-500/10 border-rose-500/30 text-rose-400"
+                          : "bg-rose-50 border-rose-200 text-rose-800"
                         : scenario.decision === "CIRCUIT_BROKEN"
-                        ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
-                        : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                        ? isDark
+                          ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                          : "bg-amber-50 border-amber-200 text-amber-800"
+                        : isDark
+                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                        : "bg-emerald-50 border-emerald-200 text-emerald-800"
                     }`}
                   >
                     {scenario.decision === "BLOCKED"
@@ -1143,19 +1239,31 @@ export default function LandingPage() {
 
                 {/* 4-Item Policy Breakdown Grid */}
                 <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
-                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                  <div className={`p-3 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+                  }`}>
+                    <span className={`block text-[10px] uppercase font-semibold ${
+                      isDark ? "text-[#61646B]" : "text-slate-500"
+                    }`}>
                       Policy Rule
                     </span>
-                    <span className="text-white font-medium text-[11px] truncate block mt-0.5">
+                    <span className={`font-medium text-[11px] truncate block mt-0.5 ${
+                      isDark ? "text-white" : "text-[#0F172A]"
+                    }`}>
                       {scenario.ruleViolated}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
-                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                  <div className={`p-3 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+                  }`}>
+                    <span className={`block text-[10px] uppercase font-semibold ${
+                      isDark ? "text-[#61646B]" : "text-slate-500"
+                    }`}>
                       Downstream Impact
                     </span>
-                    <span className="text-[#34D59A] font-semibold text-[11px] block mt-0.5">
+                    <span className={`font-semibold text-[11px] block mt-0.5 ${
+                      isDark ? "text-[#34D59A]" : "text-emerald-700"
+                    }`}>
                       {scenario.decision === "BLOCKED"
                         ? "0 Bytes Forwarded (Drop)"
                         : scenario.decision === "CIRCUIT_BROKEN"
@@ -1163,19 +1271,31 @@ export default function LandingPage() {
                         : "Permitted (<0.15ms)"}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
-                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                  <div className={`p-3 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+                  }`}>
+                    <span className={`block text-[10px] uppercase font-semibold ${
+                      isDark ? "text-[#61646B]" : "text-slate-500"
+                    }`}>
                       Detection Engine
                     </span>
-                    <span className="text-[#C9CBCF] font-medium text-[11px] block mt-0.5">
+                    <span className={`font-medium text-[11px] block mt-0.5 ${
+                      isDark ? "text-[#C9CBCF]" : "text-slate-800"
+                    }`}>
                       {scenario.astAnalysis.statementType}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#131415] border border-[#242628]">
-                    <span className="text-[#61646B] block text-[10px] uppercase font-semibold">
+                  <div className={`p-3 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+                  }`}>
+                    <span className={`block text-[10px] uppercase font-semibold ${
+                      isDark ? "text-[#61646B]" : "text-slate-500"
+                    }`}>
                       Audit Ledger
                     </span>
-                    <span className="text-blue-400 font-medium text-[11px] block mt-0.5 truncate">
+                    <span className={`font-medium text-[11px] block mt-0.5 truncate ${
+                      isDark ? "text-blue-400" : "text-blue-700"
+                    }`}>
                       Merkle #{scenario.merkleReceipt.blockIndex} (Neon DB)
                     </span>
                   </div>
@@ -1183,25 +1303,35 @@ export default function LandingPage() {
 
                 {/* Synthesized Response returned to Agent */}
                 <div className="space-y-1.5 pt-1">
-                  <div className="flex items-center justify-between text-[11px] text-[#797D86]">
+                  <div className={`flex items-center justify-between text-[11px] ${
+                    isDark ? "text-[#797D86]" : "text-slate-600"
+                  }`}>
                     <span>Synthesized Response (Returned to Agent):</span>
-                    <span className="text-[#AFB1B6]">{scenario.latency}</span>
+                    <span className={isDark ? "text-[#AFB1B6]" : "text-slate-600"}>{scenario.latency}</span>
                   </div>
-                  <pre className="p-3.5 rounded-xl bg-[#000000] border border-[#242628] text-[11px] text-[#94979E] overflow-x-auto leading-relaxed shadow-inner max-h-[140px]">
+                  <pre className={`p-3.5 rounded-xl border text-[11px] overflow-x-auto leading-relaxed shadow-inner max-h-[140px] ${
+                    isDark
+                      ? "bg-[#000000] border-[#242628] text-[#94979E]"
+                      : "bg-[#0B0F19] border-slate-800 text-slate-300"
+                  }`}>
                     <code>{scenario.responsePayload}</code>
                   </pre>
                 </div>
               </div>
 
               {/* Bottom Console Link */}
-              <div className="pt-2 flex items-center justify-between text-xs text-[#797D86] border-t border-[#242628]">
-                <span className="flex items-center gap-1.5 text-[#34D59A]">
+              <div className={`pt-2 flex items-center justify-between text-xs border-t ${
+                isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200 text-slate-600"
+              }`}>
+                <span className={`flex items-center gap-1.5 ${isDark ? "text-[#34D59A]" : "text-emerald-700 font-medium"}`}>
                   <CheckCircle2 className="size-3.5" />
                   <span>SOC 2 Type II Non-Repudiation Sealed</span>
                 </span>
                 <a
                   href="/console"
-                  className="font-medium text-white hover:text-[#34D59A] flex items-center gap-1 transition"
+                  className={`font-medium flex items-center gap-1 transition ${
+                    isDark ? "text-white hover:text-[#34D59A]" : "text-slate-900 hover:text-emerald-700"
+                  }`}
                 >
                   <span>Console</span>
                   <ArrowRight className="size-3" />
@@ -1215,22 +1345,34 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 6. DEVELOPER DOCUMENTATION & INTERACTIVE CLI WORKBENCH                    */}
       {/* ========================================================================= */}
-      <section id="docs" className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+      <section id="docs" className={`py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
+        isDark ? "border-[#242628]" : "border-slate-200"
+      }`}>
         <div id="terminal" className="text-center max-w-2xl mx-auto mb-10">
           <div className="flex items-center justify-center gap-2 text-xs font-mono font-medium uppercase tracking-widest text-[#34D59A] mb-3">
             <Terminal className="size-3.5 text-[#34D59A]" />
             <span>DEVELOPER DOCUMENTATION &amp; QUICKSTART</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-white">
+          <h2 className={`text-3xl sm:text-4xl font-normal tracking-tight ${
+            isDark ? "text-white" : "text-[#0F172A]"
+          }`}>
             Zero-Config L7 Gateway CLI
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-[#797D86]">
+          <p className={`mt-2 text-xs sm:text-sm ${
+            isDark ? "text-[#797D86]" : "text-[#475569]"
+          }`}>
             One command scans your host, transparently wraps downstream stdio MCP tools in Layer 7 zero-trust filters, and creates safe backups.
           </p>
         </div>
-        <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] shadow-2xl overflow-hidden">
+        <div className={`rounded-2xl border overflow-hidden shadow-2xl transition-colors ${
+          isDark
+            ? "border-[#242628] bg-[#0E0E12]"
+            : "border-slate-800 bg-[#0B0F19] shadow-slate-900/20"
+        }`}>
           {/* Terminal Window Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-[#0C0D0E] border-b border-[#242628]">
+          <div className={`flex items-center justify-between px-4 py-3 border-b ${
+            isDark ? "bg-[#0C0D0E] border-[#242628]" : "bg-[#070A12] border-slate-800"
+          }`}>
             <div className="flex items-center gap-2">
               <div className="size-2.5 rounded-full bg-red-500/80" />
               <div className="size-2.5 rounded-full bg-amber-500/80" />
@@ -1350,36 +1492,50 @@ export default function LandingPage() {
         </div>
 
         {/* Machine-Readable Documentation Card (llms.txt Standard) */}
-        <div className="mt-6 p-5 rounded-2xl border border-[#242628] bg-[#0E0E12] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className={`mt-6 p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors ${
+          isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200 bg-white shadow-sm"
+        }`}>
           <div className="flex items-start gap-3.5">
-            <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#34D59A] shrink-0 mt-0.5">
+            <div className={`p-2.5 rounded-xl border shrink-0 mt-0.5 ${
+              isDark
+                ? "bg-white/[0.04] border-white/[0.08] text-[#34D59A]"
+                : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700"
+            }`}>
               <FileCode className="size-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-white">Agent Manifest: llms.txt</span>
+                <span className={`text-sm font-semibold ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                  Agent Manifest: llms.txt
+                </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#34D59A]/10 text-[#34D59A] border border-[#34D59A]/20 font-bold uppercase">
                   Machine Standard
                 </span>
               </div>
-              <p className="text-xs text-[#797D86] mt-1 max-w-xl">
+              <p className={`text-xs mt-1 max-w-xl ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
                 Structured plain-text specification optimized for Claude Code, Cursor, Windsurf, and autonomous AI agents to ingest CLI commands without web scraping.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
-            <div className="hidden md:flex items-center gap-2 bg-[#000000] border border-[#242628] px-3 py-1.5 rounded-xl text-xs font-mono text-[#AFB1B6]">
-              <span className="text-[#61646B]">$</span>
+            <div className={`hidden md:flex items-center gap-2 border px-3 py-1.5 rounded-xl text-xs font-mono ${
+              isDark ? "bg-[#000000] border-[#242628] text-[#AFB1B6]" : "bg-slate-100 border-slate-200 text-slate-800"
+            }`}>
+              <span className={isDark ? "text-[#61646B]" : "text-slate-400"}>$</span>
               <code>curl -s sevlex.com/llms.txt</code>
             </div>
             <a
               href="/llms.txt"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-xs font-medium text-white border border-white/[0.08] transition shrink-0 cursor-pointer"
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium border transition shrink-0 cursor-pointer ${
+                isDark
+                  ? "bg-white/[0.06] hover:bg-white/[0.1] text-white border-white/[0.08]"
+                  : "bg-slate-900 hover:bg-slate-800 text-white border-slate-900 shadow-xs"
+              }`}
             >
               <span>View llms.txt</span>
-              <ExternalLink size={12} className="text-[#797D86]" />
+              <ExternalLink size={12} className={isDark ? "text-[#797D86]" : "text-slate-400"} />
             </a>
           </div>
         </div>
@@ -1388,13 +1544,19 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 7. METRICS PROOF COUNTER (Neon Stark Typography)                          */}
       {/* ========================================================================= */}
-      <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y border-[#242628] my-8">
+      <section className={`py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y my-8 transition-colors ${
+        isDark ? "border-[#242628]" : "border-slate-200 bg-slate-50/50"
+      }`}>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl sm:text-4xl font-normal text-white tracking-tight font-mono">
+            <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
               142,394+
             </div>
-            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
+            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
+              isDark ? "text-[#797D86]" : "text-slate-500"
+            }`}>
               Tool Calls Inspected
             </div>
           </div>
@@ -1402,23 +1564,33 @@ export default function LandingPage() {
             <div className="text-3xl sm:text-4xl font-normal text-[#34D59A] tracking-tight font-mono">
               &lt;0.1ms
             </div>
-            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
+            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
+              isDark ? "text-[#797D86]" : "text-slate-500"
+            }`}>
               Gateway Overhead
             </div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-normal text-white tracking-tight font-mono">
+            <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
               100%
             </div>
-            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
+            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
+              isDark ? "text-[#797D86]" : "text-slate-500"
+            }`}>
               Zero Data Exfiltration
             </div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-normal text-[#AFB1B6] tracking-tight font-mono">
+            <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
+              isDark ? "text-[#AFB1B6]" : "text-slate-700"
+            }`}>
               30ms
             </div>
-            <div className="mt-1 text-xs text-[#797D86] uppercase tracking-wider font-medium">
+            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
+              isDark ? "text-[#797D86]" : "text-slate-500"
+            }`}>
               Auto-Healing Daemon
             </div>
           </div>
@@ -1433,17 +1605,27 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 9.5 WHITE-GLOVE CUSTOM MCP SERVER & AGENT INTEGRATION SERVICE             */}
       {/* ========================================================================= */}
-      <section id="services" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+      <section id="services" className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
+        isDark ? "border-[#242628]" : "border-slate-200"
+      }`}>
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] border border-[#242628] text-[#797D86] mb-4">
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4 ${
+            isDark
+              ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+              : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800"
+          }`}>
             <span className="text-[#34D59A] font-semibold">WHITE-GLOVE ENGINEERING</span>
-            <span className="text-[#303236]">•</span>
-            <span className="text-[#AFB1B6]">48–72 HOUR TURNAROUND</span>
+            <span className={isDark ? "text-[#303236]" : "text-emerald-300"}>•</span>
+            <span className={isDark ? "text-[#AFB1B6]" : "text-emerald-700"}>48–72 HOUR TURNAROUND</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-white">
+          <h2 className={`text-3xl sm:text-4xl font-normal tracking-tight ${
+            isDark ? "text-white" : "text-[#0F172A]"
+          }`}>
             Done-For-You Custom MCP Server Integration
           </h2>
-          <p className="mt-4 text-[#797D86] text-sm sm:text-base leading-relaxed">
+          <p className={`mt-4 text-sm sm:text-base leading-relaxed ${
+            isDark ? "text-[#797D86]" : "text-[#475569]"
+          }`}>
             Have an internal Postgres database, proprietary REST/GraphQL API, or legacy SaaS tool?
             We build, test, and deliver a production-ready, security-hardened MCP server in 48 to 72 hours—pre-configured
             with Sevlex Zero-Trust protection.
@@ -1453,16 +1635,20 @@ export default function LandingPage() {
         {/* 3 Offer Breakdown Bento Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {/* Card 1: Any Data Source */}
-          <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] p-6 flex flex-col justify-between">
+          <div className={`rounded-2xl border p-6 flex flex-col justify-between transition-colors ${
+            isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200 bg-white shadow-md shadow-slate-200/50"
+          }`}>
             <div>
-              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A] mb-4">
+              <div className={`size-10 rounded-full border flex items-center justify-center text-[#34D59A] mb-4 ${
+                isDark ? "bg-[#18191B] border-[#242628]" : "bg-emerald-50 border-emerald-200"
+              }`}>
                 <Database className="size-5" />
               </div>
-              <h3 className="text-base font-medium text-white mb-2">1. Any Source Ingested</h3>
-              <p className="text-xs text-[#797D86] leading-relaxed mb-4">
+              <h3 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-[#0F172A]"}`}>1. Any Source Ingested</h3>
+              <p className={`text-xs leading-relaxed mb-4 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
                 We wrap your company&apos;s internal data layer into standard Model Context Protocol tool endpoints:
               </p>
-              <ul className="space-y-2 text-xs text-[#C9CBCF]">
+              <ul className={`space-y-2 text-xs ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
                   <span>PostgreSQL, MySQL, MongoDB, Redis</span>
@@ -1477,22 +1663,28 @@ export default function LandingPage() {
                 </li>
               </ul>
             </div>
-            <div className="mt-6 pt-4 border-t border-[#1C1D1F] text-[11px] font-mono text-[#797D86]">
+            <div className={`mt-6 pt-4 border-t text-[11px] font-mono ${
+              isDark ? "border-[#1C1D1F] text-[#797D86]" : "border-slate-100 text-slate-500"
+            }`}>
               Transport: Stdio or Remote SSE Transport
             </div>
           </div>
 
           {/* Card 2: Hardened & Zero-Trust */}
-          <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] p-6 flex flex-col justify-between">
+          <div className={`rounded-2xl border p-6 flex flex-col justify-between transition-colors ${
+            isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200 bg-white shadow-md shadow-slate-200/50"
+          }`}>
             <div>
-              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-blue-400 mb-4">
+              <div className={`size-10 rounded-full border flex items-center justify-center text-blue-400 mb-4 ${
+                isDark ? "bg-[#18191B] border-[#242628]" : "bg-blue-50 border-blue-200"
+              }`}>
                 <ShieldCheck className="size-5" />
               </div>
-              <h3 className="text-base font-medium text-white mb-2">2. Hardened &amp; Zero-Trust</h3>
-              <p className="text-xs text-[#797D86] leading-relaxed mb-4">
+              <h3 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-[#0F172A]"}`}>2. Hardened &amp; Zero-Trust</h3>
+              <p className={`text-xs leading-relaxed mb-4 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
                 Engineered strictly to prevent destructive agent queries, token overflows, or accidental data leaks:
               </p>
-              <ul className="space-y-2 text-xs text-[#C9CBCF]">
+              <ul className={`space-y-2 text-xs ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
                   <span>Pre-integrated with Sevlex Layer 7 ToolGuard™</span>
@@ -1507,29 +1699,41 @@ export default function LandingPage() {
                 </li>
               </ul>
             </div>
-            <div className="mt-6 pt-4 border-t border-[#1C1D1F] text-[11px] font-mono text-[#797D86]">
+            <div className={`mt-6 pt-4 border-t text-[11px] font-mono ${
+              isDark ? "border-[#1C1D1F] text-[#797D86]" : "border-slate-100 text-slate-500"
+            }`}>
               Governance: Scoped Read / Write Gates
             </div>
           </div>
 
           {/* Card 3: Flat Fee & SLA */}
-          <div className="rounded-2xl border border-[#34D59A]/30 bg-[#0E0E12] p-6 flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-[#34D59A]/10 border-b border-l border-[#34D59A]/20 px-3 py-1 rounded-bl-xl text-[10px] font-mono font-bold text-[#34D59A] uppercase">
+          <div className={`rounded-2xl border p-6 flex flex-col justify-between relative overflow-hidden transition-colors ${
+            isDark
+              ? "border-[#34D59A]/30 bg-[#0E0E12]"
+              : "border-emerald-500/30 bg-white shadow-md shadow-emerald-500/5"
+          }`}>
+            <div className={`absolute top-0 right-0 border-b border-l px-3 py-1 rounded-bl-xl text-[10px] font-mono font-bold uppercase ${
+              isDark
+                ? "bg-[#34D59A]/10 border-[#34D59A]/20 text-[#34D59A]"
+                : "bg-emerald-500/10 border-emerald-500/20 text-emerald-800"
+            }`}>
               Fast Delivery
             </div>
             <div>
-              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A] mb-4">
+              <div className={`size-10 rounded-full border flex items-center justify-center text-[#34D59A] mb-4 ${
+                isDark ? "bg-[#18191B] border-[#242628]" : "bg-emerald-50 border-emerald-200"
+              }`}>
                 <Zap className="size-5" />
               </div>
-              <h3 className="text-base font-medium text-white mb-1">3. Flat Fee &amp; Fast Turnaround</h3>
+              <h3 className={`text-base font-medium mb-1 ${isDark ? "text-white" : "text-[#0F172A]"}`}>3. Flat Fee &amp; Fast Turnaround</h3>
               <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-3xl font-medium text-white font-mono">$800 – $1,200</span>
-                <span className="text-xs text-[#797D86]">/ custom server</span>
+                <span className={`text-3xl font-medium font-mono ${isDark ? "text-white" : "text-[#0F172A]"}`}>$800 – $1,200</span>
+                <span className={`text-xs ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>/ custom server</span>
               </div>
-              <p className="text-xs text-[#797D86] leading-relaxed mb-4">
+              <p className={`text-xs leading-relaxed mb-4 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
                 Transparent flat pricing. 50% deposit upfront, 50% upon successful delivery and live test verification.
               </p>
-              <ul className="space-y-2 text-xs text-[#C9CBCF]">
+              <ul className={`space-y-2 text-xs ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
                   <span>48–72 hour delivery guarantee</span>
@@ -1544,23 +1748,31 @@ export default function LandingPage() {
                 </li>
               </ul>
             </div>
-            <div className="mt-6 pt-4 border-t border-[#1C1D1F] text-[11px] font-mono text-[#34D59A]">
+            <div className={`mt-6 pt-4 border-t text-[11px] font-mono ${
+              isDark ? "border-[#1C1D1F] text-[#34D59A]" : "border-slate-100 text-emerald-700 font-semibold"
+            }`}>
               SLA: 48–72 Hours or 100% Refund
             </div>
           </div>
         </div>
 
         {/* Action Callout Bar */}
-        <div className="p-6 rounded-2xl bg-[#131415] border border-[#242628] flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className={`p-6 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-6 transition-colors ${
+          isDark
+            ? "bg-[#131415] border-[#242628]"
+            : "bg-slate-50 border-slate-200 shadow-sm"
+        }`}>
           <div className="flex items-center gap-4">
-            <div className="size-12 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white shrink-0">
-              <Sparkles className="size-6 text-[#34D59A]" />
+            <div className={`size-12 rounded-xl border flex items-center justify-center shrink-0 ${
+              isDark ? "bg-white/[0.04] border-white/[0.08] text-[#34D59A]" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700"
+            }`}>
+              <Sparkles className="size-6" />
             </div>
             <div>
-              <h4 className="text-sm sm:text-base font-medium text-white">
+              <h4 className={`text-sm sm:text-base font-medium ${isDark ? "text-white" : "text-[#0F172A]"}`}>
                 Ready to empower your developers with custom agent tools?
               </h4>
-              <p className="text-xs text-[#797D86] mt-0.5">
+              <p className={`text-xs mt-0.5 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
                 Send your API schema, database table spec, or schedule a quick 15-minute scoping call directly with our engineering team.
               </p>
             </div>
@@ -1568,7 +1780,11 @@ export default function LandingPage() {
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <a
               href="mailto:founder@sevlex.com?subject=Custom%20MCP%20Server%20Integration%20Request"
-              className="inline-flex items-center gap-2 h-10 px-5 rounded-full border border-[#242628] bg-[#18191B] hover:bg-[#242628] text-xs font-medium text-white transition duration-200"
+              className={`inline-flex items-center gap-2 h-10 px-5 rounded-full border text-xs font-medium transition duration-200 ${
+                isDark
+                  ? "border-[#242628] bg-[#18191B] hover:bg-[#242628] text-white"
+                  : "border-slate-200 bg-white hover:bg-slate-100 text-slate-800 shadow-xs"
+              }`}
             >
               <span>Email Spec (founder@sevlex.com)</span>
             </a>
@@ -1576,7 +1792,11 @@ export default function LandingPage() {
               href="https://calendly.com/meetpxnchl/meeting"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 h-10 px-5 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
+              className={`inline-flex items-center gap-2 h-10 px-5 rounded-full text-xs font-medium transition duration-200 ${
+                isDark
+                  ? "bg-white text-black hover:bg-[#E4E5E7]"
+                  : "bg-slate-900 text-white hover:bg-slate-800 shadow-xs"
+              }`}
             >
               <span>Schedule 15-Min Scoping Call</span>
               <ArrowRight className="size-3.5" />
@@ -1588,17 +1808,27 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 9.6 ABOUT SEVLEX                                                          */}
       {/* ========================================================================= */}
-      <section id="about" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+      <section id="about" className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
+        isDark ? "border-[#242628]" : "border-slate-200"
+      }`}>
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] border border-[#242628] text-[#797D86] mb-4">
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4 ${
+            isDark
+              ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+              : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800"
+          }`}>
             <span className="text-[#34D59A] font-semibold">ABOUT SEVLEX</span>
-            <span className="text-[#303236]">•</span>
-            <span className="text-[#AFB1B6]">OUR MISSION</span>
+            <span className={isDark ? "text-[#303236]" : "text-emerald-300"}>•</span>
+            <span className={isDark ? "text-[#AFB1B6]" : "text-emerald-700"}>OUR MISSION</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-white">
+          <h2 className={`text-3xl sm:text-4xl font-normal tracking-tight ${
+            isDark ? "text-white" : "text-[#0F172A]"
+          }`}>
             Securing the Autonomous Agent Frontier
           </h2>
-          <p className="mt-4 text-[#797D86] text-sm sm:text-base leading-relaxed">
+          <p className={`mt-4 text-sm sm:text-base leading-relaxed ${
+            isDark ? "text-[#797D86]" : "text-[#475569]"
+          }`}>
             Autonomous coding agents and the Model Context Protocol are revolutionizing software engineering.
             Sevlex exists to give engineering leaders complete confidence to adopt agents at scale—preventing
             catastrophic database mutations, source code theft, and credential leaks without slowing developers down.
@@ -1606,32 +1836,44 @@ export default function LandingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
-            <div className="size-9 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A] mb-3">
+          <div className={`p-6 rounded-2xl border transition-colors ${
+            isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+          }`}>
+            <div className={`size-9 rounded-full border flex items-center justify-center text-[#34D59A] mb-3 ${
+              isDark ? "bg-[#18191B] border-[#242628]" : "bg-emerald-50 border-emerald-200"
+            }`}>
               <Shield className="size-4" />
             </div>
-            <h4 className="text-sm font-medium text-white mb-1.5">Zero-Trust by Default</h4>
-            <p className="text-xs text-[#797D86] leading-relaxed">
+            <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Zero-Trust by Default</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               Every JSON-RPC packet passing between Claude, Cursor, and downstream systems is inspected in-flight. Destructive operations are arrested in microseconds.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
-            <div className="size-9 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-blue-400 mb-3">
+          <div className={`p-6 rounded-2xl border transition-colors ${
+            isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+          }`}>
+            <div className={`size-9 rounded-full border flex items-center justify-center text-blue-400 mb-3 ${
+              isDark ? "bg-[#18191B] border-[#242628]" : "bg-blue-50 border-blue-200"
+            }`}>
               <Terminal className="size-4" />
             </div>
-            <h4 className="text-sm font-medium text-white mb-1.5">Developer Velocity First</h4>
-            <p className="text-xs text-[#797D86] leading-relaxed">
+            <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Developer Velocity First</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               Security that gets in the way gets bypassed. Sevlex operates transparently over stdio pipes with &lt;0.1ms wire overhead and zero workflow disruption.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#0E0E12] border border-[#242628]">
-            <div className="size-9 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-purple-400 mb-3">
+          <div className={`p-6 rounded-2xl border transition-colors ${
+            isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+          }`}>
+            <div className={`size-9 rounded-full border flex items-center justify-center text-purple-400 mb-3 ${
+              isDark ? "bg-[#18191B] border-[#242628]" : "bg-purple-50 border-purple-200"
+            }`}>
               <FileCheck2 className="size-4" />
             </div>
-            <h4 className="text-sm font-medium text-white mb-1.5">Mathematical Proof</h4>
-            <p className="text-xs text-[#797D86] leading-relaxed">
+            <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Mathematical Proof</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               Every tool execution receipt is mathematically linked in an immutable SQLite WAL Merkle chain. Complete SOC 2 audit readiness built into every packet.
             </p>
           </div>
@@ -1642,12 +1884,16 @@ export default function LandingPage() {
       {/* 10. CTA BOTTOM BANNER (Neon Pill Standards)                               */}
       {/* ========================================================================= */}
       <section className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="rounded-3xl border border-[#242628] bg-[#0C0D0E] p-10 sm:p-14 shadow-2xl relative overflow-hidden">
+        <div className={`rounded-3xl border p-10 sm:p-14 shadow-2xl relative overflow-hidden transition-colors ${
+          isDark
+            ? "border-[#242628] bg-[#0C0D0E]"
+            : "border-slate-800 bg-slate-950 text-white shadow-slate-900/20"
+        }`}>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-36 bg-[#34D59A]/10 blur-[90px] pointer-events-none rounded-full" />
           <h2 className="text-3xl sm:text-5xl font-medium text-white tracking-tight relative z-10">
             Shield Your AI Agents in 10 Seconds
           </h2>
-          <p className="mt-4 text-[#797D86] max-w-xl mx-auto text-sm sm:text-base relative z-10">
+          <p className="mt-4 text-[#94979E] max-w-xl mx-auto text-sm sm:text-base relative z-10">
             No Docker, no kernel drivers, no root permissions. Run one command to wrap MCP servers across Cursor, Claude Desktop, and Antigravity.
           </p>
 
@@ -1691,24 +1937,26 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 11. FOOTER                                                               */}
       {/* ========================================================================= */}
-      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-[#242628] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#797D86]">
-        <div className="flex items-center gap-3 text-[#94979E]">
+      <footer className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
+        isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200 text-slate-500"
+      }`}>
+        <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/sevlex-brand-horizontal.png"
+            src={isDark ? "/sevlex-brand-horizontal.png" : "/sevlex-brand-horizontal-dark.png"}
             alt="Sevlex"
-            className="h-6 w-auto object-contain opacity-80 hover:opacity-100 transition"
+            className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition"
           />
           <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
-          <a href="/product" className="hover:text-white transition">Product</a>
-          <a href="/service" className="hover:text-white transition">Service</a>
-          <a href="/about" className="hover:text-white transition">About</a>
-          <a href="/console" className="hover:text-white transition">Console</a>
-          <a href="/llms.txt" target="_blank" className="hover:text-white transition font-mono text-[11px]">llms.txt</a>
-          <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a>
-          <a href="https://calendly.com/meetpxnchl/meeting" target="_blank" rel="noreferrer" className="hover:text-white transition">Book Enterprise Demo</a>
+          <a href="/product" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Product</a>
+          <a href="/service" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Service</a>
+          <a href="/about" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>About</a>
+          <a href="/console" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Console</a>
+          <a href="/llms.txt" target="_blank" className={`font-mono text-[11px] ${isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}`}>llms.txt</a>
+          <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>GitHub</a>
+          <a href="https://calendly.com/meetpxnchl/meeting" target="_blank" rel="noreferrer" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Book Enterprise Demo</a>
         </div>
       </footer>
     </main>

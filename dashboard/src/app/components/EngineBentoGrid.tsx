@@ -184,7 +184,9 @@ export default function EngineBentoGrid() {
                       className={`size-11 rounded-xl flex items-center justify-center font-mono font-bold text-sm shrink-0 border transition-colors ${
                         isExpanded
                           ? `${layer.accentBg} ${layer.accentBorder} text-white`
-                          : "bg-[#14151D] border-[#222430] text-gray-400"
+                          : isDark
+                          ? "bg-[#14151D] border-[#222430] text-gray-400"
+                          : "bg-slate-100 border-slate-200 text-slate-700"
                       }`}
                       style={isExpanded ? { color: layer.accentColor } : {}}
                     >
@@ -251,22 +253,30 @@ export default function EngineBentoGrid() {
 
                 {/* Expanded Details & Live Example */}
                 {isExpanded && (
-                  <div className="px-5 pb-5 sm:px-6 sm:pb-6 pt-0 border-t border-[#181A22] mt-2">
+                  <div className={`px-5 pb-5 sm:px-6 sm:pb-6 pt-0 border-t mt-2 transition-colors ${
+                    isDark ? "border-[#181A22]" : "border-slate-100"
+                  }`}>
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
                       {/* What It Intercepts */}
-                      <div className="p-3.5 rounded-xl bg-[#08090D] border border-[#1A1C24] space-y-1.5">
-                        <div className="text-[11px] text-gray-400 font-medium">
+                      <div className={`p-3.5 rounded-xl border space-y-1.5 transition-colors ${
+                        isDark ? "bg-[#08090D] border-[#1A1C24]" : "bg-slate-50 border-slate-200"
+                      }`}>
+                        <div className={`text-[11px] font-medium ${isDark ? "text-gray-400" : "text-slate-600"}`}>
                           What Enters Layer {layer.step}:
                         </div>
-                        <div className="text-gray-300 bg-[#0F1118] p-2.5 rounded-lg border border-[#1E202B] break-all leading-relaxed">
+                        <div className={`p-2.5 rounded-lg border break-all leading-relaxed transition-colors ${
+                          isDark ? "text-gray-300 bg-[#0F1118] border-[#1E202B]" : "text-slate-800 bg-white border-slate-200"
+                        }`}>
                           {layer.exampleIn}
                         </div>
                       </div>
 
                       {/* What Sevlex Enforces */}
-                      <div className="p-3.5 rounded-xl bg-[#08090D] border border-[#1A1C24] space-y-1.5">
+                      <div className={`p-3.5 rounded-xl border space-y-1.5 transition-colors ${
+                        isDark ? "bg-[#08090D] border-[#1A1C24]" : "bg-slate-50 border-slate-200"
+                      }`}>
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="text-gray-400 font-medium">What Sevlex Enforces:</span>
+                          <span className={`font-medium ${isDark ? "text-gray-400" : "text-slate-600"}`}>What Sevlex Enforces:</span>
                           <span
                             className="font-bold text-[10px] px-1.5 py-0.2 rounded"
                             style={{ color: layer.accentColor }}
@@ -274,7 +284,9 @@ export default function EngineBentoGrid() {
                             {layer.outcomeBadge}
                           </span>
                         </div>
-                        <div className="text-gray-200 bg-[#0F1118] p-2.5 rounded-lg border border-[#1E202B] break-all leading-relaxed">
+                        <div className={`p-2.5 rounded-lg border break-all leading-relaxed transition-colors ${
+                          isDark ? "text-gray-200 bg-[#0F1118] border-[#1E202B]" : "text-slate-800 bg-white border-slate-200"
+                        }`}>
                           {layer.exampleOut}
                         </div>
                       </div>
