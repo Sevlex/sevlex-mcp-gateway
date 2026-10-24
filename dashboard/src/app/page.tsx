@@ -1177,7 +1177,7 @@ export default function LandingPage() {
             {terminalTab === "verify" && (
               <div className="space-y-1.5">
                 <p className="text-[#61646B]">$ npx sevlex verify</p>
-                <p className="text-white font-medium">[SOC 2 Audit Engine] Performing mathematical non-repudiation audit...</p>
+                <p className="text-white font-medium">[Merkle Audit Engine] Performing mathematical non-repudiation audit...</p>
                 <p className="text-[#C9CBCF]">Traversing SQLite WAL Merkle Hash Chain backwards from root...</p>
                 <p className="text-[#797D86]">Receipt #392: SHA256(prev || receipt) == 8e1a3b... [VALID]</p>
                 <p className="text-[#797D86]">Receipt #391: SHA256(prev || receipt) == d4c92f... [VALID]</p>
