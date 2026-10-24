@@ -10,14 +10,14 @@ import {
   XCircle, ArrowUpRight, HelpCircle, FileText, Database, Shield, Radio,
   Layers, HardDrive, ArrowRight, Bot
 } from "lucide-react";
-import FleetMdmTab from "../components/FleetMdmTab";
-import SiemObservabilityTab from "../components/SiemObservabilityTab";
-import AlertingTab from "../components/AlertingTab";
-import DeviceFleetTab from "../components/DeviceFleetTab";
-import AgentDiscoveryTab from "../components/AgentDiscoveryTab";
-import ClientBrandIcon, { getLogoDevUrl } from "../components/ClientBrandIcon";
-import HitlClearanceTab from "../components/HitlClearanceTab";
-import ApiKeysTab from "../components/ApiKeysTab";
+import FleetMdmTab from "@/app/components/FleetMdmTab";
+import SiemObservabilityTab from "@/app/components/SiemObservabilityTab";
+import AlertingTab from "@/app/components/AlertingTab";
+import DeviceFleetTab from "@/app/components/DeviceFleetTab";
+import AgentDiscoveryTab from "@/app/components/AgentDiscoveryTab";
+import ClientBrandIcon, { getLogoDevUrl } from "@/app/components/ClientBrandIcon";
+import HitlClearanceTab from "@/app/components/HitlClearanceTab";
+import ApiKeysTab from "@/app/components/ApiKeysTab";
 
 type Log = { 
   id: number; 

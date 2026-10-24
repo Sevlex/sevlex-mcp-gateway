@@ -39,9 +39,9 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
-import ClientBrandIcon, { getLogoDevUrl } from "./components/ClientBrandIcon";
-import EngineBentoGrid from "./components/EngineBentoGrid";
-import { useTheme } from "./components/ThemeProvider";
+import ClientBrandIcon, { getLogoDevUrl } from "@/app/components/ClientBrandIcon";
+import EngineBentoGrid from "@/app/components/EngineBentoGrid";
+import { useTheme } from "@/app/components/ThemeProvider";
 
 // Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({

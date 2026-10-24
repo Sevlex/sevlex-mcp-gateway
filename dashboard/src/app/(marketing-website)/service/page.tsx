@@ -20,7 +20,7 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
-import { useTheme } from "../components/ThemeProvider";
+import { useTheme } from "@/app/components/ThemeProvider";
 
 export default function ServicePage() {
   const { theme, toggleTheme } = useTheme();

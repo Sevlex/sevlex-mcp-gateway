@@ -34,7 +34,7 @@ import {
   Command,
   X,
 } from "lucide-react";
-import { ThemeProvider, useTheme } from "../components/ThemeProvider";
+import { ThemeProvider, useTheme } from "@/app/components/ThemeProvider";
 
 function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (

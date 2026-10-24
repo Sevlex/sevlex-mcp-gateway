@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sevlex Architecture Layout
 
-## Getting Started
+This workspace contains both the public marketing website and the actual SecOps product application, cleanly separated into two distinct folders.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📁 1. `src/app/(marketing-website)/` (Powers https://sevlex.com)
+Contains all public marketing, landing, and technical documentation pages:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Path | URL Route | Purpose |
+| :--- | :--- | :--- |
+| `page.tsx` | [`/`](https://sevlex.com) | Clean hero, Zero-Config Client Bar, Architecture Pillars, and Policy Guard Threat Simulator. |
+| `product/` | [`/product`](https://sevlex.com/product) | Detailed Layer 7 security architecture (ToolGuard, AgentGuard, DLP, Merkle Audit). |
+| `service/` | [`/service`](https://sevlex.com/service) | White-glove enterprise MCP engineering services with pricing & intake. |
+| `about/` | [`/about`](https://sevlex.com/about) | Company mission, architectural guarantees, and contact channels. |
+| `docs/` | [`/docs`](https://sevlex.com/docs) | Developer documentation, CLI guides, and IDE agent configuration manuals (Cursor, Claude, Windsurf). |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 2. `src/app/(product-app)/` (Powers https://app.sevlex.com)
+Contains the actual enterprise SaaS product console:
 
-## Learn More
+| Path | URL Route | Purpose |
+| :--- | :--- | :--- |
+| `console/` | [`app.sevlex.com`](https://app.sevlex.com) / [`/console`](https://sevlex.com/console) | **SecOps Enterprise Console** featuring 10 production tabs: Overview & Health, Endpoint Inventory, Agent Discovery (Shadow AI), Visual Policy Library, HITL Approvals, Merkle Audit Log Explorer, Cloud API Keys, Fleet MDM Packages, SIEM Observability, and Incident Alerts. Connected live to Neon PostgreSQL. |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⚙️ Shared Infrastructure & Routing
+- **`src/app/api/`**: Production serverless backend endpoints (Google & GitHub OAuth 2.0, Neon Postgres sync, HITL Slack webhooks, Device Telemetry, Policy Sync).
+- **`src/app/components/`**: Design system components, tabs, bento grids, and the persistent `ThemeProvider`.
+- **`src/middleware.ts`**: Intelligent edge routing that seamlessly routes `app.sevlex.com` directly to the `(product-app)/console` and `sevlex.com` to `(marketing-website)`.
