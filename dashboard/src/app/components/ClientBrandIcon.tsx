@@ -108,7 +108,7 @@ export function ClientBrandIcon({ name, size = "md", className = "" }: ClientBra
     size === "md" ? "w-7 h-7" :
     size === "lg" ? "w-8 h-8" : "w-10 h-10";
 
-  // Priority 1: Official Transparent Vectors for Core Coding Agents & Development Environments
+  // Priority 1: Official Verified Local Full-Color Assets for Core Platforms & Ecosystem
   if (norm.includes("claude")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -133,55 +133,34 @@ export function ClientBrandIcon({ name, size = "md", className = "" }: ClientBra
       <img src="/antigravity-icon.png" alt="Google Antigravity" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-  if (norm.includes("custom") || norm.includes("script") || norm.includes("mcp script")) {
-    return <Terminal className={`${sizeClass} text-emerald-400 shrink-0 ${className}`} />;
-  }
-  if (norm.includes("shell") || norm.includes("bash") || norm.includes("zsh") || norm.includes("system shell")) {
-    return <Terminal className={`${sizeClass} text-blue-400 shrink-0 ${className}`} />;
-  }
-  if (norm.includes("git")) {
-    return <GitBranch className={`${sizeClass} text-orange-400 shrink-0 ${className}`} />;
-  }
-  if (norm.includes("workspace") || norm.includes("file")) {
-    return <Folder className={`${sizeClass} text-yellow-400 shrink-0 ${className}`} />;
-  }
   if (norm.includes("node")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/nodejs-icon.svg" alt="Node.js" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-
-  // Priority 2: Verified Logo.dev CDN Token for SaaS & Enterprise Services
-  if (domain && !loadFailed) {
+  if (norm.includes("postgres") || norm.includes("pgsql")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img 
-        src={`https://img.logo.dev/${domain}?token=${LOGO_DEV_TOKEN}&size=128&format=png`} 
-        alt={`${name} logo`} 
-        onError={() => setLoadFailed(true)}
-        className={`${sizeClass} object-contain shrink-0 ${className}`} 
-      />
+      <img src="/postgres-icon.png" alt="PostgreSQL" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-
-  // Priority 3: Local SVG / PNG Fallbacks
-  if (norm.includes("drive")) {
+  if (norm.includes("aws") || norm.includes("s3") || norm.includes("amazon")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src="/google-drive-icon.svg" alt="Google Drive" className={`${sizeClass} object-contain shrink-0 ${className}`} />
-    );
-  }
-  if (norm.includes("gemini") || norm.includes("google")) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/gemini-logo.svg" alt="Gemini" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+      <img src="/aws-icon.png" alt="AWS" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
   if (norm.includes("windows") || norm.includes("microsoft") || norm.includes("intune")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/microsoft-icon.png" alt="Microsoft" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("linux") || norm.includes("ubuntu")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/ubuntu-icon.png" alt="Ubuntu" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
   if (norm.includes("macos") || norm.includes("apple") || norm.includes("darwin")) {
@@ -196,22 +175,41 @@ export function ClientBrandIcon({ name, size = "md", className = "" }: ClientBra
       <img src="/jamf-icon.png" alt="Jamf" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-  if (norm.includes("linux") || norm.includes("ubuntu")) {
+  if (norm.includes("drive")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src="/ubuntu-icon.png" alt="Ubuntu" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+      <img src="/google-drive-icon.svg" alt="Google Drive" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-  if (norm.includes("postgres")) {
+  if (norm.includes("gemini") || norm.includes("google")) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src="/postgres-icon.png" alt="PostgreSQL" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+      <img src="/gemini-logo.svg" alt="Gemini" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
-  if (norm.includes("aws") || norm.includes("s3") || norm.includes("amazon")) {
+  if (norm.includes("custom") || norm.includes("script") || norm.includes("mcp script")) {
+    return <Terminal className={`${sizeClass} text-emerald-400 shrink-0 ${className}`} />;
+  }
+  if (norm.includes("shell") || norm.includes("bash") || norm.includes("zsh") || norm.includes("system shell")) {
+    return <Terminal className={`${sizeClass} text-blue-400 shrink-0 ${className}`} />;
+  }
+  if (norm.includes("git")) {
+    return <GitBranch className={`${sizeClass} text-orange-400 shrink-0 ${className}`} />;
+  }
+  if (norm.includes("workspace") || norm.includes("file")) {
+    return <Folder className={`${sizeClass} text-yellow-400 shrink-0 ${className}`} />;
+  }
+
+  // Priority 2: Verified Logo.dev CDN Token for Secondary SaaS Services
+  if (domain && !loadFailed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src="/aws-icon.png" alt="AWS" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+      <img 
+        src={`https://img.logo.dev/${domain}?token=${LOGO_DEV_TOKEN}&size=128&format=png`} 
+        alt={`${name} logo`} 
+        onError={() => setLoadFailed(true)}
+        className={`${sizeClass} object-contain shrink-0 ${className}`} 
+      />
     );
   }
 

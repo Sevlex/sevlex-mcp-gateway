@@ -8,19 +8,20 @@ interface EcosystemItem {
   name: string;
   category: string;
   brand: string;
+  accentColor?: string;
 }
 
 const ECOSYSTEM_ITEMS: EcosystemItem[] = [
-  { name: "Cursor IDE", category: "AI Runtime", brand: "cursor" },
-  { name: "Claude Desktop", category: "Model Context", brand: "claude" },
-  { name: "Windsurf Cascade", category: "Autonomous Agent", brand: "windsurf" },
-  { name: "Google Antigravity", category: "Agent Runtime", brand: "antigravity" },
-  { name: "Neon Postgres", category: "Cloud Database", brand: "postgres" },
-  { name: "AWS ECS & Fargate", category: "Enterprise VPC", brand: "aws" },
-  { name: "Apple macOS", category: "Endpoint Security", brand: "apple" },
-  { name: "Ubuntu / Linux", category: "Daemon Service", brand: "ubuntu" },
-  { name: "Microsoft Intune", category: "Fleet MDM", brand: "microsoft" },
-  { name: "Node.js / TypeScript", category: "Native SDK", brand: "node" },
+  { name: "Cursor IDE", category: "AI Runtime", brand: "cursor", accentColor: "#00F0FF" },
+  { name: "Claude Desktop", category: "Model Context", brand: "claude", accentColor: "#D97757" },
+  { name: "Windsurf Cascade", category: "Autonomous Agent", brand: "windsurf", accentColor: "#00E5FF" },
+  { name: "Google Antigravity", category: "Agent Runtime", brand: "antigravity", accentColor: "#4285F4" },
+  { name: "Neon Postgres", category: "Cloud Database", brand: "postgres", accentColor: "#34D59A" },
+  { name: "AWS ECS & Fargate", category: "Enterprise VPC", brand: "aws", accentColor: "#FF9900" },
+  { name: "Apple macOS", category: "Endpoint Security", brand: "apple", accentColor: "#E2E8F0" },
+  { name: "Ubuntu / Linux", category: "Daemon Service", brand: "ubuntu", accentColor: "#E95420" },
+  { name: "Microsoft Intune", category: "Fleet MDM", brand: "microsoft", accentColor: "#00A4EF" },
+  { name: "Node.js / TypeScript", category: "Native SDK", brand: "node", accentColor: "#68A063" },
 ];
 
 export function EcosystemMarquee() {
@@ -46,20 +47,23 @@ export function EcosystemMarquee() {
         {[...ECOSYSTEM_ITEMS, ...ECOSYSTEM_ITEMS].map((item, idx) => (
           <div
             key={`${item.name}-${idx}`}
-            className={`flex items-center gap-3 px-2 py-1.5 transition-all duration-200 cursor-default group opacity-75 hover:opacity-100 ${
-              isDark
-                ? "text-[#A1A4AB] hover:text-white"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
+            className="flex items-center gap-3 px-2 py-1.5 transition-all duration-200 cursor-default group hover:translate-y-[-1px]"
           >
-            <div className="size-6 shrink-0 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-200">
-              <ClientBrandIcon name={item.brand} size="xs" className="size-5 transition-transform duration-200 group-hover:scale-110" />
+            <div className="size-6 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+              <ClientBrandIcon name={item.brand} size="xs" className="size-5 shrink-0" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-medium tracking-tight whitespace-nowrap">{item.name}</span>
-              <span className={`text-[9px] font-mono tracking-wider uppercase ${
-                isDark ? "text-[#585C66] group-hover:text-[#8E929E]" : "text-slate-400 group-hover:text-slate-600"
-              }`}>{item.category}</span>
+              <span className={`text-xs font-semibold tracking-tight whitespace-nowrap transition-colors ${
+                isDark ? "text-white group-hover:text-[#00F0FF]" : "text-slate-900 group-hover:text-cyan-700"
+              }`}>
+                {item.name}
+              </span>
+              <span 
+                className="text-[9px] font-mono tracking-wider uppercase font-medium"
+                style={{ color: item.accentColor || (isDark ? "#34D59A" : "#059669") }}
+              >
+                {item.category}
+              </span>
             </div>
           </div>
         ))}
