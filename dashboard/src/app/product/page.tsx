@@ -327,7 +327,7 @@ export default function ProductPage() {
                   : isDark ? "text-[#797D86] hover:text-white" : "text-slate-600 hover:text-slate-950"
               }`}
             >
-              4. SOC 2 Merkle Ledger
+              4. Cryptographic Merkle Ledger
             </button>
           </div>
         </div>
@@ -432,7 +432,7 @@ export default function ProductPage() {
                 </div>
                 <div>
                   <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-slate-950"}`}>
-                    SOC 2 Cryptographic Merkle Hash Chain
+                    Cryptographic Merkle Hash Chain
                   </h3>
                   <p className={`text-xs font-mono ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>
                     Mathematical Non-Repudiation
@@ -440,7 +440,7 @@ export default function ProductPage() {
                 </div>
               </div>
               <p className={`text-sm leading-relaxed ${isDark ? "text-[#C9CBCF]" : "text-slate-600"}`}>
-                Standard log files can be modified or deleted. Sevlex stores every tool execution receipt in a local SQLite WAL ledger cryptographically bound to its predecessor: <code className="text-[#34D59A] font-mono">entry_hash = SHA256(prev_hash || receipt)</code>. Any alteration instantly invalidates the Merkle root, providing mathematical proof to SOC 2 and ISO auditors.
+                Standard log files can be modified or deleted. Sevlex stores every tool execution receipt in a local SQLite WAL ledger cryptographically bound to its predecessor: <code className="text-[#34D59A] font-mono">entry_hash = SHA256(prev_hash || receipt)</code>. Any alteration instantly invalidates the Merkle root, providing mathematical proof for enterprise security audits.
               </p>
               <div className={`p-4 rounded-xl font-mono text-xs flex items-center justify-between ${
                 isDark ? "bg-[#000000] border border-[#242628] text-[#34D59A]" : "bg-slate-900 text-[#34D59A] border border-slate-800"
@@ -557,7 +557,7 @@ export default function ProductPage() {
             alt="Sevlex"
             className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition"
           />
-          <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
+          <span>&copy; 2026 Sevlex. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
           <a href="/product" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Product</a>

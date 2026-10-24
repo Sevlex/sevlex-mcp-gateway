@@ -592,7 +592,7 @@ export default function ServicePage() {
             alt="Sevlex"
             className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition"
           />
-          <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
+          <span>&copy; 2026 Sevlex. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
           <a href="/product" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Product</a>

@@ -369,7 +369,7 @@ export default function Dashboard() {
           {/* Bottom of Sidebar */}
           <div className="relative z-10 text-[11px] font-mono text-[#61646B] flex items-center gap-2">
             <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse" />
-            <span>Zero-Trust Gateway • SOC 2 Sealed</span>
+            <span>Zero-Trust Gateway • Cryptographically Sealed</span>
           </div>
         </aside>
 
@@ -531,7 +531,7 @@ export default function Dashboard() {
 
           {/* Bottom Footer Credits */}
           <div className="w-full text-center text-[11px] text-[#61646B] font-mono">
-            <span>© 2026 Sevlex Security Inc. • SOC 2 Type II Certified</span>
+            <span>© 2026 Sevlex. All rights reserved.</span>
           </div>
         </main>
       </div>
@@ -703,7 +703,7 @@ export default function Dashboard() {
               onClick={exportLogsToCsv}
               className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition shadow-lg shadow-blue-600/25 flex items-center gap-1.5 cursor-pointer"
             >
-              <Download size={13} /> Export SOC 2 CSV
+              <Download size={13} /> Export Audit CSV
             </button>
           </div>
         </header>
@@ -1046,7 +1046,7 @@ export default function Dashboard() {
                     },
                     {
                       title: "Ensure trust across the entire data lifecycle",
-                      desc: "How to export SOC 2 Type II audit evidence and stream real-time telemetry to Datadog US5.",
+                      desc: "How to export cryptographic audit evidence and stream real-time telemetry to Datadog US5.",
                       icon: Database
                     }
                   ].map((res, idx) => {
@@ -1334,7 +1334,7 @@ export default function Dashboard() {
                   onClick={exportLogsToCsv}
                   className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-lg shadow-blue-600/25 cursor-pointer"
                 >
-                  <Download size={13} /> Export SOC 2 CSV
+                  <Download size={13} /> Export Audit CSV
                 </button>
               </div>
 
@@ -1447,7 +1447,7 @@ export default function Dashboard() {
                         {selectedLog.entry_hash && (
                           <div className="p-3 rounded-xl bg-blue-950/30 border border-blue-500/30 text-[10px] space-y-1.5">
                             <div className="flex items-center justify-between text-blue-200 font-bold">
-                              <span className="flex items-center gap-1"><Lock size={10} /> SOC 2 Cryptographic Hash Link</span>
+                              <span className="flex items-center gap-1"><Lock size={10} /> Cryptographic Merkle Hash Link</span>
                               <span className="text-[9px] text-blue-400 font-mono">SHA-256</span>
                             </div>
                             <div className="font-mono text-zinc-400 break-all text-[9px]">

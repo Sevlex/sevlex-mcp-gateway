@@ -1335,7 +1335,7 @@ export default function LandingPage() {
               }`}>
                 <span className={`flex items-center gap-1.5 ${isDark ? "text-[#34D59A]" : "text-emerald-700 font-medium"}`}>
                   <CheckCircle2 className="size-3.5" />
-                  <span>SOC 2 Type II Non-Repudiation Sealed</span>
+                  <span>Cryptographic Merkle Non-Repudiation</span>
                 </span>
                 <a
                   href="/console"
@@ -1884,7 +1884,7 @@ export default function LandingPage() {
             </div>
             <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Mathematical Proof</h4>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-              Every tool execution receipt is mathematically linked in an immutable SQLite WAL Merkle chain. Complete SOC 2 audit readiness built into every packet.
+              Every tool execution receipt is mathematically linked in an immutable SQLite WAL Merkle chain. Complete cryptographic audit readiness built into every packet.
             </p>
           </div>
         </div>
@@ -1957,7 +1957,7 @@ export default function LandingPage() {
             alt="Sevlex"
             className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition"
           />
-          <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
+          <span>&copy; 2026 Sevlex. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
           <a href="/product" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Product</a>

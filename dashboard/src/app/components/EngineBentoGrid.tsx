@@ -94,7 +94,7 @@ const LAYERS: LayerItem[] = [
     accentBg: "bg-sky-500/10",
     accentBorder: "border-sky-500/30",
     icon: Database,
-    whatItDoes: "Cryptographically links every execution receipt via SHA-256 to its predecessor and commits it to Neon PostgreSQL. Provides mathematical proof for SOC 2 Type II audits.",
+    whatItDoes: "Cryptographically links every execution receipt via SHA-256 to its predecessor and commits it to Neon PostgreSQL. Provides mathematical proof for security and compliance audits.",
     exampleIn: `entry_hash = SHA256(prev_hash || block_payload || signature)`,
     exampleOut: `Block #142393 sealed. Neon PostgreSQL synced. Tampering mathematically impossible.`,
     outcomeBadge: "SEALED & IMMUTABLE",

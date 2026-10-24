@@ -251,7 +251,7 @@ export default function AboutPage() {
               Cryptographic Audit Chains
             </h3>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-slate-600"}`}>
-              Every event is mathematically sealed into an immutable SQLite WAL / PostgreSQL Merkle hash chain. Non-repudiation is guaranteed: any tampering or deletion breaks the hash root, satisfying SOC 2 and ISO 27001 requirements.
+              Every event is mathematically sealed into an immutable SQLite WAL / PostgreSQL Merkle hash chain. Non-repudiation is guaranteed: any tampering or deletion breaks the hash root, built for rigorous enterprise security audits.
             </p>
           </div>
         </div>
@@ -315,7 +315,7 @@ export default function AboutPage() {
             alt="Sevlex"
             className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition"
           />
-          <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
+          <span>&copy; 2026 Sevlex. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
           <a href="/product" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Product</a>

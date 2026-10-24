@@ -23,7 +23,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
             </span>
           </div>
           <p className="text-xs text-zinc-400">
-            Universal log streaming for SOC 2, HIPAA, and ISO 27001 compliance audit trails.
+            Universal log streaming for enterprise compliance and security audit trails.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -52,7 +52,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
             </div>
 
             <p className="text-xs text-zinc-300 mb-4 leading-relaxed">
-              Asynchronously transmits all MCP tool calls (both allowed and blocked) to your Datadog Log Explorer. Satisfies SOC 2 &amp; HIPAA audit retention automatically.
+              Asynchronously transmits all MCP tool calls (both allowed and blocked) to your Datadog Log Explorer. Enables automated security audit retention and non-repudiation.
             </p>
 
             <div className="space-y-3 font-mono text-xs">
@@ -77,7 +77,7 @@ export default function SiemObservabilityTab({ apiKey, ddEndpoint, setPingStatus
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-zinc-400">Compliance Audit:</span>
-                  <span className="text-zinc-200 font-semibold">SOC 2 Type II Immutable</span>
+                  <span className="text-zinc-200 font-semibold">Cryptographically Immutable</span>
                 </div>
               </div>
             </div>
