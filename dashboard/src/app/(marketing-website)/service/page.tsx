@@ -63,15 +63,8 @@ export default function ServicePage() {
           : "bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] opacity-35 bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_45%_at_50%_0%,#000_60%,transparent_100%)]"
       }`} />
 
-      {/* Signature Sevlex Quantum Caustic Aurora */}
-      <div 
-        aria-hidden="true"
-        className={`fixed top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[480px] rounded-full pointer-events-none blur-3xl transition-opacity duration-300 ${
-          isDark 
-            ? "bg-[radial-gradient(ellipse_at_top,rgba(0,240,255,0.12)_0%,rgba(52,213,154,0.09)_35%,rgba(99,102,241,0.05)_70%,transparent_85%)] opacity-80"
-            : "bg-[radial-gradient(ellipse_at_top,rgba(2,132,199,0.09)_0%,rgba(5,150,105,0.06)_40%,transparent_80%)] opacity-70"
-        }`} 
-      />
+      {/* Atmospheric radial illumination */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[radial-gradient(ellipse_at_top,rgba(52,213,154,0.08),transparent_70%)] pointer-events-none" />
 
       {/* 1. STICKY NAVBAR */}
       <nav className={`sticky top-0 z-40 backdrop-blur-md transition-colors duration-200 ${

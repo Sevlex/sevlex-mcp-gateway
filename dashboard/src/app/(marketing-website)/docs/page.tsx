@@ -178,16 +178,6 @@ function DocsContent() {
           : "bg-[#FFFFFF] text-[#111827] selection:bg-blue-100 selection:text-blue-900"
       }`}
     >
-      {/* Signature Sevlex Quantum Caustic Aurora */}
-      <div 
-        aria-hidden="true"
-        className={`fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[360px] rounded-full pointer-events-none blur-3xl transition-opacity duration-300 ${
-          isDark 
-            ? "bg-[radial-gradient(ellipse_at_top,rgba(0,240,255,0.08)_0%,rgba(52,213,154,0.06)_35%,rgba(99,102,241,0.04)_70%,transparent_85%)] opacity-70"
-            : "bg-[radial-gradient(ellipse_at_top,rgba(2,132,199,0.06)_0%,rgba(5,150,105,0.04)_40%,transparent_80%)] opacity-60"
-        }`} 
-      />
-
       {/* Header */}
       <header
         className={`sticky top-0 z-40 w-full border-b backdrop-blur-md transition-colors duration-200 ${
