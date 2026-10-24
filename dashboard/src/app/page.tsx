@@ -640,6 +640,9 @@ export default function LandingPage() {
             <a href="#simulator" className="hover:text-white transition-colors">
               Live Demo
             </a>
+            <a href="#services" className="hover:text-white transition-colors">
+              Custom MCP
+            </a>
             <a href="#docs" className="hover:text-white transition-colors">
               Documentation
             </a>
@@ -1729,6 +1732,161 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
+      {/* 9.5 WHITE-GLOVE CUSTOM MCP SERVER & AGENT INTEGRATION SERVICE             */}
+      {/* ========================================================================= */}
+      <section id="services" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#242628]">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] border border-[#242628] text-[#797D86] mb-4">
+            <span className="text-[#34D59A] font-semibold">WHITE-GLOVE ENGINEERING</span>
+            <span className="text-[#303236]">•</span>
+            <span className="text-[#AFB1B6]">48–72 HOUR TURNAROUND</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-normal tracking-tight text-white">
+            Done-For-You Custom MCP Server Integration
+          </h2>
+          <p className="mt-4 text-[#797D86] text-sm sm:text-base leading-relaxed">
+            Have an internal Postgres database, proprietary REST/GraphQL API, or legacy SaaS tool?
+            We build, test, and deliver a production-ready, security-hardened MCP server in 48 to 72 hours—pre-configured
+            with Sevlex Zero-Trust protection.
+          </p>
+        </div>
+
+        {/* 3 Offer Breakdown Bento Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {/* Card 1: Any Data Source */}
+          <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] p-6 flex flex-col justify-between">
+            <div>
+              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A] mb-4">
+                <Database className="size-5" />
+              </div>
+              <h3 className="text-base font-medium text-white mb-2">1. Any Source Ingested</h3>
+              <p className="text-xs text-[#797D86] leading-relaxed mb-4">
+                We wrap your company&apos;s internal data layer into standard Model Context Protocol tool endpoints:
+              </p>
+              <ul className="space-y-2 text-xs text-[#C9CBCF]">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
+                  <span>PostgreSQL, MySQL, MongoDB, Redis</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
+                  <span>Internal REST, GraphQL, or gRPC Microservices</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
+                  <span>SaaS APIs (HubSpot, Salesforce, Jira, Stripe)</span>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-6 pt-4 border-t border-[#1C1D1F] text-[11px] font-mono text-[#797D86]">
+              Transport: Stdio or Remote SSE Transport
+            </div>
+          </div>
+
+          {/* Card 2: Hardened & Zero-Trust */}
+          <div className="rounded-2xl border border-[#242628] bg-[#0E0E12] p-6 flex flex-col justify-between">
+            <div>
+              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-blue-400 mb-4">
+                <ShieldCheck className="size-5" />
+              </div>
+              <h3 className="text-base font-medium text-white mb-2">2. Hardened &amp; Zero-Trust</h3>
+              <p className="text-xs text-[#797D86] leading-relaxed mb-4">
+                Engineered strictly to prevent destructive agent queries, token overflows, or accidental data leaks:
+              </p>
+              <ul className="space-y-2 text-xs text-[#C9CBCF]">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
+                  <span>Pre-integrated with Sevlex Layer 7 ToolGuard™</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
+                  <span>Output DLP scrubbing for credentials &amp; PII</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
+                  <span>Verified on Claude Desktop, Cursor, &amp; Windsurf</span>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-6 pt-4 border-t border-[#1C1D1F] text-[11px] font-mono text-[#797D86]">
+              Governance: Scoped Read / Write Gates
+            </div>
+          </div>
+
+          {/* Card 3: Flat Fee & SLA */}
+          <div className="rounded-2xl border border-[#34D59A]/30 bg-[#0E0E12] p-6 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 bg-[#34D59A]/10 border-b border-l border-[#34D59A]/20 px-3 py-1 rounded-bl-xl text-[10px] font-mono font-bold text-[#34D59A] uppercase">
+              Fast Delivery
+            </div>
+            <div>
+              <div className="size-10 rounded-full bg-[#18191B] border border-[#242628] flex items-center justify-center text-[#34D59A] mb-4">
+                <Zap className="size-5" />
+              </div>
+              <h3 className="text-base font-medium text-white mb-1">3. Flat Fee &amp; Fast Turnaround</h3>
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-3xl font-medium text-white font-mono">$800 – $1,200</span>
+                <span className="text-xs text-[#797D86]">/ custom server</span>
+              </div>
+              <p className="text-xs text-[#797D86] leading-relaxed mb-4">
+                Transparent flat pricing. 50% deposit upfront, 50% upon successful delivery and live test verification.
+              </p>
+              <ul className="space-y-2 text-xs text-[#C9CBCF]">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
+                  <span>48–72 hour delivery guarantee</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
+                  <span>100% source code ownership &amp; clean TypeScript</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
+                  <span>Loom walkthrough &amp; client config file included</span>
+                </li>
+              </ul>
+            </div>
+            <div className="mt-6 pt-4 border-t border-[#1C1D1F] text-[11px] font-mono text-[#34D59A]">
+              SLA: 48–72 Hours or 100% Refund
+            </div>
+          </div>
+        </div>
+
+        {/* Action Callout Bar */}
+        <div className="p-6 rounded-2xl bg-[#131415] border border-[#242628] flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="size-12 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white shrink-0">
+              <Sparkles className="size-6 text-[#34D59A]" />
+            </div>
+            <div>
+              <h4 className="text-sm sm:text-base font-medium text-white">
+                Ready to empower your developers with custom agent tools?
+              </h4>
+              <p className="text-xs text-[#797D86] mt-0.5">
+                Send your API schema, database table spec, or schedule a quick 15-minute scoping call directly with our engineering team.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <a
+              href="mailto:founder@sevlex.com?subject=Custom%20MCP%20Server%20Integration%20Request"
+              className="inline-flex items-center gap-2 h-10 px-5 rounded-full border border-[#242628] bg-[#18191B] hover:bg-[#242628] text-xs font-medium text-white transition duration-200"
+            >
+              <span>Email Spec (founder@sevlex.com)</span>
+            </a>
+            <a
+              href="https://calendly.com/meetpxnchl/meeting"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 h-10 px-5 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
+            >
+              <span>Schedule 15-Min Scoping Call</span>
+              <ArrowRight className="size-3.5" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 10. CTA BOTTOM BANNER (Neon Pill Standards)                               */}
       {/* ========================================================================= */}
       <section className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -1792,10 +1950,10 @@ export default function LandingPage() {
           <span>&copy; 2026 Sevlex Security Inc. All rights reserved.</span>
         </div>
         <div className="flex flex-wrap items-center gap-6">
-          <a href="#docs" className="hover:text-white transition">Documentation</a>
-          <a href="#agents" className="hover:text-white transition">Agent Setup</a>
-          <a href="#simulator" className="hover:text-white transition">Exploit Simulator</a>
           <a href="#features" className="hover:text-white transition">Features</a>
+          <a href="#simulator" className="hover:text-white transition">Live Demo</a>
+          <a href="#services" className="hover:text-white transition">Custom MCP</a>
+          <a href="#docs" className="hover:text-white transition">Documentation</a>
           <a href="/console" className="hover:text-white transition">Console</a>
           <a href="/llms.txt" target="_blank" className="hover:text-white transition font-mono text-[11px]">llms.txt</a>
           <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a>
