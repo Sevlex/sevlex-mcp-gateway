@@ -681,7 +681,7 @@ export default function LandingPage() {
               href="/console"
               className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
             >
-              <span>SecOps Console</span>
+              <span>Console</span>
               <ArrowRight className="size-3.5" />
             </a>
           </div>
@@ -718,7 +718,7 @@ export default function LandingPage() {
               href="/console"
               className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-sm gap-2 shadow-lg shadow-white/5"
             >
-              <span>Launch SecOps Console</span>
+              <span>Launch Console</span>
               <ArrowRight className="size-4" />
             </a>
 
@@ -970,13 +970,13 @@ export default function LandingPage() {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#131415] text-[#34D59A] border border-[#242628] mb-3">
             <ShieldCheck className="size-3.5 text-[#34D59A]" />
-            Zero-Trust Policy Guard
+            Live Demo
           </div>
           <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">
-            In-Flight Agent Threat Interception
+            See How Sevlex Blocks Dangerous Agent Actions
           </h2>
           <p className="mt-3 text-[#797D86] text-sm sm:text-base leading-relaxed">
-            When an autonomous coding agent attempts unauthorized operations, Sevlex halts execution before the tool call ever touches your infrastructure.
+            When an AI coding agent tries to delete a database or leak credentials, Sevlex stops it in under a millisecond.
           </p>
         </div>
 
@@ -1133,7 +1133,7 @@ export default function LandingPage() {
                   href="/console"
                   className="font-medium text-white hover:text-[#34D59A] flex items-center gap-1 transition"
                 >
-                  <span>SecOps Console</span>
+                  <span>Console</span>
                   <ArrowRight className="size-3" />
                 </a>
               </div>
@@ -1735,12 +1735,12 @@ export default function LandingPage() {
               <span>Sign Up with GitHub</span>
             </a>
 
-            {/* SecOps Console Primary Pill */}
+            {/* Console Primary Pill */}
             <a
               href="/console"
               className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium bg-white text-black hover:bg-[#E4E5E7] text-xs gap-2"
             >
-              <span>Sign In to SecOps Console</span>
+              <span>Sign In to Console</span>
               <ArrowRight className="size-3.5" />
             </a>
           </div>

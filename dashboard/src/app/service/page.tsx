@@ -85,7 +85,7 @@ export default function ServicePage() {
               href="/console"
               className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
             >
-              <span>SecOps Console</span>
+              <span>Console</span>
               <ArrowRight className="size-3.5" />
             </a>
           </div>

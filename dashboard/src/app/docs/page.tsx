@@ -213,7 +213,7 @@ function DocsContent() {
               )}
             </button>
 
-            {/* SecOps Console Link */}
+            {/* Console Link */}
             <Link
               href="/console"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-sm transition-all"

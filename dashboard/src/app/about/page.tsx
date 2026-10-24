@@ -64,7 +64,7 @@ export default function AboutPage() {
               href="/console"
               className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
             >
-              <span>SecOps Console</span>
+              <span>Console</span>
               <ArrowRight className="size-3.5" />
             </a>
           </div>
@@ -171,7 +171,7 @@ export default function AboutPage() {
             Empower Your Engineering Team with Safe AI Agents
           </h2>
           <p className="mt-4 text-[#797D86] max-w-xl mx-auto text-sm relative z-10">
-            Launch our SecOps Console to inspect your live agent fleet, or speak with our engineering team for custom MCP integration.
+            Launch our Console to inspect your live agent fleet, or speak with our engineering team for custom MCP integration.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 relative z-10">
@@ -185,7 +185,7 @@ export default function AboutPage() {
               href="/console"
               className="inline-flex items-center gap-2 h-11 px-7 rounded-full bg-white text-black hover:bg-[#E4E5E7] text-xs font-medium transition duration-200"
             >
-              <span>Launch SecOps Console</span>
+              <span>Launch Console</span>
               <ArrowRight className="size-3.5" />
             </a>
           </div>
