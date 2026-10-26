@@ -773,6 +773,189 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
+
+        {/* Layer 7 Zero-Trust Architecture Conduit (Interactive Visual Flow) */}
+        <div className={`mt-8 p-6 sm:p-8 rounded-2xl border transition-all ${
+          isDark
+            ? "border-[#242628] bg-[#0A0B0D]"
+            : "border-slate-200/90 bg-slate-50/70 ring-1 ring-slate-900/[0.04]"
+        }`}>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-inherit">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#34D59A] animate-pulse" />
+                <span className="text-xs font-mono font-medium text-[#34D59A] uppercase tracking-wider">
+                  Layer 7 Architecture Flow
+                </span>
+              </div>
+              <h3 className={`text-lg sm:text-xl font-medium tracking-tight mt-1 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                Zero-Trust Proxy Conduit Between Agent &amp; Infrastructure
+              </h3>
+            </div>
+            <div className={`flex items-center gap-2 font-mono text-[11px] px-3 py-1 rounded-full border self-start sm:self-auto ${
+              isDark ? "border-[#242628] bg-[#141518] text-[#AFB1B6]" : "border-slate-200 bg-white text-slate-600"
+            }`}>
+              <span>Wire Latency Overhead:</span>
+              <span className="text-[#34D59A] font-semibold">&lt; 0.42ms</span>
+            </div>
+          </div>
+
+          {/* 3-Stage Conduit Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-11 gap-4 items-center">
+            {/* Stage 1: AI Clients (Cols 1-3) */}
+            <div className={`lg:col-span-3 rounded-xl border p-4 sm:p-5 transition-all ${
+              isDark ? "border-[#242628] bg-[#121316]" : "border-slate-200 bg-white shadow-xs"
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <span className={`text-[11px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                  01 / Ingress
+                </span>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                  isDark ? "bg-white/[0.06] text-[#C9CBCF]" : "bg-slate-100 text-slate-700"
+                }`}>
+                  AI Clients
+                </span>
+              </div>
+              <h4 className={`text-sm font-medium mb-3 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                Autonomous Coding Agents
+              </h4>
+              <div className="space-y-2">
+                {[
+                  { name: "Cursor IDE (Composer)", proto: "stdio / jsonrpc" },
+                  { name: "Claude Desktop / Code", proto: "stdio / pipe" },
+                  { name: "Windsurf Cascade", proto: "stdio / jsonrpc" },
+                  { name: "Autonomous Agent Daemons", proto: "SSE / remote" },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono ${
+                      isDark ? "bg-[#18191D] text-[#AFB1B6]" : "bg-slate-50 text-slate-700 border border-slate-100"
+                    }`}
+                  >
+                    <span className="truncate">{item.name}</span>
+                    <span className={`text-[10px] shrink-0 ml-2 ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>
+                      {item.proto}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Conduit Pipe 1 -> 2 (Col 4) */}
+            <div className="lg:col-span-1 flex lg:flex-col items-center justify-center py-2 lg:py-0">
+              <div className="hidden lg:flex flex-col items-center gap-1 w-full text-center">
+                <span className="text-[10px] font-mono text-[#34D59A] uppercase tracking-wider">JSON-RPC</span>
+                <div className="w-full flex items-center justify-center">
+                  <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent via-[#34D59A]/40 to-[#34D59A]" />
+                  <ArrowRight className="size-3 text-[#34D59A] -ml-1 shrink-0" />
+                </div>
+                <span className={`text-[9px] font-mono ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>tools/call</span>
+              </div>
+              <div className="lg:hidden flex items-center gap-2 text-xs font-mono text-[#34D59A]">
+                <span>↓ JSON-RPC (tools/call)</span>
+              </div>
+            </div>
+
+            {/* Stage 2: Sevlex Zero-Trust Gateway (Cols 5-7 - Centerpiece) */}
+            <div className={`lg:col-span-3 rounded-xl border p-4 sm:p-5 relative overflow-hidden transition-all ${
+              isDark
+                ? "border-[#34D59A]/40 bg-[#0E1512] ring-1 ring-[#34D59A]/20 shadow-[0_0_24px_rgba(52,213,154,0.06)]"
+                : "border-emerald-500/40 bg-emerald-50/40 ring-1 ring-emerald-500/20 shadow-[0_4px_16px_rgba(16,185,129,0.08)]"
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[#34D59A] font-semibold">
+                  02 / Inspection Engine
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#34D59A]/10 text-[#34D59A] font-medium border border-[#34D59A]/30">
+                  Active Inline
+                </span>
+              </div>
+              <h4 className={`text-sm font-semibold mb-3 flex items-center gap-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                <ShieldCheck className="size-4 text-[#34D59A]" />
+                Sevlex Zero-Trust Gateway
+              </h4>
+              <div className="space-y-2">
+                {[
+                  { title: "AST Syntax DPI", desc: "Blocks DROP TABLE & shell escapes" },
+                  { title: "Output DLP Redaction", desc: "Masks API keys & PII in-flight" },
+                  { title: "Loop Circuit Breaker", desc: "Trips 429 on runaway execution" },
+                  { title: "Merkle WAL Ledger", desc: "Immutable SHA-256 receipt chain" },
+                ].map((item) => (
+                  <div
+                    key={item.title}
+                    className={`p-2 rounded-lg text-xs border ${
+                      isDark
+                        ? "bg-[#131D18] border-[#34D59A]/20 text-[#C9CBCF]"
+                        : "bg-white border-emerald-200 text-slate-800 shadow-2xs"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-xs text-[#34D59A]">{item.title}</span>
+                      <CheckCircle2 className="size-3 text-[#34D59A]" />
+                    </div>
+                    <div className={`text-[11px] mt-0.5 ${isDark ? "text-[#8E9B93]" : "text-slate-500"}`}>
+                      {item.desc}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Conduit Pipe 2 -> 3 (Col 8) */}
+            <div className="lg:col-span-1 flex lg:flex-col items-center justify-center py-2 lg:py-0">
+              <div className="hidden lg:flex flex-col items-center gap-1 w-full text-center">
+                <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">Sanitized</span>
+                <div className="w-full flex items-center justify-center">
+                  <div className="h-0.5 flex-1 bg-gradient-to-r from-[#34D59A] to-blue-400" />
+                  <ArrowRight className="size-3 text-blue-400 -ml-1 shrink-0" />
+                </div>
+                <span className={`text-[9px] font-mono ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>Scoped OK</span>
+              </div>
+              <div className="lg:hidden flex items-center gap-2 text-xs font-mono text-emerald-500">
+                <span>↓ Sanitized Payload</span>
+              </div>
+            </div>
+
+            {/* Stage 3: Downstream Surfaces (Cols 9-11) */}
+            <div className={`lg:col-span-3 rounded-xl border p-4 sm:p-5 transition-all ${
+              isDark ? "border-[#242628] bg-[#121316]" : "border-slate-200 bg-white shadow-xs"
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <span className={`text-[11px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                  03 / Target Egress
+                </span>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                  isDark ? "bg-white/[0.06] text-[#C9CBCF]" : "bg-slate-100 text-slate-700"
+                }`}>
+                  Enterprise Surfaces
+                </span>
+              </div>
+              <h4 className={`text-sm font-medium mb-3 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                Downstream Systems &amp; APIs
+              </h4>
+              <div className="space-y-2">
+                {[
+                  { name: "PostgreSQL / MySQL DB", status: "Read-only / Safe DML" },
+                  { name: "Bash & System Terminal", status: "Restricted command set" },
+                  { name: "GitHub & GitLab Repos", status: "Scoped branch write" },
+                  { name: "Internal REST / GraphQL APIs", status: "Token DLP enforced" },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono ${
+                      isDark ? "bg-[#18191D] text-[#AFB1B6]" : "bg-slate-50 text-slate-700 border border-slate-100"
+                    }`}
+                  >
+                    <span className="truncate">{item.name}</span>
+                    <span className="text-[10px] shrink-0 ml-2 text-blue-400">
+                      {item.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ========================================================================= */}
@@ -1240,56 +1423,68 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. METRICS PROOF COUNTER (Neon Stark Typography)                          */}
+      {/* 7. ARCHITECTURAL BENCHMARKS & CRYPTOGRAPHIC GUARANTEES                   */}
       {/* ========================================================================= */}
       <section className={`py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y my-8 transition-colors ${
         isDark ? "border-[#242628]" : "border-slate-200 bg-slate-50/50"
       }`}>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
-              isDark ? "text-white" : "text-[#0F172A]"
-            }`}>
-              142,394+
-            </div>
-            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
-              isDark ? "text-[#797D86]" : "text-slate-500"
-            }`}>
-              Tool Calls Inspected
-            </div>
-          </div>
-          <div>
             <div className="text-3xl sm:text-4xl font-normal text-[#34D59A] tracking-tight font-mono">
-              &lt;0.1ms
+              0.42ms
             </div>
             <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
               isDark ? "text-[#797D86]" : "text-slate-500"
             }`}>
-              Gateway Overhead
+              Wire Latency Overhead
+            </div>
+            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
+              Benchmarked stdio JSON-RPC
             </div>
           </div>
           <div>
             <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
               isDark ? "text-white" : "text-[#0F172A]"
             }`}>
-              100%
+              SHA-256
             </div>
             <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
               isDark ? "text-[#797D86]" : "text-slate-500"
             }`}>
-              Zero Data Exfiltration
+              Merkle Tree Receipts
+            </div>
+            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
+              Cryptographic non-repudiation
+            </div>
+          </div>
+          <div>
+            <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
+              100% Native
+            </div>
+            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
+              isDark ? "text-[#797D86]" : "text-slate-500"
+            }`}>
+              Stdio &amp; SSE Transport
+            </div>
+            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
+              Cursor, Claude &amp; Windsurf
             </div>
           </div>
           <div>
             <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
               isDark ? "text-[#AFB1B6]" : "text-slate-700"
             }`}>
-              30ms
+              0.00%
             </div>
             <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
               isDark ? "text-[#797D86]" : "text-slate-500"
             }`}>
-              Auto-Healing Daemon
+              Destructive Mutations
+            </div>
+            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
+              Strict AST Policy enforcement
             </div>
           </div>
         </div>
@@ -1299,209 +1494,6 @@ export default function LandingPage() {
       {/* 8. PRODUCT: CORE SECURITY ENGINES BENTO GRID (WITH 3D MOTION GRAPHICS)    */}
       {/* ========================================================================= */}
       <EngineBentoGrid />
-
-      {/* ========================================================================= */}
-      {/* 9.5 WHITE-GLOVE CUSTOM MCP SERVER & AGENT INTEGRATION SERVICE             */}
-      {/* ========================================================================= */}
-      <section id="services" className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200"
-      }`}>
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4 ${
-            isDark
-              ? "bg-[#131415] border border-[#242628] text-[#797D86]"
-              : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800"
-          }`}>
-            <span className="text-[#34D59A] font-semibold">WHITE-GLOVE ENGINEERING</span>
-            <span className={isDark ? "text-[#303236]" : "text-emerald-300"}>•</span>
-            <span className={isDark ? "text-[#AFB1B6]" : "text-emerald-700"}>48–72 HOUR TURNAROUND</span>
-          </div>
-          <h2 className={`text-3xl sm:text-4xl font-normal tracking-tight ${
-            isDark ? "text-white" : "text-[#0F172A]"
-          }`}>
-            Done-For-You Custom MCP Server Integration
-          </h2>
-          <p className={`mt-4 text-sm sm:text-base leading-relaxed ${
-            isDark ? "text-[#797D86]" : "text-[#475569]"
-          }`}>
-            Have an internal Postgres database, proprietary REST/GraphQL API, or legacy SaaS tool?
-            We build, test, and deliver a production-ready, security-hardened MCP server in 48 to 72 hours—pre-configured
-            with Sevlex Zero-Trust protection.
-          </p>
-        </div>
-
-        {/* 3 Offer Breakdown Bento Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {/* Card 1: Any Data Source */}
-          <div className={`rounded-2xl border p-6 flex flex-col justify-between transition-colors ${
-            isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_6px_16px_-4px_rgba(15,23,42,0.05)]"
-          }`}>
-            <div>
-              <div className={`size-10 rounded-full border flex items-center justify-center text-[#34D59A] mb-4 ${
-                isDark ? "bg-[#18191B] border-[#242628]" : "bg-emerald-50 border-emerald-200"
-              }`}>
-                <Database className="size-5" />
-              </div>
-              <h3 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-[#0F172A]"}`}>1. Any Source Ingested</h3>
-              <p className={`text-xs leading-relaxed mb-4 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-                We wrap your company&apos;s internal data layer into standard Model Context Protocol tool endpoints:
-              </p>
-              <ul className={`space-y-2 text-xs ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
-                  <span>PostgreSQL, MySQL, MongoDB, Redis</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
-                  <span>Internal REST, GraphQL, or gRPC Microservices</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
-                  <span>SaaS APIs (HubSpot, Salesforce, Jira, Stripe)</span>
-                </li>
-              </ul>
-            </div>
-            <div className={`mt-6 pt-4 border-t text-[11px] font-mono ${
-              isDark ? "border-[#1C1D1F] text-[#797D86]" : "border-slate-100 text-slate-500"
-            }`}>
-              Transport: Stdio or Remote SSE Transport
-            </div>
-          </div>
-
-          {/* Card 2: Hardened & Zero-Trust */}
-          <div className={`rounded-2xl border p-6 flex flex-col justify-between transition-colors ${
-            isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_6px_16px_-4px_rgba(15,23,42,0.05)]"
-          }`}>
-            <div>
-              <div className={`size-10 rounded-full border flex items-center justify-center text-blue-400 mb-4 ${
-                isDark ? "bg-[#18191B] border-[#242628]" : "bg-blue-50 border-blue-200"
-              }`}>
-                <ShieldCheck className="size-5" />
-              </div>
-              <h3 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-[#0F172A]"}`}>2. Hardened &amp; Zero-Trust</h3>
-              <p className={`text-xs leading-relaxed mb-4 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-                Engineered strictly to prevent destructive agent queries, token overflows, or accidental data leaks:
-              </p>
-              <ul className={`space-y-2 text-xs ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
-                  <span>Pre-integrated with Sevlex Layer 7 ToolGuard™</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
-                  <span>Output DLP scrubbing for credentials &amp; PII</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-blue-400 shrink-0" />
-                  <span>Verified on Claude Desktop, Cursor, &amp; Windsurf</span>
-                </li>
-              </ul>
-            </div>
-            <div className={`mt-6 pt-4 border-t text-[11px] font-mono ${
-              isDark ? "border-[#1C1D1F] text-[#797D86]" : "border-slate-100 text-slate-500"
-            }`}>
-              Governance: Scoped Read / Write Gates
-            </div>
-          </div>
-
-          {/* Card 3: Flat Fee & SLA */}
-          <div className={`rounded-2xl border p-6 flex flex-col justify-between relative overflow-hidden transition-colors ${
-            isDark
-              ? "border-[#34D59A]/30 bg-[#0E0E12]"
-              : "border-emerald-500/30 bg-white ring-1 ring-emerald-500/10 shadow-[0_1px_3px_0_rgba(16,185,129,0.04),0_6px_16px_-4px_rgba(16,185,129,0.06)]"
-          }`}>
-            <div className={`absolute top-0 right-0 border-b border-l px-3 py-1 rounded-bl-xl text-[10px] font-mono font-bold uppercase ${
-              isDark
-                ? "bg-[#34D59A]/10 border-[#34D59A]/20 text-[#34D59A]"
-                : "bg-emerald-500/10 border-emerald-500/20 text-emerald-800"
-            }`}>
-              Fast Delivery
-            </div>
-            <div>
-              <div className={`size-10 rounded-full border flex items-center justify-center text-[#34D59A] mb-4 ${
-                isDark ? "bg-[#18191B] border-[#242628]" : "bg-emerald-50 border-emerald-200"
-              }`}>
-                <Zap className="size-5" />
-              </div>
-              <h3 className={`text-base font-medium mb-1 ${isDark ? "text-white" : "text-[#0F172A]"}`}>3. Flat Fee &amp; Fast Turnaround</h3>
-              <div className="flex items-baseline gap-2 mb-3">
-                <span className={`text-3xl font-medium font-mono ${isDark ? "text-white" : "text-[#0F172A]"}`}>$800 – $1,200</span>
-                <span className={`text-xs ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>/ custom server</span>
-              </div>
-              <p className={`text-xs leading-relaxed mb-4 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-                Transparent flat pricing. 50% deposit upfront, 50% upon successful delivery and live test verification.
-              </p>
-              <ul className={`space-y-2 text-xs ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
-                  <span>48–72 hour delivery guarantee</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
-                  <span>100% source code ownership &amp; clean TypeScript</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 text-[#34D59A] shrink-0" />
-                  <span>Loom walkthrough &amp; client config file included</span>
-                </li>
-              </ul>
-            </div>
-            <div className={`mt-6 pt-4 border-t text-[11px] font-mono ${
-              isDark ? "border-[#1C1D1F] text-[#34D59A]" : "border-slate-100 text-emerald-700 font-semibold"
-            }`}>
-              SLA: 48–72 Hours or 100% Refund
-            </div>
-          </div>
-        </div>
-
-        {/* Action Callout Bar */}
-        <div className={`p-6 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-6 transition-colors ${
-          isDark
-            ? "bg-[#131415] border-[#242628]"
-            : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_8px_20px_-4px_rgba(15,23,42,0.06)]"
-        }`}>
-          <div className="flex items-center gap-4">
-            <div className={`size-12 rounded-xl border flex items-center justify-center shrink-0 ${
-              isDark ? "bg-white/[0.04] border-white/[0.08] text-[#34D59A]" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700"
-            }`}>
-              <Sparkles className="size-6" />
-            </div>
-            <div>
-              <h4 className={`text-sm sm:text-base font-medium ${isDark ? "text-white" : "text-[#0F172A]"}`}>
-                Ready to empower your developers with custom agent tools?
-              </h4>
-              <p className={`text-xs mt-0.5 ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-                Send your API schema, database table spec, or schedule a quick 15-minute scoping call directly with our engineering team.
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <a
-              href="mailto:founder@sevlex.com?subject=Custom%20MCP%20Server%20Integration%20Request"
-              className={`inline-flex items-center gap-2 h-10 px-5 rounded-full border text-xs font-medium transition duration-200 ${
-                isDark
-                  ? "border-[#242628] bg-[#18191B] hover:bg-[#242628] text-white"
-                  : "border-slate-200 bg-white hover:bg-slate-100 text-slate-800 shadow-xs"
-              }`}
-            >
-              <span>Email Spec (founder@sevlex.com)</span>
-            </a>
-            <a
-              href="https://calendly.com/meetpxnchl/meeting"
-              target="_blank"
-              rel="noreferrer"
-              className={`inline-flex items-center gap-2 h-10 px-5 rounded-full text-xs font-medium transition duration-200 ${
-                isDark
-                  ? "bg-white text-black hover:bg-[#E4E5E7]"
-                  : "bg-slate-900 text-white hover:bg-slate-800 shadow-xs"
-              }`}
-            >
-              <span>Schedule 15-Min Scoping Call</span>
-              <ArrowRight className="size-3.5" />
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* ========================================================================= */}
       {/* 9.6 ABOUT SEVLEX                                                          */}
