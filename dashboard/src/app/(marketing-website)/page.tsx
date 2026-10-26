@@ -800,158 +800,414 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* 3-Stage Conduit Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-11 gap-4 items-center">
-            {/* Stage 1: AI Clients (Cols 1-3) */}
-            <div className={`lg:col-span-3 rounded-xl border p-4 sm:p-5 transition-all ${
-              isDark ? "border-[#242628] bg-[#121316]" : "border-slate-200 bg-white shadow-xs"
+          {/* Visual Data Flow Sub-Bar (Indicating Directionality) */}
+          <div className={`hidden lg:flex items-center justify-between px-6 py-2.5 mb-5 rounded-xl border border-dashed text-xs font-mono transition-colors ${
+            isDark ? "border-[#242628] bg-[#0E1014]/60" : "border-slate-200 bg-white/70"
+          }`}>
+            <div className="flex items-center gap-2 text-[#AFB1B6]">
+              <span className="size-2 rounded-full bg-blue-400" />
+              <span className="font-semibold text-xs tracking-wider">STAGE 1: INGRESS</span>
+              <span className={isDark ? "text-[#61646B]" : "text-slate-400"}>(CLIENT RUNTIMES)</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[#34D59A] text-[11px]">
+              <span className="font-semibold">JSON-RPC tools/call</span>
+              <span>────────►</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#34D59A] font-bold">
+              <span className="size-2 rounded-full bg-[#34D59A] animate-ping" />
+              <span className="text-xs tracking-wider">STAGE 2: ZERO-TRUST PROXY CORE</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-blue-400 text-[11px]">
+              <span className="font-semibold">Sanitized Payloads</span>
+              <span>────────►</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#AFB1B6]">
+              <span className="size-2 rounded-full bg-purple-400" />
+              <span className="font-semibold text-xs tracking-wider">STAGE 3: EGRESS</span>
+              <span className={isDark ? "text-[#61646B]" : "text-slate-400"}>(DOWNSTREAM SURFACES)</span>
+            </div>
+          </div>
+
+          {/* 3-Column Architecture Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+            {/* Column 1: AI Ingress */}
+            <div className={`rounded-2xl border p-5 sm:p-6 flex flex-col justify-between transition-all ${
+              isDark ? "border-[#242628] bg-[#0E1014]" : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-xs"
             }`}>
-              <div className="flex items-center justify-between mb-3">
-                <span className={`text-[11px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
-                  01 / Ingress
-                </span>
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
-                  isDark ? "bg-white/[0.06] text-[#C9CBCF]" : "bg-slate-100 text-slate-700"
-                }`}>
-                  AI Clients
-                </span>
-              </div>
-              <h4 className={`text-sm font-medium mb-3 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
-                Autonomous Coding Agents
-              </h4>
-              <div className="space-y-2">
-                {[
-                  { name: "Cursor IDE (Composer)", proto: "stdio / jsonrpc" },
-                  { name: "Claude Desktop / Code", proto: "stdio / pipe" },
-                  { name: "Windsurf Cascade", proto: "stdio / jsonrpc" },
-                  { name: "Autonomous Agent Daemons", proto: "SSE / remote" },
-                ].map((item) => (
-                  <div
-                    key={item.name}
-                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono ${
-                      isDark ? "bg-[#18191D] text-[#AFB1B6]" : "bg-slate-50 text-slate-700 border border-slate-100"
-                    }`}
-                  >
-                    <span className="truncate">{item.name}</span>
-                    <span className={`text-[10px] shrink-0 ml-2 ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>
-                      {item.proto}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
+                      01 / Ingress
+                    </span>
+                    <span className={`text-xs font-mono ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>Client Runtimes</span>
+                  </div>
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                    isDark ? "bg-white/[0.04] text-[#AFB1B6]" : "bg-slate-100 text-slate-600"
+                  }`}>
+                    stdio &amp; SSE
+                  </span>
+                </div>
+
+                <h4 className={`text-base font-semibold tracking-tight mb-1 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                  Autonomous Coding Agents
+                </h4>
+                <p className={`text-xs mb-4 leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
+                  AI developer environments executing tool calls on engineer workstations:
+                </p>
+
+                {/* 4 Agent Rows with Real Logos */}
+                <div className="space-y-2.5">
+                  {/* Cursor */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/cursor-icon.svg" alt="Cursor" className="size-5 object-contain" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          Cursor Composer
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          Agent Mode • stdio JSON-RPC
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-[#34D59A] border border-emerald-500/20 shrink-0 ml-2">
+                      Shielded
                     </span>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Conduit Pipe 1 -> 2 (Col 4) */}
-            <div className="lg:col-span-1 flex lg:flex-col items-center justify-center py-2 lg:py-0">
-              <div className="hidden lg:flex flex-col items-center gap-1 w-full text-center">
-                <span className="text-[10px] font-mono text-[#34D59A] uppercase tracking-wider">JSON-RPC</span>
-                <div className="w-full flex items-center justify-center">
-                  <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent via-[#34D59A]/40 to-[#34D59A]" />
-                  <ArrowRight className="size-3 text-[#34D59A] -ml-1 shrink-0" />
+                  {/* Claude */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-[#D97706]/10 border border-[#D97706]/20 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/claude-icon.svg" alt="Claude" className="size-5 object-contain" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          Claude Desktop &amp; Code
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          Anthropic CLI • stdio pipes
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-[#34D59A] border border-emerald-500/20 shrink-0 ml-2">
+                      Shielded
+                    </span>
+                  </div>
+
+                  {/* Windsurf */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-[#0284C7]/10 border border-[#0284C7]/20 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/windsurf-icon.svg" alt="Windsurf" className="size-5 object-contain" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          Windsurf Cascade
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          Codeium Agent • stdio / SSE
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-[#34D59A] border border-emerald-500/20 shrink-0 ml-2">
+                      Shielded
+                    </span>
+                  </div>
+
+                  {/* Python / LangChain / CrewAI */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="https://img.logo.dev/python.org?token=pk_fdAoKVsxTvadheeQhynG5A&size=64&format=png"
+                          alt="Python"
+                          className="size-5 object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          Python / LangChain / CrewAI
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          Autonomous Agent Daemons • SSE
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-[#34D59A] border border-emerald-500/20 shrink-0 ml-2">
+                      Shielded
+                    </span>
+                  </div>
                 </div>
-                <span className={`text-[9px] font-mono ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>tools/call</span>
               </div>
-              <div className="lg:hidden flex items-center gap-2 text-xs font-mono text-[#34D59A]">
-                <span>↓ JSON-RPC (tools/call)</span>
+
+              <div className={`mt-4 pt-3 border-t text-[11px] font-mono flex items-center justify-between ${
+                isDark ? "border-[#1F222A] text-[#797D86]" : "border-slate-200 text-slate-500"
+              }`}>
+                <span>Payload: JSON-RPC 2.0</span>
+                <span className="text-emerald-400 font-semibold">Zero Config Hook</span>
               </div>
             </div>
 
-            {/* Stage 2: Sevlex Zero-Trust Gateway (Cols 5-7 - Centerpiece) */}
-            <div className={`lg:col-span-3 rounded-xl border p-4 sm:p-5 relative overflow-hidden transition-all ${
+            {/* Column 2: Sevlex Gateway (Centerpiece) */}
+            <div className={`rounded-2xl border p-5 sm:p-6 flex flex-col justify-between relative overflow-hidden transition-all ${
               isDark
-                ? "border-[#34D59A]/40 bg-[#0E1512] ring-1 ring-[#34D59A]/20 shadow-[0_0_24px_rgba(52,213,154,0.06)]"
-                : "border-emerald-500/40 bg-emerald-50/40 ring-1 ring-emerald-500/20 shadow-[0_4px_16px_rgba(16,185,129,0.08)]"
+                ? "border-[#34D59A]/40 bg-[#0A120E] ring-1 ring-[#34D59A]/20 shadow-[0_0_36px_rgba(52,213,154,0.08)]"
+                : "border-emerald-500/40 bg-emerald-50/50 ring-1 ring-emerald-500/20 shadow-[0_8px_24px_rgba(16,185,129,0.08)]"
             }`}>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-[#34D59A] font-semibold">
-                  02 / Inspection Engine
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#34D59A]/10 text-[#34D59A] font-medium border border-[#34D59A]/30">
-                  Active Inline
-                </span>
-              </div>
-              <h4 className={`text-sm font-semibold mb-3 flex items-center gap-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
-                <ShieldCheck className="size-4 text-[#34D59A]" />
-                Sevlex Zero-Trust Gateway
-              </h4>
-              <div className="space-y-2">
-                {[
-                  { title: "AST Syntax DPI", desc: "Blocks DROP TABLE & shell escapes" },
-                  { title: "Output DLP Redaction", desc: "Masks API keys & PII in-flight" },
-                  { title: "Loop Circuit Breaker", desc: "Trips 429 on runaway execution" },
-                  { title: "Merkle WAL Ledger", desc: "Immutable SHA-256 receipt chain" },
-                ].map((item) => (
-                  <div
-                    key={item.title}
-                    className={`p-2 rounded-lg text-xs border ${
-                      isDark
-                        ? "bg-[#131D18] border-[#34D59A]/20 text-[#C9CBCF]"
-                        : "bg-white border-emerald-200 text-slate-800 shadow-2xs"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-xs text-[#34D59A]">{item.title}</span>
-                      <CheckCircle2 className="size-3 text-[#34D59A]" />
-                    </div>
-                    <div className={`text-[11px] mt-0.5 ${isDark ? "text-[#8E9B93]" : "text-slate-500"}`}>
-                      {item.desc}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#34D59A]/10 blur-[40px] pointer-events-none rounded-full" />
 
-            {/* Conduit Pipe 2 -> 3 (Col 8) */}
-            <div className="lg:col-span-1 flex lg:flex-col items-center justify-center py-2 lg:py-0">
-              <div className="hidden lg:flex flex-col items-center gap-1 w-full text-center">
-                <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">Sanitized</span>
-                <div className="w-full flex items-center justify-center">
-                  <div className="h-0.5 flex-1 bg-gradient-to-r from-[#34D59A] to-blue-400" />
-                  <ArrowRight className="size-3 text-blue-400 -ml-1 shrink-0" />
-                </div>
-                <span className={`text-[9px] font-mono ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>Scoped OK</span>
-              </div>
-              <div className="lg:hidden flex items-center gap-2 text-xs font-mono text-emerald-500">
-                <span>↓ Sanitized Payload</span>
-              </div>
-            </div>
-
-            {/* Stage 3: Downstream Surfaces (Cols 9-11) */}
-            <div className={`lg:col-span-3 rounded-xl border p-4 sm:p-5 transition-all ${
-              isDark ? "border-[#242628] bg-[#121316]" : "border-slate-200 bg-white shadow-xs"
-            }`}>
-              <div className="flex items-center justify-between mb-3">
-                <span className={`text-[11px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
-                  03 / Target Egress
-                </span>
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
-                  isDark ? "bg-white/[0.06] text-[#C9CBCF]" : "bg-slate-100 text-slate-700"
-                }`}>
-                  Enterprise Surfaces
-                </span>
-              </div>
-              <h4 className={`text-sm font-medium mb-3 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
-                Downstream Systems &amp; APIs
-              </h4>
-              <div className="space-y-2">
-                {[
-                  { name: "PostgreSQL / MySQL DB", status: "Read-only / Safe DML" },
-                  { name: "Bash & System Terminal", status: "Restricted command set" },
-                  { name: "GitHub & GitLab Repos", status: "Scoped branch write" },
-                  { name: "Internal REST / GraphQL APIs", status: "Token DLP enforced" },
-                ].map((item) => (
-                  <div
-                    key={item.name}
-                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-mono ${
-                      isDark ? "bg-[#18191D] text-[#AFB1B6]" : "bg-slate-50 text-slate-700 border border-slate-100"
-                    }`}
-                  >
-                    <span className="truncate">{item.name}</span>
-                    <span className="text-[10px] shrink-0 ml-2 text-blue-400">
-                      {item.status}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#34D59A]/20 text-[#34D59A] border border-[#34D59A]/40 uppercase tracking-wider">
+                      02 / Policy Engine
+                    </span>
+                    <span className="text-xs font-mono text-[#34D59A] font-semibold flex items-center gap-1">
+                      <span className="size-1.5 rounded-full bg-[#34D59A] animate-ping" />
+                      Active In-Line
                     </span>
                   </div>
-                ))}
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+                    isDark ? "bg-[#131D18] border-[#34D59A]/30 text-[#34D59A]" : "bg-emerald-100 border-emerald-300 text-emerald-800"
+                  }`}>
+                    0.42ms Overhead
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 mb-1">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/sevlex-icon.png" alt="Sevlex" className="size-6 object-contain" />
+                  <h4 className={`text-base font-bold tracking-tight ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                    Sevlex Zero-Trust Gateway
+                  </h4>
+                </div>
+                <p className={`text-xs mb-4 leading-relaxed ${isDark ? "text-[#8E9B93]" : "text-[#475569]"}`}>
+                  Deterministic in-flight AST packet inspection &amp; cryptographic audit chain:
+                </p>
+
+                {/* 4 Engine Rows */}
+                <div className="space-y-2.5">
+                  <div className={`p-2.5 rounded-xl border text-xs ${
+                    isDark ? "bg-[#101C16] border-[#34D59A]/25" : "bg-white border-emerald-200 shadow-2xs"
+                  }`}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <div className="flex items-center gap-1.5 font-semibold text-[#34D59A]">
+                        <ShieldCheck className="size-3.5" />
+                        <span>ToolGuard™ AST DPI</span>
+                      </div>
+                      <span className={`text-[10px] font-mono ${isDark ? "text-[#8E9B93]" : "text-emerald-700"}`}>0.38ms</span>
+                    </div>
+                    <div className={`text-[11px] ${isDark ? "text-[#C9CBCF]" : "text-slate-600"}`}>
+                      Blocks SQL DDL (<code className="text-red-400 font-mono">DROP TABLE</code>) &amp; shell escapes in-flight.
+                    </div>
+                  </div>
+
+                  <div className={`p-2.5 rounded-xl border text-xs ${
+                    isDark ? "bg-[#101C16] border-[#34D59A]/25" : "bg-white border-emerald-200 shadow-2xs"
+                  }`}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <div className="flex items-center gap-1.5 font-semibold text-blue-400">
+                        <Lock className="size-3.5" />
+                        <span>Output Secret DLP</span>
+                      </div>
+                      <span className={`text-[10px] font-mono ${isDark ? "text-[#8E9B93]" : "text-blue-700"}`}>Entropy 4.2</span>
+                    </div>
+                    <div className={`text-[11px] ${isDark ? "text-[#C9CBCF]" : "text-slate-600"}`}>
+                      Masks OpenAI/AWS tokens &amp; DB credentials before LLM context ingestion.
+                    </div>
+                  </div>
+
+                  <div className={`p-2.5 rounded-xl border text-xs ${
+                    isDark ? "bg-[#101C16] border-[#34D59A]/25" : "bg-white border-emerald-200 shadow-2xs"
+                  }`}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <div className="flex items-center gap-1.5 font-semibold text-amber-400">
+                        <Zap className="size-3.5" />
+                        <span>Loop Circuit Breaker</span>
+                      </div>
+                      <span className={`text-[10px] font-mono ${isDark ? "text-[#8E9B93]" : "text-amber-700"}`}>429 Trip</span>
+                    </div>
+                    <div className={`text-[11px] ${isDark ? "text-[#C9CBCF]" : "text-slate-600"}`}>
+                      Trips immediate cooldown on runaway recursive calls (&gt;25 calls / 30s).
+                    </div>
+                  </div>
+
+                  <div className={`p-2.5 rounded-xl border text-xs ${
+                    isDark ? "bg-[#101C16] border-[#34D59A]/25" : "bg-white border-emerald-200 shadow-2xs"
+                  }`}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <div className="flex items-center gap-1.5 font-semibold text-purple-400">
+                        <FileCheck2 className="size-3.5" />
+                        <span>Merkle WAL Ledger</span>
+                      </div>
+                      <span className={`text-[10px] font-mono ${isDark ? "text-[#8E9B93]" : "text-purple-700"}`}>SHA-256</span>
+                    </div>
+                    <div className={`text-[11px] ${isDark ? "text-[#C9CBCF]" : "text-slate-600"}`}>
+                      Every execution mathematically sealed in an immutable tamper-evident chain.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={`mt-4 pt-3 border-t text-[11px] font-mono flex items-center justify-between ${
+                isDark ? "border-[#1F2E25] text-[#8E9B93]" : "border-emerald-200 text-emerald-800"
+              }`}>
+                <span>State: Zero-Privilege</span>
+                <span className="text-[#34D59A] font-bold">100% Non-Blocking</span>
+              </div>
+            </div>
+
+            {/* Column 3: Downstream Egress */}
+            <div className={`rounded-2xl border p-5 sm:p-6 flex flex-col justify-between transition-all ${
+              isDark ? "border-[#242628] bg-[#0E1014]" : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-xs"
+            }`}>
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 uppercase tracking-wider">
+                      03 / Egress
+                    </span>
+                    <span className={`text-xs font-mono ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>Enterprise Surfaces</span>
+                  </div>
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                    isDark ? "bg-white/[0.04] text-[#AFB1B6]" : "bg-slate-100 text-slate-600"
+                  }`}>
+                    Scoped Access
+                  </span>
+                </div>
+
+                <h4 className={`text-base font-semibold tracking-tight mb-1 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                  Downstream Systems &amp; APIs
+                </h4>
+                <p className={`text-xs mb-4 leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
+                  Sanitized, policy-enforced execution targets shielded from rogue agents:
+                </p>
+
+                {/* 4 Downstream Rows with Real Logos */}
+                <div className="space-y-2.5">
+                  {/* Postgres */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-[#336791]/10 border border-[#336791]/20 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/postgres-icon.png" alt="PostgreSQL" className="size-5 object-contain" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          PostgreSQL &amp; MySQL
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          Production Databases
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-[#34D59A] border border-emerald-500/20 shrink-0 ml-2">
+                      Zero DDL
+                    </span>
+                  </div>
+
+                  {/* GitHub */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="https://img.logo.dev/github.com?token=pk_fdAoKVsxTvadheeQhynG5A&size=64&format=png"
+                          alt="GitHub"
+                          className="size-5 object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          GitHub &amp; GitLab
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          Source Repositories &amp; CI/CD
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0 ml-2">
+                      Scoped Branch
+                    </span>
+                  </div>
+
+                  {/* AWS */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-[#FF9900]/10 border border-[#FF9900]/20 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/aws-icon.png" alt="AWS" className="size-5 object-contain" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          AWS &amp; Cloud Infra
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          S3 Buckets, IAM &amp; Cloud Run
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 shrink-0 ml-2">
+                      DLP Masked
+                    </span>
+                  </div>
+
+                  {/* Stripe / Slack / REST */}
+                  <div className={`flex items-center justify-between p-2.5 rounded-xl border transition-colors ${
+                    isDark ? "bg-[#14161C] border-[#22252E] hover:border-[#383D4C]" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+                  }`}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-[#635BFF]/10 border border-[#635BFF]/20 flex items-center justify-center p-1.5 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="https://img.logo.dev/stripe.com?token=pk_fdAoKVsxTvadheeQhynG5A&size=64&format=png"
+                          alt="Stripe"
+                          className="size-5 object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <div className={`text-xs font-semibold truncate ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+                          Stripe, Slack &amp; REST APIs
+                        </div>
+                        <div className={`text-[10px] font-mono truncate ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                          Corporate SaaS Integrations
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 ml-2">
+                      Rate Governed
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className={`mt-4 pt-3 border-t text-[11px] font-mono flex items-center justify-between ${
+                isDark ? "border-[#1F222A] text-[#797D86]" : "border-slate-200 text-slate-500"
+              }`}>
+                <span>Egress: Authenticated</span>
+                <span className="text-purple-400 font-semibold">Strict Guardrails</span>
               </div>
             </div>
           </div>
