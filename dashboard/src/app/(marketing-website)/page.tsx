@@ -668,6 +668,25 @@ export default function LandingPage() {
             </a>
           </div>
 
+          {/* Quickstart Install Pill in Hero */}
+          <div className="mt-6 flex items-center justify-center">
+            <div className={`inline-flex items-center gap-3 rounded-full px-4 py-2 border transition-all ${
+              isDark
+                ? "bg-[#0A0C10] border-white/[0.08] text-[#AFB1B6] hover:border-white/[0.16]"
+                : "bg-white border-slate-200 text-slate-700 shadow-xs hover:border-slate-300"
+            }`}>
+              <span className="text-[#34D59A] font-mono text-xs font-semibold">$</span>
+              <code className={`text-xs font-mono font-medium ${isDark ? "text-white" : "text-slate-900"}`}>npx sevlex init</code>
+              <button
+                onClick={copyInstall}
+                className={`p-1 transition cursor-pointer ${isDark ? "text-[#797D86] hover:text-white" : "text-slate-400 hover:text-slate-800"}`}
+                title="Copy install command"
+              >
+                {copied ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
+              </button>
+            </div>
+          </div>
+
           {/* Client Ecosystem Showcase (100% borderless, transparent, seamless) */}
           <div className="mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#797D86]">
             <span className={`font-mono text-[11px] uppercase tracking-wider ${isDark ? "text-[#61646B]" : "text-[#64748B]"}`}>
@@ -727,45 +746,68 @@ export default function LandingPage() {
 
         {/* 3 Editorial Value Propositions (Structured Card Architecture) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pb-6">
-          <div className={`p-5 rounded-2xl border transition-all ${
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
             isDark
-              ? "bg-[#0E0E12]/60 border-[#242628]"
-              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.18] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs hover:shadow-md"
           }`}>
-            <div className="font-mono text-xs text-[#34D59A] font-semibold uppercase tracking-wider mb-2">
-              01 / In-Flight Intercept
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-mono text-[11px] text-[#34D59A] font-semibold uppercase tracking-wider">
+                01 / In-Flight Intercept
+              </span>
+              <div className={`size-8 rounded-lg border flex items-center justify-center ${
+                isDark ? "bg-[#34D59A]/10 border-[#34D59A]/20 text-[#34D59A]" : "bg-emerald-50 border-emerald-200 text-emerald-700"
+              }`}>
+                <Terminal className="size-4" />
+              </div>
             </div>
-            <h3 className={`text-base font-medium tracking-tight mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+            <h3 className={`text-base font-semibold tracking-tight mb-2 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
               Instant Operations
             </h3>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-              Transparent stdio &amp; SSE transport wrapping with &lt;0.1ms overhead. Agents don&apos;t wait for proxy daemons or container spinups.
+              Transparent stdio &amp; SSE transport wrapping with &lt;0.42ms overhead. Agents don&apos;t wait for proxy daemons or container spinups.
             </p>
           </div>
-          <div className={`p-5 rounded-2xl border transition-all ${
+
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
             isDark
-              ? "bg-[#0E0E12]/60 border-[#242628]"
-              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.18] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs hover:shadow-md"
           }`}>
-            <div className="font-mono text-xs text-blue-400 font-semibold uppercase tracking-wider mb-2">
-              02 / Deep Packet Inspection
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-mono text-[11px] text-blue-400 font-semibold uppercase tracking-wider">
+                02 / Deep Packet Inspection
+              </span>
+              <div className={`size-8 rounded-lg border flex items-center justify-center ${
+                isDark ? "bg-blue-500/10 border-blue-500/20 text-blue-400" : "bg-blue-50 border-blue-200 text-blue-700"
+              }`}>
+                <ShieldCheck className="size-4" />
+              </div>
             </div>
-            <h3 className={`text-base font-medium tracking-tight mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+            <h3 className={`text-base font-semibold tracking-tight mb-2 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
               AST Parameter Guard
             </h3>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               In-flight parsing blocks destructive SQL (<code className="text-red-400 font-mono text-xs">DROP TABLE</code>), shell injections, and credential paths before transmission.
             </p>
           </div>
-          <div className={`p-5 rounded-2xl border transition-all ${
+
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
             isDark
-              ? "bg-[#0E0E12]/60 border-[#242628]"
-              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.18] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs hover:shadow-md"
           }`}>
-            <div className="font-mono text-xs text-purple-400 font-semibold uppercase tracking-wider mb-2">
-              03 / Autonomous Safety
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-mono text-[11px] text-purple-400 font-semibold uppercase tracking-wider">
+                03 / Autonomous Safety
+              </span>
+              <div className={`size-8 rounded-lg border flex items-center justify-center ${
+                isDark ? "bg-purple-500/10 border-purple-500/20 text-purple-400" : "bg-purple-50 border-purple-200 text-purple-700"
+              }`}>
+                <RotateCcw className="size-4" />
+              </div>
             </div>
-            <h3 className={`text-base font-medium tracking-tight mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
+            <h3 className={`text-base font-semibold tracking-tight mb-2 ${isDark ? "text-white" : "text-[#0F172A]"}`}>
               Safe Rollback &amp; Circuit Breakers
             </h3>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
@@ -1681,66 +1723,107 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 7. ARCHITECTURAL BENCHMARKS & CRYPTOGRAPHIC GUARANTEES                   */}
       {/* ========================================================================= */}
-      <section className={`py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-y my-8 transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200 bg-slate-50/50"
-      }`}>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
+      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
+            isDark
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.16] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] shadow-xs"
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <span className={`text-[10px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                LATENCY OVERHEAD
+              </span>
+              <span className="size-2 rounded-full bg-[#34D59A] animate-pulse" />
+            </div>
             <div className="text-3xl sm:text-4xl font-normal text-[#34D59A] tracking-tight font-mono">
               0.42ms
             </div>
-            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
-              isDark ? "text-[#797D86]" : "text-slate-500"
+            <div className={`mt-2 text-xs font-semibold uppercase tracking-wider ${
+              isDark ? "text-white" : "text-[#0F172A]"
             }`}>
-              Wire Latency Overhead
+              Wire Latency Budget
             </div>
-            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
-              Benchmarked stdio JSON-RPC
+            <div className={`mt-1 text-[11px] leading-relaxed ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>
+              Measured stdio JSON-RPC packet processing time in-flight.
             </div>
           </div>
-          <div>
+
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
+            isDark
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.16] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] shadow-xs"
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <span className={`text-[10px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                AUDIT COMPLIANCE
+              </span>
+              <span className="size-2 rounded-full bg-purple-400" />
+            </div>
             <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
               isDark ? "text-white" : "text-[#0F172A]"
             }`}>
               SHA-256
             </div>
-            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
-              isDark ? "text-[#797D86]" : "text-slate-500"
+            <div className={`mt-2 text-xs font-semibold uppercase tracking-wider ${
+              isDark ? "text-white" : "text-[#0F172A]"
             }`}>
               Merkle Tree Receipts
             </div>
-            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
-              Cryptographic non-repudiation
+            <div className={`mt-1 text-[11px] leading-relaxed ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>
+              Immutable cryptographic hash chain per tool execution.
             </div>
           </div>
-          <div>
+
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
+            isDark
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.16] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] shadow-xs"
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <span className={`text-[10px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                COMPATIBILITY
+              </span>
+              <span className="size-2 rounded-full bg-blue-400" />
+            </div>
             <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
               isDark ? "text-white" : "text-[#0F172A]"
             }`}>
               100% Native
             </div>
-            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
-              isDark ? "text-[#797D86]" : "text-slate-500"
+            <div className={`mt-2 text-xs font-semibold uppercase tracking-wider ${
+              isDark ? "text-white" : "text-[#0F172A]"
             }`}>
               Stdio &amp; SSE Transport
             </div>
-            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
-              Cursor, Claude &amp; Windsurf
+            <div className={`mt-1 text-[11px] leading-relaxed ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>
+              Zero config wrapper for Cursor, Claude Desktop &amp; Windsurf.
             </div>
           </div>
-          <div>
+
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
+            isDark
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.16] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 hover:border-slate-300 ring-1 ring-slate-900/[0.03] shadow-xs"
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <span className={`text-[10px] font-mono uppercase tracking-wider ${isDark ? "text-[#797D86]" : "text-slate-400"}`}>
+                SAFETY STRICT MODE
+              </span>
+              <span className="size-2 rounded-full bg-red-400" />
+            </div>
             <div className={`text-3xl sm:text-4xl font-normal tracking-tight font-mono ${
               isDark ? "text-[#AFB1B6]" : "text-slate-700"
             }`}>
               0.00%
             </div>
-            <div className={`mt-1 text-xs uppercase tracking-wider font-medium ${
-              isDark ? "text-[#797D86]" : "text-slate-500"
+            <div className={`mt-2 text-xs font-semibold uppercase tracking-wider ${
+              isDark ? "text-white" : "text-[#0F172A]"
             }`}>
               Destructive Mutations
             </div>
-            <div className={`mt-0.5 text-[11px] ${isDark ? "text-[#4E5158]" : "text-slate-400"}`}>
-              Strict AST Policy enforcement
+            <div className={`mt-1 text-[11px] leading-relaxed ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>
+              Deterministic AST policy blocks DROP TABLE &amp; shell escapes.
             </div>
           </div>
         </div>
@@ -1782,43 +1865,49 @@ export default function LandingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <div className={`p-6 rounded-2xl border transition-colors ${
-            isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_6px_16px_-4px_rgba(15,23,42,0.05)]"
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
+            isDark
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.18] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-xs hover:shadow-md"
           }`}>
-            <div className={`size-9 rounded-full border flex items-center justify-center text-[#34D59A] mb-3 ${
-              isDark ? "bg-[#18191B] border-[#242628]" : "bg-emerald-50 border-emerald-200"
+            <div className={`size-9 rounded-xl border flex items-center justify-center text-[#34D59A] mb-4 ${
+              isDark ? "bg-[#34D59A]/10 border-[#34D59A]/20" : "bg-emerald-50 border-emerald-200"
             }`}>
               <Shield className="size-4" />
             </div>
-            <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Zero-Trust by Default</h4>
+            <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Zero-Trust by Default</h4>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               Every JSON-RPC packet passing between Claude, Cursor, and downstream systems is inspected in-flight. Destructive operations are arrested in microseconds.
             </p>
           </div>
 
-          <div className={`p-6 rounded-2xl border transition-colors ${
-            isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_6px_16px_-4px_rgba(15,23,42,0.05)]"
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
+            isDark
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.18] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-xs hover:shadow-md"
           }`}>
-            <div className={`size-9 rounded-full border flex items-center justify-center text-blue-400 mb-3 ${
-              isDark ? "bg-[#18191B] border-[#242628]" : "bg-blue-50 border-blue-200"
+            <div className={`size-9 rounded-xl border flex items-center justify-center text-blue-400 mb-4 ${
+              isDark ? "bg-blue-500/10 border-blue-500/20" : "bg-blue-50 border-blue-200"
             }`}>
               <Terminal className="size-4" />
             </div>
-            <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Developer Velocity First</h4>
+            <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Developer Velocity First</h4>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-              Security that gets in the way gets bypassed. Sevlex operates transparently over stdio pipes with &lt;0.1ms wire overhead and zero workflow disruption.
+              Security that gets in the way gets bypassed. Sevlex operates transparently over stdio pipes with &lt;0.42ms wire overhead and zero workflow disruption.
             </p>
           </div>
 
-          <div className={`p-6 rounded-2xl border transition-colors ${
-            isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_6px_16px_-4px_rgba(15,23,42,0.05)]"
+          <div className={`p-6 rounded-2xl border transition-all duration-300 ${
+            isDark
+              ? "bg-[#0E1014] border-white/[0.08] hover:border-white/[0.18] hover:bg-[#12141A]"
+              : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-xs hover:shadow-md"
           }`}>
-            <div className={`size-9 rounded-full border flex items-center justify-center text-purple-400 mb-3 ${
-              isDark ? "bg-[#18191B] border-[#242628]" : "bg-purple-50 border-purple-200"
+            <div className={`size-9 rounded-xl border flex items-center justify-center text-purple-400 mb-4 ${
+              isDark ? "bg-purple-500/10 border-purple-500/20" : "bg-purple-50 border-purple-200"
             }`}>
               <FileCheck2 className="size-4" />
             </div>
-            <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Mathematical Proof</h4>
+            <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-[#0F172A]"}`}>Mathematical Proof</h4>
             <p className={`text-xs leading-relaxed ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
               Every tool execution receipt is mathematically linked in an immutable SQLite WAL Merkle chain. Complete cryptographic audit readiness built into every packet.
             </p>
