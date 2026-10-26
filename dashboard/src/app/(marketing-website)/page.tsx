@@ -669,27 +669,8 @@ export default function LandingPage() {
             </a>
           </div>
 
-          {/* Quickstart Install Pill in Hero */}
-          <div className="mt-6 flex items-center justify-center">
-            <div className={`inline-flex items-center gap-3 rounded-full px-4 py-2 border transition-all ${
-              isDark
-                ? "bg-[#0A0C10] border-white/[0.08] text-[#AFB1B6] hover:border-white/[0.16]"
-                : "bg-white border-slate-200 text-slate-700 shadow-xs hover:border-slate-300"
-            }`}>
-              <span className="text-[#34D59A] font-mono text-xs font-semibold">$</span>
-              <code className={`text-xs font-mono font-medium ${isDark ? "text-white" : "text-slate-900"}`}>npx sevlex init</code>
-              <button
-                onClick={copyInstall}
-                className={`p-1 transition cursor-pointer ${isDark ? "text-[#797D86] hover:text-white" : "text-slate-400 hover:text-slate-800"}`}
-                title="Copy install command"
-              >
-                {copied ? <Check className="size-3.5 text-[#34D59A]" /> : <Copy className="size-3.5" />}
-              </button>
-            </div>
-          </div>
-
           {/* Client Ecosystem Showcase (100% borderless, transparent, seamless) */}
-          <div className="mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#797D86]">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#797D86]">
             <span className={`font-mono text-[11px] uppercase tracking-wider ${isDark ? "text-[#61646B]" : "text-[#64748B]"}`}>
               Zero-Config Shields:
             </span>
