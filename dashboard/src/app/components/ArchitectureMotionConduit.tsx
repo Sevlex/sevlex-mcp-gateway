@@ -469,7 +469,7 @@ export default function ArchitectureMotionConduit() {
                   <div className="relative mb-2">
                     <div className="size-12 rounded-xl flex items-center justify-center p-2 transition-all">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/sevlex-icon.png" alt="Sevlex" className="size-8 object-contain" />
+                      <img src={isDark ? "/sevlex-icon-white.svg" : "/sevlex-icon-black.svg"} alt="Sevlex" className="size-8 object-contain" />
                     </div>
                     <span
                       className={`absolute top-0 right-0 size-2.5 rounded-full ${
@@ -911,7 +911,7 @@ export default function ArchitectureMotionConduit() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/sevlex-icon.png" alt="Sevlex" className="size-5 object-contain" />
+                  <img src={isDark ? "/sevlex-icon-white.svg" : "/sevlex-icon-black.svg"} alt="Sevlex" className="size-5 object-contain" />
                   <span className={`text-xs font-mono font-bold ${isDark ? "text-white" : "text-[#0F172A]"}`}>
                     STAGE 2 / SEVLEX AST GATEWAY
                   </span>
