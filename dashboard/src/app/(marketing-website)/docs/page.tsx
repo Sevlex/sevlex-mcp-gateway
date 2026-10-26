@@ -230,6 +230,7 @@ const ADAPTERS_NAV_GROUPS: DocGroup[] = [
           { id: "universal-node", title: "TypeScript / Node (Vercel AI SDK / Mastra)" },
           { id: "universal-stdio-sse", title: "Stdio vs Remote SSE Transport" },
           { id: "universal-zero-config", title: "Wrapping Existing MCP Tool Servers" },
+          { id: "universal-jsonrpc-contract", title: "JSON-RPC Error Contract" },
         ],
       },
     ],
@@ -1667,6 +1668,38 @@ const tools = await gateway.getWrappedTools();`}
                     copiedId={copiedId}
                     code={`# Wrap any existing stdio MCP server command:
 npx sevlex proxy -- npx -y @modelcontextprotocol/server-postgres postgresql://user:pass@localhost/db`}
+                  />
+                </div>
+
+                {/* Protocol Error Handling */}
+                <div id="universal-jsonrpc-contract" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
+                    JSON-RPC 2.0 Error Interception Contract
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    When an agent attempts a quarantined action (e.g., <code className="font-mono text-emerald-400">DROP TABLE</code>), Sevlex does <strong>not</strong> crash the process pipe or close stdio. Instead, it returns a standard JSON-RPC error with code <code className="font-mono text-emerald-400">-32000</code>. This allows the LLM agent to intelligently recover, apologize, and choose a safe alternative path without session failure:
+                  </p>
+                  <CodeBlock
+                    id="code-universal-jsonrpc-error"
+                    language="json"
+                    filename="JSON-RPC 2.0 Interception Response"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "error": {
+    "code": -32000,
+    "message": "[SEVLEX_INTERCEPT] Destructive SQL DDL statement blocked: DROP TABLE is not permitted in strict mode.",
+    "data": {
+      "violation": "denySqlStatements",
+      "targetTable": "production_users",
+      "quarantinedBytes": 42,
+      "latencyMs": 0.38
+    }
+  }
+}`}
                   />
                 </div>
               </div>
