@@ -289,8 +289,8 @@ const SCENARIOS: Record<AttackScenario, ScenarioData> = {
     title: "Hallucination Loop Breaker",
     badge: "LOOP BREAKER",
     badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-    client: "Windsurf Cascade",
-    clientBrand: "windsurf",
+    client: "Google Antigravity",
+    clientBrand: "antigravity",
     server: "github_server",
     tool: "github:list_issues",
     rpcId: "rpc-8821",
@@ -696,7 +696,7 @@ export default function LandingPage() {
             {[
               { name: "Cursor IDE", brand: "cursor" },
               { name: "Claude Desktop", brand: "claude" },
-              { name: "Windsurf", brand: "windsurf" },
+              { name: "Google Gemini", brand: "gemini" },
               { name: "Antigravity", brand: "antigravity" },
               { name: "Node / TS SDK", brand: "node" },
             ].map((client) => (
@@ -1259,7 +1259,7 @@ export default function LandingPage() {
                 </span>
               </div>
               <p className={`text-xs mt-1 max-w-xl ${isDark ? "text-[#797D86]" : "text-[#475569]"}`}>
-                Structured plain-text specification optimized for Claude Code, Cursor, Windsurf, and autonomous AI agents to ingest CLI commands without web scraping.
+                Structured plain-text specification optimized for Claude Code, Cursor, Google Gemini, Antigravity, and autonomous AI agents to ingest CLI commands without web scraping.
               </p>
             </div>
           </div>
@@ -1364,7 +1364,7 @@ export default function LandingPage() {
               Stdio &amp; SSE Transport
             </div>
             <div className={`mt-1 text-[11px] leading-relaxed ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>
-              Zero config wrapper for Cursor, Claude Desktop &amp; Windsurf.
+              Zero config wrapper for Cursor, Claude Desktop, Gemini &amp; Antigravity.
             </div>
           </div>
 

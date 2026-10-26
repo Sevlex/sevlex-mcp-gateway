@@ -23,7 +23,7 @@ interface Scenario {
   name: string;
   badge: string;
   color: string;
-  sourceAgent: "cursor" | "claude" | "windsurf" | "python";
+  sourceAgent: "cursor" | "claude" | "antigravity" | "gemini" | "windsurf" | "python";
   sourceName: string;
   sourceTransport: string;
   targetSystem: "postgres" | "github" | "aws" | "stripe";
@@ -85,9 +85,9 @@ const SCENARIOS: Scenario[] = [
     name: "Credential Leak Redaction",
     badge: "Secret Stripped In-Line",
     color: "#38BDF8",
-    sourceAgent: "windsurf",
-    sourceName: "Windsurf Cascade",
-    sourceTransport: "Codeium Agent • stdio stream",
+    sourceAgent: "antigravity",
+    sourceName: "Google Antigravity",
+    sourceTransport: "Antigravity Agent • MCP stdio",
     targetSystem: "aws",
     targetName: "AWS Infrastructure & S3",
     payloadTitle: 'tools/call: s3_read_env("AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI...")',
@@ -385,7 +385,7 @@ export default function ArchitectureMotionConduit() {
 
                 <div
                   className={`p-2.5 rounded-xl border transition-all duration-200 flex items-center justify-between cursor-pointer ${
-                    scenario.sourceAgent === "windsurf"
+                    scenario.sourceAgent === "antigravity"
                       ? isDark
                         ? "bg-[#101920] border-cyan-500/40 text-white"
                         : "bg-cyan-50 border-cyan-300 text-cyan-900"
@@ -400,10 +400,10 @@ export default function ArchitectureMotionConduit() {
                 >
                   <div className="flex items-center gap-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/windsurf-icon.svg" alt="Windsurf" className="size-4 object-contain" />
-                    <span className="text-xs font-medium">Windsurf Cascade</span>
+                    <img src="/antigravity-icon.png" alt="Google Antigravity" className="size-4 object-contain" />
+                    <span className="text-xs font-medium">Google Antigravity</span>
                   </div>
-                  <span className="text-[9px] font-mono text-cyan-400">daemon</span>
+                  <span className="text-[9px] font-mono text-cyan-400">agent</span>
                 </div>
               </div>
             </div>
@@ -460,32 +460,22 @@ export default function ArchitectureMotionConduit() {
                 <div
                   className={`relative z-20 w-52 rounded-2xl border p-4 flex flex-col items-center text-center transition-all duration-300 backdrop-blur-xl ${
                     scenario.outcome === "blocked"
-                      ? isDark
-                        ? "bg-[#180E10]/90 border-red-500/50 shadow-[0_0_40px_rgba(239,68,68,0.25)] ring-1 ring-red-500/30"
-                        : "bg-red-50 border-red-400 shadow-xl ring-1 ring-red-300"
+                      ? isDark ? "bg-[#180E10]/90 border-white/[0.08] shadow-[0_0_40px_rgba(239,68,68,0.2)]" : "bg-white border-slate-200 shadow-xl"
                       : isDark
                       ? "bg-[#0A120E]/90 border-[#34D59A]/40 shadow-[0_0_40px_rgba(52,213,154,0.18)] ring-1 ring-[#34D59A]/30"
                       : "bg-emerald-50/90 border-emerald-400 shadow-xl ring-1 ring-emerald-300"
                   }`}
                 >
                   <div className="relative mb-2">
-                    <div
-                      className={`size-12 rounded-xl flex items-center justify-center p-2 border transition-all ${
-                        scenario.outcome === "blocked"
-                          ? "bg-red-500/20 border-red-500/40 text-red-400"
-                          : "bg-[#34D59A]/20 border-[#34D59A]/40 text-[#34D59A]"
-                      }`}
-                    >
+                    <div className="size-12 rounded-xl flex items-center justify-center p-2 transition-all">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src="/sevlex-icon.png" alt="Sevlex" className="size-8 object-contain" />
                     </div>
                     <span
-                      className={`absolute -top-1 -right-1 size-3 rounded-full border-2 ${
-                        isDark ? "border-[#0A120E]" : "border-white"
-                      } ${
+                      className={`absolute top-0 right-0 size-2.5 rounded-full ${
                         scenario.outcome === "blocked"
-                          ? "bg-red-500 animate-pulse"
-                          : "bg-[#34D59A] animate-ping"
+                          ? "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse"
+                          : "bg-[#34D59A] shadow-[0_0_8px_rgba(52,213,154,0.8)] animate-ping"
                       }`}
                     />
                   </div>
