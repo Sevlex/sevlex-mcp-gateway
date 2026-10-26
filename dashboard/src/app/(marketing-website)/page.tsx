@@ -613,7 +613,7 @@ export default function LandingPage() {
       {/* 3. HERO SECTION (Neon Aesthetic & High-Craft Typography)                  */}
       {/* ========================================================================= */}
       <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 text-center">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Eyebrow Pill */}
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
             isDark
@@ -710,11 +710,6 @@ export default function LandingPage() {
                 <span className="font-medium tracking-tight text-xs sm:text-sm">{client.name}</span>
               </div>
             ))}
-          </div>
-
-          {/* Flagship Hero Stage: Layer 7 Kinetic Motion Conduit (Linear & contexthint.si standard) */}
-          <div className="mt-12 text-left relative z-20">
-            <ArchitectureMotionConduit />
           </div>
         </div>
       </section>
@@ -820,6 +815,11 @@ export default function LandingPage() {
               Every agent modification automatically preserves a 100% reversible <code className={`${isDark ? "text-[#34D59A]" : "text-emerald-700 font-semibold"} font-mono text-xs`}>*.sevlex.bak</code> backup snapshot with velocity breakers.
             </p>
           </div>
+        </div>
+
+        {/* Layer 7 Zero-Trust Architecture Conduit (Kinetic Motion Graphics Flow) */}
+        <div className="mt-8">
+          <ArchitectureMotionConduit />
         </div>
       </section>
 
