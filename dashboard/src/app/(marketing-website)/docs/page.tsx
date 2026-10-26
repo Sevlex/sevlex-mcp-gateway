@@ -217,6 +217,24 @@ const DOCS_NAV_GROUPS: DocGroup[] = [
 // 2. ADAPTERS SECTION NAVIGATION (AI Runtimes & Client IDEs)
 const ADAPTERS_NAV_GROUPS: DocGroup[] = [
   {
+    group: "Universal AI Agent Architecture",
+    items: [
+      {
+        id: "universal-agent",
+        title: "Universal AI Agent (Any Stack)",
+        badge: "Universal",
+        breadcrumb: "Adapters",
+        toc: [
+          { id: "universal-mental-model", title: "Universal Wire Architecture" },
+          { id: "universal-python", title: "Python (LangChain / CrewAI / LlamaIndex)" },
+          { id: "universal-node", title: "TypeScript / Node (Vercel AI SDK / Mastra)" },
+          { id: "universal-stdio-sse", title: "Stdio vs Remote SSE Transport" },
+          { id: "universal-zero-config", title: "Wrapping Existing MCP Tool Servers" },
+        ],
+      },
+    ],
+  },
+  {
     group: "Coding IDEs & Agents",
     items: [
       {
@@ -289,8 +307,24 @@ const ADAPTERS_NAV_GROUPS: DocGroup[] = [
 // 3. GUIDES SECTION NAVIGATION (Actionable Step-by-Step Tutorials modeled after Corsair.dev)
 const GUIDES_NAV_GROUPS: DocGroup[] = [
   {
-    group: "Agent Safety Guides",
+    group: "End-to-End Master Guides",
     items: [
+      {
+        id: "guide-universal-deploy",
+        title: "A to Z: Deploy Any AI Agent",
+        badge: "A-to-Z Guide",
+        breadcrumb: "Guides",
+        toc: [
+          { id: "atoz-architecture", title: "Phase 1: End-to-End Wire Architecture" },
+          { id: "atoz-scaffold", title: "Phase 2: Local Scaffold & Gateway Wiring" },
+          { id: "atoz-agent-code", title: "Phase 3: Building the Agent (Python & TS)" },
+          { id: "atoz-policies", title: "Phase 4: Declarative Policies (sevlex.config.ts)" },
+          { id: "atoz-hitl", title: "Phase 5: Human-in-the-Loop Quarantine" },
+          { id: "atoz-merkle", title: "Phase 6: Cryptographic Merkle Verification" },
+          { id: "atoz-docker", title: "Phase 7: Production Docker & Compose Deployment" },
+          { id: "atoz-cloud", title: "Phase 8: Production Cloud & Serverless Rollout" },
+        ],
+      },
       {
         id: "guide-vibecode",
         title: "Vibe Code Safely with AI",
@@ -441,8 +475,8 @@ function DocsContent() {
   const handleSectionSwitch = (tab: SectionTab) => {
     setSectionTab(tab);
     if (tab === "docs") setActiveDocId("intro");
-    if (tab === "adapters") setActiveDocId("cursor");
-    if (tab === "guides") setActiveDocId("guide-vibecode");
+    if (tab === "adapters") setActiveDocId("universal-agent");
+    if (tab === "guides") setActiveDocId("guide-universal-deploy");
   };
 
   return (
@@ -682,6 +716,428 @@ function DocsContent() {
           {/* ARTICLE CONTENT ROUTING                                                   */}
           {/* ========================================================================= */}
           <div className="mt-8 space-y-10">
+
+                        {/* ========================================================================= */}
+            {/* GUIDE: A TO Z: DEPLOY ANY AI AGENT END-TO-END (MASTER BLUEPRINT)          */}
+            {/* ========================================================================= */}
+            {activeDocId === "guide-universal-deploy" && (
+              <div className="space-y-10">
+                {/* Header Callout Banner */}
+                <div className={`p-5 sm:p-6 rounded-2xl border transition-all ${
+                  isDark ? "bg-[#0E1512] border-[#34D59A]/30" : "bg-emerald-50/60 border-emerald-200"
+                }`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-[#34D59A]/20 text-[#34D59A] border border-[#34D59A]/30">
+                      <Sparkles className="size-3" />
+                      MASTER BLUEPRINT
+                    </span>
+                    <span className={`text-xs font-mono ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                      From Local Scaffold to Production Cloud Deployment
+                    </span>
+                  </div>
+                  <h2 className={`text-xl sm:text-2xl font-bold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
+                    The Definitive A-to-Z Guide to Building &amp; Deploying Secure AI Agents
+                  </h2>
+                  <p className={`mt-2 text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Whether you are building in Python (LangChain, CrewAI, AutoGen), TypeScript (Vercel AI SDK, Mastra), or using Coding Agents (Cursor, Claude Code), this guide takes you step-by-step from zero to a hardened, Dockerized, and production-deployed multi-agent system governed by Sevlex Layer 7 Zero-Trust.
+                  </p>
+                </div>
+
+                {/* Phase 1: End-to-End Architecture */}
+                <div id="atoz-architecture" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">01</span>
+                    Phase 1: Understanding the Zero-Trust Agent Wire Topology
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Modern AI agents operate in an autonomous loop: the LLM plans actions, chooses tools, executes them, observes the results, and iterates. When tools connect directly to live databases, filesystems, and APIs without oversight, an indirect prompt injection or hallucination can execute fatal operations.
+                  </p>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Sevlex acts as an in-line reverse proxy between the <strong>Agent Runtime</strong> and <strong>Model Context Protocol (MCP) tool servers</strong>. Every JSON-RPC <code className="font-mono text-emerald-400">tools/call</code> packet is inspected in microseconds:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-arch"
+                    language="text"
+                    filename="Layer-7-Zero-Trust-Pipeline.txt"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`[ AGENT RUNTIME ] (LangChain / CrewAI / Cursor / Vercel AI SDK)
+        │
+        ▼ (stdio / SSE JSON-RPC packets)
+┌────────────────────────────────────────────────────────┐
+│           SEVLEX LAYER 7 ZERO-TRUST GATEWAY            │
+│  ├─ AST Syntax Ingress DPI  ──> Stops DROP TABLE, rm -rf│
+│  ├─ DLP Secret Redaction    ──> Masks API keys & PII   │
+│  ├─ Loop Circuit Breaker    ──> Halts runaway iterations│
+│  └─ Merkle WAL Ledger       ──> SHA-256 non-repudiation │
+└────────────────────────────────────────────────────────┘
+        │
+        ▼ (Sanitized, Authorized Requests)
+[ DOWNSTREAM TARGETS ] (PostgreSQL / Terminal / GitHub / Internal APIs)`}
+                  />
+                </div>
+
+                {/* Phase 2: Local Scaffold & Gateway Wiring */}
+                <div id="atoz-scaffold" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">02</span>
+                    Phase 2: Local Scaffold &amp; Gateway Initialization
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Initialize the Sevlex perimeter in your project directory. Run the one-command bootstrap:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-init"
+                    language="bash"
+                    filename="Terminal"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`mkdir my-secure-agent && cd my-secure-agent
+npx sevlex init`}
+                  />
+                  <div className={`p-4 rounded-xl border text-xs sm:text-sm space-y-2 ${
+                    isDark ? "bg-[#12141A] border-[#222530] text-gray-300" : "bg-gray-50 border-gray-200 text-gray-700"
+                  }`}>
+                    <div className="font-semibold text-emerald-400">What sevlex init creates:</div>
+                    <ul className="list-disc pl-5 space-y-1.5 text-xs">
+                      <li><code className="font-mono text-emerald-400 font-semibold">sevlex.config.ts</code> — Centralized declarative policy file for AST rules, DLP redactions, and circuit breakers.</li>
+                      <li><code className="font-mono text-emerald-400 font-semibold">.sevlex/ledger.db</code> — High-performance SQLite WAL database storing cryptographic Merkle hash chains.</li>
+                      <li><code className="font-mono text-emerald-400 font-semibold">*.sevlex.bak</code> — 100% reversible snapshots of existing agent configurations before proxy injection.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Phase 3: Building the Agent (Python & TypeScript) */}
+                <div id="atoz-agent-code" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">03</span>
+                    Phase 3: Building the Agent (Python &amp; TypeScript Starter Kits)
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Sevlex is completely framework-agnostic. Choose your stack below to see the end-to-end client integration:
+                  </p>
+
+                  {/* Python Tab Example */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 font-mono text-xs text-emerald-400 font-semibold">
+                      <Terminal className="size-3.5" />
+                      Python Starter (LangChain / Anthropic / Custom Agent)
+                    </div>
+                    <CodeBlock
+                      id="code-atoz-py"
+                      language="python"
+                      filename="agent.py"
+                      isDark={isDark}
+                      onCopy={handleCopy}
+                      copiedId={copiedId}
+                      code={`import asyncio
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+async def run_autonomous_agent():
+    # Wrap any standard MCP server (e.g., PostgreSQL or filesystem) through Sevlex Gateway
+    server_params = StdioServerParameters(
+        command="npx",
+        args=[
+            "-y", "sevlex", "proxy",
+            "--upstream-command", "python",
+            "--upstream-args", "mcp_postgres_server.py"
+        ],
+        env=None
+    )
+
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            print("✔ Connected to Sevlex Zero-Trust Gateway")
+
+            # 1. Safe Query: Allowed in <0.42ms
+            safe_query = await session.call_tool("execute_sql", {"sql": "SELECT id, name FROM users LIMIT 5;"})
+            print("Safe Query Result:", safe_query)
+
+            # 2. Destructive Attack: Blocked instantly by ToolGuard AST DPI
+            try:
+                blocked = await session.call_tool("execute_sql", {"sql": "DROP TABLE production_users;--"})
+            except Exception as e:
+                # [P0_CRITICAL_QUARANTINE] DDL modification arrested. 0 bytes forwarded to DB.
+                print("Interception Confirmed:", e)
+
+if __name__ == "__main__":
+    asyncio.run(run_autonomous_agent())`}
+                    />
+                  </div>
+
+                  {/* TypeScript Tab Example */}
+                  <div className="space-y-2 pt-2">
+                    <div className="flex items-center gap-2 font-mono text-xs text-blue-400 font-semibold">
+                      <Code2 className="size-3.5" />
+                      TypeScript Starter (Vercel AI SDK / Mastra / Node.js)
+                    </div>
+                    <CodeBlock
+                      id="code-atoz-ts"
+                      language="typescript"
+                      filename="agent.ts"
+                      isDark={isDark}
+                      onCopy={handleCopy}
+                      copiedId={copiedId}
+                      code={`import { generateText } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { SevlexGatewayClient } from "@sevlex/gateway";
+
+const sevlex = new SevlexGatewayClient({
+  endpoint: process.env.SEVLEX_GATEWAY_URL || "http://localhost:8080/sse",
+  apiKey: process.env.SEVLEX_API_KEY,
+});
+
+async function main() {
+  // Pull wrapped, Zero-Trust protected tools from Sevlex Gateway
+  const secureTools = await sevlex.getWrappedTools();
+
+  const { text } = await generateText({
+    model: anthropic("claude-3-5-sonnet-20241022"),
+    prompt: "Scan our database schema and summarize active enterprise accounts.",
+    tools: secureTools,
+    maxSteps: 10,
+  });
+
+  console.log("Agent response:", text);
+}
+
+main().catch(console.error);`}
+                    />
+                  </div>
+                </div>
+
+                {/* Phase 4: Declarative Policies */}
+                <div id="atoz-policies" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">04</span>
+                    Phase 4: Declarative Security Policies (sevlex.config.ts)
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Define non-negotiable security boundaries in <code className="font-mono text-emerald-400">sevlex.config.ts</code>. The engine compiles these rules into deterministic, in-memory abstract syntax tree checks:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-config"
+                    language="typescript"
+                    filename="sevlex.config.ts"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`import { defineConfig } from "sevlex";
+
+export default defineConfig({
+  gateway: {
+    port: 8080,
+    transport: "hybrid", // Supports local stdio pipes and remote SSE gateways
+    strictMode: true,
+  },
+  policy: {
+    ast: {
+      // 1. Prohibit destructive SQL mutations
+      denySqlStatements: ["DROP", "TRUNCATE", "ALTER", "GRANT", "REVOKE"],
+      // 2. Prohibit catastrophic shell injection and privilege escalation
+      denyShellPatterns: ["rm -rf", "curl * | sh", "wget * | bash", "chmod 777", "mkfs"],
+      // 3. Prohibit path traversal outside active workspace
+      denyPathTraversal: true,
+    },
+    dlp: {
+      // Mask credentials and high-entropy tokens before they reach LLM context
+      redactSecrets: true,
+      entropyThreshold: 4.2,
+      redactedPlaceholder: "[SEVLEX_REDACTED_SECRET]",
+    },
+    circuitBreaker: {
+      maxCallsPerMinute: 25,
+      maxConsecutiveErrors: 4,
+      costThresholdUSD: 10.00,
+    },
+  },
+});`}
+                  />
+                </div>
+
+                {/* Phase 5: Human-in-the-Loop Quarantine */}
+                <div id="atoz-hitl" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">05</span>
+                    Phase 5: Human-in-the-Loop (Slack &amp; Webhook Approvals)
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    For high-stakes actions (such as mass updates, refunds, or deleting cloud assets), Sevlex pauses execution in-flight and routes an interactive approval card directly to your engineering Slack channel or SecOps dashboard:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-hitl"
+                    language="bash"
+                    filename="Sevlex In-Flight Interception Log"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`[SEVLEX_HITL_PAUSED] High-impact tool invocation intercepted:
+Tool: postgres:execute_query
+Parameters: {"sql": "UPDATE subscriptions SET status='cancelled' WHERE churn_risk > 0.8;"}
+Risk Level: Tier-1 Mutation
+Action: In-flight execution suspended. Dispatching Slack approval card to #security-approvals...
+Ticket: #TX-9842 (Awaiting human operator confirmation within 300s)`}
+                  />
+                </div>
+
+                {/* Phase 6: Cryptographic Merkle Verification */}
+                <div id="atoz-merkle" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">06</span>
+                    Phase 6: Cryptographic Merkle WAL Verification
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Every tool invocation produces a SHA-256 cryptographic receipt mathematically chained to the previous block. Run <code className="font-mono text-emerald-400">sevlex verify</code> anytime to prove complete tamper-evidence:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-verify"
+                    language="bash"
+                    filename="Terminal"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`npx sevlex verify`}
+                  />
+                  <div className={`p-4 rounded-xl font-mono text-xs border ${
+                    isDark ? "bg-[#090C10] border-[#222530] text-emerald-400" : "bg-slate-50 border-slate-200 text-emerald-700"
+                  }`}>
+                    <div>✔ Traversing SQLite WAL Merkle Hash Chain backwards from root...</div>
+                    <div className="text-gray-400 mt-1">Block #1042: SHA256(prev || receipt) == 9f4e2a... [VALID]</div>
+                    <div className="text-gray-400">Block #1041: SHA256(prev || receipt) == c3b1d8... [VALID]</div>
+                    <div className="font-bold mt-2">✔ AUDIT PASSED: 1,042 cryptographic receipts intact. Zero tamper events detected.</div>
+                  </div>
+                </div>
+
+                {/* Phase 7: Production Docker & Compose Deployment */}
+                <div id="atoz-docker" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">07</span>
+                    Phase 7: Production Containerization (Dockerfile &amp; docker-compose.yml)
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Deploy your agent alongside the Sevlex Gateway in production as a sidecar. Here is the battle-tested multi-stage container configuration:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-dockerfile"
+                    language="dockerfile"
+                    filename="Dockerfile"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`# Production Multi-Stage Container for Secure AI Agent Deployment
+FROM node:20-alpine AS gateway
+WORKDIR /app
+RUN npm install -g sevlex@latest
+COPY sevlex.config.ts .
+
+FROM python:3.11-slim AS runtime
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+
+# Expose Sevlex Gateway Remote SSE Port
+EXPOSE 8080
+CMD ["sh", "-c", "npx sevlex daemon --port 8080 & python agent.py"]`}
+                  />
+                  <p className={`text-xs sm:text-sm leading-relaxed pt-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    And the production <code className="font-mono text-emerald-400">docker-compose.yml</code>:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-compose"
+                    language="yaml"
+                    filename="docker-compose.yml"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`version: "3.8"
+
+services:
+  sevlex-gateway:
+    image: sevlex/gateway:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SEVLEX_ENV=production
+      - SEVLEX_API_KEY=\${SEVLEX_API_KEY}
+      - DATABASE_URL=\${DATABASE_URL}
+    volumes:
+      - ./sevlex.config.ts:/app/sevlex.config.ts:ro
+      - sevlex-ledger:/app/.sevlex
+
+  ai-agent:
+    build: .
+    restart: always
+    depends_on:
+      - sevlex-gateway
+    environment:
+      - SEVLEX_GATEWAY_URL=http://sevlex-gateway:8080/sse
+      - ANTHROPIC_API_KEY=\${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=\${OPENAI_API_KEY}
+
+volumes:
+  sevlex-ledger:`}
+                  />
+                </div>
+
+                {/* Phase 8: Production Cloud & Serverless Rollout */}
+                <div id="atoz-cloud" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <span className="size-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">08</span>
+                    Phase 8: Production Cloud &amp; Serverless Deployment
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Deploy your secure agent stack onto Fly.io, Railway, AWS ECS, or Google Cloud Run in minutes:
+                  </p>
+                  <CodeBlock
+                    id="code-atoz-fly"
+                    language="bash"
+                    filename="Deploy to Fly.io / Railway"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`# 1. Launch on Fly.io
+fly launch --name enterprise-secure-agent
+
+# 2. Inject Secrets
+fly secrets set SEVLEX_API_KEY=sk_sevlex_live_8921a4f ANTHROPIC_API_KEY=sk-ant-...
+
+# 3. Deploy
+fly deploy
+
+# 4. Verify Live Health
+curl -s https://enterprise-secure-agent.fly.dev/api/health`}
+                  />
+                  <div className={`p-4 rounded-xl border flex items-center justify-between ${
+                    isDark ? "bg-[#10141D] border-[#1F2533]" : "bg-blue-50/60 border-blue-200"
+                  }`}>
+                    <div className="flex items-center gap-3">
+                      <CheckCircle2 className="size-5 text-emerald-400 shrink-0" />
+                      <div>
+                        <div className={`text-xs font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
+                          Deployment Complete &amp; Protected
+                        </div>
+                        <div className={`text-[11px] ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                          Your AI agent is now operating with sub-0.5ms Zero-Trust policy enforcement, Merkle non-repudiation, and Human-in-the-Loop gates.
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      href="/console"
+                      className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-emerald-500 text-black hover:bg-emerald-400 transition shrink-0"
+                    >
+                      Open Console
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+
 
             {/* GUIDE: VIBE CODE SAFELY (Modeled after Corsair's Vibe code dashboard) */}
             {activeDocId === "guide-vibecode" && (
@@ -1055,6 +1511,167 @@ export const gateway = createGateway({
                 </div>
               </div>
             )}
+
+                        {/* ========================================================================= */}
+            {/* ADAPTER: UNIVERSAL AI AGENT (ANY STACK)                                   */}
+            {/* ========================================================================= */}
+            {activeDocId === "universal-agent" && (
+              <div className="space-y-10">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-[#34D59A]/20 text-[#34D59A] border border-[#34D59A]/30 mb-3">
+                    Universal Adapter
+                  </div>
+                  <h1 className={`text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    Universal AI Agent Integration (Any Framework)
+                  </h1>
+                  <p className={`text-base leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Sevlex is completely decoupled from any single coding tool or language. Whether you run Python (LangChain, CrewAI, AutoGen, LlamaIndex), Node/TypeScript (Vercel AI SDK, Mastra), or autonomous daemons, Sevlex transparently intercepts standard Model Context Protocol (MCP) tool calls over <strong>stdio</strong> or <strong>SSE</strong>.
+                  </p>
+                </div>
+
+                {/* Wire Architecture */}
+                <div id="universal-mental-model" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
+                    The Universal Wire Architecture
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Every AI agent framework interacts with MCP tools using the standard JSON-RPC 2.0 specification (<code className="font-mono text-emerald-400">tools/call</code>). Instead of pointing your agent directly to an unmonitored script or database, you point it to Sevlex:
+                  </p>
+                  <CodeBlock
+                    id="code-universal-wire"
+                    language="text"
+                    filename="stdio-vs-sse-conduit.txt"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`[ ANY AI AGENT ] (Python / Node / Go / Rust / Cursor / Claude)
+       │
+       ▼  JSON-RPC 2.0 (tools/call)
+┌────────────────────────────────────────────────────────┐
+│             SEVLEX LAYER 7 MCP GATEWAY                 │
+│  • AST DPI Parsing (<0.42ms)   • Secret DLP Masking    │
+│  • Rate & Loop Circuit Breaker • Merkle WAL Ledger     │
+└────────────────────────────────────────────────────────┘
+       │
+       ▼  Sanitized Execution
+[ MCP TOOL SERVERS ] (PostgreSQL, Filesystem, GitHub, Custom Microservices)`}
+                  />
+                </div>
+
+                {/* Python Agents */}
+                <div id="universal-python" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <Terminal className="size-5 text-emerald-400" />
+                    Python Agents (LangChain, CrewAI, AutoGen, LlamaIndex)
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    In Python, instantiate an MCP stdio client that wraps your downstream tool server through <code className="font-mono text-emerald-400">npx sevlex proxy</code>:
+                  </p>
+                  <CodeBlock
+                    id="code-universal-py"
+                    language="python"
+                    filename="secure_agent.py"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+import asyncio
+
+async def run():
+    # Pass your existing tool command into Sevlex Gateway proxy
+    server_params = StdioServerParameters(
+        command="npx",
+        args=["-y", "sevlex", "proxy", "--upstream-command", "python", "--upstream-args", "my_tools.py"],
+        env=None
+    )
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            # Invocations are automatically governed by sevlex.config.ts
+            result = await session.call_tool("read_data", {"table": "analytics"})
+            print(result)
+
+asyncio.run(run())`}
+                  />
+                </div>
+
+                {/* TypeScript / Node Agents */}
+                <div id="universal-node" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight flex items-center gap-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                    <Code2 className="size-5 text-blue-400" />
+                    TypeScript &amp; Node Agents (Vercel AI SDK, Mastra)
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    For Node.js or edge agent workers, connect to Sevlex using the native SDK or Remote SSE endpoint:
+                  </p>
+                  <CodeBlock
+                    id="code-universal-node"
+                    language="typescript"
+                    filename="agent.ts"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`import { SevlexGatewayClient } from "@sevlex/gateway";
+
+// Connect to local or cloud Sevlex Gateway instance
+const gateway = new SevlexGatewayClient({
+  endpoint: process.env.SEVLEX_GATEWAY_URL || "http://localhost:8080/sse",
+  apiKey: process.env.SEVLEX_API_KEY,
+});
+
+// Retrieve tools equipped with in-flight AST deep packet inspection
+const tools = await gateway.getWrappedTools();`}
+                  />
+                </div>
+
+                {/* Stdio vs SSE */}
+                <div id="universal-stdio-sse" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
+                    Stdio vs. Remote SSE Transport
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className={`p-4 rounded-xl border ${
+                      isDark ? "bg-[#111318] border-[#222530]" : "bg-gray-50 border-gray-200"
+                    }`}>
+                      <div className="font-semibold text-emerald-400 text-sm mb-1">Standard I/O (stdio)</div>
+                      <p className={`text-xs leading-relaxed ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                        Best for local workstations and coding IDEs (Cursor, Claude Desktop). Zero port binding or network permissions. Fast Unix pipe transport with &lt;0.42ms overhead.
+                      </p>
+                    </div>
+                    <div className={`p-4 rounded-xl border ${
+                      isDark ? "bg-[#111318] border-[#222530]" : "bg-gray-50 border-gray-200"
+                    }`}>
+                      <div className="font-semibold text-blue-400 text-sm mb-1">Server-Sent Events (SSE)</div>
+                      <p className={`text-xs leading-relaxed ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                        Best for production Docker containers, Kubernetes pods, and cloud agent workers (Fly.io, AWS, Railway). HTTP streaming transport with Bearer token authentication.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Auto-Wrapping */}
+                <div id="universal-zero-config" className="scroll-mt-24 space-y-4">
+                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? "text-white" : "text-gray-900"}`}>
+                    Wrapping Existing MCP Tool Servers
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    You never need to rewrite your tool code. Wrap any pre-existing MCP server (Postgres, GitHub, Slack, Brave Search) by simply prepending Sevlex:
+                  </p>
+                  <CodeBlock
+                    id="code-universal-wrap"
+                    language="bash"
+                    filename="Terminal"
+                    isDark={isDark}
+                    onCopy={handleCopy}
+                    copiedId={copiedId}
+                    code={`# Wrap any existing stdio MCP server command:
+npx sevlex proxy -- npx -y @modelcontextprotocol/server-postgres postgresql://user:pass@localhost/db`}
+                  />
+                </div>
+              </div>
+            )}
+
 
             {/* ADAPTER: CURSOR */}
             {activeDocId === "cursor" && (
