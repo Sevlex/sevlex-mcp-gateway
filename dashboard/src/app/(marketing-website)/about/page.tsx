@@ -37,7 +37,7 @@ export default function AboutPage() {
 
       {/* 1. STICKY MINIMAL NAVBAR */}
       <nav className={`sticky top-0 z-40 backdrop-blur-md transition-colors duration-200 ${
-        isDark ? "bg-[#000000]/85 border-b border-[#242628]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+        isDark ? "bg-[#000000]/85 border-b border-white/[0.08]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center">
@@ -77,7 +77,7 @@ export default function AboutPage() {
               aria-label="Toggle Theme"
               className={`p-2 rounded-full border transition-colors ${
                 isDark
-                  ? "border-[#242628] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
+                  ? "border-white/[0.08] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
                   : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
               }`}
             >
@@ -94,7 +94,7 @@ export default function AboutPage() {
               rel="noreferrer"
               className={`hidden md:inline-flex items-center gap-2 h-9 px-3.5 rounded-full border text-xs font-medium transition duration-200 ${
                 isDark
-                  ? "border-[#242628] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
+                  ? "border-white/[0.08] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
                   : "border-slate-300 bg-white text-slate-700 hover:border-slate-900 hover:text-slate-950 shadow-xs"
               }`}
             >
@@ -123,7 +123,7 @@ export default function AboutPage() {
       <section className="pt-20 pb-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
           isDark
-            ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+            ? "bg-[#14161C] border border-white/[0.08] text-[#797D86]"
             : "bg-slate-100 border border-slate-300 text-slate-700 shadow-xs"
         }`}>
           <span className="text-[#34D59A] font-semibold">ABOUT SEVLEX</span>
@@ -145,7 +145,7 @@ export default function AboutPage() {
 
       {/* 3. THE PROBLEM & SOLUTION */}
       <section className={`py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
@@ -165,7 +165,7 @@ export default function AboutPage() {
 
           <div className={`rounded-2xl p-8 transition-colors ${
             isDark
-              ? "border border-[#242628] bg-[#0E0E12] shadow-xl"
+              ? "border border-white/[0.08] bg-[#0E1014] shadow-xl"
               : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(15,23,42,0.08)]"
           }`}>
             <span className="text-xs font-mono uppercase tracking-widest text-[#34D59A] font-semibold">The Sevlex Solution</span>
@@ -176,7 +176,7 @@ export default function AboutPage() {
               Sevlex transparently wraps downstream stdio and SSE connections with zero configuration. It intercepts every tool call, inspects parameters before downstream transmission, redacts sensitive output in microseconds, and cryptographically signs every audit receipt.
             </p>
             <div className={`p-4 rounded-xl font-mono text-xs flex items-center justify-between ${
-              isDark ? "bg-[#000000] border border-[#242628] text-[#34D59A]" : "bg-slate-900 border border-slate-800 text-[#34D59A]"
+              isDark ? "bg-[#000000] border border-white/[0.08] text-[#34D59A]" : "bg-slate-900 border border-slate-800 text-[#34D59A]"
             }`}>
               <span>Latency Overhead</span>
               <span className="font-bold">&lt;0.1ms wire delay</span>
@@ -187,7 +187,7 @@ export default function AboutPage() {
 
       {/* 4. CORE ENGINEERING PILLARS */}
       <section className={`py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs uppercase tracking-widest text-[#34D59A] font-mono font-medium">
@@ -203,11 +203,11 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className={`p-6 rounded-2xl transition-colors ${
             isDark
-              ? "bg-[#0E0E12] border border-[#242628]"
+              ? "bg-[#0E1014] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-sm"
           }`}>
             <div className={`size-10 rounded-full flex items-center justify-center text-[#34D59A] mb-4 ${
-              isDark ? "bg-[#18191B] border border-[#242628]" : "bg-emerald-50 border border-emerald-200"
+              isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-emerald-50 border border-emerald-200"
             }`}>
               <ShieldCheck className="size-5" />
             </div>
@@ -221,11 +221,11 @@ export default function AboutPage() {
 
           <div className={`p-6 rounded-2xl transition-colors ${
             isDark
-              ? "bg-[#0E0E12] border border-[#242628]"
+              ? "bg-[#0E1014] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-sm"
           }`}>
             <div className={`size-10 rounded-full flex items-center justify-center text-blue-500 dark:text-blue-400 mb-4 ${
-              isDark ? "bg-[#18191B] border border-[#242628]" : "bg-blue-50 border border-blue-200"
+              isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-blue-50 border border-blue-200"
             }`}>
               <Terminal className="size-5" />
             </div>
@@ -239,11 +239,11 @@ export default function AboutPage() {
 
           <div className={`p-6 rounded-2xl transition-colors ${
             isDark
-              ? "bg-[#0E0E12] border border-[#242628]"
+              ? "bg-[#0E1014] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-sm"
           }`}>
             <div className={`size-10 rounded-full flex items-center justify-center text-purple-500 dark:text-purple-400 mb-4 ${
-              isDark ? "bg-[#18191B] border border-[#242628]" : "bg-purple-50 border border-purple-200"
+              isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-purple-50 border border-purple-200"
             }`}>
               <FileCheck2 className="size-5" />
             </div>
@@ -259,11 +259,11 @@ export default function AboutPage() {
 
       {/* 5. CTA BANNER */}
       <section className={`py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className={`rounded-3xl p-10 sm:p-14 shadow-2xl relative overflow-hidden transition-colors ${
           isDark
-            ? "border border-[#242628] bg-[#0C0D0E]"
+            ? "border border-white/[0.08] bg-[#0A0C10]"
             : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
         }`}>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-36 bg-[#34D59A]/10 blur-[90px] pointer-events-none rounded-full" />
@@ -283,7 +283,7 @@ export default function AboutPage() {
               href="/service"
               className={`inline-flex items-center gap-2 h-11 px-6 rounded-full border text-xs font-medium transition duration-200 ${
                 isDark
-                  ? "border-[#242628] bg-[#18191B] hover:bg-[#242628] text-white"
+                  ? "border-white/[0.08] bg-[#16181F] hover:bg-white/[0.08] text-white"
                   : "border-slate-300 bg-white hover:bg-slate-50 text-slate-800 shadow-xs"
               }`}
             >
@@ -306,7 +306,7 @@ export default function AboutPage() {
 
       {/* 6. FOOTER */}
       <footer className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
-        isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200/90 text-slate-500"
+        isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200/90 text-slate-500"
       }`}>
         <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

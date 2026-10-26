@@ -70,7 +70,7 @@ function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setOpacity(1)}
       onMouseLeave={() => setOpacity(0)}
-      className={`relative overflow-hidden rounded-2xl border border-[#242628] bg-[#0E0E12] p-6 shadow-xl transition-all duration-300 hover:border-[#303236] ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0E1014] p-6 shadow-xl transition-all duration-300 hover:border-white/[0.18] ${className}`}
     >
       <div
         className="pointer-events-none absolute -inset-px transition-opacity duration-300"
@@ -506,7 +506,7 @@ export default function LandingPage() {
       {/* NAVIGATION HEADER                                                         */}
       {/* ========================================================================= */}
       <nav className={`sticky top-0 z-40 backdrop-blur-md transition-colors duration-200 ${
-        isDark ? "bg-[#000000]/85 border-b border-[#242628]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+        isDark ? "bg-[#000000]/85 border-b border-white/[0.08]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           {/* Brand Logo */}
@@ -548,7 +548,7 @@ export default function LandingPage() {
               aria-label="Toggle Theme"
               className={`p-2 rounded-full border transition-colors ${
                 isDark
-                  ? "border-[#242628] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
+                  ? "border-white/[0.08] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
                   : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
               }`}
             >
@@ -566,7 +566,7 @@ export default function LandingPage() {
               rel="noreferrer"
               className={`hidden md:inline-flex items-center gap-2 h-9 px-3.5 rounded-full border text-xs font-medium transition duration-200 ${
                 isDark
-                  ? "border-[#242628] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
+                  ? "border-white/[0.08] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
                   : "border-[#E5E7EB] bg-black/[0.02] text-[#4B5563] hover:border-black hover:text-black"
               }`}
             >
@@ -583,7 +583,7 @@ export default function LandingPage() {
               href="/api/auth/github"
               className={`hidden sm:inline-flex items-center gap-2 h-9 px-4 rounded-full border text-xs font-medium transition duration-200 ${
                 isDark
-                  ? "border-[#242628] bg-[#18191B] hover:bg-[#242628] text-white"
+                  ? "border-white/[0.08] bg-[#16181F] hover:bg-white/[0.08] text-white"
                   : "border-[#E5E7EB] bg-[#F3F4F6] hover:bg-[#E5E7EB] text-gray-900"
               }`}
             >
@@ -617,7 +617,7 @@ export default function LandingPage() {
           {/* Eyebrow Pill */}
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
             isDark
-              ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+              ? "bg-[#14161C] border border-white/[0.08] text-[#797D86]"
               : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 shadow-xs"
           }`}>
             <span className="text-[#34D59A] font-semibold">LAYER 7 ZERO-TRUST</span>
@@ -660,7 +660,7 @@ export default function LandingPage() {
               href="/docs"
               className={`inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-7 tracking-tight font-medium text-sm gap-2 ${
                 isDark
-                  ? "bg-white/[0.03] border border-[#303236] text-white hover:border-[#61646B] hover:bg-white/[0.06]"
+                  ? "bg-white/[0.03] border border-white/[0.12] text-white hover:border-[#61646B] hover:bg-white/[0.06]"
                   : "bg-white border border-[#CBD5E1] text-[#0F172A] hover:border-[#94A3B8] hover:bg-[#F8FAFC] shadow-xs"
               }`}
             >
@@ -718,7 +718,7 @@ export default function LandingPage() {
       {/* 4. ARCHITECTURAL CAPABILITIES (High-Performance Layer 7 Defense)           */}
       {/* ========================================================================= */}
       <section id="capabilities" className={`pt-20 pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t ${
-        isDark ? "border-[#242628]" : "border-slate-200"
+        isDark ? "border-white/[0.08]" : "border-slate-200"
       }`}>
         {/* Editorial Section Header & Watermark */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -830,7 +830,7 @@ export default function LandingPage() {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 ${
             isDark
-              ? "bg-[#131415] text-[#34D59A] border border-[#242628]"
+              ? "bg-[#14161C] text-[#34D59A] border border-white/[0.08]"
               : "bg-emerald-500/10 text-emerald-800 border border-emerald-500/20"
           }`}>
             <ShieldCheck className="size-3.5 text-[#34D59A]" />
@@ -851,12 +851,12 @@ export default function LandingPage() {
         {/* 2-Pane Policy Guard Container */}
         <div className={`rounded-2xl border overflow-hidden transition-all ${
           isDark
-            ? "border-[#242628] bg-[#0E0E12] shadow-2xl"
+            ? "border-white/[0.08] bg-[#0E1014] shadow-2xl"
             : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(15,23,42,0.08)]"
         }`}>
           {/* Scenario Selector Strip */}
           <div className={`p-3 sm:p-4 border-b flex flex-wrap items-center justify-between gap-3 transition-colors ${
-            isDark ? "bg-[#0C0D0E] border-[#242628]" : "bg-slate-100/75 border-slate-200/90"
+            isDark ? "bg-[#0A0C10] border-white/[0.08]" : "bg-slate-100/75 border-slate-200/90"
           }`}>
             <div className="flex flex-wrap items-center gap-2">
               <span className={`text-xs font-mono font-medium px-2 ${
@@ -877,7 +877,7 @@ export default function LandingPage() {
                           ? "border-white bg-white text-black font-semibold shadow-xs"
                           : "border-slate-900 bg-slate-900 text-white font-semibold shadow-xs ring-1 ring-slate-900/10"
                         : isDark
-                        ? "border-[#242628] bg-[#131415] text-[#C9CBCF] hover:border-[#303236] hover:text-white"
+                        ? "border-white/[0.08] bg-[#14161C] text-[#C9CBCF] hover:border-white/[0.18] hover:text-white"
                         : "border-slate-200/90 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-900 shadow-xs ring-1 ring-slate-900/[0.02]"
                     }`}
                   >
@@ -906,7 +906,7 @@ export default function LandingPage() {
             {/* Left Pane: Ingress Attempt */}
             <div className="p-6 space-y-4 font-mono">
               <div className={`flex items-center justify-between pb-3 border-b ${
-                isDark ? "border-[#242628]" : "border-slate-200"
+                isDark ? "border-white/[0.08]" : "border-slate-200"
               }`}>
                 <div className="flex items-center gap-2.5">
                   <ClientBrandIcon name={scenario.clientBrand} size="xs" className="size-4" />
@@ -930,7 +930,7 @@ export default function LandingPage() {
                 </div>
                 <pre className={`p-4 rounded-xl border text-xs overflow-x-auto leading-relaxed shadow-inner max-h-[260px] ${
                   isDark
-                    ? "bg-[#000000] border-[#242628] text-[#C9CBCF]"
+                    ? "bg-[#000000] border-white/[0.08] text-[#C9CBCF]"
                     : "bg-[#0B0F19] border-slate-800 text-slate-100"
                 }`}>
                   <code>{scenario.payload}</code>
@@ -950,7 +950,7 @@ export default function LandingPage() {
             }`}>
               <div className="space-y-4">
                 <div className={`flex items-center justify-between pb-3 border-b ${
-                  isDark ? "border-[#242628]" : "border-slate-200"
+                  isDark ? "border-white/[0.08]" : "border-slate-200"
                 }`}>
                   <div className="flex items-center gap-2">
                     <Shield className="size-4 text-[#34D59A]" />
@@ -986,7 +986,7 @@ export default function LandingPage() {
                 {/* 4-Item Policy Breakdown Grid */}
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div className={`p-3 rounded-xl border transition-colors ${
-                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
+                    isDark ? "bg-[#14161C] border-white/[0.08]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
                   }`}>
                     <span className={`block text-[10px] uppercase font-semibold ${
                       isDark ? "text-[#61646B]" : "text-slate-500"
@@ -1000,7 +1000,7 @@ export default function LandingPage() {
                     </span>
                   </div>
                   <div className={`p-3 rounded-xl border transition-colors ${
-                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
+                    isDark ? "bg-[#14161C] border-white/[0.08]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
                   }`}>
                     <span className={`block text-[10px] uppercase font-semibold ${
                       isDark ? "text-[#61646B]" : "text-slate-500"
@@ -1018,7 +1018,7 @@ export default function LandingPage() {
                     </span>
                   </div>
                   <div className={`p-3 rounded-xl border transition-colors ${
-                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
+                    isDark ? "bg-[#14161C] border-white/[0.08]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
                   }`}>
                     <span className={`block text-[10px] uppercase font-semibold ${
                       isDark ? "text-[#61646B]" : "text-slate-500"
@@ -1032,7 +1032,7 @@ export default function LandingPage() {
                     </span>
                   </div>
                   <div className={`p-3 rounded-xl border transition-colors ${
-                    isDark ? "bg-[#131415] border-[#242628]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
+                    isDark ? "bg-[#14161C] border-white/[0.08]" : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs"
                   }`}>
                     <span className={`block text-[10px] uppercase font-semibold ${
                       isDark ? "text-[#61646B]" : "text-slate-500"
@@ -1057,7 +1057,7 @@ export default function LandingPage() {
                   </div>
                   <pre className={`p-3.5 rounded-xl border text-[11px] overflow-x-auto leading-relaxed shadow-inner max-h-[140px] ${
                     isDark
-                      ? "bg-[#000000] border-[#242628] text-[#94979E]"
+                      ? "bg-[#000000] border-white/[0.08] text-[#94979E]"
                       : "bg-[#0B0F19] border-slate-800 text-slate-300"
                   }`}>
                     <code>{scenario.responsePayload}</code>
@@ -1067,7 +1067,7 @@ export default function LandingPage() {
 
               {/* Bottom Console Link */}
               <div className={`pt-2 flex items-center justify-between text-xs border-t ${
-                isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200 text-slate-600"
+                isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200 text-slate-600"
               }`}>
                 <span className={`flex items-center gap-1.5 ${isDark ? "text-[#34D59A]" : "text-emerald-700 font-medium"}`}>
                   <CheckCircle2 className="size-3.5" />
@@ -1092,7 +1092,7 @@ export default function LandingPage() {
       {/* 6. DEVELOPER DOCUMENTATION & INTERACTIVE CLI WORKBENCH                    */}
       {/* ========================================================================= */}
       <section id="docs" className={`py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200"
+        isDark ? "border-white/[0.08]" : "border-slate-200"
       }`}>
         <div id="terminal" className="text-center max-w-2xl mx-auto mb-10">
           <div className="flex items-center justify-center gap-2 text-xs font-mono font-medium uppercase tracking-widest text-[#34D59A] mb-3">
@@ -1112,12 +1112,12 @@ export default function LandingPage() {
         </div>
         <div className={`rounded-2xl border overflow-hidden transition-all ${
           isDark
-            ? "border-[#242628] bg-[#0E0E12] shadow-2xl"
+            ? "border-white/[0.08] bg-[#0E1014] shadow-2xl"
             : "border-slate-800/90 bg-[#0B0F19] ring-1 ring-slate-900/40 shadow-[0_1px_3px_rgba(0,0,0,0.2),0_16px_36px_-6px_rgba(15,23,42,0.18)]"
         }`}>
           {/* Terminal Window Header */}
           <div className={`flex items-center justify-between px-4 py-3 border-b ${
-            isDark ? "bg-[#0C0D0E] border-[#242628]" : "bg-[#070A12] border-slate-800"
+            isDark ? "bg-[#0A0C10] border-white/[0.08]" : "bg-[#070A12] border-slate-800"
           }`}>
             <div className="flex items-center gap-2">
               <div className="size-2.5 rounded-full bg-red-500/80" />
@@ -1128,7 +1128,7 @@ export default function LandingPage() {
               </span>
             </div>
 
-            <div className="flex items-center gap-1 bg-[#000000] p-1 rounded-full border border-[#242628]">
+            <div className="flex items-center gap-1 bg-[#000000] p-1 rounded-full border border-white/[0.08]">
               <button
                 onClick={() => setTerminalTab("demo")}
                 className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer ${
@@ -1239,7 +1239,7 @@ export default function LandingPage() {
 
         {/* Machine-Readable Documentation Card (llms.txt Standard) */}
         <div className={`mt-6 p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all ${
-          isDark ? "border-[#242628] bg-[#0E0E12]" : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_6px_16px_-4px_rgba(15,23,42,0.05)]"
+          isDark ? "border-white/[0.08] bg-[#0E1014]" : "border-slate-200/90 bg-white ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_6px_16px_-4px_rgba(15,23,42,0.05)]"
         }`}>
           <div className="flex items-start gap-3.5">
             <div className={`p-2.5 rounded-xl border shrink-0 mt-0.5 ${
@@ -1265,7 +1265,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
             <div className={`hidden md:flex items-center gap-2 border px-3 py-1.5 rounded-xl text-xs font-mono ${
-              isDark ? "bg-[#000000] border-[#242628] text-[#AFB1B6]" : "bg-slate-100 border-slate-200 text-slate-800"
+              isDark ? "bg-[#000000] border-white/[0.08] text-[#AFB1B6]" : "bg-slate-100 border-slate-200 text-slate-800"
             }`}>
               <span className={isDark ? "text-[#61646B]" : "text-slate-400"}>$</span>
               <code>curl -s sevlex.com/llms.txt</code>
@@ -1405,12 +1405,12 @@ export default function LandingPage() {
       {/* 9.6 ABOUT SEVLEX                                                          */}
       {/* ========================================================================= */}
       <section id="about" className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200"
+        isDark ? "border-white/[0.08]" : "border-slate-200"
       }`}>
         <div className="max-w-3xl mx-auto text-center mb-12">
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4 ${
             isDark
-              ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+              ? "bg-[#14161C] border border-white/[0.08] text-[#797D86]"
               : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800"
           }`}>
             <span className="text-[#34D59A] font-semibold">ABOUT SEVLEX</span>
@@ -1488,7 +1488,7 @@ export default function LandingPage() {
       <section className="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className={`rounded-3xl border p-10 sm:p-14 shadow-2xl relative overflow-hidden transition-colors ${
           isDark
-            ? "border-[#242628] bg-[#0C0D0E]"
+            ? "border-white/[0.08] bg-[#0A0C10]"
             : "border-slate-800 bg-slate-950 text-white shadow-slate-900/20"
         }`}>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-36 bg-[#34D59A]/10 blur-[90px] pointer-events-none rounded-full" />
@@ -1501,7 +1501,7 @@ export default function LandingPage() {
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10">
             {/* Install pill */}
-            <div className="inline-flex items-center gap-3 bg-[#131415] border border-[#242628] rounded-full px-5 py-2.5">
+            <div className="inline-flex items-center gap-3 bg-[#14161C] border border-white/[0.08] rounded-full px-5 py-2.5">
               <span className="text-[#61646B] font-mono text-xs">$</span>
               <code className="text-xs font-mono text-[#34D59A] font-medium">npx sevlex init</code>
               <button
@@ -1516,7 +1516,7 @@ export default function LandingPage() {
             {/* GitHub Sign Up Pill */}
             <a
               href="/api/auth/github"
-              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-6 tracking-tight font-medium bg-[#18191B] border border-[#242628] text-white hover:bg-[#242628] text-xs gap-2"
+              className="inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors duration-200 h-11 px-6 tracking-tight font-medium bg-[#16181F] border border-white/[0.08] text-white hover:bg-white/[0.08] text-xs gap-2"
             >
               <svg className="size-4 fill-white" viewBox="0 0 24 24">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
@@ -1540,7 +1540,7 @@ export default function LandingPage() {
       {/* 11. FOOTER                                                               */}
       {/* ========================================================================= */}
       <footer className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
-        isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200 text-slate-500"
+        isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200 text-slate-500"
       }`}>
         <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

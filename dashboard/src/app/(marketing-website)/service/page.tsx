@@ -68,7 +68,7 @@ export default function ServicePage() {
 
       {/* 1. STICKY NAVBAR */}
       <nav className={`sticky top-0 z-40 backdrop-blur-md transition-colors duration-200 ${
-        isDark ? "bg-[#000000]/85 border-b border-[#242628]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+        isDark ? "bg-[#000000]/85 border-b border-white/[0.08]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center">
@@ -108,7 +108,7 @@ export default function ServicePage() {
               aria-label="Toggle Theme"
               className={`p-2 rounded-full border transition-colors ${
                 isDark
-                  ? "border-[#242628] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
+                  ? "border-white/[0.08] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
                   : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
               }`}
             >
@@ -125,7 +125,7 @@ export default function ServicePage() {
               rel="noreferrer"
               className={`hidden md:inline-flex items-center gap-2 h-9 px-3.5 rounded-full border text-xs font-medium transition duration-200 ${
                 isDark
-                  ? "border-[#242628] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
+                  ? "border-white/[0.08] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
                   : "border-slate-300 bg-white text-slate-700 hover:border-slate-900 hover:text-slate-950 shadow-xs"
               }`}
             >
@@ -154,7 +154,7 @@ export default function ServicePage() {
       <section className="pt-20 pb-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
           isDark
-            ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+            ? "bg-[#14161C] border border-white/[0.08] text-[#797D86]"
             : "bg-slate-100 border border-slate-300 text-slate-700 shadow-xs"
         }`}>
           <span className="text-[#34D59A] font-semibold">WHITE-GLOVE INTEGRATION</span>
@@ -191,7 +191,7 @@ export default function ServicePage() {
             rel="noreferrer"
             className={`inline-flex items-center gap-2 h-11 px-6 rounded-full border text-xs font-medium transition duration-200 ${
               isDark
-                ? "border-[#242628] bg-[#18191B] hover:bg-[#242628] text-white"
+                ? "border-white/[0.08] bg-[#16181F] hover:bg-white/[0.08] text-white"
                 : "border-slate-300 bg-white hover:bg-slate-50 text-slate-800 shadow-xs"
             }`}
           >
@@ -202,18 +202,18 @@ export default function ServicePage() {
 
       {/* 3. CORE VALUE PROPOSITION GRID */}
       <section className={`py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1: Any Internal Source */}
           <div className={`rounded-2xl p-8 flex flex-col justify-between transition-colors ${
             isDark
-              ? "border border-[#242628] bg-[#0E0E12]"
+              ? "border border-white/[0.08] bg-[#0E1014]"
               : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(15,23,42,0.08)]"
           }`}>
             <div>
               <div className={`size-11 rounded-full flex items-center justify-center text-[#34D59A] mb-5 ${
-                isDark ? "bg-[#18191B] border border-[#242628]" : "bg-emerald-50 border border-emerald-200"
+                isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-emerald-50 border border-emerald-200"
               }`}>
                 <Database className="size-5" />
               </div>
@@ -248,12 +248,12 @@ export default function ServicePage() {
           {/* Card 2: Production Zero-Trust Hardening */}
           <div className={`rounded-2xl p-8 flex flex-col justify-between transition-colors ${
             isDark
-              ? "border border-[#242628] bg-[#0E0E12]"
+              ? "border border-white/[0.08] bg-[#0E1014]"
               : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(15,23,42,0.08)]"
           }`}>
             <div>
               <div className={`size-11 rounded-full flex items-center justify-center text-blue-500 dark:text-blue-400 mb-5 ${
-                isDark ? "bg-[#18191B] border border-[#242628]" : "bg-blue-50 border border-blue-200"
+                isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-blue-50 border border-blue-200"
               }`}>
                 <ShieldCheck className="size-5" />
               </div>
@@ -288,7 +288,7 @@ export default function ServicePage() {
           {/* Card 3: Pricing & Turnaround */}
           <div className={`rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden transition-colors ${
             isDark
-              ? "border border-[#34D59A]/30 bg-[#0E0E12]"
+              ? "border border-[#34D59A]/30 bg-[#0E1014]"
               : "border border-emerald-300 ring-1 ring-emerald-500/10 bg-white shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(52,213,154,0.12)]"
           }`}>
             <div className={`absolute top-0 right-0 border-b border-l px-3 py-1 rounded-bl-xl text-[10px] font-mono font-bold uppercase ${
@@ -300,7 +300,7 @@ export default function ServicePage() {
             </div>
             <div>
               <div className={`size-11 rounded-full flex items-center justify-center text-[#34D59A] mb-5 ${
-                isDark ? "bg-[#18191B] border border-[#242628]" : "bg-emerald-50 border border-emerald-200"
+                isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-emerald-50 border border-emerald-200"
               }`}>
                 <Zap className="size-5" />
               </div>
@@ -344,7 +344,7 @@ export default function ServicePage() {
 
       {/* 4. WHAT YOU RECEIVE */}
       <section className={`py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs uppercase tracking-widest text-[#34D59A] font-mono font-medium">
@@ -360,7 +360,7 @@ export default function ServicePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className={`p-6 rounded-2xl transition-colors ${
             isDark
-              ? "bg-[#0E0E12] border border-[#242628]"
+              ? "bg-[#0E1014] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-sm"
           }`}>
             <span className="text-xs font-mono text-[#34D59A] block mb-2 font-semibold">01 / PRODUCTION CODE REPOSITORY</span>
@@ -374,7 +374,7 @@ export default function ServicePage() {
 
           <div className={`p-6 rounded-2xl transition-colors ${
             isDark
-              ? "bg-[#0E0E12] border border-[#242628]"
+              ? "bg-[#0E1014] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-sm"
           }`}>
             <span className="text-xs font-mono text-[#34D59A] block mb-2 font-semibold">02 / 1-CLICK CLIENT CONFIGURATIONS</span>
@@ -388,7 +388,7 @@ export default function ServicePage() {
 
           <div className={`p-6 rounded-2xl transition-colors ${
             isDark
-              ? "bg-[#0E0E12] border border-[#242628]"
+              ? "bg-[#0E1014] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-sm"
           }`}>
             <span className="text-xs font-mono text-[#34D59A] block mb-2 font-semibold">03 / SECURITY GATEWAY PRE-INTEGRATION</span>
@@ -402,7 +402,7 @@ export default function ServicePage() {
 
           <div className={`p-6 rounded-2xl transition-colors ${
             isDark
-              ? "bg-[#0E0E12] border border-[#242628]"
+              ? "bg-[#0E1014] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-sm"
           }`}>
             <span className="text-xs font-mono text-[#34D59A] block mb-2 font-semibold">04 / HANDOFF VIDEO &amp; 14-DAY SUPPORT</span>
@@ -418,11 +418,11 @@ export default function ServicePage() {
 
       {/* 5. INTAKE & SCOPING FORM */}
       <section id="intake" className={`py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className={`rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden transition-colors ${
           isDark
-            ? "border border-[#242628] bg-[#0C0D0E]"
+            ? "border border-white/[0.08] bg-[#0A0C10]"
             : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
         }`}>
           <div className="absolute top-0 right-1/4 w-80 h-32 bg-[#34D59A]/10 blur-[80px] pointer-events-none rounded-full" />
@@ -469,7 +469,7 @@ export default function ServicePage() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className={`w-full h-10 px-3 rounded-xl text-xs focus:outline-none focus:border-[#34D59A] transition ${
                       isDark
-                        ? "bg-[#131415] border border-[#242628] text-white placeholder:text-[#61646B]"
+                        ? "bg-[#14161C] border border-white/[0.08] text-white placeholder:text-[#61646B]"
                         : "bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 shadow-xs"
                     }`}
                   />
@@ -486,7 +486,7 @@ export default function ServicePage() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className={`w-full h-10 px-3 rounded-xl text-xs focus:outline-none focus:border-[#34D59A] transition ${
                       isDark
-                        ? "bg-[#131415] border border-[#242628] text-white placeholder:text-[#61646B]"
+                        ? "bg-[#14161C] border border-white/[0.08] text-white placeholder:text-[#61646B]"
                         : "bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 shadow-xs"
                     }`}
                   />
@@ -503,7 +503,7 @@ export default function ServicePage() {
                     onChange={(e) => setFormData({ ...formData, sourceType: e.target.value })}
                     className={`w-full h-10 px-3 rounded-xl text-xs focus:outline-none focus:border-[#34D59A] transition cursor-pointer ${
                       isDark
-                        ? "bg-[#131415] border border-[#242628] text-white"
+                        ? "bg-[#14161C] border border-white/[0.08] text-white"
                         : "bg-white border border-slate-300 text-slate-900 shadow-xs"
                     }`}
                   >
@@ -525,7 +525,7 @@ export default function ServicePage() {
                     onChange={(e) => setFormData({ ...formData, aiClient: e.target.value })}
                     className={`w-full h-10 px-3 rounded-xl text-xs focus:outline-none focus:border-[#34D59A] transition cursor-pointer ${
                       isDark
-                        ? "bg-[#131415] border border-[#242628] text-white"
+                        ? "bg-[#14161C] border border-white/[0.08] text-white"
                         : "bg-white border border-slate-300 text-slate-900 shadow-xs"
                     }`}
                   >
@@ -550,7 +550,7 @@ export default function ServicePage() {
                   onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                   className={`w-full p-3 rounded-xl text-xs focus:outline-none focus:border-[#34D59A] transition ${
                     isDark
-                      ? "bg-[#131415] border border-[#242628] text-white placeholder:text-[#61646B]"
+                      ? "bg-[#14161C] border border-white/[0.08] text-white placeholder:text-[#61646B]"
                       : "bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 shadow-xs"
                   }`}
                 />
@@ -594,7 +594,7 @@ export default function ServicePage() {
 
       {/* 6. FOOTER */}
       <footer className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
-        isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200/90 text-slate-500"
+        isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200/90 text-slate-500"
       }`}>
         <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

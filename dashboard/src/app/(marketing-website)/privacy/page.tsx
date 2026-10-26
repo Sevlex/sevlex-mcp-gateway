@@ -24,7 +24,7 @@ export default function PrivacyPage() {
 
       {/* Navigation Header */}
       <nav className={`sticky top-0 z-40 backdrop-blur-md transition-colors duration-200 ${
-        isDark ? "bg-[#000000]/85 border-b border-[#242628]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+        isDark ? "bg-[#000000]/85 border-b border-white/[0.08]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center">
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
               aria-label="Toggle Theme"
               className={`p-2 rounded-full border transition-colors ${
                 isDark
-                  ? "border-[#242628] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
+                  ? "border-white/[0.08] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
                   : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
               }`}
             >
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
               Sevlex builds infrastructure for autonomous AI coding agents and the Model Context Protocol (MCP). Our architecture is founded on a strict, mathematical principle: <strong>your source code, tool arguments, database queries, and private payloads are your exclusive property</strong>.
             </p>
             <div className={`p-5 rounded-2xl border ${
-              isDark ? "bg-[#0E0E12] border-[#242628]" : "bg-white border-slate-200 shadow-xs"
+              isDark ? "bg-[#0E1014] border-white/[0.08]" : "bg-white border-slate-200 shadow-xs"
             }`}>
               <ul className="space-y-3 text-xs sm:text-sm">
                 <li className="flex items-start gap-2.5">
@@ -163,7 +163,7 @@ export default function PrivacyPage() {
               If you have any questions about this Privacy Policy or require an enterprise Data Processing Agreement (DPA), please reach out to:
             </p>
             <div className={`p-4 rounded-xl border font-mono text-xs ${
-              isDark ? "bg-[#0E0E12] border-[#242628] text-[#C9CBCF]" : "bg-slate-50 border-slate-200 text-slate-800"
+              isDark ? "bg-[#0E1014] border-white/[0.08] text-[#C9CBCF]" : "bg-slate-50 border-slate-200 text-slate-800"
             }`}>
               <p>Sevlex Privacy &amp; Security Office</p>
               <p>Email: privacy@sevlex.com / founder@sevlex.com</p>
@@ -175,7 +175,7 @@ export default function PrivacyPage() {
 
       {/* Footer */}
       <footer className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
-        isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200 text-slate-500"
+        isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200 text-slate-500"
       }`}>
         <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

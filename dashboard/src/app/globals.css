@@ -3,9 +3,9 @@
 :root {
   --background: #000000;
   --foreground: #F8FAFC;
-  --sidebar-bg: #0C0D0E;
-  --surface: #131415;
-  --surface-border: #242628;
+  --sidebar-bg: #0A0C10;
+  --surface: #0E1014;
+  --surface-border: rgba(255, 255, 255, 0.08);
   --sevlex-primary: #3B82F6;
   --sevlex-cobalt: #2563EB;
   --neon-green: #34D59A;

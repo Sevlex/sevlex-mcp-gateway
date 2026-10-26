@@ -64,7 +64,7 @@ export default function ProductPage() {
 
       {/* 1. STICKY NAVBAR */}
       <nav className={`sticky top-0 z-40 backdrop-blur-md transition-colors duration-200 ${
-        isDark ? "bg-[#000000]/85 border-b border-[#242628]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+        isDark ? "bg-[#000000]/85 border-b border-white/[0.08]" : "bg-white/85 border-b border-slate-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center">
@@ -104,7 +104,7 @@ export default function ProductPage() {
               aria-label="Toggle Theme"
               className={`p-2 rounded-full border transition-colors ${
                 isDark
-                  ? "border-[#242628] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
+                  ? "border-white/[0.08] bg-[#141518] text-gray-300 hover:text-white hover:border-[#383A42]"
                   : "border-[#E5E7EB] bg-[#F9FAFB] text-gray-700 hover:text-gray-900 hover:border-gray-300 shadow-xs"
               }`}
             >
@@ -121,7 +121,7 @@ export default function ProductPage() {
               rel="noreferrer"
               className={`hidden md:inline-flex items-center gap-2 h-9 px-3.5 rounded-full border text-xs font-medium transition duration-200 ${
                 isDark
-                  ? "border-[#242628] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
+                  ? "border-white/[0.08] bg-white/[0.02] text-[#C9CBCF] hover:border-white hover:text-white"
                   : "border-slate-300 bg-white text-slate-700 hover:border-slate-900 hover:text-slate-950 shadow-xs"
               }`}
             >
@@ -150,7 +150,7 @@ export default function ProductPage() {
       <section className="pt-20 pb-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
           isDark
-            ? "bg-[#131415] border border-[#242628] text-[#797D86]"
+            ? "bg-[#14161C] border border-white/[0.08] text-[#797D86]"
             : "bg-slate-100 border border-slate-300 text-slate-700 shadow-xs"
         }`}>
           <span className="text-[#34D59A] font-semibold">SEVLEX GATEWAY CORE PRODUCT</span>
@@ -173,7 +173,7 @@ export default function ProductPage() {
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <div className={`inline-flex items-center gap-3 rounded-full px-5 py-2.5 transition-colors ${
             isDark
-              ? "bg-[#131415] border border-[#242628]"
+              ? "bg-[#14161C] border border-white/[0.08]"
               : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-xs"
           }`}>
             <span className={`font-mono text-xs ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>$</span>
@@ -205,7 +205,7 @@ export default function ProductPage() {
 
       {/* 3. ARCHITECTURE DIAGRAM SECTION */}
       <section className={`py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-xs uppercase tracking-widest text-[#34D59A] font-mono font-medium">
@@ -226,13 +226,13 @@ export default function ProductPage() {
         {/* Wire Interception Flow Box */}
         <div className={`p-8 rounded-2xl font-mono text-xs overflow-x-auto max-w-4xl mx-auto transition-colors ${
           isDark
-            ? "border border-[#242628] bg-[#0E0E12] text-[#C9CBCF] shadow-2xl"
+            ? "border border-white/[0.08] bg-[#0E1014] text-[#C9CBCF] shadow-2xl"
             : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white text-slate-700 shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(15,23,42,0.08)]"
         }`}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center text-center">
             {/* AI Client */}
             <div className={`p-4 rounded-xl transition-colors ${
-              isDark ? "bg-[#131415] border border-[#242628]" : "bg-slate-50 border border-slate-200"
+              isDark ? "bg-[#14161C] border border-white/[0.08]" : "bg-slate-50 border border-slate-200"
             }`}>
               <span className={`text-xs block mb-1 ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>AI RUNTIME / CLIENT</span>
               <span className={`text-sm font-semibold block ${isDark ? "text-white" : "text-slate-900"}`}>Claude / Cursor / Windsurf</span>
@@ -259,7 +259,7 @@ export default function ProductPage() {
 
             {/* Downstream MCP Tools */}
             <div className={`p-4 rounded-xl transition-colors ${
-              isDark ? "bg-[#131415] border border-[#242628]" : "bg-slate-50 border border-slate-200"
+              isDark ? "bg-[#14161C] border border-white/[0.08]" : "bg-slate-50 border border-slate-200"
             }`}>
               <span className={`text-xs block mb-1 ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>TARGET MCP SERVER</span>
               <span className={`text-sm font-semibold block ${isDark ? "text-white" : "text-slate-900"}`}>Postgres / Filesystem / APIs</span>
@@ -271,7 +271,7 @@ export default function ProductPage() {
 
       {/* 4. FOUR CORE DEFENSE ENGINES */}
       <section className={`py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-xs uppercase tracking-widest text-[#34D59A] font-mono font-medium">
@@ -287,7 +287,7 @@ export default function ProductPage() {
         {/* Tab Controls */}
         <div className="flex justify-center mb-8">
           <div className={`inline-flex p-1 rounded-full transition-colors ${
-            isDark ? "bg-[#131415] border border-[#242628]" : "bg-slate-100 border border-slate-200/90 shadow-xs"
+            isDark ? "bg-[#14161C] border border-white/[0.08]" : "bg-slate-100 border border-slate-200/90 shadow-xs"
           }`}>
             <button
               onClick={() => setActiveTab("toolguard")}
@@ -335,14 +335,14 @@ export default function ProductPage() {
         {/* Tab Contents */}
         <div className={`max-w-4xl mx-auto rounded-2xl p-8 transition-colors ${
           isDark
-            ? "border border-[#242628] bg-[#0E0E12] shadow-xl"
+            ? "border border-white/[0.08] bg-[#0E1014] shadow-xl"
             : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_12px_28px_-6px_rgba(15,23,42,0.08)]"
         }`}>
           {activeTab === "toolguard" && (
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className={`size-10 rounded-full flex items-center justify-center text-[#34D59A] ${
-                  isDark ? "bg-[#18191B] border border-[#242628]" : "bg-emerald-50 border border-emerald-200"
+                  isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-emerald-50 border border-emerald-200"
                 }`}>
                   <ShieldCheck className="size-5" />
                 </div>
@@ -359,7 +359,7 @@ export default function ProductPage() {
                 Rather than treating JSON-RPC payloads as opaque blobs, ToolGuard parses the internal syntax tree of commands in-flight. It blocks destructive database DDL (<code className="text-red-500 font-mono font-medium">DROP TABLE</code>, <code className="text-red-500 font-mono font-medium">TRUNCATE</code>), prevents catastrophic bash mutations (<code className="text-red-500 font-mono font-medium">rm -rf /</code>), and blocks path traversal attempts (<code className="text-red-500 font-mono font-medium">../../.aws/credentials</code>).
               </p>
               <div className={`p-4 rounded-xl font-mono text-xs ${
-                isDark ? "bg-[#000000] border border-[#242628] text-[#797D86]" : "bg-slate-900 text-slate-300 border border-slate-800"
+                isDark ? "bg-[#000000] border border-white/[0.08] text-[#797D86]" : "bg-slate-900 text-slate-300 border border-slate-800"
               }`}>
                 <span className="text-red-400 font-semibold">[BLOCKED in 0.42ms]</span> JSON-RPC tools/call -&gt; postgres:execute_query &#123; query: &quot;DROP TABLE production_users;&quot; &#125;
               </div>
@@ -370,7 +370,7 @@ export default function ProductPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className={`size-10 rounded-full flex items-center justify-center text-amber-400 ${
-                  isDark ? "bg-[#18191B] border border-[#242628]" : "bg-amber-50 border border-amber-200"
+                  isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-amber-50 border border-amber-200"
                 }`}>
                   <Zap className="size-5" />
                 </div>
@@ -387,7 +387,7 @@ export default function ProductPage() {
                 Autonomous agents can fall into infinite retry loops when encountering ambiguous compiler or test errors, burning through hundreds of dollars in API tokens in minutes. AgentGuard enforces a sliding-window velocity threshold (e.g., 25 calls / 30 seconds) and automatically trips the circuit breaker on 3 consecutive identical failures.
               </p>
               <div className={`p-4 rounded-xl font-mono text-xs ${
-                isDark ? "bg-[#000000] border border-[#242628] text-amber-400" : "bg-slate-900 text-amber-400 border border-slate-800"
+                isDark ? "bg-[#000000] border border-white/[0.08] text-amber-400" : "bg-slate-900 text-amber-400 border border-slate-800"
               }`}>
                 [TRIPPED] Error -32002: Agent Velocity Exceeded (26 calls in 21s). Execution halted to protect downstream API rate limits.
               </div>
@@ -398,7 +398,7 @@ export default function ProductPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className={`size-10 rounded-full flex items-center justify-center text-purple-400 ${
-                  isDark ? "bg-[#18191B] border border-[#242628]" : "bg-purple-50 border border-purple-200"
+                  isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-purple-50 border border-purple-200"
                 }`}>
                   <Eye className="size-5" />
                 </div>
@@ -415,7 +415,7 @@ export default function ProductPage() {
                 Downstream tools frequently return raw environment variables or database records containing secrets. Sevlex scans the downstream response stream in-flight, immediately redacting high-entropy AWS access keys, Stripe secret tokens, GitHub Personal Access Tokens, and customer PII before the LLM ingests them into its context window.
               </p>
               <div className={`p-4 rounded-xl font-mono text-xs ${
-                isDark ? "bg-[#000000] border border-[#242628] text-purple-300" : "bg-slate-900 text-purple-300 border border-slate-800"
+                isDark ? "bg-[#000000] border border-white/[0.08] text-purple-300" : "bg-slate-900 text-purple-300 border border-slate-800"
               }`}>
                 AKIAIOSFODNN7EXAMPLE ➔ [REDACTED_AWS_KEY] (Scrubbed in 0.38ms)
               </div>
@@ -426,7 +426,7 @@ export default function ProductPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className={`size-10 rounded-full flex items-center justify-center text-[#34D59A] ${
-                  isDark ? "bg-[#18191B] border border-[#242628]" : "bg-emerald-50 border border-emerald-200"
+                  isDark ? "bg-[#16181F] border border-white/[0.08]" : "bg-emerald-50 border border-emerald-200"
                 }`}>
                   <FileCheck2 className="size-5" />
                 </div>
@@ -443,7 +443,7 @@ export default function ProductPage() {
                 Standard log files can be modified or deleted. Sevlex stores every tool execution receipt in a local SQLite WAL ledger cryptographically bound to its predecessor: <code className="text-[#34D59A] font-mono">entry_hash = SHA256(prev_hash || receipt)</code>. Any alteration instantly invalidates the Merkle root, providing mathematical proof for enterprise security audits.
               </p>
               <div className={`p-4 rounded-xl font-mono text-xs flex items-center justify-between ${
-                isDark ? "bg-[#000000] border border-[#242628] text-[#34D59A]" : "bg-slate-900 text-[#34D59A] border border-slate-800"
+                isDark ? "bg-[#000000] border border-white/[0.08] text-[#34D59A]" : "bg-slate-900 text-[#34D59A] border border-slate-800"
               }`}>
                 <span>Traversing 402 Receipts Backwards</span>
                 <span className="font-bold">100% Cryptographically Valid</span>
@@ -455,11 +455,11 @@ export default function ProductPage() {
 
       {/* 5. MACHINE SPECIFICATION (llms.txt) */}
       <section className={`py-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className={`p-6 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors ${
           isDark
-            ? "border border-[#242628] bg-[#0E0E12]"
+            ? "border border-white/[0.08] bg-[#0E1014]"
             : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-sm"
         }`}>
           <div className="flex items-start gap-3.5">
@@ -502,11 +502,11 @@ export default function ProductPage() {
 
       {/* 6. BOTTOM CTA */}
       <section className={`py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t transition-colors ${
-        isDark ? "border-[#242628]" : "border-slate-200/90"
+        isDark ? "border-white/[0.08]" : "border-slate-200/90"
       }`}>
         <div className={`rounded-3xl p-10 sm:p-14 shadow-2xl relative overflow-hidden transition-colors ${
           isDark
-            ? "border border-[#242628] bg-[#0C0D0E]"
+            ? "border border-white/[0.08] bg-[#0A0C10]"
             : "border border-slate-200/90 ring-1 ring-slate-900/[0.04] bg-white shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
         }`}>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-36 bg-[#34D59A]/10 blur-[90px] pointer-events-none rounded-full" />
@@ -524,7 +524,7 @@ export default function ProductPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 relative z-10">
             <div className={`inline-flex items-center gap-3 rounded-full px-5 py-2.5 ${
               isDark
-                ? "bg-[#131415] border border-[#242628]"
+                ? "bg-[#14161C] border border-white/[0.08]"
                 : "bg-slate-50 border border-slate-300 shadow-xs"
             }`}>
               <span className={`font-mono text-xs ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>$</span>
@@ -548,7 +548,7 @@ export default function ProductPage() {
 
       {/* 7. FOOTER */}
       <footer className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
-        isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200/90 text-slate-500"
+        isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200/90 text-slate-500"
       }`}>
         <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

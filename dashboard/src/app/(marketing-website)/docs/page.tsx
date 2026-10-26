@@ -1473,7 +1473,7 @@ export const gateway = createGateway({
                     Sevlex operates as a transparent Layer 7 proxy sitting between MCP Client runtimes (Cursor, Claude Desktop, Windsurf, LangChain) and downstream MCP servers (Postgres, GitHub, Slack, Filesystem, Bash).
                   </p>
                   <div className={`p-6 rounded-2xl border font-mono text-xs my-4 ${
-                    isDark ? "bg-[#0E0E12] border-[#242628] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
+                    isDark ? "bg-[#0E1014] border-white/[0.08] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
                   }`}>
                     <p className="text-emerald-400 font-bold mb-2">MCP JSON-RPC Wire Topology:</p>
                     <p>[AI Agent (Cursor/Claude)]</p>
@@ -1875,7 +1875,7 @@ app.listen(() => console.log('Sevlex L7 Zero-Trust Gateway running on :8080'));`
                     The official `sevlex` CLI binary reference.
                   </p>
                   <div className={`p-4 rounded-xl border font-mono text-xs space-y-3 ${
-                    isDark ? "bg-[#0E0E12] border-[#242628] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
+                    isDark ? "bg-[#0E1014] border-white/[0.08] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
                   }`}>
                     <p><strong>sevlex init</strong> — Automatically discovers IDE MCP configurations, saves *.bak snapshot, wraps in L7 proxy.</p>
                     <p><strong>sevlex demo</strong> — Simulates SQL injections and credential leaks to verify interception.</p>
@@ -1949,7 +1949,7 @@ curl -H "Authorization: Bearer slx_live_..." https://sevlex.com/api/logs`}
                     Environment variables supported by Sevlex Gateway and Console.
                   </p>
                   <div className={`p-4 rounded-xl border font-mono text-xs space-y-2 ${
-                    isDark ? "bg-[#0E0E12] border-[#242628] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
+                    isDark ? "bg-[#0E1014] border-white/[0.08] text-gray-300" : "bg-slate-50 border-slate-200 text-slate-800"
                   }`}>
                     <p><strong>DATABASE_URL</strong> — PostgreSQL connection string (Neon pooled endpoint).</p>
                     <p><strong>DATABASE_SSL</strong> — Set to &apos;true&apos; for SSL-required cloud databases.</p>
@@ -2025,7 +2025,7 @@ curl -H "Authorization: Bearer slx_live_..." https://sevlex.com/api/logs`}
       {/* Footer */}
       <footer
         className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
-          isDark ? "border-[#242628] text-[#797D86]" : "border-slate-200 text-slate-500"
+          isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200 text-slate-500"
         }`}
       >
         <div className={`flex items-center gap-3 ${isDark ? "text-[#94979E]" : "text-slate-600"}`}>
