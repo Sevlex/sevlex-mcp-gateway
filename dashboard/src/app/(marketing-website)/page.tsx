@@ -574,7 +574,7 @@ export default function LandingPage() {
               </svg>
               <span>GitHub</span>
               <span className={isDark ? "text-[#61646B]" : "text-[#9CA3AF]"}>•</span>
-              <span className={`font-mono text-[11px] ${isDark ? "text-[#AFB1B6]" : "text-[#4B5563]"}`}>★ 1.8k</span>
+              <span className={`text-[11px] ${isDark ? "text-[#AFB1B6]" : "text-[#4B5563]"}`}>★ 1.8k</span>
             </a>
 
             {/* Sign in with GitHub Pill */}
@@ -670,7 +670,7 @@ export default function LandingPage() {
 
           {/* Client Ecosystem Showcase (100% borderless, transparent, seamless) */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-[#797D86]">
-            <span className={`font-mono text-[11px] uppercase tracking-wider ${isDark ? "text-[#61646B]" : "text-[#64748B]"}`}>
+            <span className={`text-[11px] uppercase tracking-wider ${isDark ? "text-[#61646B]" : "text-[#64748B]"}`}>
               Zero-Config Shields:
             </span>
             {[
@@ -703,7 +703,7 @@ export default function LandingPage() {
         {/* Editorial Section Header & Watermark */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-3xl">
-            <div className="flex items-center gap-2 text-xs font-mono font-medium uppercase tracking-widest text-[#34D59A] mb-4">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#34D59A] mb-4">
               <svg width="10" height="12" viewBox="0 0 10 12" fill="none" className="shrink-0 text-[#34D59A]">
                 <path d="M10 6L1 11.1962V0.803848L10 6Z" fill="currentColor" />
               </svg>
@@ -718,7 +718,7 @@ export default function LandingPage() {
               </span>
             </h2>
           </div>
-          <div className={`hidden lg:block font-mono text-7xl font-light select-none tracking-tighter ${
+          <div className={`hidden lg:block text-7xl font-light select-none tracking-tighter ${
             isDark ? "text-[#18191B]" : "text-slate-200"
           }`}>
             01
@@ -733,7 +733,7 @@ export default function LandingPage() {
               : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs hover:shadow-md"
           }`}>
             <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-[11px] text-[#34D59A] font-semibold uppercase tracking-wider">
+              <span className="text-[11px] text-[#34D59A] font-semibold uppercase tracking-wider">
                 01 / In-Flight Intercept
               </span>
               <div className={`size-8 rounded-lg border flex items-center justify-center ${
@@ -756,7 +756,7 @@ export default function LandingPage() {
               : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs hover:shadow-md"
           }`}>
             <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-[11px] text-blue-400 font-semibold uppercase tracking-wider">
+              <span className="text-[11px] text-blue-400 font-semibold uppercase tracking-wider">
                 02 / Deep Packet Inspection
               </span>
               <div className={`size-8 rounded-lg border flex items-center justify-center ${
@@ -779,7 +779,7 @@ export default function LandingPage() {
               : "bg-white border-slate-200/90 ring-1 ring-slate-900/[0.03] shadow-xs hover:shadow-md"
           }`}>
             <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-[11px] text-purple-400 font-semibold uppercase tracking-wider">
+              <span className="text-[11px] text-purple-400 font-semibold uppercase tracking-wider">
                 03 / Autonomous Safety
               </span>
               <div className={`size-8 rounded-lg border flex items-center justify-center ${
@@ -806,26 +806,30 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 5. IN-FLIGHT THREAT INTERCEPTION & POLICY GUARD (2-PANE ARCHITECTURE)      */}
       {/* ========================================================================= */}
-      <section id="simulator" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 ${
-            isDark
-              ? "bg-[#14161C] text-[#34D59A] border border-white/[0.08]"
-              : "bg-emerald-500/10 text-emerald-800 border border-emerald-500/20"
-          }`}>
-            <ShieldCheck className="size-3.5 text-[#34D59A]" />
-            Live Demo
+      <section id="simulator" className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t ${
+        isDark ? "border-white/[0.08]" : "border-slate-200"
+      }`}>
+        {/* Editorial Section Header & Watermark */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#34D59A] mb-4">
+              <ShieldCheck className="size-3.5 text-[#34D59A]" />
+              <span>LIVE POLICY SIMULATOR</span>
+            </div>
+            <h2 className={`text-3xl sm:text-5xl font-normal tracking-tight leading-[1.12] ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
+              See how Sevlex blocks dangerous agent actions.{" "}
+              <span className={isDark ? "text-[#797D86]" : "text-[#64748B]"}>
+                When an AI coding agent tries to delete a database or leak credentials, Sevlex stops it in under a millisecond.
+              </span>
+            </h2>
           </div>
-          <h2 className={`text-3xl sm:text-4xl font-semibold tracking-tight ${
-            isDark ? "text-white" : "text-[#0F172A]"
+          <div className={`hidden lg:block text-7xl font-light select-none tracking-tighter ${
+            isDark ? "text-[#18191B]" : "text-slate-200"
           }`}>
-            See How Sevlex Blocks Dangerous Agent Actions
-          </h2>
-          <p className={`mt-3 text-sm sm:text-base leading-relaxed ${
-            isDark ? "text-[#797D86]" : "text-[#475569]"
-          }`}>
-            When an AI coding agent tries to delete a database or leak credentials, Sevlex stops it in under a millisecond.
-          </p>
+            02
+          </div>
         </div>
 
         {/* 2-Pane Policy Guard Container */}
@@ -1074,21 +1078,26 @@ export default function LandingPage() {
       <section id="docs" className={`py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
         isDark ? "border-white/[0.08]" : "border-slate-200"
       }`}>
-        <div id="terminal" className="text-center max-w-2xl mx-auto mb-10">
-          <div className="flex items-center justify-center gap-2 text-xs font-mono font-medium uppercase tracking-widest text-[#34D59A] mb-3">
-            <Terminal className="size-3.5 text-[#34D59A]" />
-            <span>DEVELOPER DOCUMENTATION &amp; QUICKSTART</span>
+        <div id="terminal" className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#34D59A] mb-4">
+              <Terminal className="size-3.5 text-[#34D59A]" />
+              <span>DEVELOPER DOCUMENTATION &amp; QUICKSTART</span>
+            </div>
+            <h2 className={`text-3xl sm:text-5xl font-normal tracking-tight leading-[1.12] ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
+              Zero-config L7 gateway CLI.{" "}
+              <span className={isDark ? "text-[#797D86]" : "text-[#475569]"}>
+                One command scans your host, transparently wraps downstream stdio MCP tools in Layer 7 zero-trust filters, and creates safe backups.
+              </span>
+            </h2>
           </div>
-          <h2 className={`text-3xl sm:text-4xl font-normal tracking-tight ${
-            isDark ? "text-white" : "text-[#0F172A]"
+          <div className={`hidden lg:block text-7xl font-light select-none tracking-tighter ${
+            isDark ? "text-[#18191B]" : "text-slate-200"
           }`}>
-            Zero-Config L7 Gateway CLI
-          </h2>
-          <p className={`mt-2 text-xs sm:text-sm ${
-            isDark ? "text-[#797D86]" : "text-[#475569]"
-          }`}>
-            One command scans your host, transparently wraps downstream stdio MCP tools in Layer 7 zero-trust filters, and creates safe backups.
-          </p>
+            03
+          </div>
         </div>
         <div className={`rounded-2xl border overflow-hidden transition-all ${
           isDark
@@ -1270,7 +1279,32 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 7. ARCHITECTURAL BENCHMARKS & CRYPTOGRAPHIC GUARANTEES                   */}
       {/* ========================================================================= */}
-      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
+        isDark ? "border-white/[0.08]" : "border-slate-200"
+      }`}>
+        {/* Editorial Section Header & Watermark */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#34D59A] mb-4">
+              <Zap className="size-3.5 text-[#34D59A]" />
+              <span>ARCHITECTURAL BENCHMARKS &amp; GUARANTEES</span>
+            </div>
+            <h2 className={`text-3xl sm:text-5xl font-normal tracking-tight leading-[1.12] ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
+              Sub-millisecond wire latency.{" "}
+              <span className={isDark ? "text-[#797D86]" : "text-[#64748B]"}>
+                Engineered for in-flight AST inspection with zero detectable delay on developer coding agent loops.
+              </span>
+            </h2>
+          </div>
+          <div className={`hidden lg:block text-7xl font-light select-none tracking-tighter ${
+            isDark ? "text-[#18191B]" : "text-slate-200"
+          }`}>
+            04
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className={`p-6 rounded-2xl border transition-all duration-300 ${
             isDark
@@ -1387,28 +1421,26 @@ export default function LandingPage() {
       <section id="about" className={`py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
         isDark ? "border-white/[0.08]" : "border-slate-200"
       }`}>
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4 ${
-            isDark
-              ? "bg-[#14161C] border border-white/[0.08] text-[#797D86]"
-              : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-800"
-          }`}>
-            <span className="text-[#34D59A] font-semibold">ABOUT SEVLEX</span>
-            <span className={isDark ? "text-[#303236]" : "text-emerald-300"}>•</span>
-            <span className={isDark ? "text-[#AFB1B6]" : "text-emerald-700"}>OUR MISSION</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#34D59A] mb-4">
+              <Shield className="size-3.5 text-[#34D59A]" />
+              <span>ABOUT SEVLEX &amp; CORE MISSION</span>
+            </div>
+            <h2 className={`text-3xl sm:text-5xl font-normal tracking-tight leading-[1.12] ${
+              isDark ? "text-white" : "text-[#0F172A]"
+            }`}>
+              Securing the autonomous agent frontier.{" "}
+              <span className={isDark ? "text-[#797D86]" : "text-[#64748B]"}>
+                Giving engineering leaders complete confidence to adopt agents at scale—preventing catastrophic database mutations, source code theft, and credential leaks.
+              </span>
+            </h2>
           </div>
-          <h2 className={`text-3xl sm:text-4xl font-normal tracking-tight ${
-            isDark ? "text-white" : "text-[#0F172A]"
+          <div className={`hidden lg:block text-7xl font-light select-none tracking-tighter ${
+            isDark ? "text-[#18191B]" : "text-slate-200"
           }`}>
-            Securing the Autonomous Agent Frontier
-          </h2>
-          <p className={`mt-4 text-sm sm:text-base leading-relaxed ${
-            isDark ? "text-[#797D86]" : "text-[#475569]"
-          }`}>
-            Autonomous coding agents and the Model Context Protocol are revolutionizing software engineering.
-            Sevlex exists to give engineering leaders complete confidence to adopt agents at scale—preventing
-            catastrophic database mutations, source code theft, and credential leaks without slowing developers down.
-          </p>
+            05
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -1539,7 +1571,7 @@ export default function LandingPage() {
           <a href="/privacy" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Privacy</a>
           <a href="/terms" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Terms</a>
           <a href="/console" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Console</a>
-          <a href="/llms.txt" target="_blank" className={`font-mono text-[11px] ${isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}`}>llms.txt</a>
+          <a href="/llms.txt" target="_blank" className={`text-[11px] ${isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}`}>llms.txt</a>
           <a href="https://github.com/Sevlex/sevlex-mcp-gateway" target="_blank" rel="noreferrer" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>GitHub</a>
           <a href="https://calendly.com/meetpxnchl/meeting" target="_blank" rel="noreferrer" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>Book Enterprise Demo</a>
         </div>
