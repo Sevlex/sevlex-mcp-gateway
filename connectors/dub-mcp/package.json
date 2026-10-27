@@ -11,6 +11,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
+    "sse": "tsx src/server.ts",
     "test": "tsx scripts/test.ts",
     "demo": "tsx scripts/test.ts"
   },
