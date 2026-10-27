@@ -39,7 +39,8 @@ export const getDomainForBrand = (name: string): string | null => {
   if (norm.includes("antigravity")) return null; // Uses official local high-res Google Antigravity arch asset
   if (norm.includes("node")) return "nodejs.org";
   if (norm.includes("drive")) return "google.com";
-  if (norm.includes("gemini") || norm.includes("google")) return "google.com";
+  if (norm.includes("gemini")) return null;
+  if (norm.includes("google")) return "google.com";
   if (norm.includes("postgres") || norm.includes("pgsql")) return "postgresql.org";
   if (norm.includes("aws") || norm.includes("amazon") || norm.includes("s3")) return "aws.amazon.com";
   if (norm.includes("github")) return "github.com";
@@ -125,6 +126,12 @@ export default function ClientBrandIcon({ name, size = "md", className = "" }: C
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src="/windsurf-icon.svg" alt="Windsurf" className={`${sizeClass} object-contain shrink-0 ${className}`} />
+    );
+  }
+  if (norm.includes("gemini")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src="/gemini-icon.svg" alt="Google Gemini" className={`${sizeClass} object-contain shrink-0 ${className}`} />
     );
   }
   if (norm.includes("antigravity")) {
