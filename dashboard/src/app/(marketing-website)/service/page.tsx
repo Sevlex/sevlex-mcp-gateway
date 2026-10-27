@@ -252,7 +252,7 @@ export default function ServicePage() {
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="size-2 rounded-full bg-[#34D59A] shadow-[0_0_8px_#34D59A]" />
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#797D86] dark:text-[#797D86]">
+                <span className={`text-xs font-semibold tracking-wider uppercase ${isDark ? "text-neutral-300" : "text-slate-600"}`}>
                   Enterprise Infrastructure
                 </span>
               </div>
@@ -402,7 +402,7 @@ export default function ServicePage() {
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="size-2 rounded-full bg-[#38BDF8] shadow-[0_0_8px_#38BDF8]" />
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#797D86] dark:text-[#797D86]">
+                <span className={`text-xs font-semibold tracking-wider uppercase ${isDark ? "text-neutral-300" : "text-slate-600"}`}>
                   Commercial Distribution
                 </span>
               </div>
@@ -546,7 +546,7 @@ export default function ServicePage() {
         }`}
       >
         <div className="text-center max-w-xl mx-auto mb-12">
-          <span className="text-[10px] uppercase tracking-widest text-[#797D86] font-semibold">
+          <span className={`text-xs uppercase tracking-wider font-semibold ${isDark ? "text-neutral-300" : "text-slate-600"}`}>
             Engagement Model
           </span>
           <p className={`mt-1.5 text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>

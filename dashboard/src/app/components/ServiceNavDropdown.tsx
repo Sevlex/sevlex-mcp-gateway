@@ -98,10 +98,10 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
             
             {/* COLUMN 1: ENTERPRISE MCP (4 cols) */}
             <div className="md:col-span-4 space-y-4">
-              <div>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#797D86] dark:text-[#797D86] block">
+              <div className={`pb-2 border-b ${isDark ? "border-white/[0.08]" : "border-slate-200"}`}>
+                <h3 className={`text-sm font-semibold uppercase tracking-wider ${isDark ? "text-white" : "text-slate-900"}`}>
                   Enterprise MCP
-                </span>
+                </h3>
               </div>
 
               <div className="space-y-3">
@@ -187,10 +187,10 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
 
             {/* COLUMN 2: COMMERCIAL SAAS (4 cols) */}
             <div className="md:col-span-4 space-y-4">
-              <div>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#797D86] dark:text-[#797D86] block">
+              <div className={`pb-2 border-b ${isDark ? "border-white/[0.08]" : "border-slate-200"}`}>
+                <h3 className={`text-sm font-semibold uppercase tracking-wider ${isDark ? "text-white" : "text-slate-900"}`}>
                   SaaS Connectors
-                </span>
+                </h3>
               </div>
 
               <div className="space-y-3">
@@ -297,7 +297,7 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
                 <div className="absolute -top-12 -right-12 w-36 h-36 bg-[#34D59A]/20 blur-3xl pointer-events-none rounded-full" />
 
                 <div className="relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#34D59A]/15 border border-[#34D59A]/30 text-[#34D59A] text-[11px] font-semibold mb-3">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#34D59A]/15 border border-[#34D59A]/30 text-[#34D59A] text-xs font-semibold mb-3">
                     <span className="size-1.5 rounded-full bg-[#34D59A] animate-pulse shadow-[0_0_8px_#34D59A]" />
                     <span>White-Glove Delivery</span>
                   </div>
