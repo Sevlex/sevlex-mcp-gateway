@@ -19,217 +19,34 @@ import {
   Globe2,
   Server,
   RefreshCw,
+  Cpu,
 } from "lucide-react";
 import { useTheme } from "@/app/components/ThemeProvider";
 import ServiceNavDropdown from "@/app/components/ServiceNavDropdown";
-
-interface ServiceItem {
-  id: string;
-  type: "TYPE_A" | "TYPE_B";
-  typeLabel: string;
-  title: string;
-  sla: string;
-  description: string;
-  bullets: string[];
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-const SERVICES: ServiceItem[] = [
-  // TYPE A: Internal
-  {
-    id: "safe-db",
-    type: "TYPE_A",
-    typeLabel: "INTERNAL",
-    title: "Safe Database MCP Bridge",
-    sla: "48h SLA",
-    description: "Connect Claude, Cursor, and Antigravity to private databases with AST read-only query guardrails.",
-    bullets: [
-      "Kills DROP, DELETE, and ALTER queries in <0.4ms",
-      "In-flight DLP masking for passwords and credentials",
-      "Full TypeScript MCP server with connection pooling",
-    ],
-    icon: Database,
-  },
-  {
-    id: "openapi-porting",
-    type: "TYPE_A",
-    typeLabel: "INTERNAL",
-    title: "OpenAPI & Microservices Porting",
-    sla: "72h SLA",
-    description: "Transform internal Swagger / OpenAPI specs, REST, or GraphQL endpoints into typed AI tools.",
-    bullets: [
-      "15–30 curated endpoints mapped into natural language tools",
-      "Strict parameter schemas, type safety, and payload bounding",
-      "Local stdio or secure internal SSE transport",
-    ],
-    icon: Layers,
-  },
-  {
-    id: "devops-logs",
-    type: "TYPE_A",
-    typeLabel: "INTERNAL",
-    title: "DevOps & Incident Logs MCP",
-    sla: "72h SLA",
-    description: "Query live error streams and crash stack traces directly inside developer IDEs.",
-    bullets: [
-      "CloudWatch, Sentry & Datadog instant log triage",
-      "Automated crash stack trace parsing and summaries",
-      "Zero dashboard hopping during live production on-call",
-    ],
-    icon: Terminal,
-  },
-  {
-    id: "security-hardening",
-    type: "TYPE_A",
-    typeLabel: "INTERNAL",
-    title: "Zero-Trust & SOC 2 Hardening",
-    sla: "3–5 Days",
-    description: "Wrap existing internal MCP servers with enterprise guardrails to pass InfoSec and compliance.",
-    bullets: [
-      "Sevlex Layer 7 ToolGuard™ parameter AST firewall",
-      "Velocity circuit breakers preventing runaway LLM loops",
-      "Cryptographic Merkle audit ledger for SOC 2 compliance",
-    ],
-    icon: Lock,
-  },
-  {
-    id: "fleet-rollout",
-    type: "TYPE_A",
-    typeLabel: "INTERNAL",
-    title: "Fleet-Wide IDE Rollout",
-    sla: "5 Days",
-    description: "Deploy standardized, pre-authenticated MCP configurations across 20–100+ developer laptops.",
-    bullets: [
-      "Automated Jamf (macOS) & Microsoft Intune (Windows) scripts",
-      "Centralized registry locked against unauthorized edits",
-      "Zero configuration drift across engineering teams",
-    ],
-    icon: FileCode,
-  },
-
-  // TYPE B: Commercial
-  {
-    id: "saas-flagship",
-    type: "TYPE_B",
-    typeLabel: "COMMERCIAL",
-    title: "Official Multi-Tenant SaaS Connector",
-    sla: "10 Days",
-    description: "Public-facing remote MCP connector so your paying customers can use your software in Claude & Cursor.",
-    bullets: [
-      "24/7 Remote SSE server with OAuth 2.0 PKCE user login",
-      "Strict multi-tenant data isolation and rate limiting",
-      "Complete test suite and production deployment",
-    ],
-    icon: Sparkles,
-  },
-  {
-    id: "marketplace-distribution",
-    type: "TYPE_B",
-    typeLabel: "COMMERCIAL",
-    title: "AI Marketplace Distribution",
-    sla: "3 Days",
-    description: "Package and publish your connector across the global Model Context Protocol ecosystem.",
-    bullets: [
-      "Verified listings on Smithery.ai and mcp.so directories",
-      "Published @company/mcp-server npm package with CI/CD",
-      "Branded quickstart documentation for developer onboarding",
-    ],
-    icon: Globe2,
-  },
-  {
-    id: "slack-hitl",
-    type: "TYPE_B",
-    typeLabel: "COMMERCIAL",
-    title: "Slack HITL Approval Gates",
-    sla: "3 Days",
-    description: "Interactive managerial approval workflows before high-risk autonomous agent operations run.",
-    bullets: [
-      "Slack / Teams card with one-click 'Approve' / 'Deny' buttons",
-      "Cryptographically signed, expiring authorization tokens",
-      "Audit trail logging which manager cleared each action",
-    ],
-    icon: ShieldCheck,
-  },
-  {
-    id: "managed-cloud",
-    type: "TYPE_B",
-    typeLabel: "COMMERCIAL",
-    title: "24/7 Managed Cloud Hosting",
-    sla: "Managed SLA",
-    description: "Fully managed cloud infrastructure so your team never has to maintain or troubleshoot MCP servers.",
-    bullets: [
-      "99.9% uptime SLA with auto-scaling compute and SSL",
-      "DDoS defense, latency tracking, and error alerting",
-      "Zero DevOps maintenance required from your internal team",
-    ],
-    icon: Server,
-  },
-  {
-    id: "schema-evolution",
-    type: "TYPE_B",
-    typeLabel: "COMMERCIAL",
-    title: "Schema & Model Evolution Retainer",
-    sla: "Monthly",
-    description: "Ongoing prompt tuning as your product APIs change and frontier models release new versions.",
-    bullets: [
-      "Monthly schema updates synchronized with your core product",
-      "Prompt fine-tuning tailored to Claude 3.7, GPT-5 & Gemini 2.0",
-      "Monthly tool usage breakdown and query telemetry reports",
-    ],
-    icon: RefreshCw,
-  },
-];
 
 export default function ServicePage() {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
 
-  const [activeTab, setActiveTab] = useState<"ALL" | "TYPE_A" | "TYPE_B">("ALL");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    projectCategory: "Type A: Internal Enterprise MCP",
-    sourceType: "PostgreSQL Database",
+    projectCategory: "Category A: Internal Enterprise MCP",
+    sourceType: "PostgreSQL / MySQL / Snowflake",
     aiClient: "Claude Desktop & Cursor IDE",
     details: "",
   });
 
-  // Sync with URL anchor hash
-  React.useEffect(() => {
-    const handleHash = () => {
-      if (typeof window === "undefined") return;
-      const hash = window.location.hash.replace("#", "");
-      if (hash) {
-        const found = SERVICES.find((s) => s.id === hash);
-        if (found) {
-          setActiveTab("ALL");
-          setTimeout(() => {
-            const el = document.getElementById(hash);
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }, 60);
-        }
-      }
-    };
-    handleHash();
-    window.addEventListener("hashchange", handleHash);
-    return () => window.removeEventListener("hashchange", handleHash);
-  }, []);
-
-  const handleSelectService = (service: ServiceItem) => {
+  const handleSelectTrack = (trackName: string) => {
     setFormData((prev) => ({
       ...prev,
-      projectCategory:
-        service.type === "TYPE_A"
-          ? "Type A: Internal Enterprise MCP"
-          : "Type B: Commercial SaaS Connector",
-      details: `Inquiring about: ${service.title} (${service.sla}).\n`,
+      projectCategory: trackName,
+      details: `Inquiring about custom scoping for: ${trackName}.\n`,
     }));
     const el = document.getElementById("intake");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -241,7 +58,7 @@ export default function ServicePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          details: `[Category: ${formData.projectCategory}]\n${formData.details}`,
+          details: `[Track: ${formData.projectCategory}]\n${formData.details}`,
         }),
       });
     } catch (err) {
@@ -250,11 +67,6 @@ export default function ServicePage() {
     setIsSubmitting(false);
     setSubmitted(true);
   };
-
-  const filteredServices = SERVICES.filter((s) => {
-    if (activeTab === "ALL") return true;
-    return s.type === activeTab;
-  });
 
   return (
     <main
@@ -294,7 +106,7 @@ export default function ServicePage() {
             </a>
           </div>
 
-          {/* Desktop Nav Items with Neon-style Dropdown */}
+          {/* Desktop Nav Items */}
           <div
             className={`hidden md:flex items-center gap-8 text-xs font-medium ${
               isDark ? "text-[#94979E]" : "text-[#6B7280]"
@@ -362,7 +174,7 @@ export default function ServicePage() {
         </div>
       </nav>
 
-      {/* 2. HERO */}
+      {/* 2. HERO: BRAND-LEVEL OVERVIEW */}
       <section className="pt-20 pb-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div
           className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
@@ -371,7 +183,7 @@ export default function ServicePage() {
               : "bg-slate-100 border border-slate-300 text-slate-700 shadow-xs"
           }`}
         >
-          <span className="text-[#34D59A] font-semibold">WHITE-GLOVE MCP INTEGRATION</span>
+          <span className="text-[#34D59A] font-semibold">CUSTOM ARCHITECTURAL DELIVERY</span>
           <span>•</span>
           <span>48–72H GUARANTEED SLA</span>
         </div>
@@ -381,7 +193,7 @@ export default function ServicePage() {
             isDark ? "text-white" : "text-slate-950"
           }`}
         >
-          Custom MCP Servers Built for Your Stack
+          MCP Infrastructure Built for Your Exact Stack
         </h1>
 
         <p
@@ -389,7 +201,7 @@ export default function ServicePage() {
             isDark ? "text-[#8A8F98]" : "text-slate-600"
           }`}
         >
-          We engineer zero-trust Model Context Protocol servers and public SaaS connectors in 48 to 72 hours—backed by fixed scopes, 100% code ownership, and zero hourly bills.
+          Every organization has unique data models, security guardrails, and customer workflows. We don&apos;t force rigid templates—we scope, architect, and harden custom Model Context Protocol infrastructure tailored to your exact stack in days.
         </p>
 
         {/* Action Buttons */}
@@ -402,7 +214,7 @@ export default function ServicePage() {
                 : "bg-slate-900 text-white hover:bg-slate-800"
             }`}
           >
-            <span>Request Custom Build</span>
+            <span>Request Custom Scope</span>
             <ArrowRight className="size-3.5" />
           </a>
           <a
@@ -421,214 +233,216 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {/* 3. BRAND-GRADE SOLUTIONS GRID (NEON AESTHETIC) */}
+      {/* 3. TWO STRATEGIC CATEGORIES (THE OVERVIEW APPROACH) */}
+      <section className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        {/* CATEGORY A: INTERNAL INFRASTRUCTURE */}
+        <div
+          id="internal-infra"
+          className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-colors ${
+            isDark
+              ? "bg-[#090B0E] border-white/[0.08]"
+              : "bg-white border-slate-200 shadow-xs"
+          }`}
+        >
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8 pb-8 border-b border-white/[0.06] dark:border-white/[0.06] border-slate-100">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="size-2 rounded-full bg-[#34D59A]" />
+                <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#34D59A]">
+                  CATEGORY A: INTERNAL ENTERPRISE
+                </span>
+              </div>
+              <h2 className={`text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
+                Safe AI Tooling for Your Engineering &amp; Operations Teams
+              </h2>
+              <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+                Empower your engineers to query private databases, invoke internal microservices, and triage incident logs directly inside Claude Desktop, Cursor, and autonomous agents—with Sevlex Layer 7 AST firewalls that eliminate destructive query risks and leakages.
+              </p>
+            </div>
+
+            <div className="shrink-0 flex flex-col sm:items-end gap-2">
+              <span className={`px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border ${
+                isDark ? "bg-[#14161C] border-white/[0.08] text-[#AFB1B6]" : "bg-slate-100 border-slate-300 text-slate-700"
+              }`}>
+                48h–72h Delivery SLA
+              </span>
+              <button
+                onClick={() => handleSelectTrack("Category A: Internal Enterprise MCP")}
+                className="text-xs font-medium text-[#34D59A] hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <span>Scope Internal Stack</span>
+                <ArrowRight className="size-3" />
+              </button>
+            </div>
+          </div>
+
+          {/* 4 Architectural Capability Pillars */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                Private Data Stores
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                Postgres, MySQL, Snowflake, MongoDB &amp; Redis with &lt;0.4ms AST query firewalls blocking DROP, DELETE &amp; ALTER.
+              </p>
+            </div>
+
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                APIs &amp; Microservices
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                Automated ingestion of Swagger / OpenAPI, GraphQL, and private REST endpoints into typed AI tool definitions.
+              </p>
+            </div>
+
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                DevOps &amp; Log Triage
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                CloudWatch, Sentry &amp; Datadog crash stack trace diagnosis directly in Cursor without switching browser tabs.
+              </p>
+            </div>
+
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                Zero-Trust &amp; Fleet MDM
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                SOC 2 Merkle audit ledger, DLP token redaction, and Jamf/Intune central configuration for 20–100+ laptops.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CATEGORY B: COMMERCIAL SAAS CONNECTORS */}
+        <div
+          id="commercial-saas"
+          className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-colors ${
+            isDark
+              ? "bg-[#090B0E] border-white/[0.08]"
+              : "bg-white border-slate-200 shadow-xs"
+          }`}
+        >
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8 pb-8 border-b border-white/[0.06] dark:border-white/[0.06] border-slate-100">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="size-2 rounded-full bg-[#38BDF8]" />
+                <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#38BDF8]">
+                  CATEGORY B: COMMERCIAL SAAS CONNECTORS
+                </span>
+              </div>
+              <h2 className={`text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
+                Official AI Connectors for Your Outside Paying Customers
+              </h2>
+              <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+                Position your SaaS product inside the modern AI workflow. Enable your customers to invoke your product directly from natural language prompts in Claude and Cursor—while we handle remote SSE scaling, OAuth 2.0 PKCE user delegation, and multi-tenant security.
+              </p>
+            </div>
+
+            <div className="shrink-0 flex flex-col sm:items-end gap-2">
+              <span className={`px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border ${
+                isDark ? "bg-[#14161C] border-white/[0.08] text-[#AFB1B6]" : "bg-slate-100 border-slate-300 text-slate-700"
+              }`}>
+                10-Day Production SLA
+              </span>
+              <button
+                onClick={() => handleSelectTrack("Category B: Commercial SaaS Connector")}
+                className="text-xs font-medium text-[#38BDF8] hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <span>Scope SaaS Connector</span>
+                <ArrowRight className="size-3" />
+              </button>
+            </div>
+          </div>
+
+          {/* 4 Architectural Capability Pillars */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                Remote SSE &amp; OAuth 2.0
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                24/7 cloud server with seamless PKCE login (&quot;Sign in with [Your App]&quot;) eliminating manual API key handling.
+              </p>
+            </div>
+
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                Multi-Tenant Isolation
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                Strict tenant partitioning, velocity rate limiting, and session security guaranteeing zero cross-customer data leakage.
+              </p>
+            </div>
+
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                Marketplace Publishing
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                Official verified listings on Smithery.ai, mcp.so, and @company/mcp-server npm registry with setup docs.
+              </p>
+            </div>
+
+            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+                HITL Gates &amp; Hosting
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+                Slack/Teams approval cards for sensitive operations, 99.9% uptime SLA hosting, and ongoing frontier model tuning.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      {/* 4. ENGAGEMENT MODEL: HOW WE WORK (BRAND SIMPLICITY) */}
       <section
-        id="catalogue"
         className={`py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
           isDark ? "border-white/[0.08]" : "border-slate-200/90"
         }`}
       >
-        {/* Sleek Segmented Switcher */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div>
-            <h2 className={`text-xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
-              Production Solutions &amp; SLAs
-            </h2>
-            <p className={`text-xs mt-1 ${isDark ? "text-[#797D86]" : "text-slate-500"}`}>
-              Select your integration track to view scope and turnaround
-            </p>
-          </div>
-
-          <div
-            className={`inline-flex items-center p-1 rounded-full border text-xs font-medium self-start sm:self-auto ${
-              isDark
-                ? "bg-[#0E1014] border-white/[0.08]"
-                : "bg-slate-100 border-slate-300"
-            }`}
-          >
-            <button
-              onClick={() => setActiveTab("ALL")}
-              className={`px-4 py-1.5 rounded-full transition duration-150 cursor-pointer ${
-                activeTab === "ALL"
-                  ? isDark
-                    ? "bg-white text-black shadow-xs font-semibold"
-                    : "bg-white text-slate-950 shadow-xs font-semibold"
-                  : isDark
-                  ? "text-[#797D86] hover:text-white"
-                  : "text-slate-600 hover:text-slate-950"
-              }`}
-            >
-              All ({SERVICES.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("TYPE_A")}
-              className={`px-4 py-1.5 rounded-full transition duration-150 cursor-pointer flex items-center gap-1.5 ${
-                activeTab === "TYPE_A"
-                  ? isDark
-                    ? "bg-[#34D59A] text-black font-semibold shadow-xs"
-                    : "bg-[#10B981] text-white font-semibold shadow-xs"
-                  : isDark
-                  ? "text-[#797D86] hover:text-[#34D59A]"
-                  : "text-slate-600 hover:text-emerald-700"
-              }`}
-            >
-              <span className="size-1.5 rounded-full bg-[#34D59A]" />
-              <span>Type A: Internal</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("TYPE_B")}
-              className={`px-4 py-1.5 rounded-full transition duration-150 cursor-pointer flex items-center gap-1.5 ${
-                activeTab === "TYPE_B"
-                  ? isDark
-                    ? "bg-[#38BDF8] text-black font-semibold shadow-xs"
-                    : "bg-[#0284C7] text-white font-semibold shadow-xs"
-                  : isDark
-                  ? "text-[#797D86] hover:text-[#38BDF8]"
-                  : "text-slate-600 hover:text-sky-700"
-              }`}
-            >
-              <span className="size-1.5 rounded-full bg-[#38BDF8]" />
-              <span>Type B: Commercial</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Clean, Non-Wikipedia Service Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {filteredServices.map((service) => {
-            const isTypeA = service.type === "TYPE_A";
-
-            return (
-              <div
-                key={service.id}
-                id={service.id}
-                className={`scroll-mt-24 rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 group border ${
-                  isDark
-                    ? "bg-[#0B0D11] border-white/[0.08] hover:border-white/[0.16]"
-                    : "bg-white border-slate-200/90 shadow-xs hover:border-slate-300"
-                }`}
-              >
-                <div>
-                  {/* Top Meta Line */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span
-                      className={`text-[10px] font-mono font-bold tracking-widest uppercase ${
-                        isTypeA ? "text-[#34D59A]" : "text-[#38BDF8]"
-                      }`}
-                    >
-                      {service.typeLabel}
-                    </span>
-
-                    <span
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider border ${
-                        isDark
-                          ? "bg-[#14161C] border-white/[0.08] text-[#AFB1B6]"
-                          : "bg-slate-100 border-slate-300 text-slate-700"
-                      }`}
-                    >
-                      {service.sla}
-                    </span>
-                  </div>
-
-                  {/* Title & One-Sentence Summary */}
-                  <h3
-                    className={`text-base font-medium tracking-tight mb-1.5 ${
-                      isDark ? "text-white group-hover:text-[#34D59A] transition-colors" : "text-slate-950"
-                    }`}
-                  >
-                    {service.title}
-                  </h3>
-
-                  <p className={`text-xs leading-relaxed mb-4 ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
-                    {service.description}
-                  </p>
-
-                  {/* Punchy Minimal Bullets */}
-                  <ul className={`space-y-1.5 text-xs mb-6 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                    {service.bullets.map((bullet, idx) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <CheckCircle2
-                          className={`size-3.5 shrink-0 ${
-                            isTypeA ? "text-[#34D59A]" : "text-[#38BDF8]"
-                          }`}
-                        />
-                        <span className="leading-tight">{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Bottom Simple Action */}
-                <div
-                  className={`pt-3.5 border-t flex items-center justify-between text-xs ${
-                    isDark ? "border-white/[0.06]" : "border-slate-100"
-                  }`}
-                >
-                  <span className={`text-[11px] font-mono ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>
-                    Fixed Scope • Zero Overages
-                  </span>
-
-                  <button
-                    onClick={() => handleSelectService(service)}
-                    className={`inline-flex items-center gap-1 text-xs font-medium transition cursor-pointer ${
-                      isTypeA
-                        ? "text-[#34D59A] hover:underline"
-                        : "text-[#38BDF8] hover:underline"
-                    }`}
-                  >
-                    <span>Scope Solution</span>
-                    <ArrowRight className="size-3" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 4. WHAT YOU RECEIVE (MINIMAL 4-COLUMN ROW) */}
-      <section
-        className={`py-14 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
-          isDark ? "border-white/[0.08]" : "border-slate-200/90"
-        }`}
-      >
-        <div className="text-center max-w-xl mx-auto mb-10">
+        <div className="text-center max-w-xl mx-auto mb-12">
           <span className="text-[11px] uppercase tracking-widest text-[#34D59A] font-mono font-semibold">
-            INCLUDED DELIVERABLES
+            THE ENGAGEMENT MODEL
           </span>
-          <p className={`mt-1.5 text-2xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
-            Every Build Includes
+          <p className={`mt-1.5 text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
+            From Architecture to Production in Days
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className={`p-5 rounded-xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200"}`}>
-            <span className="text-[10px] font-mono font-bold text-[#34D59A] block mb-2">01 / CODE</span>
-            <h4 className={`text-sm font-medium mb-1 ${isDark ? "text-white" : "text-slate-900"}`}>TypeScript MCP Server</h4>
-            <p className={`text-xs ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>Clean, typed source code with connection pooling and tests.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={`p-6 rounded-2xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200 shadow-xs"}`}>
+            <span className="text-xs font-mono font-semibold text-[#34D59A] block mb-2">01 / SCOPING &amp; SCHEMAS</span>
+            <h4 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Day 1: Architectural Scoping</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+              We evaluate your database schemas, OpenAPI specs, and authentication requirements to map exact tool definitions, parameter limits, and AST guardrails.
+            </p>
           </div>
 
-          <div className={`p-5 rounded-xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200"}`}>
-            <span className="text-[10px] font-mono font-bold text-[#34D59A] block mb-2">02 / CONFIG</span>
-            <h4 className={`text-sm font-medium mb-1 ${isDark ? "text-white" : "text-slate-900"}`}>1-Click Client Setup</h4>
-            <p className={`text-xs ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>Pre-wired configs for Claude Desktop, Cursor &amp; Antigravity.</p>
+          <div className={`p-6 rounded-2xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200 shadow-xs"}`}>
+            <span className="text-xs font-mono font-semibold text-[#34D59A] block mb-2">02 / BUILD &amp; HARDEN</span>
+            <h4 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Days 2–3: Engineering &amp; ToolGuard™</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+              We engineer the TypeScript server, integrate connection pooling, embed Sevlex Layer 7 ToolGuard™ inspection, and run end-to-end integration test suites.
+            </p>
           </div>
 
-          <div className={`p-5 rounded-xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200"}`}>
-            <span className="text-[10px] font-mono font-bold text-[#34D59A] block mb-2">03 / SECURITY</span>
-            <h4 className={`text-sm font-medium mb-1 ${isDark ? "text-white" : "text-slate-900"}`}>ToolGuard™ Hardened</h4>
-            <p className={`text-xs ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>Pre-shielded with AST inspection and in-flight DLP masking.</p>
-          </div>
-
-          <div className={`p-5 rounded-xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200"}`}>
-            <span className="text-[10px] font-mono font-bold text-[#34D59A] block mb-2">04 / SUPPORT</span>
-            <h4 className={`text-sm font-medium mb-1 ${isDark ? "text-white" : "text-slate-900"}`}>Walkthrough &amp; Direct Access</h4>
-            <p className={`text-xs ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>Loom onboarding video plus 14-day direct Slack engineering support.</p>
+          <div className={`p-6 rounded-2xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200 shadow-xs"}`}>
+            <span className="text-xs font-mono font-semibold text-[#34D59A] block mb-2">03 / HANDOFF &amp; SUPPORT</span>
+            <h4 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Day 3+: Delivery &amp; 14-Day Slack Access</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+              Full source code ownership, pre-wired Claude/Cursor configs, a recorded Loom walkthrough, and 14 days of dedicated Slack engineering support.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 5. INTAKE FORM (CLEAN, FRICTIONLESS) */}
+      {/* 5. TAILORED SCOPING INTAKE FORM */}
       <section
         id="intake"
         className={`py-16 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
@@ -644,10 +458,10 @@ export default function ServicePage() {
         >
           <div className="text-center max-w-md mx-auto mb-8">
             <h2 className={`text-2xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
-              Request Scoping Spec
+              Request Custom Scoping Spec
             </h2>
             <p className={`text-xs mt-1.5 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-              Tell us what database, API, or SaaS product you want to connect. We respond within 4 hours.
+              Tell us about your internal database, private API, or SaaS product. We review your architecture and provide an estimate within 4 hours.
             </p>
           </div>
 
@@ -707,7 +521,7 @@ export default function ServicePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                    Track
+                    Solution Category
                   </label>
                   <select
                     value={formData.projectCategory}
@@ -718,14 +532,14 @@ export default function ServicePage() {
                         : "bg-white border border-slate-300 text-slate-900"
                     }`}
                   >
-                    <option value="Type A: Internal Enterprise MCP">Type A: Internal Team MCP</option>
-                    <option value="Type B: Commercial SaaS Connector">Type B: Commercial SaaS Connector</option>
+                    <option value="Category A: Internal Enterprise MCP">Category A: Internal Enterprise MCP</option>
+                    <option value="Category B: Commercial SaaS Connector">Category B: Commercial SaaS Connector</option>
                     <option value="Hybrid: Both Internal & Commercial">Hybrid: Both Internal &amp; Commercial</option>
                   </select>
                 </div>
                 <div>
                   <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                    Target Data Source / Stack
+                    Target Stack / Data Layer
                   </label>
                   <select
                     value={formData.sourceType}
@@ -737,25 +551,25 @@ export default function ServicePage() {
                     }`}
                   >
                     <option value="PostgreSQL / MySQL / SQLite">PostgreSQL / MySQL / SQLite</option>
+                    <option value="Snowflake / Databricks / Warehouse">Snowflake / Databricks / Warehouse</option>
                     <option value="MongoDB / DocumentDB">MongoDB / DocumentDB</option>
-                    <option value="Snowflake / Databricks">Snowflake / Databricks</option>
                     <option value="Internal REST / GraphQL / OpenAPI">Internal REST / GraphQL / OpenAPI</option>
                     <option value="CloudWatch / Sentry / Datadog">CloudWatch / Sentry / Datadog</option>
-                    <option value="Commercial B2B SaaS Product">Commercial B2B SaaS Product</option>
+                    <option value="Commercial B2B SaaS Product (Public SSE)">Commercial B2B SaaS Product (Public SSE)</option>
                     <option value="Existing MCP Server Hardening">Existing MCP Server Hardening</option>
-                    <option value="Custom Proprietary Stack">Custom Proprietary Stack</option>
+                    <option value="Custom Proprietary Tech Stack">Custom Proprietary Tech Stack</option>
                   </select>
                 </div>
               </div>
 
               <div>
                 <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                  What do you need your tools to do?
+                  What do you need your AI tools or connectors to do?
                 </label>
                 <textarea
                   rows={3}
                   required
-                  placeholder="e.g. Allow developers in Cursor to query our Postgres database safely, blocking destructive writes and redacting sensitive PII."
+                  placeholder="e.g. We want engineers in Cursor and Claude to query our internal Postgres read-replica and pull customer metrics, while blocking all destructive queries and redacting credentials."
                   value={formData.details}
                   onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                   className={`w-full p-3 rounded-xl text-xs focus:outline-none focus:border-[#34D59A] transition ${
@@ -768,7 +582,7 @@ export default function ServicePage() {
 
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <span className={`text-[11px] font-mono ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>
-                  48h–72h SLA • Zero Hourly Bills • 100% Code Ownership
+                  48h–72h Turnaround SLA • Fixed Scopes • 100% Code Ownership
                 </span>
                 <button
                   type="submit"
@@ -791,7 +605,7 @@ export default function ServicePage() {
               isDark ? "border-white/[0.06] text-[#797D86]" : "border-slate-100 text-slate-500"
             }`}
           >
-            <span>Prefer a direct conversation?</span>
+            <span>Prefer a direct architectural conversation?</span>
             <a
               href="https://calendly.com/meetpxnchl/meeting"
               target="_blank"

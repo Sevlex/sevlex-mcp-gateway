@@ -81,173 +81,173 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
       {/* Invisible bridge to prevent pointer gap closing */}
       {isOpen && <div className="absolute top-full left-0 right-0 h-3 z-50" />}
 
-      {/* Neon-Style Mega Dropdown Panel */}
+      {/* Neon-Style Mega Dropdown Panel: Category Overview */}
       {isOpen && (
         <div
-          className={`absolute left-1/2 -translate-x-1/2 top-[calc(100%+8px)] w-[820px] max-w-[95vw] rounded-2xl p-6 shadow-2xl z-50 border backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150 ${
+          className={`absolute left-1/2 -translate-x-1/2 top-[calc(100%+8px)] w-[840px] max-w-[95vw] rounded-2xl p-6 shadow-2xl z-50 border backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150 ${
             isDark
               ? "bg-[#07080B]/98 border-white/[0.08] shadow-[0_30px_70px_rgba(0,0,0,0.9)]"
               : "bg-white/98 border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.12)]"
           }`}
         >
-          {/* 3-Column Layout: Type A | Type B | Featured Spotlight Card */}
+          {/* 3-Column Category Overview */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             
-            {/* COLUMN 1: TYPE A - INTERNAL (4 cols) */}
+            {/* COLUMN 1: TYPE A - INTERNAL INFRASTRUCTURE (4 cols) */}
             <div className="md:col-span-4 space-y-4">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#797D86] font-semibold block">
-                  TYPE A: INTERNAL
+                  CATEGORY A: INTERNAL INFRA
                 </span>
-                <span className="text-[11px] text-[#4E5158] block mt-0.5">For your own team</span>
+                <span className="text-[11px] text-[#4E5158] block mt-0.5">For your internal engineering teams</span>
               </div>
 
               <div className="space-y-3.5">
                 <a
-                  href="/service#safe-db"
-                  onClick={() => handleItemClick("safe-db")}
+                  href="/service#internal-infra"
+                  onClick={() => handleItemClick("internal-infra")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Safe Database Bridge
+                    Database &amp; Data Warehouse MCP
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    Read-only Postgres, MySQL, Mongo &amp; Snowflake
+                    Safe read-only access for Postgres, Snowflake &amp; Mongo
                   </p>
                 </a>
 
                 <a
-                  href="/service#openapi-porting"
-                  onClick={() => handleItemClick("openapi-porting")}
+                  href="/service#internal-infra"
+                  onClick={() => handleItemClick("internal-infra")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    OpenAPI &amp; Microservices
+                    Private APIs &amp; Microservices
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    Convert private Swagger &amp; APIs to MCP tools
+                    Convert internal Swagger &amp; REST into typed AI tools
                   </p>
                 </a>
 
                 <a
-                  href="/service#devops-logs"
-                  onClick={() => handleItemClick("devops-logs")}
+                  href="/service#internal-infra"
+                  onClick={() => handleItemClick("internal-infra")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    DevOps &amp; Incident Logs
+                    DevOps &amp; Observability Logs
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    CloudWatch, Sentry &amp; Datadog triage in IDE
+                    CloudWatch, Sentry &amp; Datadog triage in Cursor/Claude
                   </p>
                 </a>
 
                 <a
-                  href="/service#security-hardening"
-                  onClick={() => handleItemClick("security-hardening")}
+                  href="/service#internal-infra"
+                  onClick={() => handleItemClick("internal-infra")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Zero-Trust Hardening
+                    Zero-Trust Security &amp; SOC 2
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    ToolGuard™ AST firewall &amp; Merkle audit ledger
+                    ToolGuard™ AST firewall, in-flight DLP &amp; Merkle ledger
                   </p>
                 </a>
 
                 <a
-                  href="/service#fleet-rollout"
-                  onClick={() => handleItemClick("fleet-rollout")}
+                  href="/service#internal-infra"
+                  onClick={() => handleItemClick("internal-infra")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Fleet-Wide IDE Rollout
+                    Fleet-Wide MDM Rollout
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    Jamf &amp; Intune rollout for 20–100+ devs
+                    Jamf &amp; Intune provisioning across 20–100+ laptops
                   </p>
                 </a>
               </div>
             </div>
 
-            {/* COLUMN 2: TYPE B - COMMERCIAL (4 cols) */}
+            {/* COLUMN 2: TYPE B - COMMERCIAL SAAS CONNECTORS (4 cols) */}
             <div className="md:col-span-4 space-y-4">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#797D86] font-semibold block">
-                  TYPE B: COMMERCIAL
+                  CATEGORY B: SAAS CONNECTORS
                 </span>
-                <span className="text-[11px] text-[#4E5158] block mt-0.5">For your customers</span>
+                <span className="text-[11px] text-[#4E5158] block mt-0.5">For your outside paying customers</span>
               </div>
 
               <div className="space-y-3.5">
                 <a
-                  href="/service#saas-flagship"
-                  onClick={() => handleItemClick("saas-flagship")}
+                  href="/service#commercial-saas"
+                  onClick={() => handleItemClick("commercial-saas")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Official SaaS Connector
+                    Multi-Tenant Remote SSE
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    24/7 Remote SSE + OAuth 2.0 PKCE user login
+                    24/7 cloud server with OAuth 2.0 PKCE user delegation
                   </p>
                 </a>
 
                 <a
-                  href="/service#marketplace-distribution"
-                  onClick={() => handleItemClick("marketplace-distribution")}
+                  href="/service#commercial-saas"
+                  onClick={() => handleItemClick("commercial-saas")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
                     Marketplace Distribution
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    Smithery.ai, mcp.so &amp; @company npm listing
+                    Publishing on Smithery.ai, mcp.so &amp; @company npm
                   </p>
                 </a>
 
                 <a
-                  href="/service#slack-hitl"
-                  onClick={() => handleItemClick("slack-hitl")}
+                  href="/service#commercial-saas"
+                  onClick={() => handleItemClick("commercial-saas")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Slack HITL Approval Gates
+                    Slack &amp; Teams Approval Gates
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    Interactive manager sign-off for critical actions
+                    Human-in-the-loop authorization before sensitive actions
                   </p>
                 </a>
 
                 <a
-                  href="/service#managed-cloud"
-                  onClick={() => handleItemClick("managed-cloud")}
+                  href="/service#commercial-saas"
+                  onClick={() => handleItemClick("commercial-saas")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    24/7 Managed Cloud Hosting
+                    24/7 Managed Cloud Infrastructure
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    99.9% uptime SLA, auto-SSL &amp; zero DevOps
+                    99.9% uptime SLA, auto-SSL &amp; zero DevOps overhead
                   </p>
                 </a>
 
                 <a
-                  href="/service#schema-evolution"
-                  onClick={() => handleItemClick("schema-evolution")}
+                  href="/service#commercial-saas"
+                  onClick={() => handleItemClick("commercial-saas")}
                   className="group block"
                 >
                   <h4 className={`text-[13px] font-medium leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Schema &amp; Model Evolution
+                    Continuous Model Evolution
                   </h4>
                   <p className={`text-[12px] leading-tight mt-1 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
-                    Monthly updates for Claude 3.7 &amp; GPT-5
+                    Prompt &amp; schema tuning for Claude 3.7, GPT-5 &amp; Gemini
                   </p>
                 </a>
               </div>
             </div>
 
-            {/* COLUMN 3: FEATURED SPOTLIGHT CARD (4 cols) - Identical to Neon's 'What is Neon' */}
+            {/* COLUMN 3: FEATURED SPOTLIGHT CARD (4 cols) */}
             <div className="md:col-span-4 flex flex-col">
               <div
                 className={`flex-1 rounded-xl p-5 flex flex-col justify-between relative overflow-hidden border ${
@@ -256,7 +256,7 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
                     : "bg-slate-900 text-white border-slate-800"
                 }`}
               >
-                {/* Neon-Style Dot Matrix Glow Background */}
+                {/* Dot Matrix Ambient Glow */}
                 <div
                   className="absolute inset-0 pointer-events-none opacity-30"
                   style={{
@@ -269,15 +269,15 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
                 />
 
                 <div className="relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#34D59A]/10 border border-[#34D59A]/20 text-[#34D59A] text-[10px] font-mono font-medium mb-4">
+                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#34D59A]/10 border border-[#34D59A]/20 text-[#34D59A] text-[10px] font-mono font-medium mb-3">
                     <Sparkles className="size-3" />
-                    <span>WHITE-GLOVE</span>
+                    <span>TAILORED SCOPE</span>
                   </div>
                   <h3 className="text-base font-medium text-white leading-snug">
-                    Turnaround in 48 to 72 Hours
+                    Architected to Your Exact Stack
                   </h3>
                   <p className="text-xs text-[#94979E] mt-2 leading-relaxed">
-                    Zero hourly bills. Fixed-scope delivery with full TypeScript code ownership and 100% money-back guarantee.
+                    Every organization has a different stack. We tailor, harden, and ship custom MCP servers in 48–72 hours under guaranteed SLAs.
                   </p>
                 </div>
 
@@ -287,7 +287,7 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
                     onClick={() => handleItemClick("intake")}
                     className="text-xs font-medium text-[#34D59A] hover:underline inline-flex items-center gap-1 cursor-pointer"
                   >
-                    <span>Request Spec</span>
+                    <span>Request Custom Scope</span>
                     <ArrowRight className="size-3" />
                   </a>
                   <a
