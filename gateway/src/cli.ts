@@ -598,6 +598,16 @@ async function runDemo() {
     child.stdin.write(JSON.stringify(obj) + "\n");
   };
 
+  const waitForResponse = async (id: number, timeoutMs = 2500) => {
+    const start = performance.now();
+    while (performance.now() - start < timeoutMs) {
+      const found = responses.find((r) => r.id === id);
+      if (found) return found;
+      await new Promise((r) => setTimeout(r, 20));
+    }
+    return responses.find((r) => r.id === id);
+  };
+
   // 1. Initialize Handshake
   send({
     jsonrpc: "2.0",
@@ -606,7 +616,7 @@ async function runDemo() {
     params: { protocolVersion: "2024-11-05", capabilities: {}, clientInfo: { name: "sevlex-demo", version: "1.0" } }
   });
 
-  await new Promise((r) => setTimeout(r, 200));
+  await waitForResponse(1);
   console.log("● Handshake established. Simulating autonomous AI agent actions...\n");
 
   // Test 1: Safe Query
@@ -624,8 +634,7 @@ async function runDemo() {
     }
   });
 
-  await new Promise((r) => setTimeout(r, 200));
-  const res1 = responses.find((r) => r.id === 2);
+  const res1 = await waitForResponse(2);
   const lat1 = Math.max(0.04, ((receiveTimes.get(2) || 0) - (sendTimes.get(2) || 0))).toFixed(2);
   if (res1 && !res1.error) {
     console.log(`\x1b[32m✔ RESULT: ALLOWED (${lat1}ms)\x1b[0m - Query executed successfully with zero delay.`);
@@ -648,8 +657,7 @@ async function runDemo() {
     }
   });
 
-  await new Promise((r) => setTimeout(r, 200));
-  const res2 = responses.find((r) => r.id === 3);
+  const res2 = await waitForResponse(3);
   const lat2 = Math.max(0.03, ((receiveTimes.get(3) || 0) - (sendTimes.get(3) || 0))).toFixed(2);
   if (res2 && res2.error && (res2.error.message.includes("Destructive") || res2.error.message.includes("DESTRUCTIVE_SQL"))) {
     console.log(`\x1b[32m✔ RESULT: ARRESTED IN ${lat2}ms!\x1b[0m`);
@@ -674,8 +682,7 @@ async function runDemo() {
     }
   });
 
-  await new Promise((r) => setTimeout(r, 200));
-  const res3 = responses.find((r) => r.id === 4);
+  const res3 = await waitForResponse(4);
   const lat3 = Math.max(0.03, ((receiveTimes.get(4) || 0) - (sendTimes.get(4) || 0))).toFixed(2);
   if (res3 && res3.error && (res3.error.message.includes("SENSITIVE_FILE_ACCESS") || res3.error.message.includes("Blocked"))) {
     console.log(`\x1b[32m✔ RESULT: ARRESTED IN ${lat3}ms!\x1b[0m`);

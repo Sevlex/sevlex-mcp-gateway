@@ -1,0 +1,17 @@
+# Smithery.ai Registry Configuration for Sevlex
+# Official documentation: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      apiKey:
+        type: string
+        description: "Optional Sevlex Cloud API Key for centralized zero-trust policy sync and cryptographic audit logs."
+  commandFunction:
+    |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', 'sevlex@latest', 'demo']
+    })
