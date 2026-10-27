@@ -78,13 +78,13 @@ export default function ServicePage() {
       <div
         className={`fixed inset-0 pointer-events-none transition-opacity duration-200 ${
           isDark
-            ? "bg-[linear-gradient(to_right,#131415_1px,transparent_1px),linear-gradient(to_bottom,#131415_1px,transparent_1px)] opacity-30 bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
+            ? "bg-[linear-gradient(to_right,#131415_1px,transparent_1px),linear-gradient(to_bottom,#131415_1px,transparent_1px)] opacity-35 bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
             : "bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] opacity-35 bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_45%_at_50%_0%,#000_60%,transparent_100%)]"
         }`}
       />
 
       {/* Atmospheric radial illumination */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[320px] bg-[radial-gradient(ellipse_at_top,rgba(52,213,154,0.06),transparent_70%)] pointer-events-none" />
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[360px] bg-[radial-gradient(ellipse_at_top,rgba(52,213,154,0.1),transparent_70%)] pointer-events-none" />
 
       {/* 1. STICKY NAVBAR */}
       <nav
@@ -177,7 +177,7 @@ export default function ServicePage() {
       {/* 2. HERO: BRAND-LEVEL OVERVIEW */}
       <section className="pt-20 pb-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div
-          className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-medium mb-6 ${
+          className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-medium mb-6 ${
             isDark
               ? "bg-[#101216] border border-white/[0.08] text-[#94979E]"
               : "bg-slate-100 border border-slate-300 text-slate-700 shadow-xs"
@@ -198,7 +198,7 @@ export default function ServicePage() {
 
         <p
           className={`mt-5 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto ${
-            isDark ? "text-[#8A8F98]" : "text-slate-600"
+            isDark ? "text-[#94A3B8]" : "text-slate-600"
           }`}
         >
           Every organization has unique data models, security guardrails, and customer workflows. We don&apos;t force rigid templates—we scope, architect, and harden custom Model Context Protocol infrastructure tailored to your exact stack in days.
@@ -208,9 +208,9 @@ export default function ServicePage() {
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
             href="#intake"
-            className={`inline-flex items-center gap-2 h-10 px-6 rounded-full text-xs font-medium transition duration-200 shadow-lg ${
+            className={`inline-flex items-center gap-2 h-10 px-6 rounded-full text-xs font-semibold transition duration-200 shadow-[0_0_20px_rgba(52,213,154,0.2)] ${
               isDark
-                ? "bg-white text-black hover:bg-[#E4E5E7]"
+                ? "bg-[#34D59A] text-black hover:bg-[#34D59A]/90"
                 : "bg-slate-900 text-white hover:bg-slate-800"
             }`}
           >
@@ -239,37 +239,37 @@ export default function ServicePage() {
         {/* CATEGORY A: INTERNAL INFRASTRUCTURE */}
         <div
           id="internal-infra"
-          className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-colors ${
+          className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-all duration-200 relative overflow-hidden ${
             isDark
-              ? "bg-[#090B0E] border-white/[0.08]"
+              ? "bg-[#090B0E] border-white/[0.08] hover:border-emerald-500/25 shadow-[0_0_40px_rgba(52,213,154,0.03)]"
               : "bg-white border-slate-200 shadow-xs"
           }`}
         >
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8 pb-8 border-b border-white/[0.06] dark:border-white/[0.06] border-slate-100">
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 mb-2">
-                <span className="size-2 rounded-full bg-[#34D59A]" />
-                <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#34D59A]">
-                  CATEGORY A: INTERNAL ENTERPRISE
+                <span className="size-2 rounded-full bg-[#34D59A] shadow-[0_0_8px_#34D59A]" />
+                <span className="text-[11px] font-bold tracking-widest uppercase text-[#34D59A]">
+                  Category A: Internal Enterprise
                 </span>
               </div>
               <h2 className={`text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
                 Safe AI Tooling for Your Engineering &amp; Operations Teams
               </h2>
-              <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+              <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-600"}`}>
                 Empower your engineers to query private databases, invoke internal microservices, and triage incident logs directly inside Claude Desktop, Cursor, and autonomous agents—with Sevlex Layer 7 AST firewalls that eliminate destructive query risks and leakages.
               </p>
             </div>
 
             <div className="shrink-0 flex flex-col sm:items-end gap-2">
-              <span className={`px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border ${
+              <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border ${
                 isDark ? "bg-[#14161C] border-white/[0.08] text-[#AFB1B6]" : "bg-slate-100 border-slate-300 text-slate-700"
               }`}>
                 48h–72h Delivery SLA
               </span>
               <button
                 onClick={() => handleSelectTrack("Category A: Internal Enterprise MCP")}
-                className="text-xs font-medium text-[#34D59A] hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-[#34D59A] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Scope Internal Stack</span>
                 <ArrowRight className="size-3" />
@@ -279,38 +279,38 @@ export default function ServicePage() {
 
           {/* 4 Architectural Capability Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 Private Data Stores
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 Postgres, MySQL, Snowflake, MongoDB &amp; Redis with &lt;0.4ms AST query firewalls blocking DROP, DELETE &amp; ALTER.
               </p>
             </div>
 
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 APIs &amp; Microservices
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 Automated ingestion of Swagger / OpenAPI, GraphQL, and private REST endpoints into typed AI tool definitions.
               </p>
             </div>
 
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 DevOps &amp; Log Triage
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 CloudWatch, Sentry &amp; Datadog crash stack trace diagnosis directly in Cursor without switching browser tabs.
               </p>
             </div>
 
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 Zero-Trust &amp; Fleet MDM
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 SOC 2 Merkle audit ledger, DLP token redaction, and Jamf/Intune central configuration for 20–100+ laptops.
               </p>
             </div>
@@ -320,37 +320,37 @@ export default function ServicePage() {
         {/* CATEGORY B: COMMERCIAL SAAS CONNECTORS */}
         <div
           id="commercial-saas"
-          className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-colors ${
+          className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-all duration-200 relative overflow-hidden ${
             isDark
-              ? "bg-[#090B0E] border-white/[0.08]"
+              ? "bg-[#090B0E] border-white/[0.08] hover:border-sky-500/25 shadow-[0_0_40px_rgba(56,189,248,0.03)]"
               : "bg-white border-slate-200 shadow-xs"
           }`}
         >
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8 pb-8 border-b border-white/[0.06] dark:border-white/[0.06] border-slate-100">
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 mb-2">
-                <span className="size-2 rounded-full bg-[#38BDF8]" />
-                <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#38BDF8]">
-                  CATEGORY B: COMMERCIAL SAAS CONNECTORS
+                <span className="size-2 rounded-full bg-[#38BDF8] shadow-[0_0_8px_#38BDF8]" />
+                <span className="text-[11px] font-bold tracking-widest uppercase text-[#38BDF8]">
+                  Category B: Commercial SaaS Connectors
                 </span>
               </div>
               <h2 className={`text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
                 Official AI Connectors for Your Outside Paying Customers
               </h2>
-              <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+              <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-600"}`}>
                 Position your SaaS product inside the modern AI workflow. Enable your customers to invoke your product directly from natural language prompts in Claude and Cursor—while we handle remote SSE scaling, OAuth 2.0 PKCE user delegation, and multi-tenant security.
               </p>
             </div>
 
             <div className="shrink-0 flex flex-col sm:items-end gap-2">
-              <span className={`px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border ${
+              <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border ${
                 isDark ? "bg-[#14161C] border-white/[0.08] text-[#AFB1B6]" : "bg-slate-100 border-slate-300 text-slate-700"
               }`}>
                 10-Day Production SLA
               </span>
               <button
                 onClick={() => handleSelectTrack("Category B: Commercial SaaS Connector")}
-                className="text-xs font-medium text-[#38BDF8] hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-[#38BDF8] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Scope SaaS Connector</span>
                 <ArrowRight className="size-3" />
@@ -360,38 +360,38 @@ export default function ServicePage() {
 
           {/* 4 Architectural Capability Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 Remote SSE &amp; OAuth 2.0
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 24/7 cloud server with seamless PKCE login (&quot;Sign in with [Your App]&quot;) eliminating manual API key handling.
               </p>
             </div>
 
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 Multi-Tenant Isolation
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 Strict tenant partitioning, velocity rate limiting, and session security guaranteeing zero cross-customer data leakage.
               </p>
             </div>
 
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 Marketplace Publishing
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 Official verified listings on Smithery.ai, mcp.so, and @company/mcp-server npm registry with setup docs.
               </p>
             </div>
 
-            <div className={`p-4 rounded-xl border ${isDark ? "bg-[#0E1014] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-medium mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
+            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
+              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
                 HITL Gates &amp; Hosting
               </h4>
-              <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 Slack/Teams approval cards for sensitive operations, 99.9% uptime SLA hosting, and ongoing frontier model tuning.
               </p>
             </div>
@@ -407,7 +407,7 @@ export default function ServicePage() {
         }`}
       >
         <div className="text-center max-w-xl mx-auto mb-12">
-          <span className="text-[11px] uppercase tracking-widest text-[#34D59A] font-mono font-semibold">
+          <span className="text-[11px] uppercase tracking-widest text-[#34D59A] font-bold">
             THE ENGAGEMENT MODEL
           </span>
           <p className={`mt-1.5 text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
@@ -417,25 +417,25 @@ export default function ServicePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className={`p-6 rounded-2xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200 shadow-xs"}`}>
-            <span className="text-xs font-mono font-semibold text-[#34D59A] block mb-2">01 / SCOPING &amp; SCHEMAS</span>
-            <h4 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Day 1: Architectural Scoping</h4>
-            <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+            <span className="text-xs font-bold text-[#34D59A] block mb-2">01 / SCOPING &amp; SCHEMAS</span>
+            <h4 className={`text-base font-semibold mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Day 1: Architectural Scoping</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-600"}`}>
               We evaluate your database schemas, OpenAPI specs, and authentication requirements to map exact tool definitions, parameter limits, and AST guardrails.
             </p>
           </div>
 
           <div className={`p-6 rounded-2xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200 shadow-xs"}`}>
-            <span className="text-xs font-mono font-semibold text-[#34D59A] block mb-2">02 / BUILD &amp; HARDEN</span>
-            <h4 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Days 2–3: Engineering &amp; ToolGuard™</h4>
-            <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+            <span className="text-xs font-bold text-[#34D59A] block mb-2">02 / BUILD &amp; HARDEN</span>
+            <h4 className={`text-base font-semibold mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Days 2–3: Engineering &amp; ToolGuard™</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-600"}`}>
               We engineer the TypeScript server, integrate connection pooling, embed Sevlex Layer 7 ToolGuard™ inspection, and run end-to-end integration test suites.
             </p>
           </div>
 
           <div className={`p-6 rounded-2xl border ${isDark ? "bg-[#0B0D11] border-white/[0.08]" : "bg-white border-slate-200 shadow-xs"}`}>
-            <span className="text-xs font-mono font-semibold text-[#34D59A] block mb-2">03 / HANDOFF &amp; SUPPORT</span>
-            <h4 className={`text-base font-medium mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Day 3+: Delivery &amp; 14-Day Slack Access</h4>
-            <p className={`text-xs leading-relaxed ${isDark ? "text-[#8A8F98]" : "text-slate-600"}`}>
+            <span className="text-xs font-bold text-[#34D59A] block mb-2">03 / HANDOFF &amp; SUPPORT</span>
+            <h4 className={`text-base font-semibold mb-2 ${isDark ? "text-white" : "text-slate-900"}`}>Day 3+: Delivery &amp; 14-Day Slack Access</h4>
+            <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-600"}`}>
               Full source code ownership, pre-wired Claude/Cursor configs, a recorded Loom walkthrough, and 14 days of dedicated Slack engineering support.
             </p>
           </div>
@@ -450,9 +450,9 @@ export default function ServicePage() {
         }`}
       >
         <div
-          className={`rounded-2xl p-7 sm:p-10 border transition-colors relative overflow-hidden ${
+          className={`rounded-3xl p-7 sm:p-10 border transition-colors relative overflow-hidden ${
             isDark
-              ? "bg-[#0B0D11] border-white/[0.08]"
+              ? "bg-[#0B0D11] border-white/[0.08] shadow-[0_0_50px_rgba(0,0,0,0.8)]"
               : "bg-white border-slate-200/90 shadow-sm"
           }`}
         >
@@ -460,19 +460,19 @@ export default function ServicePage() {
             <h2 className={`text-2xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
               Request Custom Scoping Spec
             </h2>
-            <p className={`text-xs mt-1.5 ${isDark ? "text-[#8A8F98]" : "text-slate-500"}`}>
+            <p className={`text-xs mt-1.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
               Tell us about your internal database, private API, or SaaS product. We review your architecture and provide an estimate within 4 hours.
             </p>
           </div>
 
           {submitted ? (
             <div
-              className={`p-6 rounded-xl border text-center ${
+              className={`p-6 rounded-2xl border text-center ${
                 isDark ? "bg-[#34D59A]/10 border-[#34D59A]/20" : "bg-emerald-50 border-emerald-300"
               }`}
             >
               <CheckCircle2 className="size-8 text-[#34D59A] mx-auto mb-2.5" />
-              <h3 className={`text-base font-medium ${isDark ? "text-white" : "text-slate-950"}`}>
+              <h3 className={`text-base font-semibold ${isDark ? "text-white" : "text-slate-950"}`}>
                 Your Integration Spec Has Been Received
               </h3>
               <p className={`text-xs mt-1.5 max-w-md mx-auto ${isDark ? "text-[#C9CBCF]" : "text-slate-600"}`}>
@@ -483,7 +483,7 @@ export default function ServicePage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
+                  <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                     Your Name
                   </label>
                   <input
@@ -500,7 +500,7 @@ export default function ServicePage() {
                   />
                 </div>
                 <div>
-                  <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
+                  <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                     Work Email
                   </label>
                   <input
@@ -520,7 +520,7 @@ export default function ServicePage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
+                  <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                     Solution Category
                   </label>
                   <select
@@ -538,7 +538,7 @@ export default function ServicePage() {
                   </select>
                 </div>
                 <div>
-                  <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
+                  <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                     Target Stack / Data Layer
                   </label>
                   <select
@@ -563,7 +563,7 @@ export default function ServicePage() {
               </div>
 
               <div>
-                <label className={`block text-xs font-medium mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
+                <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
                   What do you need your AI tools or connectors to do?
                 </label>
                 <textarea
@@ -581,13 +581,13 @@ export default function ServicePage() {
               </div>
 
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <span className={`text-[11px] font-mono ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>
+                <span className={`text-[11px] font-medium ${isDark ? "text-[#61646B]" : "text-slate-400"}`}>
                   48h–72h Turnaround SLA • Fixed Scopes • 100% Code Ownership
                 </span>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 h-10 px-6 rounded-full text-xs font-medium transition cursor-pointer shadow-md disabled:opacity-50 ${
+                  className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 h-10 px-6 rounded-full text-xs font-semibold transition cursor-pointer shadow-md disabled:opacity-50 ${
                     isDark
                       ? "bg-white text-black hover:bg-[#E4E5E7]"
                       : "bg-slate-900 text-white hover:bg-slate-800"
@@ -610,7 +610,7 @@ export default function ServicePage() {
               href="https://calendly.com/meetpxnchl/meeting"
               target="_blank"
               rel="noreferrer"
-              className="text-[#34D59A] underline hover:opacity-80 flex items-center gap-1 font-medium"
+              className="text-[#34D59A] underline hover:opacity-80 flex items-center gap-1 font-semibold"
             >
               Book a 15-Minute Scoping Call <ArrowRight className="size-3" />
             </a>
@@ -633,7 +633,7 @@ export default function ServicePage() {
           />
           <span>&copy; 2026 Sevlex. All rights reserved.</span>
         </div>
-        <div className="flex flex-wrap items-center gap-6">
+        <div className="flex flex-wrap items-center gap-6 font-medium">
           <a href="/product" className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}>
             Product
           </a>
@@ -658,7 +658,7 @@ export default function ServicePage() {
           <a
             href="/llms.txt"
             target="_blank"
-            className={`font-mono text-[11px] ${isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}`}
+            className={isDark ? "hover:text-white transition" : "hover:text-slate-900 transition"}
           >
             llms.txt
           </a>
