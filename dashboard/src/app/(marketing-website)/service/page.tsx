@@ -20,6 +20,11 @@ import {
   Server,
   RefreshCw,
   Cpu,
+  BookOpen,
+  Headphones,
+  ShoppingBag,
+  CreditCard,
+  Briefcase,
 } from "lucide-react";
 import { useTheme } from "@/app/components/ThemeProvider";
 import ServiceNavDropdown from "@/app/components/ServiceNavDropdown";
@@ -33,17 +38,18 @@ export default function ServicePage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    projectCategory: "Category A: Internal Enterprise MCP",
-    sourceType: "PostgreSQL / MySQL / Snowflake",
+    projectCategory: "Type A: Internal MCPs (For Your Team)",
+    sourceType: "1. The Database MCP (Storage Room)",
     aiClient: "Claude Desktop & Cursor IDE",
     details: "",
   });
 
-  const handleSelectTrack = (trackName: string) => {
+  const handleSelectTrack = (trackName: string, defaultSource?: string) => {
     setFormData((prev) => ({
       ...prev,
       projectCategory: trackName,
-      details: `Inquiring about custom scoping for: ${trackName}.\n`,
+      sourceType: defaultSource || prev.sourceType,
+      details: `Inquiring about custom scoping for: ${trackName}${defaultSource ? ` - ${defaultSource}` : ""}.\n`,
     }));
     const el = document.getElementById("intake");
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -58,7 +64,7 @@ export default function ServicePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          details: `[Track: ${formData.projectCategory}]\n${formData.details}`,
+          details: `[Track: ${formData.projectCategory} | System: ${formData.sourceType}]\n${formData.details}`,
         }),
       });
     } catch (err) {
@@ -233,12 +239,9 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {/* 3. TWO STRATEGIC CATEGORIES (THE OVERVIEW APPROACH) */}
-      <section className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
-        {/* CATEGORY A: INTERNAL INFRASTRUCTURE */}
+      {/* 3. TYPE A: INTERNAL MCPS (EXACT 6 SYSTEMS FROM SCREENSHOT) */}
+      <section id="type-a-internal" className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          id="internal-infra"
           className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-all duration-200 relative overflow-hidden ${
             isDark
               ? "bg-[#090B0E] border-white/[0.08] hover:border-emerald-500/25 shadow-[0_0_40px_rgba(52,213,154,0.03)]"
@@ -250,14 +253,14 @@ export default function ServicePage() {
               <div className="flex items-center gap-2 mb-2">
                 <span className="size-2 rounded-full bg-[#34D59A] shadow-[0_0_8px_#34D59A]" />
                 <span className="text-[11px] font-bold tracking-widest uppercase text-[#34D59A]">
-                  Category A: Internal Enterprise
+                  Type A: Internal MCPs
                 </span>
               </div>
               <h2 className={`text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
-                Safe AI Tooling for Your Engineering &amp; Operations Teams
+                Internal AI Tooling for Your Engineering, Data &amp; Operations Teams
               </h2>
               <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-600"}`}>
-                Empower your engineers to query private databases, invoke internal microservices, and triage incident logs directly inside Claude Desktop, Cursor, and autonomous agents—with Sevlex Layer 7 AST firewalls that eliminate destructive query risks and leakages.
+                Empower your engineers to query private data, trigger microservices, and triage logs directly inside Claude Desktop, Cursor, and autonomous agents—with Sevlex Layer 7 AST firewalls that eliminate destructive query risks and credential leaks.
               </p>
             </div>
 
@@ -268,7 +271,7 @@ export default function ServicePage() {
                 48h–72h Delivery SLA
               </span>
               <button
-                onClick={() => handleSelectTrack("Category A: Internal Enterprise MCP")}
+                onClick={() => handleSelectTrack("Type A: Internal MCPs (For Your Team)")}
                 className="text-xs font-semibold text-[#34D59A] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Scope Internal Stack</span>
@@ -277,49 +280,118 @@ export default function ServicePage() {
             </div>
           </div>
 
-          {/* 4 Architectural Capability Pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                Private Data Stores
+          {/* 6 Clean Systems From Screenshot */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            {/* 1. Database MCP */}
+            <div
+              onClick={() => handleSelectTrack("Type A: Internal MCPs", "1. The Database MCP (Storage Room)")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-emerald-500/30" : "bg-slate-50 border-slate-200 hover:border-emerald-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#34D59A]">1. The Storage Room</span>
+                <Database className="size-4 text-[#34D59A]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                1. The Database MCP
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 Postgres, MySQL, Snowflake, MongoDB &amp; Redis with &lt;0.4ms AST query firewalls blocking DROP, DELETE &amp; ALTER.
               </p>
             </div>
 
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                APIs &amp; Microservices
+            {/* 2. Internal API MCP */}
+            <div
+              onClick={() => handleSelectTrack("Type A: Internal MCPs", "2. The Internal API MCP (Private Engine)")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-emerald-500/30" : "bg-slate-50 border-slate-200 hover:border-emerald-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#34D59A]">2. The Private Engine</span>
+                <Layers className="size-4 text-[#34D59A]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                2. The Internal API MCP
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                Automated ingestion of Swagger / OpenAPI, GraphQL, and private REST endpoints into typed AI tool definitions.
+                Automated ingestion of Swagger / OpenAPI, GraphQL, and private microservice endpoints into typed AI tool definitions.
               </p>
             </div>
 
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                DevOps &amp; Log Triage
+            {/* 3. Cloud & Server MCP */}
+            <div
+              onClick={() => handleSelectTrack("Type A: Internal MCPs", "3. The Cloud & Server MCP (DevOps Engine Room)")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-emerald-500/30" : "bg-slate-50 border-slate-200 hover:border-emerald-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#34D59A]">3. The DevOps Engine Room</span>
+                <Terminal className="size-4 text-[#34D59A]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                3. The Cloud &amp; Server MCP
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
                 CloudWatch, Sentry &amp; Datadog crash stack trace diagnosis directly in Cursor without switching browser tabs.
               </p>
             </div>
 
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                Zero-Trust &amp; Fleet MDM
+            {/* 4. Project & Code MCP */}
+            <div
+              onClick={() => handleSelectTrack("Type A: Internal MCPs", "4. The Project & Code MCP (Daily Workflow)")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-emerald-500/30" : "bg-slate-50 border-slate-200 hover:border-emerald-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#34D59A]">4. The Daily Workflow</span>
+                <Briefcase className="size-4 text-[#34D59A]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                4. The Project &amp; Code MCP
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                SOC 2 Merkle audit ledger, DLP token redaction, and Jamf/Intune central configuration for 20–100+ laptops.
+                Linear, Jira, GitHub &amp; CI/CD engineering workflow tools deployed centrally via Jamf/Intune across developer seats.
               </p>
             </div>
+
+            {/* 5. Company Knowledge MCP */}
+            <div
+              onClick={() => handleSelectTrack("Type A: Internal MCPs", "5. The Company Knowledge MCP (Company Library)")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-emerald-500/30" : "bg-slate-50 border-slate-200 hover:border-emerald-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#34D59A]">5. The Company Library</span>
+                <BookOpen className="size-4 text-[#34D59A]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                5. The Company Knowledge MCP
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                Notion, Confluence, internal docs &amp; wikis with in-flight DLP redaction so proprietary secrets never train public models.
+              </p>
+            </div>
+
+            {/* 6. Customer Support MCP */}
+            <div
+              onClick={() => handleSelectTrack("Type A: Internal MCPs", "6. The Customer Support MCP (Operations Desk)")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-emerald-500/30" : "bg-slate-50 border-slate-200 hover:border-emerald-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#34D59A]">6. The Operations Desk</span>
+                <Headphones className="size-4 text-[#34D59A]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                6. The Customer Support MCP
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                Zendesk, Intercom &amp; customer operations desks with strict read scopes, velocity limiting, and Merkle audit ledgers.
+              </p>
+            </div>
+
           </div>
         </div>
+      </section>
 
-        {/* CATEGORY B: COMMERCIAL SAAS CONNECTORS */}
+      {/* 4. TYPE B: COMMERCIAL / PUBLIC SAAS MCPS (EXACT 5 VERTICALS FROM SCREENSHOT) */}
+      <section id="type-b-commercial" className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          id="commercial-saas"
           className={`scroll-mt-24 rounded-3xl p-8 sm:p-10 border transition-all duration-200 relative overflow-hidden ${
             isDark
               ? "bg-[#090B0E] border-white/[0.08] hover:border-sky-500/25 shadow-[0_0_40px_rgba(56,189,248,0.03)]"
@@ -331,7 +403,7 @@ export default function ServicePage() {
               <div className="flex items-center gap-2 mb-2">
                 <span className="size-2 rounded-full bg-[#38BDF8] shadow-[0_0_8px_#38BDF8]" />
                 <span className="text-[11px] font-bold tracking-widest uppercase text-[#38BDF8]">
-                  Category B: Commercial SaaS Connectors
+                  Type B: Commercial / Public MCPs
                 </span>
               </div>
               <h2 className={`text-2xl sm:text-3xl font-medium tracking-tight ${isDark ? "text-white" : "text-slate-950"}`}>
@@ -349,7 +421,7 @@ export default function ServicePage() {
                 10-Day Production SLA
               </span>
               <button
-                onClick={() => handleSelectTrack("Category B: Commercial SaaS Connector")}
+                onClick={() => handleSelectTrack("Type B: Commercial SaaS Connectors (For Customers)")}
                 className="text-xs font-semibold text-[#38BDF8] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Scope SaaS Connector</span>
@@ -358,49 +430,115 @@ export default function ServicePage() {
             </div>
           </div>
 
-          {/* 4 Architectural Capability Pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                Remote SSE &amp; OAuth 2.0
+          {/* 5 Clean SaaS Verticals From Screenshot */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            {/* 1. Dev Tools & Cloud SaaS */}
+            <div
+              onClick={() => handleSelectTrack("Type B: Commercial SaaS Connectors", "1. Developer Tools & Cloud SaaS")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-sky-500/30" : "bg-slate-50 border-slate-200 hover:border-sky-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#38BDF8]">Cloud Infrastructure</span>
+                <Server className="size-4 text-[#38BDF8]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                1. Developer Tools &amp; Cloud SaaS
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                24/7 cloud server with seamless PKCE login (&quot;Sign in with [Your App]&quot;) eliminating manual API key handling.
+                e.g. Neon, Supabase, Vercel. 24/7 Remote SSE server with OAuth 2.0 PKCE user login and multi-tenant isolation.
               </p>
             </div>
 
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                Multi-Tenant Isolation
+            {/* 2. Project & Productivity SaaS */}
+            <div
+              onClick={() => handleSelectTrack("Type B: Commercial SaaS Connectors", "2. Project & Productivity SaaS")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-sky-500/30" : "bg-slate-50 border-slate-200 hover:border-sky-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#38BDF8]">Productivity Workflows</span>
+                <Layers className="size-4 text-[#38BDF8]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                2. Project &amp; Productivity SaaS
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                Strict tenant partitioning, velocity rate limiting, and session security guaranteeing zero cross-customer data leakage.
+                e.g. Linear, Notion, Jira. Natural language issue creation, project status queries, and workflow triggers inside IDEs.
               </p>
             </div>
 
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                Marketplace Publishing
+            {/* 3. Fintech & Payment SaaS */}
+            <div
+              onClick={() => handleSelectTrack("Type B: Commercial SaaS Connectors", "3. Fintech & Payment SaaS")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-sky-500/30" : "bg-slate-50 border-slate-200 hover:border-sky-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#38BDF8]">Fintech &amp; High-Risk</span>
+                <CreditCard className="size-4 text-[#38BDF8]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                3. Fintech &amp; Payment SaaS
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                Official verified listings on Smithery.ai, mcp.so, and @company/mcp-server npm registry with setup docs.
+                e.g. Stripe, QuickBooks. Pre-configured with Human-in-the-Loop Slack approval gates before issuing refunds or transfers.
               </p>
             </div>
 
-            <div className={`p-5 rounded-2xl border transition ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-white/[0.1]" : "bg-slate-50 border-slate-200"}`}>
-              <h4 className={`text-sm font-semibold mb-1.5 ${isDark ? "text-white" : "text-slate-900"}`}>
-                HITL Gates &amp; Hosting
+            {/* 4. Sales & CRM SaaS */}
+            <div
+              onClick={() => handleSelectTrack("Type B: Commercial SaaS Connectors", "4. Sales & CRM SaaS")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-sky-500/30" : "bg-slate-50 border-slate-200 hover:border-sky-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#38BDF8]">Revenue &amp; CRM</span>
+                <Sparkles className="size-4 text-[#38BDF8]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                4. Sales &amp; CRM SaaS
               </h4>
               <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                Slack/Teams approval cards for sensitive operations, 99.9% uptime SLA hosting, and ongoing frontier model tuning.
+                e.g. HubSpot, Salesforce. Customer account updates, deal pipeline summaries, and activity logging via autonomous agents.
               </p>
             </div>
+
+            {/* 5. E-Commerce & Store SaaS */}
+            <div
+              onClick={() => handleSelectTrack("Type B: Commercial SaaS Connectors", "5. E-Commerce & Store SaaS")}
+              className={`p-5 rounded-2xl border transition cursor-pointer group ${isDark ? "bg-[#0E1014] border-white/[0.04] hover:border-sky-500/30" : "bg-slate-50 border-slate-200 hover:border-sky-500"}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#38BDF8]">E-Commerce &amp; Stores</span>
+                <ShoppingBag className="size-4 text-[#38BDF8]" />
+              </div>
+              <h4 className={`text-sm font-semibold mb-1 group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                5. E-Commerce &amp; Store SaaS
+              </h4>
+              <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                e.g. Shopify, WooCommerce. Live product catalog queries, inventory updates, and order fulfillment tracking from natural language.
+              </p>
+            </div>
+
+            {/* Extra Feature Card: Distribution */}
+            <div className={`p-5 rounded-2xl border flex flex-col justify-between ${isDark ? "bg-[#0B0D11] border-white/[0.04]" : "bg-slate-50 border-slate-200"}`}>
+              <div>
+                <span className="text-[11px] font-semibold text-[#38BDF8] block mb-1">Marketplace Distribution</span>
+                <h4 className={`text-sm font-semibold mb-1 ${isDark ? "text-white" : "text-slate-900"}`}>
+                  Global Publishing Included
+                </h4>
+                <p className={`text-xs leading-relaxed ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                  Every SaaS connector is submitted to Smithery.ai, mcp.so, and npm with branded onboarding guides.
+                </p>
+              </div>
+              <span className={`text-[11px] font-semibold mt-3 ${isDark ? "text-[#38BDF8]" : "text-sky-700"}`}>
+                10-Day Turnaround SLA
+              </span>
+            </div>
+
           </div>
         </div>
-
       </section>
 
-      {/* 4. ENGAGEMENT MODEL: HOW WE WORK (BRAND SIMPLICITY) */}
+      {/* 5. ENGAGEMENT MODEL: HOW WE WORK */}
       <section
         className={`py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
           isDark ? "border-white/[0.08]" : "border-slate-200/90"
@@ -442,7 +580,7 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {/* 5. TAILORED SCOPING INTAKE FORM */}
+      {/* 6. TAILORED SCOPING INTAKE FORM */}
       <section
         id="intake"
         className={`py-16 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 border-t transition-colors ${
@@ -521,7 +659,7 @@ export default function ServicePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                    Solution Category
+                    Track Category
                   </label>
                   <select
                     value={formData.projectCategory}
@@ -532,14 +670,14 @@ export default function ServicePage() {
                         : "bg-white border border-slate-300 text-slate-900"
                     }`}
                   >
-                    <option value="Category A: Internal Enterprise MCP">Category A: Internal Enterprise MCP</option>
-                    <option value="Category B: Commercial SaaS Connector">Category B: Commercial SaaS Connector</option>
+                    <option value="Type A: Internal MCPs (For Your Team)">Type A: Internal MCPs (For Your Team)</option>
+                    <option value="Type B: Commercial SaaS Connectors (For Customers)">Type B: Commercial SaaS Connectors (For Customers)</option>
                     <option value="Hybrid: Both Internal & Commercial">Hybrid: Both Internal &amp; Commercial</option>
                   </select>
                 </div>
                 <div>
                   <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-[#C9CBCF]" : "text-slate-700"}`}>
-                    Target Stack / Data Layer
+                    Target System / Vertical
                   </label>
                   <select
                     value={formData.sourceType}
@@ -550,14 +688,21 @@ export default function ServicePage() {
                         : "bg-white border border-slate-300 text-slate-900"
                     }`}
                   >
-                    <option value="PostgreSQL / MySQL / SQLite">PostgreSQL / MySQL / SQLite</option>
-                    <option value="Snowflake / Databricks / Warehouse">Snowflake / Databricks / Warehouse</option>
-                    <option value="MongoDB / DocumentDB">MongoDB / DocumentDB</option>
-                    <option value="Internal REST / GraphQL / OpenAPI">Internal REST / GraphQL / OpenAPI</option>
-                    <option value="CloudWatch / Sentry / Datadog">CloudWatch / Sentry / Datadog</option>
-                    <option value="Commercial B2B SaaS Product (Public SSE)">Commercial B2B SaaS Product (Public SSE)</option>
-                    <option value="Existing MCP Server Hardening">Existing MCP Server Hardening</option>
-                    <option value="Custom Proprietary Tech Stack">Custom Proprietary Tech Stack</option>
+                    <optgroup label="Type A: Internal Systems">
+                      <option value="1. The Database MCP (Storage Room)">1. The Database MCP (Storage Room)</option>
+                      <option value="2. The Internal API MCP (Private Engine)">2. The Internal API MCP (Private Engine)</option>
+                      <option value="3. The Cloud & Server MCP (DevOps Engine Room)">3. The Cloud &amp; Server MCP (DevOps Engine Room)</option>
+                      <option value="4. The Project & Code MCP (Daily Workflow)">4. The Project &amp; Code MCP (Daily Workflow)</option>
+                      <option value="5. The Company Knowledge MCP (Company Library)">5. The Company Knowledge MCP (Company Library)</option>
+                      <option value="6. The Customer Support MCP (Operations Desk)">6. The Customer Support MCP (Operations Desk)</option>
+                    </optgroup>
+                    <optgroup label="Type B: Commercial SaaS Products">
+                      <option value="1. Developer Tools & Cloud SaaS">1. Developer Tools &amp; Cloud SaaS (Neon, Supabase, Vercel)</option>
+                      <option value="2. Project & Productivity SaaS">2. Project &amp; Productivity SaaS (Linear, Notion, Jira)</option>
+                      <option value="3. Fintech & Payment SaaS">3. Fintech &amp; Payment SaaS (Stripe, QuickBooks)</option>
+                      <option value="4. Sales & CRM SaaS">4. Sales &amp; CRM SaaS (HubSpot, Salesforce)</option>
+                      <option value="5. E-Commerce & Store SaaS">5. E-Commerce &amp; Store SaaS (Shopify, WooCommerce)</option>
+                    </optgroup>
                   </select>
                 </div>
               </div>
@@ -618,7 +763,7 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {/* 6. FOOTER */}
+      {/* 7. FOOTER */}
       <footer
         className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors ${
           isDark ? "border-white/[0.08] text-[#797D86]" : "border-slate-200/90 text-slate-500"

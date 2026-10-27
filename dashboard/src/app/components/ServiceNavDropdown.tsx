@@ -81,10 +81,10 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
       {/* Invisible bridge to prevent pointer gap closing */}
       {isOpen && <div className="absolute top-full left-0 right-0 h-3 z-50" />}
 
-      {/* Neon-Style Luminous Mega Dropdown Panel */}
+      {/* Luminous Mega Dropdown Panel: Mapped Exactly to Type A & Type B Screenshots */}
       {isOpen && (
         <div
-          className={`absolute left-1/2 -translate-x-1/2 top-[calc(100%+8px)] w-[840px] max-w-[95vw] rounded-2xl p-6 shadow-2xl z-50 border backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150 ${
+          className={`absolute left-1/2 -translate-x-1/2 top-[calc(100%+8px)] w-[860px] max-w-[96vw] rounded-2xl p-6 shadow-2xl z-50 border backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150 ${
             isDark
               ? "bg-[#090C12]/98 border-white/[0.12] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9),0_0_35px_rgba(52,213,154,0.06)]"
               : "bg-white/98 border-slate-200 shadow-[0_20px_50px_rgba(15,23,42,0.12)]"
@@ -93,14 +93,14 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
           {/* Subtle Top Edge Luminous Highlight */}
           <div className="absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#34D59A]/30 to-transparent pointer-events-none" />
 
-          {/* 3-Column Category Overview */}
+          {/* 3-Column Layout: Type A (Internal) | Type B (Commercial) | Spotlight Card */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 relative z-10">
             
-            {/* COLUMN 1: CATEGORY A - INTERNAL INFRA (4 cols) */}
-            <div className="md:col-span-4 space-y-4">
+            {/* COLUMN 1: TYPE A - INTERNAL MCPS (4 cols) */}
+            <div className="md:col-span-4 space-y-3.5">
               <div>
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-[#94979E] block">
-                  Category A: Internal Infra
+                  Type A: Internal MCPs
                 </span>
                 <span className="text-[12px] text-[#61646B] block mt-0.5">
                   For your internal engineering teams
@@ -109,87 +109,102 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
 
               <div className="space-y-1">
                 <a
-                  href="/service#internal-infra"
-                  onClick={() => handleItemClick("internal-infra")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-a-internal"
+                  onClick={() => handleItemClick("type-a-internal")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Database &amp; Data Warehouse MCP
+                    1. The Database MCP
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    Safe read-only access for Postgres, Snowflake &amp; Mongo
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    Postgres, MySQL, Snowflake &amp; Mongo (Storage Room)
                   </p>
                 </a>
 
                 <a
-                  href="/service#internal-infra"
-                  onClick={() => handleItemClick("internal-infra")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-a-internal"
+                  onClick={() => handleItemClick("type-a-internal")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Private APIs &amp; Microservices
+                    2. The Internal API MCP
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    Convert internal Swagger &amp; REST into typed AI tools
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    Swagger, private REST &amp; microservices (Private Engine)
                   </p>
                 </a>
 
                 <a
-                  href="/service#internal-infra"
-                  onClick={() => handleItemClick("internal-infra")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-a-internal"
+                  onClick={() => handleItemClick("type-a-internal")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    DevOps &amp; Observability Logs
+                    3. The Cloud &amp; Server MCP
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    CloudWatch, Sentry &amp; Datadog triage in Cursor/Claude
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    CloudWatch, Datadog &amp; Sentry (DevOps Engine Room)
                   </p>
                 </a>
 
                 <a
-                  href="/service#internal-infra"
-                  onClick={() => handleItemClick("internal-infra")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-a-internal"
+                  onClick={() => handleItemClick("type-a-internal")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Zero-Trust Security &amp; SOC 2
+                    4. The Project &amp; Code MCP
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    ToolGuard™ AST firewall, in-flight DLP &amp; Merkle ledger
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    Linear, Jira, Git &amp; CI/CD (The Daily Workflow)
                   </p>
                 </a>
 
                 <a
-                  href="/service#internal-infra"
-                  onClick={() => handleItemClick("internal-infra")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-a-internal"
+                  onClick={() => handleItemClick("type-a-internal")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Fleet-Wide MDM Rollout
+                    5. The Company Knowledge MCP
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    Jamf &amp; Intune provisioning across 20–100+ laptops
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    Notion, Confluence &amp; wikis (The Company Library)
+                  </p>
+                </a>
+
+                <a
+                  href="/service#type-a-internal"
+                  onClick={() => handleItemClick("type-a-internal")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
+                    isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
+                  }`}
+                >
+                  <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#34D59A] transition ${isDark ? "text-white" : "text-slate-900"}`}>
+                    6. The Customer Support MCP
+                  </h4>
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    Zendesk, Intercom &amp; CRM (The Operations Desk)
                   </p>
                 </a>
               </div>
             </div>
 
-            {/* COLUMN 2: CATEGORY B - COMMERCIAL SAAS (4 cols) */}
-            <div className="md:col-span-4 space-y-4">
+            {/* COLUMN 2: TYPE B - COMMERCIAL SAAS MCPS (4 cols) */}
+            <div className="md:col-span-4 space-y-3.5">
               <div>
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-[#94979E] block">
-                  Category B: SaaS Connectors
+                  Type B: Commercial / Public
                 </span>
                 <span className="text-[12px] text-[#61646B] block mt-0.5">
                   For your outside paying customers
@@ -198,77 +213,77 @@ export default function ServiceNavDropdown({ isDark, isActive = false }: Service
 
               <div className="space-y-1">
                 <a
-                  href="/service#commercial-saas"
-                  onClick={() => handleItemClick("commercial-saas")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-b-commercial"
+                  onClick={() => handleItemClick("type-b-commercial")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Multi-Tenant Remote SSE
+                    1. Developer Tools &amp; Cloud SaaS
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    24/7 cloud server with OAuth 2.0 PKCE user delegation
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    e.g. Neon, Supabase, Vercel (Remote SSE)
                   </p>
                 </a>
 
                 <a
-                  href="/service#commercial-saas"
-                  onClick={() => handleItemClick("commercial-saas")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-b-commercial"
+                  onClick={() => handleItemClick("type-b-commercial")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Marketplace Distribution
+                    2. Project &amp; Productivity SaaS
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    Publishing on Smithery.ai, mcp.so &amp; @company npm
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    e.g. Linear, Notion, Jira (Workflow Connectors)
                   </p>
                 </a>
 
                 <a
-                  href="/service#commercial-saas"
-                  onClick={() => handleItemClick("commercial-saas")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-b-commercial"
+                  onClick={() => handleItemClick("type-b-commercial")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Slack &amp; Teams Approval Gates
+                    3. Fintech &amp; Payment SaaS
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    Human-in-the-loop authorization before sensitive actions
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    e.g. Stripe, QuickBooks (HITL Slack Approval Gates)
                   </p>
                 </a>
 
                 <a
-                  href="/service#commercial-saas"
-                  onClick={() => handleItemClick("commercial-saas")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-b-commercial"
+                  onClick={() => handleItemClick("type-b-commercial")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    24/7 Managed Cloud Infrastructure
+                    4. Sales &amp; CRM SaaS
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    99.9% uptime SLA, auto-SSL &amp; zero DevOps overhead
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    e.g. HubSpot, Salesforce (Customer Data Agents)
                   </p>
                 </a>
 
                 <a
-                  href="/service#commercial-saas"
-                  onClick={() => handleItemClick("commercial-saas")}
-                  className={`group block p-2 -mx-2 rounded-xl transition duration-150 ${
+                  href="/service#type-b-commercial"
+                  onClick={() => handleItemClick("type-b-commercial")}
+                  className={`group block p-1.5 -mx-1.5 rounded-xl transition duration-150 ${
                     isDark ? "hover:bg-white/[0.04]" : "hover:bg-slate-50"
                   }`}
                 >
                   <h4 className={`text-[13px] font-semibold leading-tight group-hover:text-[#38BDF8] transition ${isDark ? "text-white" : "text-slate-900"}`}>
-                    Continuous Model Evolution
+                    5. E-Commerce &amp; Store SaaS
                   </h4>
-                  <p className={`text-[12px] leading-snug mt-1 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
-                    Prompt &amp; schema tuning for Claude 3.7, GPT-5 &amp; Gemini
+                  <p className={`text-[12px] leading-snug mt-0.5 ${isDark ? "text-[#94A3B8]" : "text-slate-500"}`}>
+                    e.g. Shopify, WooCommerce (Catalog &amp; Order Tools)
                   </p>
                 </a>
               </div>
