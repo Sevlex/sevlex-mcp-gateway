@@ -23,8 +23,10 @@ import {
   Server,
   RefreshCw,
   SlidersHorizontal,
+  ChevronDown,
 } from "lucide-react";
 import { useTheme } from "@/app/components/ThemeProvider";
+import ServiceNavDropdown from "@/app/components/ServiceNavDropdown";
 
 interface ServiceItem {
   id: string;
@@ -254,6 +256,27 @@ export default function ServicePage() {
   const [activeTab, setActiveTab] = useState<"ALL" | "TYPE_A" | "TYPE_B">("ALL");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Sync with URL anchor hash from ServiceNavDropdown
+  React.useEffect(() => {
+    const handleHash = () => {
+      if (typeof window === "undefined") return;
+      const hash = window.location.hash.replace("#", "");
+      if (hash) {
+        const found = SERVICES.find((s) => s.id === hash);
+        if (found) {
+          setActiveTab("ALL");
+          setTimeout(() => {
+            const el = document.getElementById(hash);
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }, 60);
+        }
+      }
+    };
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -349,9 +372,7 @@ export default function ServicePage() {
             <a href="/product" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               Product
             </a>
-            <a href="/service" className="text-[#34D59A] font-semibold transition-colors">
-              Service
-            </a>
+            <ServiceNavDropdown isDark={isDark} isActive={true} />
             <a href="/about" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               About
             </a>
@@ -544,58 +565,82 @@ export default function ServicePage() {
             </p>
           </div>
 
-          {/* Tab Filter Buttons */}
-          <div
-            className={`inline-flex items-center p-1 rounded-full border text-xs font-medium self-start md:self-auto ${
-              isDark
-                ? "bg-[#0E1014] border-white/[0.08]"
-                : "bg-slate-100 border-slate-300"
-            }`}
-          >
-            <button
-              onClick={() => setActiveTab("ALL")}
-              className={`px-4 py-1.5 rounded-full transition duration-150 cursor-pointer ${
-                activeTab === "ALL"
-                  ? isDark
-                    ? "bg-white text-black shadow-xs"
-                    : "bg-white text-slate-950 shadow-xs"
-                  : isDark
-                  ? "text-[#797D86] hover:text-white"
-                  : "text-slate-600 hover:text-slate-950"
+          {/* Filter Controls: Desktop Tabs + Mobile/Compact Dropdown Menu */}
+          <div className="flex items-center gap-3 self-start md:self-auto">
+            {/* Dropdown Menu Filter */}
+            <div className="relative">
+              <select
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value as "ALL" | "TYPE_A" | "TYPE_B")}
+                aria-label="Filter solutions by track"
+                className={`h-9 px-3.5 pr-8 rounded-full text-xs font-medium border appearance-none cursor-pointer focus:outline-none transition ${
+                  isDark
+                    ? "bg-[#0E1014] border-white/[0.08] text-white focus:border-[#34D59A]"
+                    : "bg-white border-slate-300 text-slate-800 shadow-xs focus:border-emerald-600"
+                }`}
+              >
+                <option value="ALL">All Solutions ({SERVICES.length})</option>
+                <option value="TYPE_A">Type A: Internal Enterprise (5)</option>
+                <option value="TYPE_B">Type B: Commercial SaaS (5)</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-gray-400">
+                <ChevronDown className="size-3.5" />
+              </div>
+            </div>
+
+            {/* Desktop Pill Switcher */}
+            <div
+              className={`hidden sm:inline-flex items-center p-1 rounded-full border text-xs font-medium ${
+                isDark
+                  ? "bg-[#0E1014] border-white/[0.08]"
+                  : "bg-slate-100 border-slate-300"
               }`}
             >
-              All Solutions ({SERVICES.length})
-            </button>
-            <button
-              onClick={() => setActiveTab("TYPE_A")}
-              className={`px-4 py-1.5 rounded-full transition duration-150 cursor-pointer flex items-center gap-1.5 ${
-                activeTab === "TYPE_A"
-                  ? isDark
-                    ? "bg-[#34D59A] text-black font-semibold shadow-xs"
-                    : "bg-[#10B981] text-white font-semibold shadow-xs"
-                  : isDark
-                  ? "text-[#797D86] hover:text-[#34D59A]"
-                  : "text-slate-600 hover:text-emerald-700"
-              }`}
-            >
-              <span className="size-1.5 rounded-full bg-[#34D59A]" />
-              <span>Type A: Internal (5)</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("TYPE_B")}
-              className={`px-4 py-1.5 rounded-full transition duration-150 cursor-pointer flex items-center gap-1.5 ${
-                activeTab === "TYPE_B"
-                  ? isDark
-                    ? "bg-[#38BDF8] text-black font-semibold shadow-xs"
-                    : "bg-[#0284C7] text-white font-semibold shadow-xs"
-                  : isDark
-                  ? "text-[#797D86] hover:text-[#38BDF8]"
-                  : "text-slate-600 hover:text-sky-700"
-              }`}
-            >
-              <span className="size-1.5 rounded-full bg-[#38BDF8]" />
-              <span>Type B: Commercial (5)</span>
-            </button>
+              <button
+                onClick={() => setActiveTab("ALL")}
+                className={`px-3.5 py-1 rounded-full transition duration-150 cursor-pointer ${
+                  activeTab === "ALL"
+                    ? isDark
+                      ? "bg-white text-black shadow-xs"
+                      : "bg-white text-slate-950 shadow-xs"
+                    : isDark
+                    ? "text-[#797D86] hover:text-white"
+                    : "text-slate-600 hover:text-slate-950"
+                }`}
+              >
+                All ({SERVICES.length})
+              </button>
+              <button
+                onClick={() => setActiveTab("TYPE_A")}
+                className={`px-3.5 py-1 rounded-full transition duration-150 cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === "TYPE_A"
+                    ? isDark
+                      ? "bg-[#34D59A] text-black font-semibold shadow-xs"
+                      : "bg-[#10B981] text-white font-semibold shadow-xs"
+                    : isDark
+                    ? "text-[#797D86] hover:text-[#34D59A]"
+                    : "text-slate-600 hover:text-emerald-700"
+                }`}
+              >
+                <span className="size-1.5 rounded-full bg-[#34D59A]" />
+                <span>Type A (5)</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("TYPE_B")}
+                className={`px-3.5 py-1 rounded-full transition duration-150 cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === "TYPE_B"
+                    ? isDark
+                      ? "bg-[#38BDF8] text-black font-semibold shadow-xs"
+                      : "bg-[#0284C7] text-white font-semibold shadow-xs"
+                    : isDark
+                    ? "text-[#797D86] hover:text-[#38BDF8]"
+                    : "text-slate-600 hover:text-sky-700"
+                }`}
+              >
+                <span className="size-1.5 rounded-full bg-[#38BDF8]" />
+                <span>Type B (5)</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -608,7 +653,8 @@ export default function ServicePage() {
             return (
               <div
                 key={service.id}
-                className={`rounded-2xl p-7 flex flex-col justify-between transition-all duration-200 group relative overflow-hidden ${
+                id={service.id}
+                className={`scroll-mt-24 rounded-2xl p-7 flex flex-col justify-between transition-all duration-200 group relative overflow-hidden ${
                   isDark
                     ? "bg-[#0E1014] border border-white/[0.08] hover:border-white/[0.18]"
                     : "bg-white border border-slate-200/90 ring-1 ring-slate-900/[0.04] shadow-[0_1px_3px_0_rgba(15,23,42,0.04),0_10px_20px_-5px_rgba(15,23,42,0.06)] hover:border-slate-300"

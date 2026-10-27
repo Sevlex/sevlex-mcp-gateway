@@ -43,6 +43,7 @@ import ClientBrandIcon, { getLogoDevUrl } from "@/app/components/ClientBrandIcon
 import EngineBentoGrid from "@/app/components/EngineBentoGrid";
 import ArchitectureMotionConduit from "@/app/components/ArchitectureMotionConduit";
 import { useTheme } from "@/app/components/ThemeProvider";
+import ServiceNavDropdown from "@/app/components/ServiceNavDropdown";
 
 // Interactive Spotlight Card with subtle radial hover
 function SpotlightCard({
@@ -528,9 +529,7 @@ export default function LandingPage() {
             <a href="/product" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               Product
             </a>
-            <a href="/service" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
-              Service
-            </a>
+            <ServiceNavDropdown isDark={isDark} />
             <a href="/about" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               About
             </a>

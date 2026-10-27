@@ -34,6 +34,7 @@ import {
   Moon,
 } from "lucide-react";
 import { useTheme } from "@/app/components/ThemeProvider";
+import ServiceNavDropdown from "@/app/components/ServiceNavDropdown";
 
 export default function ProductPage() {
   const { theme, toggleTheme } = useTheme();
@@ -85,9 +86,7 @@ export default function ProductPage() {
             <a href="/product" className="text-[#34D59A] font-semibold transition-colors">
               Product
             </a>
-            <a href="/service" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
-              Service
-            </a>
+            <ServiceNavDropdown isDark={isDark} />
             <a href="/about" className={isDark ? "hover:text-white transition-colors" : "hover:text-black transition-colors"}>
               About
             </a>
