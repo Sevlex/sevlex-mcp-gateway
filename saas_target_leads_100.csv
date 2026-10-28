@@ -1,0 +1,101 @@
+ID,Company,Website,Key_Executive_Founder,Tier,API_Docs_URL,Conversational_Hook_Claude_Prompt
+1,Dub.co,https://dub.co,Steven Tey (CEO),Tier 1,https://dub.co/docs/api,Create a branded shortlink with UTM campaign twitter_launch
+2,Loops.so,https://loops.so,Chris Frantz (CEO),Tier 1,https://loops.so/docs/api,Send transactional onboarding email to user@test.com
+3,Better Stack,https://betterstack.com,Juraj Masar (CEO),Tier 1,https://betterstack.com/docs,Which EU services are currently reporting degraded latency?
+4,Resend,https://resend.com,Zeno Rocha (CEO),Tier 1,https://resend.com/docs/api,Send custom HTML announcement email to beta testers
+5,Trigger.dev,https://trigger.dev,Matt Aitken (CEO),Tier 1,https://trigger.dev/docs,Trigger background data sync job for organization #42
+6,Cal.com,https://cal.com,Peer Richelsen (Co-CEO),Tier 1,https://cal.com/docs/api,Find 3 available 30-minute meeting slots this Thursday
+7,PostHog,https://posthog.com,James Hawkins (CEO),Tier 1,https://posthog.com/docs/api,How many signups clicked the pricing CTA in the last 7 days?
+8,Unkey,https://unkey.com,James Perkins (CEO),Tier 1,https://unkey.com/docs,Revoke API key for user_91 and verify rate-limit quota
+9,Novu,https://novu.co,Dima Grossman (CEO),Tier 2,https://docs.novu.co,Broadcast push notification to active iOS users
+10,Knock,https://knock.app,Sam Seely (CEO),Tier 2,https://docs.knock.app,Trigger in-app notification batch for milestone completion
+11,Inngest,https://inngest.com,Tony Holdstock-Brown (CEO),Tier 2,https://inngest.com/docs,List failed workflow steps in the payment pipeline
+12,Supabase,https://supabase.com,Paul Copplestone (CEO),Tier 1,https://supabase.com/docs,Run database migration and inspect slow queries
+13,Convex,https://convex.dev,James Cowling (CEO),Tier 2,https://docs.convex.dev,Query users table and subscribe to live change stream
+14,Neon,https://neon.tech,Nikita Shamgunov (CEO),Tier 1,https://neon.tech/docs,Create an isolated database branch for PR #104
+15,Upstash,https://upstash.com,Enes Akar (CEO),Tier 2,https://upstash.com/docs,Check Redis memory consumption and evict cache key
+16,Clerk,https://clerk.com,Colin Sidoti (CEO),Tier 1,https://clerk.com/docs,Ban user account #812 and invalidate active sessions
+17,Kinde,https://kinde.com,Ross Manthorp (CEO),Tier 2,https://kinde.com/docs,Add user to enterprise SSO organization with Admin role
+18,Liveblocks,https://liveblocks.io,Steven Fabre (CEO),Tier 2,https://liveblocks.io/docs,Create a collaborative multiplayer room for canvas #12
+19,Tinybird,https://tinybird.co,Jorge Gomez (CEO),Tier 2,https://tinybird.co/docs,Query real-time clickstream data pipe for user dropoff
+20,Turso,https://turso.tech,Glauber Costa (CEO),Tier 2,https://docs.turso.tech,Create a replica database instance in Tokyo region
+21,WorkOS,https://workOS.com,Michael Grinich (CEO),Tier 1,https://workos.com/docs,Check SAML SSO connection health for enterprise client
+22,PropelAuth,https://propelauth.com,Andrew Grosser (CEO),Tier 2,https://docs.propelauth.com,Generate passwordless magic link for support ticket
+23,Segment,https://segment.com,VP of Ecosystem,Tier 3,https://segment.com/docs/api,Send track event for user completed checkout
+24,Logto,https://logto.io,Silver Chen (CEO),Tier 2,https://docs.logto.io,Enable Google OAuth social connector in tenant
+25,Plane.so,https://plane.so,Vimal Kumar (CEO),Tier 2,https://docs.plane.so,Create task in Sprint 4 and assign to frontend lead
+26,Linear,https://linear.app,Karri Saarinen (CEO),Tier 1,https://developers.linear.app,Create priority 1 bug ticket from customer Slack message
+27,Raycast,https://raycast.com,Thomas Paul Mann (CEO),Tier 1,https://developers.raycast.com,Publish extension update and pull download stats
+28,Warp,https://warp.dev,Zach Lloyd (CEO),Tier 2,https://docs.warp.dev,Share terminal session replay with engineering team
+29,Fly.io,https://fly.io,Kurt Mackey (CEO),Tier 2,https://fly.io/docs,Scale machine count to 5 instances in Amsterdam region
+30,Render,https://render.com,Anurag Goel (CEO),Tier 2,https://render.com/docs,Restart web service and stream recent deployment logs
+31,Railway,https://railway.com,Jake Cooper (CEO),Tier 2,https://docs.railway.com,Trigger service redeployment and inject environment secret
+32,Doppler,https://doppler.com,Brian NeSmith (CEO),Tier 2,https://docs.doppler.com,Rotate production Stripe secret key across all environments
+33,Incident.io,https://incident.io,Stephen Whitworth (CEO),Tier 1,https://incident.io/docs,Declare critical sev-1 incident and page on-call SRE
+34,Axiom,https://axiom.co,Neil Ferguson (CEO),Tier 2,https://axiom.co/docs,Run APL query to isolate 502 bad gateway spikes
+35,Sentry,https://sentry.io,David Cramer (Founder),Tier 2,https://docs.sentry.io,Summarize unhandled exceptions in release v2.4
+36,Attio,https://attio.com,Nicolas Sharp (CEO),Tier 1,https://developers.attio.com,Enrich company profile and change deal stage to Won
+37,Folk,https://folk.app,Simona Pop (Head of Product),Tier 1,https://docs.folk.app,Add contact to VIP Investors pipeline with meeting note
+38,Close,https://close.com,Steli Efti (CEO),Tier 1,https://developer.close.com,Log 15-minute qualification call and set follow-up task
+39,Copper,https://copper.com,Head of Product,Tier 2,https://developer.copper.com,Find all pipeline opportunities closing this month
+40,Pipedrive,https://pipedrive.com,VP of Ecosystem,Tier 2,https://developers.pipedrive.com,Create lead for inbound demo request from website
+41,Capsule,https://capsulecrm.com,Duncan Barclay (CEO),Tier 3,https://capsulecrm.com/developer,Update contact status to Qualified Prospect
+42,Clay,https://clay.com,Kareem Amin (CEO),Tier 1,https://clay.com/docs,Enrich list of 20 domain URLs with CEO email & LinkedIn
+43,Lemlist,https://lemlist.com,Guillaume Moubeche (CEO),Tier 1,https://developer.lemlist.com,Add 50 verified leads to Q4 cold outreach sequence
+44,Instantly,https://instantly.ai,Co-Founders,Tier 2,https://developer.instantly.ai,Check sender mailbox health and pause cold campaign #3
+45,Smartlead,https://smartlead.ai,Vaibhav Namburi (CEO),Tier 2,https://api.smartlead.ai,Fetch open and reply metrics for enterprise SDR sequence
+46,Hunter.io,https://hunter.io,Francois Grante (CEO),Tier 2,https://hunter.io/api-documentation,Find verified email pattern for domain vercel.com
+47,Apollo.io,https://apollo.io,Tim Zheng (CEO),Tier 1,https://apollo.io/docs,Search 50 VP of Engineering contacts at Series A startups
+48,Clearbit,https://clearbit.com,VP of Product,Tier 2,https://clearbit.com/docs,Reveal tech stack and employee headcount for target URL
+49,Amplemarket,https://amplemarket.com,Joao Batalha (CEO),Tier 2,https://docs.amplemarket.com,Generate personalized cold email draft based on prospect LinkedIn
+50,Mixmax,https://mixmax.com,Olof Mathe (CEO),Tier 2,https://developer.mixmax.com,Insert 1-click meeting poll into active outreach sequence
+51,Outreach,https://outreach.io,VP of Ecosystem,Tier 3,https://api.outreach.io,Check sequence engagement and pull prospect sentiment
+52,Salesloft,https://salesloft.com,VP of Platform,Tier 3,https://developers.salesloft.com,Log cadence step completed and schedule callback
+53,Gong,https://gong.io,Amit Bendov (CEO),Tier 2,https://gong.io/api,Extract competitors mentioned in last week's sales calls
+54,Chorus.ai,https://chorus.ai,Head of Product,Tier 3,https://chorus.ai/api,Summarize client pricing objections from renewal meeting
+55,Fathom,https://fathom.video,Richard White (CEO),Tier 1,https://fathom.video/api,Pull action items and meeting summary from 2 PM demo
+56,Fireflies,https://fireflies.ai,Krish Ramineni (CEO),Tier 1,https://docs.fireflies.ai,Search transcripts for mentions of 'Sevlex' or 'Security'
+57,Superhuman,https://superhuman.com,Rahul Vohra (CEO),Tier 1,https://superhuman.com/docs,Summarize unread VIP customer emails received today
+58,Missive,https://missiveapp.com,Philippe Lehoux (CEO),Tier 2,https://missiveapp.com/help/api,Assign shared support inbox thread to on-call engineer
+59,Front,https://front.com,Mathilde Collin (Co-Founder),Tier 2,https://dev.frontapp.com,Tag inbound ticket as 'Urgent Refund' and route to tier 2
+60,Intercom,https://intercom.com,Eoghan McCabe (CEO),Tier 1,https://developers.intercom.com,Resolve conversation and update user custom attribute
+61,Crisp,https://crisp.chat,Baptiste Jamin (CEO),Tier 2,https://docs.crisp.chat,Send direct chat message to visitor browsing pricing page
+62,Help Scout,https://helpscout.com,Nick Francis (CEO),Tier 2,https://developer.helpscout.com,Fetch open support ticket count and customer satisfaction score
+63,Gorgias,https://gorgias.com,Romain Lapeyre (CEO),Tier 1,https://developers.gorgias.com,Process refund for Shopify order #8912 directly from chat
+64,Kustomer,https://kustomer.com,Brad Birnbaum (CEO),Tier 3,https://developer.kustomer.com,Merge duplicate customer profiles and view order history
+65,Dixa,https://dixa.com,Mads Fosselius (CEO),Tier 3,https://docs.dixa.io,Route inbound voice call to specialized billing agent
+66,Lago,https://getlago.com,Anh-Tho Chuong (CEO),Tier 1,https://docs.getlago.com,Show churned MRR this month and calculate overage fees
+67,Orb,https://withorb.com,Michael Manapat (CEO),Tier 1,https://docs.withorb.com,Generate usage-based invoice preview for enterprise customer
+68,Octane,https://getoctane.io,Head of Product,Tier 2,https://docs.getoctane.io,Query API consumption units consumed by tenant #12
+69,Paddle,https://paddle.com,Jimmy Fitzgerald (CEO),Tier 1,https://developer.paddle.com,Reconcile cross-border VAT payments and export tax summary
+70,Chargebee,https://chargebee.com,Krish Subramanian (CEO),Tier 2,https://apidocs.chargebee.com,Pause subscription for user #810 and apply 20% discount coupon
+71,Recurly,https://recurly.com,Head of Ecosystem,Tier 3,https://developers.recurly.com,Look up failed credit card transactions and trigger dunning retry
+72,FastSpring,https://fastspring.com,David Nachman (CEO),Tier 3,https://fastspring.com/docs,Pull global net payout report for software license sales
+73,Brex,https://brex.com,Henrique Dubugras (Co-CEO),Tier 1,https://developer.brex.com,Issue virtual corporate credit card with $2,000 monthly limit
+74,Ramp,https://ramp.com,Eric Glyman (CEO),Tier 1,https://docs.ramp.com,Flag unauthorized travel expense receipts submitted this week
+75,Mercury,https://mercury.com,Immad Akhund (CEO),Tier 1,https://mercury.com/docs,Fetch checking account balance and initiate vendor ACH wire
+76,Melio,https://meliopayments.com,Matan Bar (CEO),Tier 2,https://docs.meliopayments.com,Pay supplier invoice #492 via bank transfer on due date
+77,Tipalti,https://tipalti.com,Chen Amit (CEO),Tier 2,https://tipalti.com/docs,Verify 1099 tax compliance status for international contractors
+78,Airwallex,https://airwallex.com,Jack Zhang (CEO),Tier 2,https://airwallex.com/docs,Convert $50,000 USD to EUR at spot rate and transfer to London
+79,Deel,https://deel.com,Alex Bouaziz (CEO),Tier 1,https://developer.deel.com,Generate international contractor agreement and calculate payroll
+80,Remote,https://remote.com,Job van der Voort (CEO),Tier 1,https://remote.com/resources/api,Enroll new remote hire in local health insurance benefits
+81,Gusto,https://gusto.com,Josh Reeves (CEO),Tier 2,https://docs.gusto.com,Run semi-monthly payroll for engineering department
+82,Rippling,https://rippling.com,Parker Conrad (CEO),Tier 1,https://developer.rippling.com,Deprovision software access and disable laptop for departing employee
+83,Modern Treasury,https://moderntreasury.com,Dimitri Dadiomov (CEO),Tier 1,https://docs.moderntreasury.com,Initiate real-time RTP bank transfer to escrow account
+84,Finix,https://finix.com,Richie Serna (CEO),Tier 2,https://finix.com/docs,Create merchant sub-account and verify identity underwriting
+85,Moov,https://moov.io,Wade Arnold (CEO),Tier 2,https://docs.moov.io,Link bank account via micro-deposits and initiate payment pull
+86,Medusa.js,https://medusajs.com,Sebastian Rindom (CEO),Tier 1,https://docs.medusajs.com,Create flash sale discount code and update inventory SKU
+87,Swell,https://swell.is,Eric Fowles (CEO),Tier 2,https://swell.is/docs,Update wholesale price tier across all ceramic products
+88,ShipEngine,https://shipengine.com,Head of Product,Tier 2,https://shipengine.com/docs,Generate FedEx shipping label and calculate lowest rate
+89,Shippo,https://goshippo.com,Laura Behrens Wu (CEO),Tier 1,https://goshippo.com/docs,Track delayed package #9410 and notify customer via email
+90,EasyPost,https://easypost.com,Jarrett Streebin (CEO),Tier 2,https://easypost.com/docs,Buy postage insurance and schedule warehouse carrier pickup
+91,Printful,https://printful.com,Alex Saltonstall (CEO),Tier 2,https://developers.printful.com,Submit print-on-demand hoodie order to European fulfillment center
+92,Tally.so,https://tally.so,Marie Martens (Co-Founder),Tier 1,https://tally.so/help/api,Export all survey responses submitted in last 24 hours
+93,Typeform,https://typeform.com,Joaquim Lecha (CEO),Tier 2,https://developer.typeform.com,Create lead generation quiz and configure webhook endpoint
+94,Fillout,https://fillout.com,Co-Founders,Tier 2,https://fillout.com/docs,Embed Stripe payment block into customer onboarding form
+95,Jotform,https://jotform.com,Aytekin Tank (CEO),Tier 3,https://api.jotform.com,Download encrypted PDF submissions for vendor contracts
+96,Notion,https://notion.so,Ivan Zhao (CEO),Tier 1,https://developers.notion.com,Create project specification page and link database row
+97,Coda,https://coda.io,Shishir Mehrotra (CEO),Tier 1,https://coda.io/developers,Push meeting action items into roadmap prioritization table
+98,Airtable,https://airtable.com,Howie Liu (CEO),Tier 1,https://airtable.com/developers,Filter base records by 'Overdue' and notify account manager
+99,ClickUp,https://clickup.com,Zeb Evans (CEO),Tier 2,https://clickup.com/api,Move sprint ticket to QA review and log 2 hours tracked time
+100,Monday.com,https://monday.com,Roy Mann (CEO),Tier 2,https://developer.monday.com,Create deal record in board and assign legal reviewer
