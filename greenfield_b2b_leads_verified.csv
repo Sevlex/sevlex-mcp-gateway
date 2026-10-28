@@ -1,0 +1,36 @@
+ID,Company,Website,Headquarters,Category,API_Docs_URL,Conversational_Hook_Claude_Prompt,Target_Persona
+1,Tradify,https://tradifyhq.com,Auckland / UK,Field Service & Trades,https://tradifyhq.com/api,Quote emergency plumbing repair for 42 Elm St and dispatch technician,Head of Product
+2,Fergus,https://fergus.com,UK / NZ,Field Service & Trades,https://developer.fergus.com,Show overdue supplier invoices and calculate job margin on project #88,VP of Product
+3,Buildertrend,https://buildertrend.com,Omaha NE,Construction Management,https://buildertrend.com/api,Pull daily construction log and notify client of weather delay,VP of Ecosystem
+4,Simpro,https://simprogroup.com,Australia / US,Trades Management,https://developer.simpro.co,Look up inventory stock for HVAC condenser unit across warehouses,Head of Integrations
+5,ServiceM8,https://servicem8.com,Australia,Field Service,https://developer.servicem8.com,Schedule 2 PM electrical safety inspection and send SMS confirmation,Head of Product
+6,JobNimbus,https://jobnimbus.com,Lehi UT,Contractor CRM,https://jobnimbus.com/api,Move roofing claim #491 to Insurance Approved and assign crew,VP of Product
+7,CoConstruct,https://coconstruct.com,Charlottesville VA,Construction,https://coconstruct.com/api,Generate change order for custom kitchen cabinetry and email client,Product Director
+8,Housecall Pro,https://housecallpro.com,San Diego CA,Home Services,https://housecallpro.com/api,Find open booking slots for drain cleaning service this Friday,Head of Platform
+9,Clio,https://clio.com,Vancouver CA,Legal Practice,https://clio.com/api,Log 1.5 billable hours for contract review on the Miller estate matter,VP of Product
+10,MyCase,https://mycase.com,San Diego CA,Legal Practice,https://mycase.com/api,Fetch unpaid client retainer balances and generate payment links,Head of Ecosystem
+11,PracticePanther,https://practicepanther.com,Miami FL,Legal Practice,https://practicepanther.com/api,Create matter file for commercial lease litigation and attach intake notes,Product Lead
+12,Smokeball,https://smokeball.com,Chicago IL,Legal Practice,https://smokeball.com/api,Pull automated court deadline calendar for Cook County filings,Head of Product
+13,Filevine,https://filevine.com,Salt Lake City UT,Legal Practice,https://filevine.com/api,Summarize medical record damages for personal injury claim #104,VP of Platform
+14,Lawmatics,https://lawmatics.com,San Diego CA,Legal CRM,https://lawmatics.com/api,Send custom consultation booking form to inbound family law lead,CEO / Founder
+15,Concord,https://concordnow.com,San Francisco CA,Contract Lifecycle,https://concordnow.com/api,Flag non-standard indemnification clauses in pending vendor NDA,Head of Product
+16,HoneyBook,https://honeybook.com,San Francisco CA,Clientflow & Invoicing,https://honeybook.com/api,Send wedding photography proposal & invoice for June 14 booking,VP of Product
+17,Dubsado,https://dubsado.com,Burbank CA,Clientflow & Invoicing,https://dubsado.com/api,Trigger onboarding questionnaire once client signs design contract,Co-Founder / Product
+18,Harvest,https://getharvest.com,New York NY,Time Tracking & Billing,https://help.getharvest.com/api,Generate invoice for all unbilled design hours in October,Head of Product
+19,FreeAgent,https://freeagent.com,Edinburgh UK,Accounting & Invoicing,https://dev.freeagent.com,Reconcile recent bank transactions and categorize travel receipts,Product Lead
+20,Wave,https://waveapps.com,Toronto CA,Invoicing & Payments,https://developer.waveapps.com,Send reminder for overdue invoice #1042 with credit card payment link,Head of Ecosystem
+21,Everhour,https://everhour.com,Remote,Time Tracking,https://everhour.com/api,Compare budgeted vs actual hours tracked across client retainers,Founder / CEO
+22,Float,https://float.com,New York NY,Resource Management,https://float.com/api,Reallocate staff frontend engineer to mobile project for next 2 weeks,Head of Product
+23,Avaza,https://avaza.com,Sydney AU,Project & Invoicing,https://avaza.com/api,Create milestone invoice upon approval of Sprint 3 deliverables,Co-Founder / Product
+24,Jane App,https://jane.app,Vancouver CA,Clinic & Healthcare,https://jane.app/api,Find next available physiotherapy appointment with Dr. Chen,Head of Integrations
+25,Cliniko,https://cliniko.com,Melbourne AU,Clinic Management,https://cliniko.com/api,Pull patient appointment history and log clinical treatment notes,Founder / Product
+26,Carepatron,https://carepatron.com,Austin TX,Healthcare Practice,https://carepatron.com/api,Generate telehealth intake summary and verify insurance eligibility,Head of Product
+27,NexHealth,https://nexhealth.com,San Francisco CA,Dental & Healthcare,https://developer.nexhealth.com,Sync dental patient records and send 6-month cleaning reminder,VP of Product
+28,Curve Dental,https://curvedental.com,Provo UT,Dental Software,https://curvedental.com/api,Check patient treatment plan balance and schedule crown prep,Product Director
+29,CareStack,https://carestack.com,Orlando FL,Dental Software,https://carestack.com/api,Verify commercial dental insurance claims submitted yesterday,Head of Platform
+30,Follow Up Boss,https://followupboss.com,San Francisco CA,Real Estate CRM,https://docs.followupboss.com,Log buyer preference for 3-bed craftsman home in Austin under $700k,VP of Product
+31,Buildium,https://buildium.com,Boston MA,Property Management,https://developer.buildium.com,List delinquent rental units in building B and send 5-day notice,Head of Product
+32,TenantCloud,https://tenantcloud.com,Austin TX,Property Management,https://tenantcloud.com/api,Create maintenance work order for leaking sink in Unit 4B,Product Lead
+33,Sierra Interactive,https://sierrainteractive.com,Louisville KY,Real Estate Tech,https://sierrainteractive.com/api,Filter active buyer leads who viewed luxury listings this week,Head of Integrations
+34,Cloze,https://cloze.com,Wellesley MA,Relationship CRM,https://cloze.com/api,Flag high-net-worth real estate clients with no contact in 60 days,Founder / CEO
+35,Lofty,https://lofty.com,Salt Lake City UT,Real Estate Tech,https://lofty.com/api,Trigger automated SMS sequence for open house attendees,VP of Platform
